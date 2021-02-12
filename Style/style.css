@@ -176,5 +176,11 @@ a.button1:hover,
     float: right;
 }
 
+.reservationsection,
+.labelTitle {
+    display: inline-block;
+    display: block;
+}
+
 
 /* title */

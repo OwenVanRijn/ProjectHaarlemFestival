@@ -9,6 +9,7 @@
     <meta name="description" content="Haarlem Festival">
     <meta name="author" content="Haarlem Festival">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 
 <body>
@@ -39,7 +40,7 @@
                     <p class="filterlabelSubtitle">Stars</p>
                     <section class="checkboxesStars">
                         <input type="checkbox" class="filterCheckbox" id="3stars" name="3stars" checked>
-                        <label class="label" for="3stars">3 stars</label>
+                        <label class="label" for="3stars">3 stars<br></label>
                         <input type="checkbox" class="filterCheckbox" id="4stars" name="4stars" checked>
                         <label class="label" for="4stars">4 stars</label>
                     </section>
@@ -58,7 +59,7 @@
                 </section>
 
                 <section class="searchbar">
-                    <p class="filterlabelSubtitle">Search for a restaurant</p>
+                    <p class="filterlabelSubtitle"><br>Search for a restaurant</p>
                     <form action="/action_page.php">
                         <input type="text" placeholder="Search.." name="search">
                         <button type="submit" class="button1">Search</button>
@@ -67,37 +68,68 @@
             </section>
         </section>
 
-        <section class="row">
-            <section class="discoverBlockColumn">
-                <h2><a href="dance.php">Dance</a></h2>
-                <img class="eventimg" src="Pictures/Dance.png">
-                <p class="discoverBlockContent">Our dance acts focus on dance, house, techno and trance.
-                    <br>
-                    Haarlem Festival offers 6 of the best DJs in the world. They will perform in back2back and club sessions.
-                </p>
-                <a href="dance.php" class="button1">Read more</a>
-            </section>
 
-            <section class="discoverBlockColumn">
-                <h2><a href="jazz.php">Jazz</a></h2>
-                <img class="eventimg" src="Pictures/Jazz.png">
-                <p class="discoverBlockContent">Read moreJazzJazz is one of the main acts at the Haarlem Festival.
-                    <br>
-                    We have artists such as Jonna Frazer, Soul Six and Evolve in house.
-                    <br>
-                    We also offer a number of free performances.
-                </p>
-                <a href="jazz.php" class="button1">Read more</a>
-            </section>
 
-            <section class="discoverBlockColumn">
-                <h2><a href="food.php">Food</a></h2>
-                <img class="eventimg" src="Pictures/Food.png">
-                <p class="discoverBlockContent">We have selected several restaurants in the center of Haarlem for you. These restaurants have delicious dishes for you. Both national and international dishes. The restaurants have a delicious menu for you at a discounted price.
-                </p>
-                <a href="food.php" class="button1">Read more</a>
-            </section>
-        </section>
+        <div class="w3-container">
+            <h2>W3.CSS Login Modal</h2>
+            <button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-green w3-large">Reserveer</button>
+
+            <div id="id01" class="w3-modal">
+                <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+                    <form class="w3-container" action="/action_page.php">
+
+                        <h1>Reservation Restaurant Fris</h1>
+
+                        <section class="reservationsection">
+                            <label><b>Amount of seats</b></label>
+
+                            <select name="seats" id="seats">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </section>
+
+                        <section class="reservationsection">
+                            <label class="labelTitle">Date<br></label>
+                            <input type="radio" class="date" name="date" id="date1" value="1">
+                            <label for="date1">17:30 - 19:00</label><br>
+                            <input type="radio" id="date" name="date" id="date2" value="2">
+                            <label for="date2">19:00 - 20:30</label><br>
+                            <input type="radio" id="date" name="date" id="session3" value="3">
+                            <label for="date3">20:30 - 22:00</label><br><br>
+                        </section>
+
+                        <br>
+                        <section class="reservationsection">
+                            <label class="labelTitle">Session<br></label>
+                            <input type="radio" class="session" name="session" id="session1" value="1">
+                            <label for="session1">17:30 - 19:00</label><br>
+                            <input type="radio" id="session" name="session" id="session2" value="2">
+                            <label for="session2">19:00 - 20:30</label><br>
+                            <input type="radio" id="session" name="session" id="session3" value="3">
+                            <label for="session3">20:30 - 22:00</label><br><br>
+                        </section>
+
+                        <section class="reservationsection">
+                            <label class="labelTitle">Note</label>
+                            <p>Do you have any dietary requirements, allergies or other comments?</p>
+                            <textarea id="noteTextArea" rows="3"></textarea>
+                        </section>
+
+
+                    <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+                        <button onclick="document.getElementById('id01').style.display='none'" type="button" class="w3-button w3-red">Cancel</button>
+                        <input class="w3-button w3-green w3-right w3-padding" type="submit" name="reservation" id="session3" value="Send">
+                    </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
     </main>
 </body>
 
