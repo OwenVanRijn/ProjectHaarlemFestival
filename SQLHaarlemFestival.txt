@@ -1,0 +1,151 @@
+CREATE TABLE location(
+	id INT NOT NULL AUTO_INCREMENT,
+	name VARCHAR(50),
+	address VARCHAR(50) NOT NULL,
+	postalCode VARCHAR(10) NOT NULL,
+	city VARCHAR(20) NOT NULL,
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE account(
+	id INT NOT NULL AUTO_INCREMENT,
+	username VARCHAR(40) NOT NULL,
+	password VARCHAR(60) NOT NULL,
+	email VARCHAR(75) NOT NULL,
+	status INT NOT NULL,
+	role INT NOT NULL,
+	isScheduleManager BIT NOT NULL,
+	isTicketManager BIT NOT NULL,
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE session(
+	id BIGINT NOT NULL,
+	ipAddress VARCHAR(15) NOT NULL,
+	expiryDate date NOT NULL,
+	accountId int NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (accountId) REFERENCES account(id)
+);
+
+CREATE TABLE customer(
+	id INT NOT NULL AUTO_INCREMENT,
+	firstName VARCHAR(40) NOT NULL,
+	lastname VARCHAR(40) NOT NULL,
+	locationId INT NOT NULL,
+	phoneNumber BIGINT,
+	accountId INT NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (locationId) REFERENCES location(id),
+	FOREIGN KEY (accountId) REFERENCES account(id)
+);
+
+CREATE TABLE orders(
+	id INT NOT NULL AUTO_INCREMENT,
+	status INT NOT NULL,
+	customerId INT NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (customerId) REFERENCES customer(id)
+);
+
+CREATE TABLE activity(
+	id INT NOT NULL AUTO_INCREMENT,
+	date date NOT NULL,
+	startTime time NOT NULL,
+	endTime time NOT NULL,
+	locationId INT NOT NULL,
+	price DOUBLE NOT NULL,
+	ticketsLeft INT NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (locationId) REFERENCES location(id)
+);
+
+CREATE TABLE ticket(
+	id INT NOT NULL AUTO_INCREMENT,
+	activityId INT NOT NULL,
+	customerId INT NOT NULL,
+	orderId INT NOT NULL,
+	amount INT NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (customerId) REFERENCES customer(id),
+	FOREIGN KEY (activityId) REFERENCES activity(id),
+	FOREIGN KEY (orderId) REFERENCES orders(id)
+);
+
+CREATE TABLE restauranttypes(
+	id INT NOT NULL AUTO_INCREMENT,
+	name VARCHAR(40),
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE restaurant(
+	id INT NOT NULL AUTO_INCREMENT,
+	name VARCHAR(40) NOT NULL,
+	description VARCHAR(1000),
+	phoneNumber BIGINT,
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE restauranttypelink(
+	id INT NOT NULL AUTO_INCREMENT,
+	restauranttypesid INT NOT NULL,
+	restaurantid INT NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (restaurantId) REFERENCES restaurant(id),
+	FOREIGN KEY (restauranttypesid) REFERENCES restauranttypes(id)
+);
+
+CREATE TABLE foodactivity(
+	id INT NOT NULL AUTO_INCREMENT,
+	restaurantId INT NOT NULL,
+	activityId INT NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (activityId) REFERENCES activity(id),
+	FOREIGN KEY (restaurantId) REFERENCES restaurant(id)
+);
+
+CREATE TABLE jazzband(
+	id INT NOT NULL AUTO_INCREMENT,
+	name VARCHAR(40) NOT NULL,
+	genre VARCHAR(30),
+	description VARCHAR(1000),
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE jazzactivity(
+	id INT NOT NULL AUTO_INCREMENT,
+	jazzbandid INT NOT NULL,
+	activityId INT NOT NULL,
+	hall VARCHAR(50) NOT NULL,
+	seats INT,
+	PRIMARY KEY (id),
+	FOREIGN KEY (activityId) REFERENCES activity(id),
+	FOREIGN KEY (jazzbandid) REFERENCES jazzband(id)
+);
+
+CREATE TABLE danceartist(
+	id INT NOT NULL AUTO_INCREMENT,
+	name VARCHAR(40) NOT NULL,
+	genre VARCHAR(30),
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE danceactivity(
+	id INT NOT NULL AUTO_INCREMENT,
+	activityId INT NOT NULL,
+	hall VARCHAR(50) NOT NULL,
+	sessionType varchar(50),
+	PRIMARY KEY (id),
+	FOREIGN KEY (activityId) REFERENCES activity(id)
+);
+
+CREATE TABLE artistsonactivity(
+	id INT NOT NULL AUTO_INCREMENT,
+	danceartistid INT NOT NULL,
+	danceactivityid INT NOT NULL,
+	description VARCHAR(1000),
+	PRIMARY KEY (id),
+	FOREIGN KEY (danceartistid) REFERENCES danceartist(id),
+	FOREIGN KEY (danceactivityid) REFERENCES danceactivity(id)
+);
+

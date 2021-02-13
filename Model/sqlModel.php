@@ -3,12 +3,10 @@
 
 abstract class sqlModel
 {
-    // The variables tableName, primaryKey, fields need to exist
-
     protected const sqlTableName = "";
-    protected const sqlPrimaryKey = "";
+    protected const sqlPrimaryKey = "id";
     protected const sqlFields = "";
-    protected const sqlLinks = "";
+    protected const sqlLinks = [];
 
     public static function sqlTableName() {
         return static::sqlTableName;
@@ -35,4 +33,6 @@ abstract class sqlModel
             return static::sqlParse($sqlRes);
         };
     }
+
+    public abstract function getId();
 }

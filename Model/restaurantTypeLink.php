@@ -1,0 +1,54 @@
+<?php
+
+require_once ("sqlModel.php");
+
+class restaurantTypeLink extends sqlModel
+{
+    private int $id;
+    private restaurant $restaurant;
+    private restaurantType $type;
+
+    protected const sqlTableName = "restauranttypelink";
+    protected const sqlFields = ["id", "restauranttypesid", "restaurantid"];
+    protected const sqlLinks = ["restaurantid" => restaurant::class, "restauranttypesid" => restaurantType::class];
+
+    /**
+     * restaurantTypeLink constructor.
+     * @param int $id
+     * @param restaurant $restaurant
+     * @param restaurantType $type
+     * @return restaurantTypeLink
+     */
+    public function constructFull(int $id, restaurant $restaurant, restaurantType $type)
+    {
+        $this->id = $id;
+        $this->restaurant = $restaurant;
+        $this->type = $type;
+        return $this;
+    }
+
+    public function sqlGetFields()
+    {
+        return [
+            "id" => $this->id,
+            "restaurantid" => $this->restaurant->getId(),
+            "restauranttypesid" => $this->type->getId()
+        ];
+    }
+
+    public static function sqlParse(array $sqlRes): restaurantTypeLink
+    {
+        return (new self())->constructFull(
+            $sqlRes[self::sqlTableName . "id"],
+            restaurant::sqlParse($sqlRes),
+            restaurantType::sqlParse($sqlRes));
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+}
