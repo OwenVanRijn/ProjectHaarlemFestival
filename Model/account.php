@@ -1,5 +1,6 @@
 <?php
 
+require_once ("sqlModel.php");
 
 class account extends sqlModel
 {
@@ -134,5 +135,13 @@ class account extends sqlModel
     public function setIsTicketManager(bool $isTicketManager): void
     {
         $this->isTicketManager = $isTicketManager;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsername(): string
+    {
+        return $this->username;
     }
 }

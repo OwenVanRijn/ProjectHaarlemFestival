@@ -4,8 +4,8 @@
         private $conn = null;
 
         private function construct(){
-            $filePath = "../creds.dat"; # This uses a json file called creds.dat stored 1 folder above the site's root. This makes it inaccessible from the web. It stores the database credentials
-
+            $root = realpath($_SERVER["DOCUMENT_ROOT"]);
+            $filePath = $root . "/../creds.dat"; # This uses a json file called creds.dat stored 1 folder above the site's root. This makes it inaccessible from the web. It stores the database credentials
             $file = fopen($filePath, "r") or die ("<br/> Unable to open credentials");
             $fileText = fread($file, filesize($filePath));
             fclose($file);

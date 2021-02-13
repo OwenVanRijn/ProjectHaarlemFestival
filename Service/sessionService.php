@@ -1,8 +1,10 @@
 <?php
 
-require_once ("Model/session.php");
-require_once ("Model/account.php");
-require_once ("DAL/dynamicQueryGen.php");
+$root = realpath($_SERVER["DOCUMENT_ROOT"]);
+
+require_once ($root . "/Model/session.php");
+require_once ($root . "/Model/account.php");
+require_once ($root . "/DAL/dynamicQueryGen.php");
 require_once ("baseService.php");
 require_once ("cookieManager.php");
 
@@ -13,6 +15,7 @@ class sessionService extends baseService
         parent::__construct(session::class);
     }
 
+    // TODO: throw on failure
     public function createSession(string $username, string $password){
         $userDb = new dynamicQueryGen(account::class);
 
@@ -55,6 +58,10 @@ class sessionService extends baseService
         return $this->validateSession($id);
     }
 
+    /**
+     * @param int $sessionId
+     * @return account|false
+     */
     public function validateSession(int $sessionId) {
         $session = $this->db->get([
             "id" => $sessionId
@@ -67,5 +74,19 @@ class sessionService extends baseService
             return false;
 
         return $session->getAccount();
+    }
+
+    public function deleteSessionFromCookie(){
+        $cookieManager = new cookieManager("session");
+        $id = $cookieManager->get();
+
+        if (is_null($id))
+            return false;
+
+        $this->db->delete([
+            "id" => $id
+        ]);
+
+        $cookieManager->del();
     }
 }
