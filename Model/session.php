@@ -1,5 +1,6 @@
 <?php
 
+require_once ("Service/cookieManager.php");
 
 class session extends sqlModel
 {
@@ -11,6 +12,7 @@ class session extends sqlModel
     protected const sqlTableName = "session";
     protected const sqlFields = ["id", "ipaddress", "expirydate", "accountid"];
     protected const sqlLinks = ["accountid" => account::class];
+    protected const sqlPrimaryIncrement = false;
 
     public function __construct()
     {
@@ -43,6 +45,16 @@ class session extends sqlModel
         $date_now = new DateTime();
 
         return  ($date_now > $this->expiryDate);
+    }
+
+    public function setCurrentSession(){
+        $cookieManager = new cookieManager("session");
+        $cookieManager->set((string)$this->id, 7);
+    }
+
+    public function verifySession($sessionId){
+        $ipAddress = $_SERVER['REMOTE_ADDR'];
+        return ($sessionId == $this->id && $ipAddress == $this->ipAddress && !$this->isOverDate());
     }
 
     public static function sqlParse(array $sqlRes): self
@@ -80,5 +92,11 @@ class session extends sqlModel
         $this->account = $account;
     }
 
-
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
 }

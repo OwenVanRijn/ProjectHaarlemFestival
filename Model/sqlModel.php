@@ -7,6 +7,7 @@ abstract class sqlModel
     protected const sqlPrimaryKey = "id";
     protected const sqlFields = "";
     protected const sqlLinks = [];
+    protected const sqlPrimaryIncrement = true;
 
     public static function sqlTableName() {
         return static::sqlTableName;
@@ -22,6 +23,10 @@ abstract class sqlModel
 
     public static function sqlLinks(){
         return static::sqlLinks;
+    }
+
+    public static function sqlPrimaryIncrement(){
+        return static::sqlPrimaryIncrement;
     }
 
     public abstract function sqlGetFields();

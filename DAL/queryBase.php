@@ -93,7 +93,7 @@ abstract class queryBase
                     switch (get_class($var)){
                         case "DateTime":
                             $types .= "s";
-                            $localVars[] = date_create_from_format("Y-m-d", $var);;
+                            $localVars[] = $var->format("Y-m-d");
                             break;
                 }
             }

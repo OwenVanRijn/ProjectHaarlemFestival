@@ -13,7 +13,7 @@ class dynamicQueryGen extends queryBase
     {
         parent::__construct(dbConn::getInstance()->getConn());
 
-        $this->insertPrimary = false;
+        $this->insertPrimary = !$class::sqlPrimaryIncrement();
         $this->class = $class;
     }
 
