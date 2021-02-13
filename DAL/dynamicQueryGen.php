@@ -66,7 +66,7 @@ class dynamicQueryGen extends queryBase
 
         $query .= " WHERE ";
         foreach ($filter as $k => $v){
-            $query .= $k . " = ? AND ";
+            $query .= $this->class::sqlTableName() . "." . $k . " = ? AND ";
             $this->args[] = $v;
         }
 
@@ -128,7 +128,7 @@ class dynamicQueryGen extends queryBase
         $this->join($this->class::sqlLinks());
         $this->where($filter);
 
-        echo $this->query;
+        //echo $this->query;
 
         $this->prepareQuery($this->query);
         $this->bindParams($this->args);
