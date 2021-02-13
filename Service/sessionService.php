@@ -4,6 +4,7 @@ require_once ("Model/session.php");
 require_once ("Model/account.php");
 require_once ("DAL/dynamicQueryGen.php");
 require_once ("baseService.php");
+require_once ("cookieManager.php");
 
 class sessionService extends baseService
 {
@@ -44,5 +45,27 @@ class sessionService extends baseService
         $this->db->insert($session->sqlGetFields());
         $session->setCurrentSession();
         return true;
+    }
+
+    public function validateSessionFromCookie(){
+        $cookieManager = new cookieManager("session");
+        $id = $cookieManager->get();
+        if (is_null($id))
+            return false;
+        return $this->validateSession($id);
+    }
+
+    public function validateSession(int $sessionId) {
+        $session = $this->db->get([
+            "id" => $sessionId
+        ]);
+
+        if (is_null($session))
+            return false;
+
+        if (!$session->verifySession($sessionId))
+            return false;
+
+        return $session->getAccount();
     }
 }

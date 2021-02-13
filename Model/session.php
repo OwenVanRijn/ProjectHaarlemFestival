@@ -61,8 +61,8 @@ class session extends sqlModel
     {
         return (new self())->constructFull(
             $sqlRes[self::sqlTableName . "id"],
-            $sqlRes[self::sqlTableName . "ipAddress"],
-            date_create_from_format("Y-m-d", $sqlRes[self::sqlTableName . "expiryDate"]),
+            $sqlRes[self::sqlTableName . "ipaddress"],
+            date_create_from_format("Y-m-d", $sqlRes[self::sqlTableName . "expirydate"]),
             account::sqlParse($sqlRes));
     }
 
@@ -98,5 +98,13 @@ class session extends sqlModel
     public function setId(int $id): void
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return account
+     */
+    public function getAccount(): account
+    {
+        return $this->account;
     }
 }

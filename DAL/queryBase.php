@@ -29,7 +29,7 @@ abstract class queryBase
     /**
      * Execute prepared query. Parses all rows into an array of objects using the provided callable
      * @param callable $parse
-     * @return array|object
+     * @return array|object|null
      */
     protected function execQueryResult($parse){
         $this->execQuery();
@@ -46,6 +46,9 @@ abstract class queryBase
 
         if (count($array) == 1)
             return $array[0];
+
+        if ($array == [])
+            return null;
 
         return $array;
     }
