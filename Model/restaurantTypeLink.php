@@ -36,7 +36,7 @@ class restaurantTypeLink extends sqlModel
         ];
     }
 
-    public static function sqlParse(array $sqlRes): restaurantTypeLink
+    public static function sqlParse(array $sqlRes): self
     {
         return (new self())->constructFull(
             $sqlRes[self::sqlTableName . "id"],

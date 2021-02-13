@@ -39,7 +39,7 @@ class restaurant extends sqlModel
         ];
     }
 
-    public static function sqlParse(array $sqlRes): restaurant
+    public static function sqlParse(array $sqlRes): self
     {
         return (new self())->constructFull(
             $sqlRes[self::sqlTableName . "id"],

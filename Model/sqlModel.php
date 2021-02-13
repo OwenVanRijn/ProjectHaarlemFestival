@@ -26,7 +26,7 @@ abstract class sqlModel
 
     public abstract function sqlGetFields();
 
-    public abstract static function sqlParse(array $sqlRes) : sqlModel;
+    public abstract static function sqlParse(array $sqlRes) : self;
 
     public static function sqlParseFunc() {
         return function (array $sqlRes) : sqlModel {

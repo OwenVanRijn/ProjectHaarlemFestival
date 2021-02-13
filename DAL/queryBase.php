@@ -85,6 +85,10 @@ abstract class queryBase
                     $types .= "s";
                     $localVars[] = $var;
                     break;
+                case "boolean":
+                    $types .= "i";
+                    $localVars[] = intval($var);
+                    break;
                 case "object":
                     switch (get_class($var)){
                         case "DateTime":
