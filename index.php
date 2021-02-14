@@ -3,7 +3,7 @@
 
 <head>
     <title>STARTPAGE</title>
-    <link rel="stylesheet" href="Style/style.css">
+    <link rel="stylesheet" href="css/style.css">
     <meta charset="UTF-8">
     <meta name="keywords" content="Haarlem, festival, jazz, food, history, party, feest, geschiedenis, eten, restaurant">
     <meta name="description" content="Haarlem Festival">
@@ -42,7 +42,7 @@
         <section class="row">
             <section class="discoverBlockColumn">
                 <h2><a href="dance.php">Dance</a></h2>
-                <img class="eventimg" src="Pictures/Dance.png">
+                <img class="eventimg" src="img/Dance.png">
                 <p class="discoverBlockContent">Our dance acts focus on dance, house, techno and trance.
                     <br>
                     Haarlem Festival offers 6 of the best DJs in the world. They will perform in back2back and club sessions.
@@ -52,7 +52,7 @@
 
             <section class="discoverBlockColumn">
                 <h2><a href="jazz.php">Jazz</a></h2>
-                <img class="eventimg" src="Pictures/Jazz.png">
+                <img class="eventimg" src="img/Jazz.png">
                 <p class="discoverBlockContent">Jazz is one of the main acts at the Haarlem Festival.
                     <br>
                     We have artists such as Jonna Frazer, Soul Six and Evolve in house.
@@ -64,7 +64,7 @@
 
             <section class="discoverBlockColumn">
                 <h2><a href="food.php">Food</a></h2>
-                <img class="eventimg" src="Pictures/Food.png">
+                <img class="eventimg" src="img/Food.png">
                 <p class="discoverBlockContent">We have selected several restaurants in the center of Haarlem for you. These restaurants have delicious dishes for you. Both national and international dishes. The restaurants have a delicious menu for you at a discounted price.
                 </p>
                 <a href="food.php" class="button1">Read more</a>
@@ -86,7 +86,7 @@
             </section>
 
             <section class="thisisBlockColumn">
-                <img class="thisisimg" src="Pictures/Icons/thisis_food.png">
+                <img class="thisisimg" src="img/Icons/thisis_food.png">
                 <p>Enjoy the scents and taste of the national and international dishes of the restaurants nearby.</p>
             </section>
 

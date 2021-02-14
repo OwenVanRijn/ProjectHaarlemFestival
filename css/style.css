@@ -115,7 +115,7 @@ s .row:after {
 }
 
 header {
-    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../Pictures/Background.png);
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/Background.png);
     background-size: cover;
     height: 25vh;
 }

@@ -3,7 +3,7 @@
 
 <head>
     <title>Food</title>
-    <link rel="stylesheet" href="Style/style.css">
+    <link rel="stylesheet" href="css/style.css">
     <meta charset="UTF-8">
     <meta name="keywords" content="Haarlem, festival, jazz, food, history, party, feest, geschiedenis, eten, restaurant">
     <meta name="description" content="Haarlem Festival">
