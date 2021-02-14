@@ -16,7 +16,7 @@
 
     <header>
         <div class="title">
-            <h1 class="main-title">Welcome to Haarlem Festival</h1>
+            <h1 class="main-title">Welcome to H Festival</h1>
             <p class="main-title under-title">Haarlem Festival, for the people that enjoy
                 <br>a good time
             </p>
@@ -24,7 +24,7 @@
     </header>
 
     <main class="content">
-        <h1>Welcome to Haarlem Festival</h1>
+        <h1>Welcome to H Festival</h1>
         <p>Haarlem is a busy city, with a rich history and beatiful statues and other sights. Walk trough cozy streets in the heart of Haarlem and discover a large variety of stores. Sit down at one of the many pubs with your friends for a drink, or visit one
             of the many museums or theaters in Haarlem. Haarlem even has a beach you can unwind at. In any case, Haarlem bursts with possibilities for something to do on a weekend out. To show you Haarlem, we've organised a few events in it! It's called "The
             Haarlem Festival". If you love <a href="dance.php">dance</a> or <a href="jazz.php">jazz</a> we have a few events planned to help you explore Haarlem. We also have a selection of <a href="restaurants.php">restaurants</a> for you to have dinner
