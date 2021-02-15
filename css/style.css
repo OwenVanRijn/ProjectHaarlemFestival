@@ -1,5 +1,4 @@
 /* CONTENT */
-
 body {
     background-color: #CECECE;
 }
@@ -116,6 +115,7 @@ s .row:after {
 
 header {
     background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/Background.png);
+    padding-top: 50px;
     background-size: cover;
     height: 25vh;
 }
@@ -153,19 +153,22 @@ a.button1:hover,
     background-color: #FFFFFF;
 }
 
-@media all and (max-width:30em) {
-    a.button1,
-    .button1 {
-        display: block;
-        margin: 0.4em auto;
-    }
-}
-
 #filterbar {
-    background-color: #A5A5A5;
-    column-count: 3;
+  background-color: #A5A5A5;
+  padding: 20px;
+  column-count: 3;
 }
+/*jazz filterbar*/
+#filter{
+  background-color: #A5A5A5;
+  column-count: 3;
+  padding-top: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 50px;
+  width: 1700px;
 
+}
 .filterlabelTitle {
     position: relative;
     top: 10px;
@@ -181,6 +184,12 @@ a.button1:hover,
     display: inline-block;
     display: block;
 }
-
+@media all and (max-width:30em) {
+    a.button1,
+    .button1 {
+        display: block;
+        margin: 0.4em auto;
+    }
+}
 
 /* title */
