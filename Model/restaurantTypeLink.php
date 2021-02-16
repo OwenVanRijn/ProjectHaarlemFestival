@@ -1,6 +1,8 @@
 <?php
 
 require_once ("sqlModel.php");
+require_once ("restaurant.php");
+require_once ("restaurantType.php");
 
 class restaurantTypeLink extends sqlModel
 {

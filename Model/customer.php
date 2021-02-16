@@ -1,6 +1,7 @@
 <?php
 
 require_once ("sqlModel.php");
+require_once ("location.php");
 
 class customer extends sqlModel
 {

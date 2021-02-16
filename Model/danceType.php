@@ -4,8 +4,8 @@ require_once ("sqlModel.php");
 
 class danceType extends sqlModel
 {
-    private $id;
-    private $name;
+    private int $id;
+    private string $name;
 
     protected const sqlTableName = "dancetypes";
     protected const sqlFields = ["id", "name"];

@@ -1,6 +1,8 @@
 <?php
 
 require_once ("sqlModel.php");
+require_once ("danceArtist.php");
+require_once ("danceActivity.php");
 
 class artistOnActivity extends sqlModel
 {

@@ -1,35 +1,43 @@
 <?php
 
-require_once ("sqlModel.php");
+require_once("sqlModel.php");
+require_once("activity.php");
+require_once("customer.php");
+require_once("orders.php");
 
 class location extends sqlModel
 {
     private int $id;
-    private int $activityId;
-    private int $customerId;
-    private int $orderId;
+    private activity $activity;
+    private customer $customer;
+    private orders $order;
     private float $amount;
 
     protected const sqlTableName = "location";
     protected const sqlFields = ["id", "activityId", "customerId", "orderId", "amount"];
+    protected const sqlLinks = [
+        "activityId" => activity::class,
+        "customerId" => customer::class,
+        "orderId" => orders::class
+    ];
 
-    public function constructFull(int $id, int $activityId, int $customerId, int $orderId, float $amount)
+    public function constructFull(int $id, activity $activity, customer $customer, orders $order, float $amount)
     {
         $this->id = $id;
-        $this->activityId = $activityId;
-        $this->customerId = $customerId;
-        $this->orderId = $orderId;
+        $this->activity = $activity;
+        $this->customer = $customer;
+        $this->order = $order;
         $this->amount = $amount;
         return $this;
     }
 
     public function sqlGetFields()
     {
-        return[
+        return [
             "id" => $this->id,
-            "activityId" => $this->activityId,
-            "customerId" => $this->customerId,
-            "orderId" => $this->orderId,
+            "activityId" => $this->activity->getId(),
+            "customerId" => $this->customer->getId(),
+            "orderId" => $this->order->getId(),
             "amount" => $this->amount
         ];
     }
@@ -38,14 +46,14 @@ class location extends sqlModel
     {
         return (new self())->constructFull(
             $sqlRes[self::sqlTableName . "id"],
-            $sqlRes[self::sqlTableName . "activityId"],
-            $sqlRes[self::sqlTableName . "customerId"],
-            $sqlRes[self::sqlTableName . "orderId"],
+            activity::sqlParse($sqlRes),
+            customer::sqlParse($sqlRes),
+            orders::sqlParse($sqlRes),
             $sqlRes[self::sqlTableName . "amount"]
         );
     }
 
-    public function getId() : int
+    public function getId(): int
     {
         return $this->id;
     }
