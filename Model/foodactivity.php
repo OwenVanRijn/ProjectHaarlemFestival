@@ -2,29 +2,33 @@
 
 require_once ("sqlModel.php");
 require_once ("restaurant.php");
+require_once ("activity.php");require_once ("restaurant.php");
+
 
 class foodactivity extends sqlModel
 {
+    use activity;
+    
     private int $id;
     private restaurant $restaurant;
-    private int $activityId;
+    private activity $activity;
 
     protected const sqlTableName = "foodactivity";
     protected const sqlFields = ["id", "restaurantId", "activityId"];
-    protected const sqlLinks = ["restaurantId" => restaurant::class];
+    protected const sqlLinks = ["restaurantId" => restaurant::class, "activityId" => activity::class];
 
     public function __construct()
     {
         $this->id = -1;
         $this->restaurant = null;
-        $this->activityId = -1;
+        $this->activity = null;
     }
 
-    public function constructFull(int $id, restaurant $restaurant, int $activityId)
+    public function constructFull(int $id, restaurant $restaurant, activity $activity)
     {
         $this->id = $id;
         $this->restaurant = $restaurant;
-        $this->activityId = $activityId;
+        $this->activity = $activity;
         return $this;
     }
 
@@ -74,15 +78,15 @@ class foodactivity extends sqlModel
         return $this;
     }
 
-    public function getActivityId()
+    public function getActivity()
     {
-        return $this->activityId;
+        return $this->activity;
     }
 
 
-    public function setActivityId($activityId)
+    public function setActivityId($activity)
     {
-        $this->activityId = $activityId;
+        $this->activityId = $activity;
 
         return $this;
     }
