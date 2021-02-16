@@ -5,29 +5,30 @@ require_once ("sqlModel.php");
 class jazzactivity extends sqlModel
 {
     private int $id;
-    private int $jazzbandid;
-    private int $activityId;
+    private jazzband $jazzband;
+    private activity $activity;
     private string $hall;
     private int $seats;
 
 
     protected const sqlTableName = "jazzactivity";
     protected const sqlFields = ["id", "jazzbandid", "activityId", "hall", "seats" ];
+    protected const sqlLinks = ["jazzbandid" => jazzband::class, "activityId" => activity::class];
 
     public function __construct()
     {
         $this->id = -1;
-        $this->jazzbandid = -1;
-        $this->activityId = -1;
+        $this->jazzband = null;
+        $this->activity = null;
         $this->hall = "unknown";
         $this->seats = 0;
     }
 
-    public function constructFull(int $id, int $jazzbandid, int $activityId, string $hall, int $seats)
+    public function constructFull(int $id, jazzband $jazzband, activity $activity, string $hall, int $seats)
     {
         $this->id = $id;
-        $this->jazzbandid = $jazzbandid;
-        $this->activityId = $activityId;
+        $this->jazzband = $jazzband;
+        $this->activity = $activity;
         $this->hall = $hall;
         $this->seats = $seats;
         return $this;
@@ -37,8 +38,8 @@ class jazzactivity extends sqlModel
     {
         return [
             "id" => $this->id,
-            "jazzbandid" => $this->jazzbandid,
-            "activityId" => $this->activityId,
+            "jazzbandid" => $this->jazzband->getId(),
+            "activityId" => $this->activity->getId(),
             "hall" => $this->hall,
             "seats" => $this->seats
         ];
@@ -48,8 +49,8 @@ class jazzactivity extends sqlModel
     {
         return (new self())->constructFull(
             $sqlRes[self::sqlTableName . "id"],
-            $sqlRes[self::sqlTableName . "jazzbandid"],
-            $sqlRes[self::sqlTableName . "activityId"],
+            jazzband::sqlParse($sqlRes),
+            activity::sqlParse($sqlRes),
             $sqlRes[self::sqlTableName . "hall"],
             $sqlRes[self::sqlTableName . "seats"]
         );
@@ -69,28 +70,28 @@ class jazzactivity extends sqlModel
         return $this;
     }
 
-    public function getJazzbandid()
+    public function getJazzband()
     {
-        return $this->jazzbandid;
+        return $this->jazzband;
     }
 
 
-    public function setJazzbandid($jazzbandid)
+    public function setJazzband($jazzband)
     {
-        $this->jazzbandid = $jazzbandid;
+        $this->jazzband = $jazzband;
 
         return $this;
     }
 
-    public function getActivityId()
+    public function getActivity()
     {
-        return $this->activityId;
+        return $this->activity;
     }
 
     
-    public function setActivityId($activityId)
+    public function setActivity($activity)
     {
-        $this->activityId = $activityId;
+        $this->activity = $activity;
 
         return $this;
     }

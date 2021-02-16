@@ -5,23 +5,24 @@ require_once ("sqlModel.php");
 class foodactivity extends sqlModel
 {
     private int $id;
-    private int $restaurantId;
+    private restaurant $restaurant;
     private int $activityId;
 
     protected const sqlTableName = "foodactivity";
     protected const sqlFields = ["id", "restaurantId", "activityId"];
+    protected const sqlLinks = ["restaurantId" => restaurant::class];
 
     public function __construct()
     {
         $this->id = -1;
-        $this->restaurantId = -1;
+        $this->restaurant = null;
         $this->activityId = -1;
     }
 
-    public function constructFull(int $id, int $restaurantId, int $activityId)
+    public function constructFull(int $id, restaurant $restaurant, int $activityId)
     {
         $this->id = $id;
-        $this->restaurantId = $restaurantId;
+        $this->restaurant = $restaurant;
         $this->activityId = $activityId;
         return $this;
     }
@@ -30,8 +31,8 @@ class foodactivity extends sqlModel
     {
         return [
             "id" => $this->id,
-            "restaurantId" => $this->restaurantId,
-            "activityId" => $this->activityId
+            "restaurantId" => $this->restaurant->getId(),
+            "activityId" => $this->activity->getId()
         ];
     }
 
@@ -59,15 +60,15 @@ class foodactivity extends sqlModel
     }
 
 
-    public function getRestaurantId()
+    public function getRestaurant()
     {
-        return $this->restaurantId;
+        return $this->restaurant;
     }
 
 
-    public function setRestaurantId($restaurantId)
+    public function setRestaurant($restaurant)
     {
-        $this->restaurantId = $restaurantId;
+        $this->restaurant = $restaurant;
 
         return $this;
     }

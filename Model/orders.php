@@ -1,32 +1,31 @@
 <?php
 require_once("sqlModel.php");
+require_once("customer.php");
 
-class jazzband extends sqlModel
+class orders extends sqlModel
 {
     private int $id;
     private string $status;
-    private int $customerId;
-
+    private customer $customer;
 
     protected const sqlTableName = "orders";
-    protected const sqlFields = ["id", "status", "customerId"];
+    protected const sqlFields = ["id", "status", "customerid"];
+    protected const sqlLinks = ["customerid" => customer::class];
 
-
-    public function constructFull(int $id, string $status, int $customerId)
+    public function constructFull(int $id, string $status, customer $customer)
     {
         $this->id = $id;
         $this->status = $status;
-        $this->customerId = $customerId;
+        $this->customer = $customer;
         return $this;
     }
-
 
     public function sqlGetFields()
     {
         return [
             "id" => $this->id,
             "status" => $this->status,
-            "customerId" => $this->customerId
+            "customerid" => $this->customer->getId()
         ];
     }
 
@@ -35,7 +34,7 @@ class jazzband extends sqlModel
         return (new self())->constructFull(
             $sqlRes[self::sqlTableName . "id"],
             $sqlRes[self::sqlTableName . "status"],
-            $sqlRes[self::sqlTableName . "customerId"]
+            customer::sqlParse($sqlRes)
         );
     }
 
@@ -53,19 +52,6 @@ class jazzband extends sqlModel
     public function setStatus($status)
     {
         $this->status = $status;
-
-        return $this;
-    }
-
-
-    public function getCustomerId()
-    {
-        return $this->customerId;
-    }
-
-    public function setCustomerId($customerId)
-    {
-        $this->customerId = $customerId;
 
         return $this;
     }
