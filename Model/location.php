@@ -13,7 +13,7 @@ class location extends sqlModel
     protected const sqlTableName = "location";
     protected const sqlFields = ["id", "name", "address", "postalCode", "city"];
 
-    public function __construct(int $id, string $name, string $address, string $postalcode, string $city)
+    public function constructFull(int $id, string $name, string $address, string $postalcode, string $city)
     {
         $this->id = $id;
         $this->name = $name;
@@ -36,7 +36,7 @@ class location extends sqlModel
 
     public static function sqlParse(array $sqlRes): self
     {
-        return (new self())->__construct(
+        return (new self())->constructFull(
             $sqlRes[self::sqlTableName . "id"],
             $sqlRes[self::sqlTableName . "name"],
             $sqlRes[self::sqlTableName . "address"],
