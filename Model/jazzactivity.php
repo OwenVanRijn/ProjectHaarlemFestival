@@ -5,9 +5,7 @@ require_once ("jazzband.php");
 require_once ("activity.php");
 
 class jazzactivity extends sqlModel
-{
-    use activity;
-    
+{    
     private int $id;
     private jazzband $jazzband;
     private activity $activity;

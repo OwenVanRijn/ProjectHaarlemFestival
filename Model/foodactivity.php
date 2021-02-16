@@ -7,8 +7,6 @@ require_once ("activity.php");require_once ("restaurant.php");
 
 class foodactivity extends sqlModel
 {
-    use activity;
-    
     private int $id;
     private restaurant $restaurant;
     private activity $activity;

@@ -12,6 +12,7 @@ class shoppingcartItem extends sqlModel
 
     protected const sqlTableName = "shoppingcartItem";
     protected const sqlFields = ["id", "shoppingcart", "activity"];
+    protected const sqlLinks = ["shoppingcartId" => shoppingcart::class, "activityId" => activity::class];
 
     public function constructFull(int $id, shoppingcart $shoppingcart, activity $activity)
     {
