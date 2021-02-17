@@ -34,7 +34,7 @@ class sessionService extends baseService
         while (!$foundUnusedRandom){
             $random = rand();
             $randomSession = $this->db->get(["id" => $random]);
-            $foundUnusedRandom = ($randomSession == []);
+            $foundUnusedRandom = (is_null($randomSession));
         }
 
         $session = new session();
