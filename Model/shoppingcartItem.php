@@ -9,6 +9,8 @@ class shoppingcartItem extends sqlModel
     private int $id;
     private shoppingcart $shoppingcart;
     private activity $activity;
+    private int $amount; //hoeveel items
+    private float $price; //prijs
 
     protected const sqlTableName = "shoppingcartItem";
     protected const sqlFields = ["id", "shoppingcart", "activity"];
