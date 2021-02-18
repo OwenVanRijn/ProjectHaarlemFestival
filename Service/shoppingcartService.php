@@ -9,7 +9,7 @@ class shoppingcartService extends baseService
     public function __construct()
     {
         $shoppingcart = new shoppingcart();
-        parent::__construct(session::class);
+
         $this->check();
     }
 
