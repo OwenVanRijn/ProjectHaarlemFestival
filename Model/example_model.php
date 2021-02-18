@@ -26,9 +26,14 @@ class exampleModel extends sqlModel
 
     public function sqlGetFields(){
         return [ // To return a filled field array, useful for insert or update
-            "id" => $this->id;
-            "name" => $this->name;
-            "email" => $this->email;
+            "id" => $this->id,
+            "name" => $this->name,
+            "email" => $this->email,
         ];
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 }

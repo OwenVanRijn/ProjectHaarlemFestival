@@ -5,6 +5,8 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once ($root . "/Model/session.php");
 require_once ($root . "/Model/account.php");
 require_once ($root . "/DAL/dynamicQueryGen.php");
+require_once ($root . "/DAL/sessionDAO.php");
+require_once ($root . "/DAL/accountDAO.php");
 require_once ("baseService.php");
 require_once ("cookieManager.php");
 
@@ -12,12 +14,12 @@ class sessionService extends baseService
 {
     public function __construct()
     {
-        parent::__construct(session::class);
+        $this->db = new sessionDAO();
     }
 
     // TODO: throw on failure
     public function createSession(string $username, string $password){
-        $userDb = new dynamicQueryGen(account::class);
+        $userDb = new accountDAO();
 
         $user = $userDb->get([
             "username" => $username
