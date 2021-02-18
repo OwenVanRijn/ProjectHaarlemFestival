@@ -17,7 +17,7 @@ class danceTypeLinkDAO extends dynamicQueryGen
 
     /**
      * @param array $filter
-     * @return array|danceTypeLink|null
+     * @return danceTypeLink[]|danceTypeLink|null
      */
     public function get(array $filter = [])
     {

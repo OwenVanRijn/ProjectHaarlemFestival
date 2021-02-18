@@ -17,7 +17,7 @@ class ticketDAO extends dynamicQueryGen
 
     /**
      * @param array $filter
-     * @return array|ticket|null
+     * @return ticket[]|ticket|null
      */
     public function get(array $filter = [])
     {

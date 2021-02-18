@@ -17,7 +17,7 @@ class foodactivityDAO extends dynamicQueryGen
 
     /**
      * @param array $filter
-     * @return array|foodactivity|null
+     * @return foodactivity[]|foodactivity|null
      */
     public function get(array $filter = [])
     {

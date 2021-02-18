@@ -17,7 +17,7 @@ class sessionDAO extends dynamicQueryGen
 
     /**
      * @param array $filter
-     * @return array|session|null
+     * @return session[]|session|null
      */
     public function get(array $filter = [])
     {

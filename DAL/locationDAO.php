@@ -17,7 +17,7 @@ class locationDAO extends dynamicQueryGen
 
     /**
      * @param array $filter
-     * @return array|location|null
+     * @return location[]|location|null
      */
     public function get(array $filter = [])
     {

@@ -17,7 +17,7 @@ class ordersDAO extends dynamicQueryGen
 
     /**
      * @param array $filter
-     * @return array|orders|null
+     * @return orders[]|orders|null
      */
     public function get(array $filter = [])
     {

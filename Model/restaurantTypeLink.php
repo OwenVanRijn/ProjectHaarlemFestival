@@ -53,4 +53,20 @@ class restaurantTypeLink extends sqlModel
     {
         return $this->id;
     }
+
+    /**
+     * @return restaurant
+     */
+    public function getRestaurant(): restaurant
+    {
+        return $this->restaurant;
+    }
+
+    /**
+     * @return restaurantType
+     */
+    public function getType(): restaurantType
+    {
+        return $this->type;
+    }
 }

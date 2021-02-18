@@ -17,7 +17,7 @@ class customerDAO extends dynamicQueryGen
 
     /**
      * @param array $filter
-     * @return array|customer|null
+     * @return customer[]|customer|null
      */
     public function get(array $filter = [])
     {

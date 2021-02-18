@@ -17,7 +17,7 @@ class restaurantTypeDAO extends dynamicQueryGen
 
     /**
      * @param array $filter
-     * @return array|restaurantType|null
+     * @return restaurantType[]|restaurantType|null
      */
     public function get(array $filter = [])
     {

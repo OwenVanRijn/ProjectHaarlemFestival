@@ -17,7 +17,7 @@ class jazzbandDAO extends dynamicQueryGen
 
     /**
      * @param array $filter
-     * @return array|jazzband|null
+     * @return jazzband[]|jazzband|null
      */
     public function get(array $filter = [])
     {

@@ -17,7 +17,7 @@ class accountDAO extends dynamicQueryGen
 
     /**
      * @param array $filter
-     * @return array|account|null
+     * @return account[]|account|null
      */
     public function get(array $filter = [])
     {

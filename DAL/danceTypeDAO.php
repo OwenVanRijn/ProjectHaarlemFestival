@@ -17,7 +17,7 @@ class danceTypeDAO extends dynamicQueryGen
 
     /**
      * @param array $filter
-     * @return array|danceType|null
+     * @return danceType[]|danceType|null
      */
     public function get(array $filter = [])
     {

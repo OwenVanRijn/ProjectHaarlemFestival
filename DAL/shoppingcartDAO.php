@@ -17,7 +17,7 @@ class shoppingcartDAO extends dynamicQueryGen
 
     /**
      * @param array $filter
-     * @return array|shoppingcart|null
+     * @return shoppingcart[]|shoppingcart|null
      */
     public function get(array $filter = [])
     {

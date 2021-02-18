@@ -17,7 +17,7 @@ class activityDAO extends dynamicQueryGen
 
     /**
      * @param array $filter
-     * @return array|activity|null
+     * @return activity[]|activity|null
      */
     public function get(array $filter = [])
     {
