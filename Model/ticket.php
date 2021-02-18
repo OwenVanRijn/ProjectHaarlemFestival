@@ -5,7 +5,7 @@ require_once("activity.php");
 require_once("customer.php");
 require_once("orders.php");
 
-class location extends sqlModel
+class ticket extends sqlModel
 {
     private int $id;
     private activity $activity;
