@@ -44,19 +44,17 @@ class shoppingcartService extends baseService
             }
         }
 
-         // Toevoegen
-         if (isset($_POST["add"])) {
+        // Toevoegen
+        if (isset($_POST["add"])) {
             if ($_GET["operation"] == "add") {
                 $this->getShoppingcart()->addToShoppingcartItemsById($_GET["id"], $_GET["amount"]);
             }
         }
 
-
-
         if (isset($_POST["share"])) {
             if ($_GET["operation"] == "share") {
-
-
+                $shoppingcartDB = new dynamicQueryGen(shoppingcart::class);
+                $shoppingcartDB->insert($this->getShoppingcart()->sqlGetFields());
             }
         }
     }
