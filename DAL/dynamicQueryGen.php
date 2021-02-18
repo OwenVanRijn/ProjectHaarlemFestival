@@ -66,7 +66,17 @@ class dynamicQueryGen extends queryBase
 
         $query .= " WHERE ";
         foreach ($filter as $k => $v){
-            $query .= $this->class::sqlTableName() . "." . $k . " = ? AND ";
+            if (gettype($v) == "array"){
+                $query .= "( ";
+                for ($i = 0; $i < count($v); $i++){
+                    $query .= $this->class::sqlTableName() . "." . $k . " = ? OR ";
+                }
+                $query = substr($query, 0, -3);
+                $query .= ") AND ";
+            }
+            else {
+                $query .= $this->class::sqlTableName() . "." . $k . " = ? AND ";
+            }
             $this->args[] = $v;
         }
 

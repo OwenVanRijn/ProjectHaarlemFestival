@@ -71,37 +71,47 @@ abstract class queryBase
         return $ret;
     }
 
-    protected function bindParams(array $vars){
-        if (empty($vars))
-            return;
+    private string $types;
+    private array $localVars;
 
-        $types = "";
-        $localVars = array();
-
+    private function getTypeParam(array $vars){
         foreach ($vars as $var){
             switch (gettype($var)){
                 case "integer":
-                    $types .= "i";
-                    $localVars[] = $var;
+                    $this->types .= "i";
+                    $this->localVars[] = $var;
                     break;
                 case "string":
-                    $types .= "s";
-                    $localVars[] = $var;
+                    $this->types .= "s";
+                    $this->localVars[] = $var;
                     break;
                 case "boolean":
-                    $types .= "i";
-                    $localVars[] = intval($var);
+                    $this->types .= "i";
+                    $this->localVars[] = intval($var);
                     break;
                 case "object":
                     switch (get_class($var)){
                         case "DateTime":
-                            $types .= "s";
-                            $localVars[] = $var->format("Y-m-d");
+                            $this->types .= "s";
+                            $this->localVars[] = $var->format("Y-m-d");
                             break;
-                }
+                    }
+                case "array":
+                    $this->getTypeParam($var);
+                    break;
             }
         }
+    }
 
-        $this->stmt->bind_param($types, ...$localVars);
+    protected function bindParams(array $vars){
+        if (empty($vars))
+            return;
+
+        $this->types = "";
+        $this->localVars = array();
+
+        $this->getTypeParam($vars);
+
+        $this->stmt->bind_param($this->types, ...$this->localVars);
     }
 }
