@@ -6,6 +6,7 @@
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/Model/danceType.php");
+require_once("dynamicQueryGen.php");
 
 class danceTypeDAO extends dynamicQueryGen
 {

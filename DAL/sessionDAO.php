@@ -6,6 +6,7 @@
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/Model/session.php");
+require_once("dynamicQueryGen.php");
 
 class sessionDAO extends dynamicQueryGen
 {

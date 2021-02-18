@@ -6,6 +6,7 @@
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/Model/artistOnActivity.php");
+require_once("dynamicQueryGen.php");
 
 class artistOnActivityDAO extends dynamicQueryGen
 {

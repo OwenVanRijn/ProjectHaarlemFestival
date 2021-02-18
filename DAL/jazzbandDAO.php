@@ -6,6 +6,7 @@
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/Model/jazzband.php");
+require_once("dynamicQueryGen.php");
 
 class jazzbandDAO extends dynamicQueryGen
 {
