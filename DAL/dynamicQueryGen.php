@@ -72,7 +72,7 @@ class dynamicQueryGen extends queryBase
                     $query .= $this->class::sqlTableName() . "." . $k . " = ? OR ";
                 }
                 $query = substr($query, 0, -3);
-                $query .= ") AND";
+                $query .= ") AND ";
             }
             else {
                 $query .= $this->class::sqlTableName() . "." . $k . " = ? AND ";
