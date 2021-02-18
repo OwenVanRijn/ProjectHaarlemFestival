@@ -58,7 +58,8 @@ class shoppingcart extends sqlModel
         return unserialize($shoppingCart);
     }
 
-    public function setShoppingcartItems(array $shoppingcart){
+    public function setShoppingcartItems(array $shoppingcart)
+    {
         $this->cookieManager->set(serialize($shoppingcart), 0);
     }
 
@@ -82,10 +83,5 @@ class shoppingcart extends sqlModel
 
 
         return $this;
-    }
-
-    public function sendToDatabase() //naar database
-    {
-    
     }
 }
