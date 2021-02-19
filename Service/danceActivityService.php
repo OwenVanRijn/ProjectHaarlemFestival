@@ -40,7 +40,9 @@ class danceActivityService extends activityBaseService
 
     public function getAll(): array
     {
-        $res = $this->db->get();
+        $res =  $this->db->get([
+            "order" => ["activity.date", "activity.starttime", "activity.endtime"]
+        ]);
 
         $trackIds = [];
 

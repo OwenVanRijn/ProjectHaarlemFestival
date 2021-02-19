@@ -25,6 +25,8 @@ class jazzactivityService extends activityBaseService
 
     public function getAll(): array
     {
-        return $this->db->get();
+        return $this->db->get([
+            "order" => ["activity.date", "activity.starttime", "activity.endtime"]
+        ]);
     }
 }

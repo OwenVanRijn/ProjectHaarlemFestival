@@ -29,10 +29,6 @@ abstract class activityBaseService extends baseService implements tableInterface
 
         $dates = [];
 
-        usort($content, function ($a, $b){
-            return $a->getActivity()->getStartTime()->getTimestamp() - $b->getActivity()->getStartTime()->getTimestamp();
-        });
-
         foreach ($content as $c){
             $dateStr = $c->getActivity()->getDate()->format("Y-m-d");
 
@@ -53,11 +49,6 @@ abstract class activityBaseService extends baseService implements tableInterface
 
             $dates[$dateStr][] = $local;
         }
-
-        uksort($dates, function ($a, $b) {
-            return strtotime($a) - strtotime($b);
-        });
-
 
         $table["sections"] = $dates;
 

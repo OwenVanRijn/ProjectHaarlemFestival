@@ -72,35 +72,52 @@ class dynamicQueryGen extends queryBase
         }
     }
 
+    protected function orderBy(array $order){
+        $query = " ORDER BY ";
+        foreach ($order as $v){
+            $query .= $this->genTableVar($v) . ", ";
+        }
+        $query = substr($query, 0, -2);
+        $this->query .= $query;
+    }
+
     protected function where(array $filter){
-        if (empty($filter))
-            return;
-
-        $query = "";
-
-        $query .= " WHERE ";
-        foreach ($filter as $k => $v){
-            if (gettype($v) == "array"){
-                $query .= "( ";
-                $defTable = (strpos($k, ".") === false);
-                for ($i = 0; $i < count($v); $i++){
-                    $query .= $this->genTableVar($k, $defTable) . " = ? OR ";
-                }
-                $query = substr($query, 0, -3);
-                $query .= ") AND ";
-            }
-            else if (gettype($v) == "object" && get_class($v) == "dbContains"){
-                $query .= "position(? in " . $this->genTableVar($k) . ") > 0 AND";
-            }
-            else {
-                $query .= $this->genTableVar($k) . " = ? AND ";
-            }
-            $this->args[] = $v;
+        if (array_key_exists("order", $filter)){
+            $order = $filter["order"];
+            unset($filter["order"]);
+            if (gettype($order) != "array")
+                $order = [$order];
         }
 
-        $query = substr($query, 0, -4);
+        if (!empty($filter)){
+            $query = " WHERE ";
 
-        $this->query .= $query;
+            foreach ($filter as $k => $v){
+                if (gettype($v) == "array"){
+                    $query .= "( ";
+                    $defTable = (strpos($k, ".") === false);
+                    for ($i = 0; $i < count($v); $i++){
+                        $query .= $this->genTableVar($k, $defTable) . " = ? OR ";
+                    }
+                    $query = substr($query, 0, -3);
+                    $query .= ") AND ";
+                }
+                else if (gettype($v) == "object" && get_class($v) == "dbContains"){
+                    $query .= "position(? in " . $this->genTableVar($k) . ") > 0 AND";
+                }
+                else {
+                    $query .= $this->genTableVar($k) . " = ? AND ";
+                }
+                $this->args[] = $v;
+            }
+
+            $query = substr($query, 0, -4);
+
+            $this->query .= $query;
+        }
+
+        if (isset($order))
+            $this->orderBy($order);
     }
 
     protected function joinClass($srcClass, $dstClass, $varName){
