@@ -144,4 +144,20 @@ class account extends sqlModel
     {
         return $this->username;
     }
+
+    /**
+     * @return bool
+     */
+    public function isScheduleManager(): bool
+    {
+        return $this->isScheduleManager;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTicketManager(): bool
+    {
+        return $this->isTicketManager;
+    }
 }

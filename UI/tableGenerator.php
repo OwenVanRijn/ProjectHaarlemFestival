@@ -3,12 +3,11 @@
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
 require_once($root . "/Model/tableInterface.php");
+require_once ("uiGenerator.php");
 
-class tableGenerator
+class tableGenerator extends uiGenerator
 {
     private tableInterface $generator;
-
-    private array $cssRules;
 
     public function __construct (tableInterface $generator){
         $this->generator = $generator;
@@ -36,20 +35,8 @@ class tableGenerator
 
     */
 
-    public function assignCss(array $rules){
-        foreach ($rules as $k => $v){
-            if (array_key_exists($k, $this->cssRules)){
-                $this->cssRules[$k] = $v;
-            }
-        }
-    }
-
-    private function getHtmlElemStr(string $name, string $content){
-        return '<'. $name . ' class="' . $this->cssRules[$name] .'">' . $content . "</$name>";
-    }
-
     public function generate(){
-        $table = $this->generator->getContent();
+        $table = $this->generator->getTableContent();
 
         // TODO: add strip tags to input
 

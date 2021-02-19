@@ -1,5 +1,7 @@
 <?php
-    require_once("../Service/sessionService.php");
+$root = realpath($_SERVER["DOCUMENT_ROOT"]);
+require_once($root . "/Service/sessionService.php");
+require_once($root . "/UI/navBarCMSGenerator.php");
     $sessionService = new sessionService();
 
     $user = $sessionService->validateSessionFromCookie();
@@ -7,7 +9,11 @@
     if (!$user)
         header("Location: login.php");
 
+    $nav = new navBarCMSGenerator("home.php");
+
     ?>
+
+
 
 <!doctype html>
 <html lang="en">
@@ -16,6 +22,6 @@
     <title>CMS - Home</title>
 </head>
 <body>
+    <?php $nav->generate($user) ?>
     <p>Welcome, <?php echo $user->getUsername() ?></p>
-    <a href="logout.php">Log out</a>
 </body>

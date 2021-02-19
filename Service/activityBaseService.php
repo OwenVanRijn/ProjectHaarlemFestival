@@ -11,7 +11,7 @@ abstract class activityBaseService extends baseService implements tableInterface
 
     public abstract function getAll() : array;
 
-    public function getContent(): array
+    public function getTableContent(): array
     {
         $table = [];
         $table["header"] = ["Time"];

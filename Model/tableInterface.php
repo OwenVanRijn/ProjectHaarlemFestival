@@ -14,5 +14,5 @@ interface tableInterface
     ]
 
     */
-    function getContent() : array;
+    function getTableContent() : array;
 }

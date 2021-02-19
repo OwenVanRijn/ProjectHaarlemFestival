@@ -40,4 +40,22 @@ abstract class sqlModel
     }
 
     public abstract function getId();
+
+    private function splitSQLMultiConcat(array $fields, string $sep, array $sqlRes){
+        $fieldCount = count($fields);
+        $result = [];
+
+        $splitSqlRes = [];
+        foreach ($fields as $field){
+            $splitSqlRes[] = explode($sep, $sqlRes[$field]);
+        }
+        for ($i = 0; $i < $fieldCount; $i++){
+            $result[$i] = [];
+            for ($j = 0; $j < count($splitSqlRes); $j++){
+                $result[$i][$fields[$j]] = $splitSqlRes[$j];
+            }
+        }
+
+        return $result;
+    }
 }
