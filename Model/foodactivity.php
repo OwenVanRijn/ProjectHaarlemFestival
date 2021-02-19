@@ -2,7 +2,8 @@
 
 require_once ("sqlModel.php");
 require_once ("restaurant.php");
-require_once ("activity.php");require_once ("restaurant.php");
+require_once ("activity.php");
+require_once ("restaurant.php");
 
 
 class foodactivity extends sqlModel
@@ -18,8 +19,6 @@ class foodactivity extends sqlModel
     public function __construct()
     {
         $this->id = -1;
-        $this->restaurant = null;
-        $this->activity = null;
     }
 
     public function constructFull(int $id, restaurant $restaurant, activity $activity)
@@ -43,8 +42,8 @@ class foodactivity extends sqlModel
     {
         return (new self())->constructFull(
             $sqlRes[self::sqlTableName . "id"],
-            $sqlRes[self::sqlTableName . "restaurantId"],
-            $sqlRes[self::sqlTableName . "activityId"]
+            restaurant::sqlParse($sqlRes),
+            activity::sqlParse($sqlRes)
         );
     }
 

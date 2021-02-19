@@ -55,4 +55,12 @@ class restaurant extends sqlModel
     {
         return $this->id;
     }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
 }
