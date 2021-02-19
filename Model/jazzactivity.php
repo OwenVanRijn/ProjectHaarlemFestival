@@ -20,19 +20,20 @@ class jazzactivity extends sqlModel
     public function __construct()
     {
         $this->id = -1;
-        $this->jazzband = null;
-        $this->activity = null;
         $this->hall = "unknown";
         $this->seats = 0;
     }
 
-    public function constructFull(int $id, jazzband $jazzband, activity $activity, string $hall, int $seats)
+    public function constructFull(int $id, jazzband $jazzband, activity $activity, $hall, $seats)
     {
         $this->id = $id;
         $this->jazzband = $jazzband;
         $this->activity = $activity;
-        $this->hall = $hall;
-        $this->seats = $seats;
+        if (!is_null($hall))
+            $this->hall = $hall;
+
+        if (!is_null($seats))
+            $this->seats = $seats;
         return $this;
     }
 

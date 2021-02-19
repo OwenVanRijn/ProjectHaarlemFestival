@@ -6,6 +6,7 @@
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/Model/shoppingcartItem.php");
+require_once("dynamicQueryGen.php");
 
 class shoppingcartItemDAO extends dynamicQueryGen
 {
@@ -16,7 +17,7 @@ class shoppingcartItemDAO extends dynamicQueryGen
 
     /**
      * @param array $filter
-     * @return array|shoppingcartItem|null
+     * @return shoppingcartItem[]|shoppingcartItem|null
      */
     public function get(array $filter = [])
     {

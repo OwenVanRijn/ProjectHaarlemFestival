@@ -6,6 +6,7 @@
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/Model/restaurant.php");
+require_once("dynamicQueryGen.php");
 
 class restaurantDAO extends dynamicQueryGen
 {
@@ -16,7 +17,7 @@ class restaurantDAO extends dynamicQueryGen
 
     /**
      * @param array $filter
-     * @return array|restaurant|null
+     * @return restaurant[]|restaurant|null
      */
     public function get(array $filter = [])
     {

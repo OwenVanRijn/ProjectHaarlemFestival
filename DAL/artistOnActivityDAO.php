@@ -6,6 +6,7 @@
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/Model/artistOnActivity.php");
+require_once("dynamicQueryGen.php");
 
 class artistOnActivityDAO extends dynamicQueryGen
 {
@@ -16,7 +17,7 @@ class artistOnActivityDAO extends dynamicQueryGen
 
     /**
      * @param array $filter
-     * @return array|artistOnActivity|null
+     * @return artistOnActivity[]|artistOnActivity|null
      */
     public function get(array $filter = [])
     {

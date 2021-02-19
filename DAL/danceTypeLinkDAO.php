@@ -6,6 +6,7 @@
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/Model/danceTypeLink.php");
+require_once("dynamicQueryGen.php");
 
 class danceTypeLinkDAO extends dynamicQueryGen
 {
@@ -16,7 +17,7 @@ class danceTypeLinkDAO extends dynamicQueryGen
 
     /**
      * @param array $filter
-     * @return array|danceTypeLink|null
+     * @return danceTypeLink[]|danceTypeLink|null
      */
     public function get(array $filter = [])
     {
