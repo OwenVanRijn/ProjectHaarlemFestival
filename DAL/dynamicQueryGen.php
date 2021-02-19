@@ -156,7 +156,7 @@ class dynamicQueryGen extends queryBase
         $this->join($this->class::sqlLinks());
         $this->where($filter);
 
-        echo $this->query;
+        //echo $this->query;
 
         $this->prepareQuery($this->query);
         $this->bindParams($this->args);
