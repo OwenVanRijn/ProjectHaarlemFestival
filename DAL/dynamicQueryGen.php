@@ -1,6 +1,7 @@
 <?php
 require_once("dbConn.php");
 require_once("queryBase.php");
+require_once ("dbContains.php");
 
 //TODO: Fix duplicate code
 
@@ -58,6 +59,19 @@ class dynamicQueryGen extends queryBase
         $this->query .= $query;
     }
 
+    private function genTableVar($var, $includeTable = null){
+        if (is_null($includeTable)){
+            $includeTable = (strpos($var, ".") === false);
+        }
+
+        if ($includeTable){
+            return $this->class::sqlTableName() . "." . $var;
+        }
+        else {
+            return $var;
+        }
+    }
+
     protected function where(array $filter){
         if (empty($filter))
             return;
@@ -68,14 +82,18 @@ class dynamicQueryGen extends queryBase
         foreach ($filter as $k => $v){
             if (gettype($v) == "array"){
                 $query .= "( ";
+                $defTable = (strpos($k, ".") === false);
                 for ($i = 0; $i < count($v); $i++){
-                    $query .= $this->class::sqlTableName() . "." . $k . " = ? OR ";
+                    $query .= $this->genTableVar($k, $defTable) . " = ? OR ";
                 }
                 $query = substr($query, 0, -3);
                 $query .= ") AND ";
             }
+            else if (gettype($v) == "object" && get_class($v) == "dbContains"){
+                $query .= "position(? in " . $this->genTableVar($k) . ") > 0 AND";
+            }
             else {
-                $query .= $this->class::sqlTableName() . "." . $k . " = ? AND ";
+                $query .= $this->genTableVar($k) . " = ? AND ";
             }
             $this->args[] = $v;
         }
@@ -138,7 +156,7 @@ class dynamicQueryGen extends queryBase
         $this->join($this->class::sqlLinks());
         $this->where($filter);
 
-        //echo $this->query;
+        echo $this->query;
 
         $this->prepareQuery($this->query);
         $this->bindParams($this->args);

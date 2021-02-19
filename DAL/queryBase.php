@@ -1,5 +1,7 @@
 <?php
 
+require_once ("dbContains.php");
+
 abstract class queryBase
 {
     protected $conn;
@@ -95,7 +97,12 @@ abstract class queryBase
                             $this->types .= "s";
                             $this->localVars[] = $var->format("Y-m-d");
                             break;
+                        case "dbContains":
+                            $this->types .= "s";
+                            $this->localVars[] = $var->getContainsStr();
+                            break;
                     }
+                    break;
                 case "array":
                     $this->getTypeParam($var);
                     break;
