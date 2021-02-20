@@ -67,6 +67,9 @@ class navBarCMSGenerator extends uiGenerator
 
     public function __construct(string $currentPage = "")
     {
+        if ($currentPage == "")
+            $currentPage = basename($_SERVER['PHP_SELF']);
+
         $this->curPageKey = $this->findInAllArrays($currentPage);
 
         $this->cssRules = [

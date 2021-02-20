@@ -9,9 +9,13 @@ require_once($root . "/UI/navBarCMSGenerator.php");
     if (!$user)
         header("Location: login.php");
 
-    $nav = new navBarCMSGenerator("home.php");
+    $nav = new navBarCMSGenerator();
 
-    ?>
+    $nav->assignCss([
+        "sel" => "aSel"
+    ]);
+
+?>
 
 
 
@@ -19,9 +23,12 @@ require_once($root . "/UI/navBarCMSGenerator.php");
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="css/style.css">
     <title>CMS - Home</title>
 </head>
 <body>
     <?php $nav->generate($user) ?>
-    <p>Welcome, <?php echo $user->getUsername() ?></p>
+    <section class="main">
+        <p>Welcome, <?php echo $user->getUsername() ?></p>
+    </section>
 </body>

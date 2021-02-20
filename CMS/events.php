@@ -18,17 +18,21 @@ if (!isset($_GET["event"]))
 
 $nav = new navBarCMSGenerator("events.php?event=" . $_GET["event"]);
 
+$nav->assignCss([
+        "sel" => "aSel"
+]);
 ?>
 
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="css/style.css">
     <title>CMS - Events</title>
 </head>
 <body>
 <?php $nav->generate($user) ?>
-<section>
+<section class="main">
     <?php
         if ($_GET["event"] == "jazz")
             $table = new jazzactivityService();
