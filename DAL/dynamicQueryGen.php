@@ -94,12 +94,8 @@ class dynamicQueryGen extends queryBase
 
             foreach ($filter as $k => $v){
                 if (gettype($v) == "array"){
-                    $query .= "( ";
-                    $defTable = (strpos($k, ".") === false);
-                    for ($i = 0; $i < count($v); $i++){
-                        $query .= $this->genTableVar($k, $defTable) . " = ? OR ";
-                    }
-                    $query = substr($query, 0, -3);
+                    $query .= $this->genTableVar($k) . " IN ( ";
+                    $query .= join(", ", array_fill(0, count($v), "?"));
                     $query .= ") AND ";
                 }
                 else if (gettype($v) == "object" && get_class($v) == "dbContains"){
