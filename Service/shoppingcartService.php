@@ -1,12 +1,14 @@
 <?php
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
-require_once ("baseService.php");
+require_once($root . "/Service/baseService.php");
 require_once($root . "/Model/shoppingcart.php");
-
+require_once($root . "/DAL/shoppingcartDAO.php");
+require_once($root . "/DAL/activityDAO.php");
 
 class shoppingcartService extends baseService
 {
+    
     private shoppingcart $shoppingcart;
 
     public function __construct()
@@ -59,5 +61,11 @@ class shoppingcartService extends baseService
                 $shoppingcartDB->insert($this->getShoppingcart()->sqlGetFields());
             }
         }
+    }
+
+    public function getInformationById($id)
+    {
+        $activityDAO = new activityDAO();
+        return $activityDAO->getActivityInfo($id);
     }
 }
