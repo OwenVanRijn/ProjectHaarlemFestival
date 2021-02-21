@@ -11,6 +11,21 @@ abstract class activityBaseService extends baseService implements tableInterface
 
     public abstract function getAll() : array;
 
+    public function getFromActivityIds(array $ids){
+        $ret = $this->db->get([
+            "activity.id" => $ids,
+            "order" => ["activity.date", "activity.starttime", "activity.endtime"]
+        ]);
+
+        if (is_null($ret))
+            return [];
+
+        if (gettype($ret) != "array")
+            return [$ret];
+
+        return $ret;
+    }
+
     public function getTableContent(): array
     {
         $table = [];

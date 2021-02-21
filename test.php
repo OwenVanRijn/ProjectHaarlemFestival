@@ -14,9 +14,9 @@
 
     //print_r($jazz->getContent());
 
-    $table = new tableGenerator($jazz);
+    //$table = new tableGenerator($jazz);
     //$table = new tableGenerator($food);
-    //$table = new tableGenerator($dance);
+    $table = new tableGenerator($dance);
     //$table->generate();
 
     $test = new activityDAO();
@@ -28,8 +28,8 @@
     //    "danceartist.name" => new dbContains("Nicky")
     //]));
 
-    $nav = new navBarCMSGenerator();
-    $nav->generate();
+    //$nav = new navBarCMSGenerator();
+    //$nav->generate();
 
     $account = new account();
     $account->setPassword("username");
@@ -37,5 +37,19 @@
     $account->setStatus(0);
     $account->setIsScheduleManager(true);
 
-    //$acc = new accountDAO();
+    $acc = new jazzactivityDAO();
     //$acc->insert($account->sqlGetFields());
+
+    //print_r($acc->get([
+    //    "id" => [1,2]
+    //]));
+
+    $activityDAO = new activityDAO();
+    //print_r($activityDAO->get(["id" => 1]));
+    //print_r($dance->getFromActivityIds([1]));
+
+
+    // @ sander
+    $ids = [1,93,117];
+    $activities = array_merge($jazz->getFromActivityIds($ids), $food->getFromActivityIds($ids), $dance->getFromActivityIds($ids));
+    var_dump($activities);

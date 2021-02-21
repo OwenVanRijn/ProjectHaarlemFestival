@@ -38,15 +38,10 @@ class danceActivityService extends activityBaseService
         ];
     }
 
-    public function getAll(): array
-    {
-        $res =  $this->db->get([
-            "order" => ["activity.date", "activity.starttime", "activity.endtime"]
-        ]);
-
+    private function toDanceActivityArray(array $aoaArray){
         $trackIds = [];
 
-        foreach ($res as $aoa){
+        foreach ($aoaArray as $aoa){
             if (!array_key_exists($aoa->getActivity()->getId(), $trackIds))
                 $trackIds[$aoa->getActivity()->getId()] = $aoa->getActivity();
 
@@ -54,5 +49,18 @@ class danceActivityService extends activityBaseService
         }
 
         return array_values($trackIds);
+    }
+
+    public function getAll(): array
+    {
+        $res =  $this->db->get([
+            "order" => ["activity.date", "activity.starttime", "activity.endtime"]
+        ]);
+
+        return $this->toDanceActivityArray($res);
+    }
+
+    public function getFromActivityIds(array $ids){
+        return $this->toDanceActivityArray(parent::getFromActivityIds($ids));
     }
 }
