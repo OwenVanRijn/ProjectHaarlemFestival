@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require_once("Service/shoppingcartService.php");
 
 ?>
@@ -22,17 +22,29 @@ require_once("Service/shoppingcartService.php");
 
         <?php
 
-
         $shoppingcartService = new shoppingcartService();
+
 
         $total = 0;
         if (isset($_SESSION['shoppingcart'])) {
-            $result = $shoppingcartService->getShoppingcart()->getShoppingcartItems();
+
+            echo "VARDUMP " . var_dump($_SESSION['shoppingcart']) . "<br>";
+            echo "PRINT " . print_r($_SESSION['shoppingcart']) . "<br>";
+
+            //$result = $shoppingcartService->getShoppingcart()->getShoppingcartItems();
+
+
+            $result = $shoppingcartService->getInformationById(1);
+            echo "VARDUMP " . var_dump($result) . "<br><br><br>";
+            echo "PRINT " . print_r($result) . "<br><br><br>";
+
 
             $dates = array('2021-07-26', '2021-07-27', '2021-07-28', '2021-07-29');
             foreach ($dates as $date) {
                 $total += echoDay($result, $date);
             }
+
+            echo "done";
         } else {
             echo "<p>Cart is Empty</p>";
         }
@@ -45,15 +57,23 @@ require_once("Service/shoppingcartService.php");
 
     function echoDay($result, $date)
     {
+        global $shoppingcartService;
+        
         echoTitles();
 
-        $dateString = $date->format('d-m-y');
-        echo '<h2>' . date("D", strtotime($dateString)) ($date) . '</h2>';
-        $product_id = array_column($_SESSION['shoppingcart'], 'id');
+        echo '<h2>' . date("D", strtotime($date)) . ' (' . $date . ')</h2>';
+        //$product_id = array_column($_SESSION['shoppingcart'], 'id');
 
         $total = 0;
-        while ($row = mysqli_fetch_assoc($result)) {
-            foreach ($product_id as $id) {
+        foreach (unserialize($_SESSION['shoppingcart']) as $id) {
+
+            echo "<br>Gegeven ID is $id<br>";
+            $result = $shoppingcartService->getInformationById($id);
+
+            echo "<br> INFO: " . $result[0]["name"];
+            while ($row = mysqli_fetch_assoc($result)) {
+
+
                 if ($row['id'] == $id && $row['date'] == $date) {
                     cartElement($row['id'], $row['activityName'], $row['type'], $row['createData'], $row['date'], $row['startTime'], $row['endTime'], $row['price'], $row['amount']);
                     $total = $total + ((float)$row['price'] * (float)$row['amount']);

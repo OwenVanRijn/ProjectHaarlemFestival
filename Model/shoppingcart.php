@@ -1,8 +1,8 @@
 <?php
 
-require_once("sqlModel.php");
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
+require_once($root . "/Model/sqlModel.php");
 require_once($root . "/Service/cookieManager.php");
 
 
@@ -17,13 +17,28 @@ class shoppingcart extends sqlModel
     protected const sqlTableName = "shoppingcart";
     protected const sqlFields = ["id", "url", "createDate"];
 
+
+    public function __construct()
+    {
+        $this->id = 0;
+        $this->url = "";
+        $this->createDate = new DateTime();
+        $this->shoppingcartItems = array();
+        $this->cookieManager = new cookieManager("shoppingcart");
+        $this->addToShoppingcartItemsById(2,5);
+
+        return $this;
+    }
+
+
+
     public function constructFull(int $id, string $url, DateTime $createDate)
     {
         $this->id = $id;
         $this->url = $url;
         $this->createDate = $createDate;
         $this->shoppingcartItems = array();
-        $this->cookieManager = new cookieManager("shoppingcartItems");
+        $this->cookieManager = new cookieManager("shoppingcart");
 
         return $this;
     }
@@ -80,8 +95,8 @@ class shoppingcart extends sqlModel
         unset($shoppingcartItems[$shoppingcartItemId]);
         $this->setShoppingcartItems($shoppingcartItems);
 
-        echo "<script>alert('Product has been Removed...!')</script>";
-        echo "<script>window.location = 'shoppingcart.php'</script>";
+        //echo "<script>alert('Product has been Removed...!')</script>";
+        //echo "<script>window.location = 'shoppingcart.php'</script>";
 
 
         return $this;
