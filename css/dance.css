@@ -1,0 +1,41 @@
+.btn-primary, .btn-primary:hover{
+    background-color: #FD6A02 !important;
+    color: black !important;
+    font-family: Arial !important;
+    font-size: 0.9em !important;
+    font-weight: bold !important;
+    border: transparent !important;
+}
+
+.btn-primary:hover{
+    background-color: orange !important;
+    color: white !important;
+    font-family: Arial !important;
+    font-size: 0.9em !important;
+    font-weight: bold !important;
+    border: transparent;
+}
+
+.fonttickets{
+    font-family: Arial !important;
+    font-size: 0.9em !important;
+    font-weight: bold !important;
+}
+
+.box{
+    box-model: border-box !important;
+    border: 3px solid transparent !important;
+    background-clip:padding-box !important;
+}
+
+.activityOrange{
+    font-family: Arial !important;
+    font-weight: bold !important;
+    color: orange !important;
+}
+
+.activityWhite{
+    font-family: Arial;
+    font-weight: bold;
+    color: white;
+}

@@ -67,15 +67,45 @@ require_once "Service/danceActivityService.php";
                 <section class="col text-center fonttickets" style="padding: 0.5em; background-color:#FD6A02"><a>Filters ˅</a></section>
             </section>
 
-            <section>
+            <section class="container-fluid w-70">
                 <?php
                     $activityService = new danceActivityService();
 
-                    (array)$activityArray = $activityService->getActivities();
+                    $format = "HH:MM";
+
+                    (array)$activityArray = $activityService->getAll(["id" => 1]);
+
+                    echo "<section class='row' style='margin-top: 2%'>";
 
                     foreach($activityArray as $item){
-                        echo $item->getId();
+
+                        echo "<section class='col-4 box'>";
+                        echo "<section class='col-12 text-center' style='background-color: black; color: white; padding-top: 2%;'>";
+                        $artiststrarray = $item->getArtists();
+                        $artists = "";
+
+                        foreach ($artiststrarray as $artist) {
+                            $artists .= $artist->getName() . " ";
+                        }
+
+                        $time = $item->getActivity()->getStartTime()->format("H:i");
+
+                        $location = $item->getActivity()->getLocation()->getName();
+
+                        $session = $item->getType();
+
+                        $price = "€".$item->getActivity()->getPrice().",-";
+
+                        echo "<p style='color: orange; font-weight: bold'>{$artists}</p>";
+                        echo "<section class='row'><p style='color: orange; font-weight: bold'>Start time:</p><bold>{$time}</bold></section>";
+                        echo "<section class='row'><p style='color: orange; font-weight: bold'>Location:</p><bold>{$location}</bold></section>";
+                        echo "<section class='row'><p style='color: orange; font-weight: bold'>Session:</p><bold>{$session}</bold></section>";
+                        echo "<section class='row'><p style='color: orange; font-weight: bold'>Price:</p><bold>{$price}</bold></section>";
+                        echo "<a href='#' class='btn btn-primary'>Add to cart</a>";
+                        echo "</section>";
+                        echo "</section>";
                     }
+                    echo "</section>";
                 ?>
             </section>
         </section>
