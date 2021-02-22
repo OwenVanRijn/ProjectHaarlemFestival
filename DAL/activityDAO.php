@@ -25,52 +25,10 @@ class activityDAO extends dynamicQueryGen
     }
 
 
-
-    public function findInfoById($id){
-        $this->prepareQuery("select * from activity
-LEFT JOIN foodactivity on activity.id = foodactivity.activityId
-LEFT JOIN danceactivity on activity.id = danceactivity.activityid
-LEFT JOIN jazzactivity on activity.id = jazzactivity.activityId
-WHERE activity.id = $id");
-        $this->stmt->bind_param("i", $id);
-        return $this->execQuerySingle();
-    }
-
-
     public function getActivityInfo($id)
     {
-        $this->prepareQuery("select * from activity
-
-LEFT JOIN foodactivity on activity.id = foodactivity.activityId
-LEFT JOIN restaurant on foodactivity.restaurantId = restaurant.id
-LEFT JOIN restauranttypelink on restaurant.id = restauranttypelink.restaurantid
-LEFT JOIN restauranttypes on restauranttypelink.restauranttypesid = restauranttypes.id
-
-LEFT JOIN danceactivity on activity.id = danceactivity.activityid
-LEFT JOIN artistsonactivity on danceactivity.id = artistsonactivity.danceactivityid
-LEFT JOIN danceartist on artistsonactivity.danceartistid = danceartist.id
-LEFT JOIN dancetypelink on danceartist.id = dancetypelink.danceartistid
-LEFT JOIN dancetypes on dancetypelink.dancetypeid = dancetypes.id
-
-
-LEFT JOIN jazzactivity on activity.id = jazzactivity.activityId
-LEFT JOIN jazzband on jazzactivity.jazzbandid = jazzband.id
-
-LEFT JOIN location on activity.locationId = location.id
-
-WHERE activity.id = $id");
-        return $this->execQueryResult(function (array $sqlRes){
-            return $sqlRes;
-        });
-    }
-
-
-    public function getActivityInfo2($id)
-    {
-        return $this->get(["id" => $id]);
-
-        return $this->execQueryResult(function (array $sqlRes){
-            return $sqlRes;
-        });
+        return $this->get([
+            "id" => $id,
+        ]);
     }
 }
