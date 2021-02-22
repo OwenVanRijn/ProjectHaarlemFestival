@@ -26,12 +26,7 @@ class foodactivityService extends activityBaseService
             },
             "Type" => function ($a){
                 $types = $this->types->getRestaurantTypes($a->getRestaurant()->getId());
-                $ret = "";
-                foreach ($types as $t){
-                    $ret .= $t . '/';
-                }
-
-                return substr($ret, 0, -1);
+                return join("/", $types);
             }
         ];
     }
@@ -41,5 +36,9 @@ class foodactivityService extends activityBaseService
         return $this->db->get([
             "order" => ["activity.date", "activity.starttime", "activity.endtime"]
         ]);
+    }
+
+    public function getFiltered(string $restaurantName, string $restaurantType, int $minStars){
+
     }
 }

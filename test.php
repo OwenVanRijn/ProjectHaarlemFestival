@@ -51,5 +51,22 @@
 
     // @ sander
     $ids = [1,93,117];
-    $activities = array_merge($jazz->getFromActivityIds($ids), $food->getFromActivityIds($ids), $dance->getFromActivityIds($ids));
-    var_dump($activities);
+    //$activities = array_merge($jazz->getFromActivityIds($ids), $food->getFromActivityIds($ids), $dance->getFromActivityIds($ids));
+    //var_dump($activities);
+
+    $a = $activityDAO->get([
+        "location.id" => 1
+    ]);
+
+    print_r($a[0]->getLocation()->getName());
+
+    //$danceThing = new artistOnActivityDAO();
+    //print_r($danceThing->get([
+    //    "danceartist.name" => new dbContains("Afro")
+    //]));
+
+    $activityDAO->get([
+        "id" => 1, // Filter on an activity id
+        "type" => ["food", "dance"], // Filter on food or dance activities
+        "order" => "id" // Order on the id
+    ]);
