@@ -1,7 +1,11 @@
 <?php
 session_start();
-require_once("Service/shoppingcartService.php");
-require_once "UI/navBar.php";
+$root = realpath($_SERVER["DOCUMENT_ROOT"]);
+require_once($root . "/UI/navBar.php");
+require_once($root . "/Service/jazzactivityService.php");
+require_once($root . "/Service/foodactivityService.php");
+require_once($root . "/Service/danceActivityService.php");
+require_once($root . "/Service/shoppingcartService.php");
 ?>
 
 
@@ -15,6 +19,7 @@ require_once "UI/navBar.php";
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Shoppingcart</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dance.css">
 </head>
 
 <body>
@@ -23,27 +28,72 @@ require_once "UI/navBar.php";
 
     <?php
 
-    $shoppingcartService = new shoppingcartService();
-
 
     $total = 0;
     if (isset($_SESSION['shoppingcart'])) {
 
-        //echo "VARDUMP " . var_dump($_SESSION['shoppingcart']) . "<br>";
-        //echo "PRINT " . print_r($_SESSION['shoppingcart']) . "<br>";
+        $shoppingcartService = new shoppingcartService();
+        $jazzActivityService = new jazzActivityService();
+        $foodActivityService = new foodActivityService();
+        $danceActivityService = new danceActivityService();
+        $shoppingcart = $shoppingcartService->getShoppingcart()->getShoppingcartItems();
 
-        //$result = $shoppingcartService->getShoppingcart()->getShoppingcartItems();
+        echo "<br><br> shoppingcart <br><br>";
+        var_dump($shoppingcart);
+        echo "<br><br> shoppingcart <br><br>";
 
 
-        //$result = $shoppingcartService->getInformationById(1);
-        //echo "VARDUMP " . var_dump($result) . "<br><br><br>";
-        //echo "PRINT " . print_r($result) . "<br><br><br>";
-
+        $ids = array();
+        foreach ($shoppingcart as $key => $value) {
+            $ids[] = $key;
+        }
+        echo "<br><br> IDS <br><br>";
+        var_dump($ids);
+        echo "<br><br> IDS <br><br>";
+        $activities = array_merge($danceActivityService->getFromActivityIds($ids), $foodActivityService->getFromActivityIds($ids), $danceActivityService->getFromActivityIds($ids));
 
         $dates = array('2021-06-26', '2021-06-27', '2021-06-28', '2021-06-29');
-        foreach ($dates as $date) {
-            $total += echoDay($date);
+
+
+        $days = array();
+        $thursdayActivities = array();
+        $fridayActivities = array();
+        $saturdayActivities = array();
+        $sundayActivities = array();
+        foreach ($activities as $activity) {
+            if ($activity->getActivity()->getDate()->format("Y-m-d") == $dates[0]) {
+                $thursdayActivities[] = $activity;
+            }
+            if ($activity->getActivity()->getDate()->format("Y-m-d") == $dates[1]) {
+                $fridayActivities[] = $activity;
+            }
+            if ($activity->getActivity()->getDate()->format("Y-m-d") == $dates[2]) {
+                $saturdayActivities[] = $activity;
+            }
+            if ($activity->getActivity()->getDate()->format("Y-m-d") == $dates[3]) {
+                $sundayActivities[] = $activity;
+            }
         }
+
+        $days[0] = $thursdayActivities;
+        $days[1] = $fridayActivities;
+        $days[2] = $saturdayActivities;
+        $days[3] = $sundayActivities;
+
+        for ($i = 0; $i < count($days); $i++) {
+            if ($days[$i] != 0) {
+                $total += echoDay($dates[$i], $days[$i]);
+            }
+        }
+        if (isset($_POST["pay"])) {
+            header("Location: /payment/account.php");
+        }
+
+        ?>
+        <form method="post">
+            <input type="submit" class="btn btn-primary" name="pay" value="Pay €<?php echo $total?>"/>
+        </form>
+        <?php
 
         echo "done";
     } else {
@@ -56,11 +106,42 @@ require_once "UI/navBar.php";
 <?php
 
 
-function echoDay($date)
+function echoDay($date, $activitiesOfTheDay)
 {
-    global $shoppingcartService;
-
+    $totalPriceDay = 0;
     echoTitles();
+
+    //echo "<br><br> ACTIVITY ON DAY <br><br>";
+    //var_dump($activitiesOfTheDay);
+    //echo get_class($activitiesOfTheDay[0]);
+    //echo "<br><br> ACTIVITY ON DAY <br><br>";
+
+    foreach ($activitiesOfTheDay as $activity) {
+        $price = $activity->getActivity()->getPrice();
+        $amount = 1;
+        $totalPriceActivity = $amount * $price;
+        $type = $activity->getActivity()->getType();
+        $activityId = $activity->getActivity()->getId();
+        $startTime = $activity->getActivity()->getStartTime();
+        $endTime = $activity->getActivity()->getEndTime();
+
+        if (get_class($activity) == "foodactivity") {
+            $activityName = $activity->getRestaurant()->getName();
+        } else if (get_class($activity) == "jazzactivity") {
+            $activityName = $activity->getJazzband()->getName();
+        } else {
+            $activityName = "dance activity";
+        }
+
+        cartElement($activityId, $activityName, $type, date("Y-m-d"), $startTime->format('H:i:s'), $endTime->format('H:i:s'), $price, $amount);
+
+
+        $totalPriceDay += $totalPriceActivity;
+    }
+
+
+    return $totalPriceDay;
+
 
     echo '<h2>' . date("D", strtotime($date)) . ' (' . $date . ')</h2>';
     //$product_id = array_column($_SESSION['shoppingcart'], 'id');
@@ -70,18 +151,8 @@ function echoDay($date)
 
         echo "<br>Gegeven ID is $id<br>";
         //$result = $shoppingcartService->getInformationById($id);
-        $result = $shoppingcartService->getEventActivityInformationById($id);
+        $result = $this->shoppingcartService->getEventActivityInformationById($id);
 
-        var_dump($result);
-        echo "<br> INFO: " . $result[0]["name"];
-        while ($row = mysqli_fetch_assoc($result)) {
-
-
-            if ($row['id'] == $id && $row['date'] == $date) {
-                cartElement($row['id'], $row['activityName'], $row['type'], $row['createData'], $row['date'], $row['startTime'], $row['endTime'], $row['price'], $row['amount']);
-                $total = $total + ((float)$row['price'] * (float)$row['amount']);
-            }
-        }
     }
 
     return $total;
@@ -100,14 +171,6 @@ function echoTitles()
             <p class=\"titleInfo\">Time</p>
             <p class=\"titleInfo\">Price</p>
             <p class=\"titleInfo\">Totalprice</p>
-            <button type=\"submit\" class=\"btn btn-danger mx-2\" name=\"remove\">Remove</button>
-        </section>
-        <section class=\"col-md-3 py-5\">
-            <section>
-                <button type=\"button\" class=\"btn bg-light border rounded-circle\"><i class=\"fas fa-minus\"></i></button>
-                <input type=\"text\" value=\"1\" class=\"form-control w-25 d-inline\">
-                <button type=\"button\" class=\"btn bg-light border rounded-circle\"><i class=\"fas fa-plus\"></i></button>
-            </section>
         </section>
     </section>
 </section>

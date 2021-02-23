@@ -1,3 +1,9 @@
+<?php
+$root = realpath($_SERVER["DOCUMENT_ROOT"]);
+//echo "$root . '/index.php' ? >"
+?>
+
+
 <!DOCTYPE html>
 <html>
 
@@ -26,6 +32,9 @@
             </li>
             <li class = "nav-item">
                 <a class="nav-link" href="./contact.php">Contact us</a>
+            </li>
+            <li class = "nav-item">
+                <a class="nav-link" href="./shoppingcart.php">Shoppingcart</a>
             </li>
         </ul>
     </nav>

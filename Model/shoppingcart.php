@@ -4,9 +4,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
 require_once($root . "/Model/sqlModel.php");
 require_once($root . "/Service/cookieManager.php");
-require_once($root . "/Model/foodactivity.php");
-require_once($root . "/Model/jazzactivity.php");
-require_once($root . "/Model/danceActivity.php");
+
 
 class shoppingcart extends sqlModel
 {
@@ -27,9 +25,13 @@ class shoppingcart extends sqlModel
         $this->createDate = new DateTime();
         $this->shoppingcartItems = array();
         $this->cookieManager = new cookieManager("shoppingcart");
+        $this->addToShoppingcartItemsById(2,5);
+        $this->addToShoppingcartItemsById(1,6);
+        $this->addToShoppingcartItemsById(121,2);
 
         return $this;
     }
+
 
 
     public function constructFull(int $id, string $url, DateTime $createDate)
@@ -75,19 +77,15 @@ class shoppingcart extends sqlModel
         return unserialize($shoppingCart);
     }
 
-    public function setShoppingcartItems($shoppingcartItems)
+    public function setShoppingcartItems(array $shoppingcart)
     {
-        $this->cookieManager->set(serialize($shoppingcartItems), 0);
+        $this->cookieManager->set(serialize($shoppingcart), 0);
     }
 
-    public function addToShoppingcartItems($shoppingcartItem)
+    public function addToShoppingcartItemsById($shoppingcartItemId, $amount)
     {
-        echo "SHOPPING ITEM <br><br>";
-        var_dump($shoppingcartItem);
-        echo "SHOPPING ITEM <br><br>";
-
         $shoppingcartItems = $this->getShoppingcartItems();
-        $shoppingcartItems[] = $shoppingcartItem;
+        $shoppingcartItems[$shoppingcartItemId] = $amount;
         $this->setShoppingcartItems($shoppingcartItems);
 
         return $this;
