@@ -30,10 +30,4 @@ class jazzactivityService extends activityBaseService
             "order" => ["activity.date", "activity.starttime", "activity.endtime"]
         ]);
     }
-
-    public function getFromActivityIds(array $ids){
-        return $this->db->get([
-            "activityId" => $ids
-        ]);
-    }
 }
