@@ -25,10 +25,10 @@ class activityDAO extends dynamicQueryGen
     }
 
 
-    public function getActivityInfo($id)
+    public function getActivityInfo(array $ids)
     {
         return $this->get([
-            "id" => $id,
+            "id" => $ids,
         ]);
     }
 }
