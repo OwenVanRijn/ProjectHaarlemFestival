@@ -47,10 +47,12 @@ require_once($root . "/Service/shoppingcartService.php");
         foreach ($shoppingcart as $key => $value) {
             $ids[] = $key;
         }
+        $ids[] = 124;
+        $ids[] = 107;
         echo "<br><br> IDS <br><br>";
         var_dump($ids);
         echo "<br><br> IDS <br><br>";
-        $activities = array_merge($danceActivityService->getFromActivityIds($ids), $foodActivityService->getFromActivityIds($ids), $danceActivityService->getFromActivityIds($ids));
+        $activities = array_merge($danceActivityService->getFromActivityIds($ids)/*, $foodActivityService->getFromActivityIds($ids)*//*, $jazzActivityService->getJazzActivitiesFromActivitiesByIds($ids) */);
 
         $dates = array('2021-06-26', '2021-06-27', '2021-06-28', '2021-06-29');
 
@@ -60,6 +62,7 @@ require_once($root . "/Service/shoppingcartService.php");
         $fridayActivities = array();
         $saturdayActivities = array();
         $sundayActivities = array();
+
         foreach ($activities as $activity) {
             if ($activity->getActivity()->getDate()->format("Y-m-d") == $dates[0]) {
                 $thursdayActivities[] = $activity;
@@ -180,17 +183,17 @@ function echoTitles()
 }
 
 
-function cartElement($productid, $activityName, $type, $createData, $startTime, $endTime, $price, $amount)
+function cartElement($activityid, $activityName, $type, $createData, $startTime, $endTime, $price, $amount)
 {
     $totalPrice = $amount * $price;
 
     $element = "
     
-    <form action=\"cart.php?action=remove&id=$productid\" method=\"post\" class=\"cart-items\">
+    <form action=\"cart.php?action=remove&id=$activityid\" method=\"post\" class=\"cart-items\">
                     <section class=\"border rounded\">
                         <section class=\"row bg-white\">
                             <section class=\"col-md-6\">
-                                <h3 class=\"pt-2\">$activityName</h3>
+                                <h3 class=\"pt-2\">$activityName $activityid</h3>
                                 <p class=\"titleInfo\">$type</p>
                                 <p class=\"titleInfo\">$startTime-$endTime</p>
                                 <p class=\"titleInfo\">€$price</p>
