@@ -1,4 +1,8 @@
 <?php
+    require_once "UI/navBar.php"
+?>
+
+<?php
 ?>
 
 <!DOCTYPE html>

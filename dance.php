@@ -2,6 +2,8 @@
 require_once "Service/artistService.php";
 require_once "Model/danceArtist.php";
 require_once "Service/danceActivityService.php";
+require_once "UI/navBar.php"
+
 ?>
 
 <!DOCTYPE html>
@@ -60,7 +62,7 @@ require_once "Service/danceActivityService.php";
                 <section class="col-3 text-center fonttickets" style="border-width:0.2em; border-style: solid; padding: 0.5em;"><a>Friday 27th of July</a></section>
                 <section class="col-3 text-center fonttickets" style="border-width:0.2em; border-style: solid; padding: 0.5em;"><a>Saturday 28th of July</a></section>
                 <section class="col-3 text-center fonttickets" style="border-width:0.2em; border-style: solid; padding: 0.5em;"><a>Sunday 29th of July</a></section>
-                <section class="col-3 text-center fonttickets" style="border-width:0.2em; border-style: solid; padding: 0.5em;"><a>All days</a></section>
+                <section class="col-3 text-center fonttickets" style="border-width:0.2em; border-style: solid; padding: 0.5em;"><a><bold>All days</bold></a></section>
             </section>
 
             <section class="row h-100" style="background-color: #C0C0C0 ">

@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once("Service/shoppingcartService.php");
-
+require_once "UI/navBar.php";
 ?>
 
 
