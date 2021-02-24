@@ -3,8 +3,9 @@
 require_once ("sqlModel.php");
 require_once ("location.php");
 require_once ("htmlTypeEnum.php");
+require_once ("htmlModel.php");
 
-class activity extends sqlModel
+class activity extends htmlModel
 {
     private int $id;
     private string $type;
@@ -89,51 +90,6 @@ class activity extends sqlModel
             "ticketsLeft" => $this->ticketsLeft
         ];
     }
-
-    // TODO: make a filtered version of this?
-    public function toHtmlArray(){
-        return [
-            "header" => self::toHtmlHeader(),
-            "value" => $this->toHtmlValueArray()
-        ];
-    }
-/*
-    public function toJsonArray() {
-        return [
-            "activity" => [
-                "id" => [
-                    "type" => htmlTypeEnum::hidden,
-                    "value" => $this->id
-                ],
-                "type" => [
-                    "type" => htmlTypeEnum::hidden,
-                    "value" => $this->type
-                ],
-                "date" => [
-                    "type" => htmlTypeEnum::date,
-                    "value" => $this->date->format("d-m-Y")
-                ],
-                "startTime" => [
-                    "type" => htmlTypeEnum::time,
-                    "value" => $this->startTime->format("H:i:s")
-                ],
-                "endTime" => [
-                    "type" => htmlTypeEnum::time,
-                    "value" => $this->endTime->format("H:i:s")
-                ],
-                // TODO: add location
-                "price" => [ // TODO: schedule managers should not be able to see this
-                    "type" => htmlTypeEnum::number,
-                    "value" => $this->price
-                ],
-                "ticketsLeft" => [
-                    "type" => htmlTypeEnum::number,
-                    "value" => $this->ticketsLeft
-                ]
-            ]
-        ];
-    }
-*/
 
     public function getId() : int
     {

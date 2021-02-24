@@ -48,16 +48,10 @@ class foodactivity extends sqlModel
         );
     }
 
-    public function toJsonArray(){
+    public function toHtmlArray(array $excludeActivity = [], array $excludeRestaurant = []){
         return [
-            "activity" => [
-                "id" => [
-                    "type" => htmlTypeEnum::hidden,
-                    "value" => $this->id
-                ],
-
-            ]
-            // TODO: Fill in json array. also how are we gonna edit the subclasses? Maybe [[class] => [fields => val], [class]...]. Also port this to activity and restaurant classes
+            "activity" => $this->activity->toHtmlArray($excludeActivity),
+            "restaurant" => $this->restaurant->toHtmlArray($excludeRestaurant)
         ];
     }
 

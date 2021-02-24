@@ -2,7 +2,7 @@
 // Page requires an id provided via GET
 // TODO: add logged in check
 
-require_once ("../DAL/activityDAO.php"); // For testing, needs to be swapped out
+require_once ("../Service/foodactivityService.php");
 header('Content-Type: application/json');
 
 if (!isset($_GET["id"]))
@@ -10,7 +10,6 @@ if (!isset($_GET["id"]))
 
 $id = (int)$_GET["id"];
 
-$DAO = new activityDAO();
+$service = new foodactivityService();
 
-$activity = $DAO->get(["id" => $id]);
-echo json_encode($activity->toHtmlArray());
+echo json_encode($service->getHtmlDataById($id));

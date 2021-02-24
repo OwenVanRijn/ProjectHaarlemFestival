@@ -41,4 +41,15 @@ class foodactivityService extends activityBaseService
     public function getFiltered(string $restaurantName, string $restaurantType, int $minStars){
 
     }
+
+    // TODO: Add account as arg
+    public function getHtmlDataById(int $id){
+
+        $activityFilter = [];
+        $restaurantFilter = [];
+
+        // TODO: filter by account perms
+
+        return $this->db->get(["id" => $id])->toHtmlArray($activityFilter, $restaurantFilter);
+    }
 }
