@@ -4,6 +4,7 @@ require_once ("sqlModel.php");
 require_once ("restaurant.php");
 require_once ("activity.php");
 require_once ("restaurant.php");
+require_once ("htmlTypeEnum.php");
 
 
 class foodactivity extends sqlModel
@@ -47,6 +48,18 @@ class foodactivity extends sqlModel
         );
     }
 
+    public function toJsonArray(){
+        return [
+            "activity" => [
+                "id" => [
+                    "type" => htmlTypeEnum::hidden,
+                    "value" => $this->id
+                ],
+
+            ]
+            // TODO: Fill in json array. also how are we gonna edit the subclasses? Maybe [[class] => [fields => val], [class]...]. Also port this to activity and restaurant classes
+        ];
+    }
 
     public function getId()
     {
