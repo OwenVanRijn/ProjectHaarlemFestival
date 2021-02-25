@@ -8,36 +8,26 @@
     $activeArray = [];
 
     $activityService = new danceActivityService;
-    (array)$activityArray = $activityService->getAll();
 
-    if(!isset($_GET['day'])){
-        foreach($activityArray as $item){
-            array_push($activeArray, $item);
+    if(isset($_GET['day']) && !empty($_GET['day'])){
+        $dayStr = "";
+
+        switch ($_GET["day"]){
+            case "saturday":
+                $dayStr = "2021-06-28";
+                break;
+            case "sunday":
+                $dayStr = "2021-06-29";
+                break;
+            default:
+                $dayStr = "2021-06-27";
+                break;
         }
+
+        $activeArray = $activityService->getAllWithDate($dayStr);
     }
-
-    if(isset($_GET['day']) && !empty($_GET['day'])){ 
-
-        foreach($activityArray as $item){
-            
-            if($_GET['day'] == 'friday'){
-                if($item->getActivity()->getDate()->format("d-m") == "27-06"){
-                    array_push($activeArray, $item);
-                }
-            }
-
-            else if($_GET['day'] == 'saturday'){
-                if($item->getActivity()->getDate()->format("d-m") == "28-06"){
-                    array_push($activeArray, $item);
-                }
-            }
-
-            else if($_GET['day'] == 'sunday'){
-                if($item->getActivity()->getDate()->format("d-m") == "29-06"){
-                    array_push($activeArray, $item);
-                }
-            }
-        }
+    else {
+        $activeArray = $activityService->getAll();
     }
 ?>
 

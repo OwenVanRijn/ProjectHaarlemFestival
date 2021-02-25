@@ -63,4 +63,14 @@ class danceActivityService extends activityBaseService
     public function getFromActivityIds(array $ids){
         return $this->toDanceActivityArray(parent::getFromActivityIds($ids));
     }
+
+    // Format Y-m-d. Needs change
+    public function getAllWithDate(string $date){
+        $res =  $this->db->get([
+            "activity.date" => $date,
+            "order" => ["activity.date", "activity.starttime", "activity.endtime"]
+        ]);
+
+        return $this->toDanceActivityArray($res);
+    }
 }
