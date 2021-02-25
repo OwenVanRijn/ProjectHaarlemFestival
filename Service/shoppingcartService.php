@@ -93,7 +93,7 @@ class shoppingcartService extends baseService
         echo "<br><br>";
 
         $eventResult = array();
-        echo $result[0]->getType() ;
+        echo $result[0]->getType();
         if ($result[0]->getType() == "food") {
             $eventResult[] = $this->foodactivityService->getFromActivityIds(["$id"]);
         } else if ($result[0]->getType() == "dance") {
@@ -103,5 +103,19 @@ class shoppingcartService extends baseService
         }
         return array_merge($result, $eventResult);
         // return $this->activityDAO->getActivityInfo($id);
+    }
+
+    public function getAmountByActivityId($id)
+    {
+        $shoppingcartItems = $this->getShoppingcart()->getShoppingcartItems();
+        foreach ($shoppingcartItems as $key => $value)
+        {
+            if ($key == $id) {
+                return $value;
+            }
+
+        }
+
+        return 1;
     }
 }

@@ -3,7 +3,7 @@
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
 require_once($root . "/Model/tableInterface.php");
-require_once ("baseService.php");
+require_once ($root . "/Service/baseService.php");
 
 abstract class activityBaseService extends baseService implements tableInterface
 {
