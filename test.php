@@ -51,14 +51,14 @@
 
     // @ sander
     $ids = [1,93,117];
-    //$activities = array_merge($jazz->getFromActivityIds($ids), $food->getFromActivityIds($ids), $dance->getFromActivityIds($ids));
+    $activities = array_merge($jazz->getFromActivityIds($ids), $food->getFromActivityIds($ids), $dance->getFromActivityIds($ids));
     //var_dump($activities);
 
     $a = $activityDAO->get([
         "location.id" => 1
     ]);
 
-    print_r($a[0]->getLocation()->getName());
+    //print_r($a[0]->getLocation()->getName());
 
     //$danceThing = new artistOnActivityDAO();
     //print_r($danceThing->get([
@@ -70,3 +70,34 @@
         "type" => ["food", "dance"], // Filter on food or dance activities
         "order" => "id" // Order on the id
     ]);
+
+    ?>
+
+<script>
+    function httpGetAsync(theUrl, callback)
+    {
+        const xmlHttp = new XMLHttpRequest();
+        xmlHttp.responseType = 'json';
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                callback(xmlHttp.response);
+        }
+        xmlHttp.open("GET", theUrl, true); // true for asynchronous
+        xmlHttp.send(null);
+    }
+
+    function generateThing(jsonText){
+        console.log(jsonText)
+        for (var key in jsonText){
+            for (var value in jsonText[key]){
+                var thing = document.createElement("input");
+                thing.setAttribute("type", jsonText[key][value].type);
+                thing.setAttribute("value", jsonText[key][value].value);
+                thing.setAttribute("name", value);
+                document.body.appendChild(thing);
+            }
+        }
+    }
+
+    httpGetAsync("API/activityRequest.php?id=2", generateThing)
+</script>

@@ -69,4 +69,36 @@ abstract class activityBaseService extends baseService implements tableInterface
 
         return $table;
     }
+
+
+    /*
+     * Template:
+     * [
+     *      class: [
+     *          field: [
+     *              type: str
+     *              value: T
+     * ]]]
+     */
+
+    //public abstract function getHtmlEditFields($entry) : array;
+
+    // TODO: add account later
+    public function getHtmlEditContent(int $id): array
+    {
+        $entry = $this->getFromActivityIds([$id])[0];
+        $header = static::getHtmlEditHeader;
+        $fields = $this->getHtmlEditFields($entry);
+
+        $res = [];
+        foreach ($header as $hk => $hv){
+            $classField = [];
+            foreach ($hv as $k => $v){
+                $classField[$k] = ["type" => $v, "value" => $fields[$k]];
+            }
+            $res[$hk] = $classField;
+        }
+
+        return $res;
+    }
 }

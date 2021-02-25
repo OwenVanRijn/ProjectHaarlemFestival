@@ -50,19 +50,34 @@ class location extends sqlModel
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getAddress(): string
     {
         return $this->address;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getPostalcode()
+    {
+        return $this->postalcode;
+    }
+
+    public function setPostalcode($postalcode)
+    {
+        $this->postalcode = $postalcode;
+    }
+
+
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    public function setCity($city)
+    {
+        $this->city = $city;
     }
 }

@@ -2,6 +2,8 @@
 
 require_once ("sqlModel.php");
 require_once ("location.php");
+require_once ("htmlTypeEnum.php");
+require_once ("sqlModel.php");
 
 class activity extends sqlModel
 {

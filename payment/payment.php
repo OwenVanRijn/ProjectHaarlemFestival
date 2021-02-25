@@ -1,3 +1,8 @@
+<?php
+$root = realpath($_SERVER["DOCUMENT_ROOT"]);
+require_once($root . "/UI/navBar.php");
+?>
+
 <!DOCTYPE html>
 <html>
 

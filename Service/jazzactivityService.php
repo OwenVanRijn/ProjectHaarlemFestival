@@ -2,8 +2,8 @@
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
-require_once ("activityBaseService.php");
-require_once ($root . "/DAL/jazzactivityDAO.php");
+require_once("activityBaseService.php");
+require_once($root . "/DAL/jazzactivityDAO.php");
 
 class jazzactivityService extends activityBaseService
 {
@@ -12,12 +12,13 @@ class jazzactivityService extends activityBaseService
         $this->db = new jazzactivityDAO();
     }
 
-    public function getFields() : array {
+    public function getFields(): array
+    {
         return [
-            "Name" => function ($a){
+            "Name" => function ($a) {
                 return $a->getJazzband()->getName();
             },
-            "Location" => function ($a){
+            "Location" => function ($a) {
                 return $a->getHall();
             }
         ];

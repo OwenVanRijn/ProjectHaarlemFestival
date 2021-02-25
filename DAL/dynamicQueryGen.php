@@ -116,8 +116,14 @@ class dynamicQueryGen extends queryBase
             $this->orderBy($order);
     }
 
+    private array $joinedClasses;
+
     protected function joinClass($srcClass, $dstClass, $varName){
-        $query = "INNER JOIN " . $dstClass::sqlTableName() . " ON " . $srcClass::sqlTableName() . "." . $varName . " = " . $dstClass::sqlTableName() . "." . $dstClass::sqlPrimaryKey() . " ";
+        $query = "";
+        if (!in_array($dstClass::sqlTableName(), $this->joinedClasses)){
+            $query = "INNER JOIN " . $dstClass::sqlTableName() . " ON " . $srcClass::sqlTableName() . "." . $varName . " = " . $dstClass::sqlTableName() . "." . $dstClass::sqlPrimaryKey() . " ";
+            $this->joinedClasses[] = $dstClass::sqlTableName();
+        }
         foreach ($dstClass::sqlLinks() as $k => $v){
             $query .= $this->joinClass($dstClass, $v, $k);
         }
@@ -128,6 +134,7 @@ class dynamicQueryGen extends queryBase
         if (empty($links))
             return;
 
+        $this->joinedClasses = [];
         $query = "";
 
         foreach ($links as $k => $v){

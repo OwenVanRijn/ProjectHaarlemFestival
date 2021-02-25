@@ -4,6 +4,7 @@ require_once ("sqlModel.php");
 require_once ("restaurant.php");
 require_once ("activity.php");
 require_once ("restaurant.php");
+require_once ("htmlTypeEnum.php");
 
 
 class foodactivity extends sqlModel
@@ -47,6 +48,12 @@ class foodactivity extends sqlModel
         );
     }
 
+    public function toHtmlArray(array $excludeActivity = [], array $excludeRestaurant = []){
+        return [
+            "activity" => $this->activity->toHtmlArray($excludeActivity),
+            "restaurant" => $this->restaurant->toHtmlArray($excludeRestaurant)
+        ];
+    }
 
     public function getId()
     {
