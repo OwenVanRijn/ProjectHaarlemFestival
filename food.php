@@ -78,14 +78,9 @@ require_once($root . "/Service/restaurantService.php");
     </section>
 
 
-    <div class="w3-container">
-        <h2>W3.CSS Login Modal</h2>
-        <button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-green w3-large">
-            Reserveer
-        </button>
-
-        <div id="id01" class="w3-modal">
-            <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+    <section class="w3-container">
+        <section id="id01" class="w3-modal">
+            <section class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
                 <form class="w3-container" action="/action_page.php">
 
                     <h1>Reservation Restaurant Fris</h1>
@@ -130,19 +125,27 @@ require_once($root . "/Service/restaurantService.php");
                     </section>
 
 
-                    <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+                    <section class="w3-container w3-border-top w3-padding-16 w3-light-grey">
                         <button onclick="document.getElementById('id01').style.display='none'" type="button"
                                 class="w3-button w3-red">Cancel
                         </button>
                         <input class="w3-button w3-green w3-right w3-padding" type="submit" name="reservation"
                                id="session3" value="Send">
-                    </div>
+                    </section>
                 </form>
 
-            </div>
-        </div>
-    </div>
+            </section>
+        </section>
+    </section>
 
+
+    <section class="callout">
+        <section class="closebtn" onclick="this.parentElement.style.display='none';">×</section>
+        <section class="callout-container">
+            <h1>Berichtgeving hier</h1>
+            <p>Berichtgeving hier</p>
+        </section>
+    </section>
 
     <section class="container-fluid w-70">
         <?php
@@ -155,27 +158,53 @@ require_once($root . "/Service/restaurantService.php");
 
         echo "<section class='row' style='margin-top: 2%'>";
 
-        foreach ($restaurants as $restaurant) {
+        foreach ($restaurants
 
-            echo "<section class='col-4 box'>";
-            echo "<section class='col-12 text-center' style='background-color: black; color: white; padding-top: 2%;'>";
-            $restaurantName = $restaurant->getName();
-            $location = $restaurant->getLocation()->getAddress() . " " . $restaurant->getLocation()->getPostalCode();
-            $description = $restaurant->getDescription();
-            $price = "€" . $restaurant->getPrice() . ",-";
+        as $restaurant) {
 
-            echo "<p style='color: orange; font-weight: bold'>{$restaurantName}</p>";
-            echo "<section class='row'><p style='color: orange; font-weight: bold'>Location:</p><bold>{$location}</bold></section>";
-            echo "<section class='row'><p style='color: orange; font-weight: bold'>Session:</p><bold>{$description}</bold></section>";
-            echo "<section class='row'><p style='color: orange; font-weight: bold'>Price:</p><bold>{$price}</bold></section>";
-            echo "<a href='#' class='btn btn-primary'>More information</a>";
-            echo "<a href='#' class='btn btn-primary'>Make a reservation</a>";
-            echo "</section>";
-            echo "</section>";
-        }
-        echo "</section>";
+        echo "<section class='col-4 box'>";
+        echo "<section class='col-12 text-center' style='background-color: black; color: white; padding-top: 2%;'>";
+        $restaurantName = $restaurant->getName();
+        $restaurantId = $restaurant->getId();
+        echo $restaurantId . " ID";
+        $location = $restaurant->getLocation()->getAddress() . " " . $restaurant->getLocation()->getPostalCode();
+        $description = $restaurant->getDescription();
+        $price = "€" . $restaurant->getPrice() . ",-";
+
+        echo "<p style='color: orange; font-weight: bold'>{$restaurantName}</p>";
+        echo "<section class='row'><p style='color: orange; font-weight: bold'>Location:</p><bold>{$location}</bold></section>";
+        echo "<section class='row'><p style='color: orange; font-weight: bold'>Session:</p><bold>{$description}</bold></section>";
+        echo "<section class='row'><p style='color: orange; font-weight: bold'>Price:</p><bold>{$price}</bold></section>";
+
+        echo "<form method=\"POST\">";
+        echo "<input name=\"restaurantId\" type=\"hidden\" value=\"$restaurantId\">";
         ?>
+        <input type="submit" class='btn btn-primary' name="moreinformation" value="More information"></input>
+        <input type="submit" class='btn btn-primary' name="makereservation" value="Make a reservation"></input>
+        </form>
     </section>
+    </section>
+
+    <?php
+    }
+    echo "</section>";
+    ?>
+    </section>
+
+    <?php
+    if (isset($_POST["restaurantId"])) {
+        $restaurantId = $_POST["restaurantId"];
+
+        echo "RESTAURANT ID IS $restaurantId";
+
+        ?>
+        <script>
+            document.getElementById('id01').style.display = 'block';
+        </script>
+
+        <?php
+    }
+    ?>
 
 </main>
 </body>

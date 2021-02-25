@@ -195,5 +195,34 @@ a.button1:hover,
     }
 }
 
+
+/* messagebox */
+.callout {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    margin-left: 20px;
+    max-width: 300px;
+}
+
+.callout-container {
+    padding: 15px;
+    background-color: #FD6A02;
+    color: black
+}
+
+.closebtn {
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.closebtn:hover {
+    color: red;
+}
+
 /* title */
 

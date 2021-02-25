@@ -52,7 +52,12 @@ require_once($root . "/Service/shoppingcartService.php");
         echo "<br><br> IDS <br><br>";
         var_dump($ids);
         echo "<br><br> IDS <br><br>";
-        $activities = array_merge($danceActivityService->getFromActivityIds($ids)/*, $foodActivityService->getFromActivityIds($ids)*//*, $jazzActivityService->getJazzActivitiesFromActivitiesByIds($ids) */);
+
+        $foodActivityService->getFromActivityIds([3, 1]);
+
+        echo "werkt nog";
+
+        $activities = array_merge($danceActivityService->getFromActivityIds($ids), $foodActivityService->getFromActivityIds($ids), $jazzActivityService->getFromActivityIds($ids));
 
         $dates = array('2021-06-26', '2021-06-27', '2021-06-28', '2021-06-29');
 
@@ -94,7 +99,7 @@ require_once($root . "/Service/shoppingcartService.php");
 
         ?>
         <form method="post">
-            <input type="submit" class="btn btn-primary" name="pay" value="Pay €<?php echo $total?>"/>
+            <input type="submit" class="btn btn-primary" name="pay" value="Pay €<?php echo $total ?>"/>
         </form>
         <?php
 
@@ -112,7 +117,7 @@ require_once($root . "/Service/shoppingcartService.php");
 function echoDay($date, $activitiesOfTheDay)
 {
     $totalPriceDay = 0;
-    echoTitles();
+    echoTitles($date);
 
     //echo "<br><br> ACTIVITY ON DAY <br><br>";
     //var_dump($activitiesOfTheDay);
@@ -136,6 +141,8 @@ function echoDay($date, $activitiesOfTheDay)
             $activityName = "dance activity";
         }
 
+        $shoppingcartService = new shoppingcartService();
+        $amount = $shoppingcartService->getAmountByActivityId($activityId);
         cartElement($activityId, $activityName, $type, date("Y-m-d"), $startTime->format('H:i:s'), $endTime->format('H:i:s'), $price, $amount);
 
 
@@ -162,13 +169,14 @@ function echoDay($date, $activitiesOfTheDay)
 }
 
 
-function echoTitles()
+function echoTitles($date)
 {
     $element = "
     <section class=\"border rounded\">
     <section class=\"row bg-white\">
         <section class=\"col-md-6\">
-            <h3 class=\"pt-2\">Amount</h3>
+         <h1 class=\"pt-2\">$date</h1>
+            <p class=\"titleInfo\">Amount</p>
             <p class=\"titleInfo\">Event</p>
             <p class=\"titleInfo\">Type</p>
             <p class=\"titleInfo\">Time</p>
@@ -203,7 +211,7 @@ function cartElement($activityid, $activityName, $type, $createData, $startTime,
                             <section class=\"col-md-3 py-5\">
                                 <section>
                                     <button type=\"button\" class=\"btn bg-light border rounded-circle\"><i class=\"fas fa-minus\"></i></button>
-                                    <input type=\"text\" value=\"1\" class=\"form-control w-25 d-inline\">
+                                    <input type=\"text\" value=\"$amount\" class=\"form-control w-25 d-inline\">
                                     <button type=\"button\" class=\"btn bg-light border rounded-circle\"><i class=\"fas fa-plus\"></i></button>
                                 </section>
                             </section>
