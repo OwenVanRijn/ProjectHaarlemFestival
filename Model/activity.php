@@ -3,9 +3,9 @@
 require_once ("sqlModel.php");
 require_once ("location.php");
 require_once ("htmlTypeEnum.php");
-require_once ("htmlModel.php");
+require_once ("sqlModel.php");
 
-class activity extends htmlModel
+class activity extends sqlModel
 {
     private int $id;
     private string $type;
@@ -64,31 +64,6 @@ class activity extends htmlModel
             $sqlRes[self::sqlTableName . "price"],
             $sqlRes[self::sqlTableName . "ticketsLeft"]
         );
-    }
-
-    public static function toHtmlHeader() {
-        return [
-            "id" => htmlTypeEnum::hidden,
-            "type" => htmlTypeEnum::hidden,
-            "date" => htmlTypeEnum::date,
-            "startTime" => htmlTypeEnum::time,
-            "endTime" => htmlTypeEnum::time,
-            "price" => htmlTypeEnum::number,
-            "ticketsLeft" => htmlTypeEnum::number
-        ];
-    }
-
-    public function toHtmlValueArray() {
-        return [
-            "id" => $this->id,
-            "type" => $this->type,
-            "date" => $this->date->format("d-m-Y"),
-            "startTime" => $this->startTime->format("H:i:s"),
-            "endTime" => $this->endTime->format("H:i:s"),
-            // TODO: add location
-            "price" => $this->price,
-            "ticketsLeft" => $this->ticketsLeft
-        ];
     }
 
     public function getId() : int

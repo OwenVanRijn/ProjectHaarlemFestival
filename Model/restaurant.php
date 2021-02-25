@@ -1,9 +1,9 @@
 <?php
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-require_once($root . "/Model/htmlModel.php");
+require_once($root . "/Model/sqlModel.php");
 require_once($root . "/Model/location.php");
 
-class restaurant extends htmlModel
+class restaurant extends sqlModel
 {
     private int $id;
     private location $location;
@@ -57,31 +57,6 @@ class restaurant extends htmlModel
             $sqlRes[self::sqlTableName . "phonenumber"],
             $sqlRes[self::sqlTableName . "price"]
         );
-    }
-
-    public static function toHtmlHeader() {
-        return [
-            "id" => htmlTypeEnum::hidden,
-            // TODO: implement location?
-            "name" => htmlTypeEnum::text,
-            "description" => htmlTypeEnum::text,
-            "stars" => htmlTypeEnum::number,
-            "seats" => htmlTypeEnum::number,
-            "phoneNumber" => htmlTypeEnum::number,
-            "price" => htmlTypeEnum::number
-        ];
-    }
-
-    public function toHtmlValueArray() {
-        return [
-            "id" => $this->id,
-            "name" => $this->name,
-            "description" => $this->description,
-            "stars" => $this->stars,
-            "seats" => $this->seats,
-            "phoneNumber" => $this->phoneNumber,
-            "price" => $this->price
-        ];
     }
 
     public function getId(): int

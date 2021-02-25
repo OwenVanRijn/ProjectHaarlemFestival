@@ -31,6 +31,48 @@ class foodactivityService extends activityBaseService
         ];
     }
 
+    public const getHtmlEditHeader = [
+        "activity" => [
+            "activityId" => htmlTypeEnum::hidden,
+            "type" => htmlTypeEnum::hidden,
+            "date" => htmlTypeEnum::date,
+            "startTime" => htmlTypeEnum::time,
+            "endTime" => htmlTypeEnum::time,
+            "price" => htmlTypeEnum::number,
+            "ticketsLeft" => htmlTypeEnum::number
+            // TODO: implement location?
+        ],
+        "restaurant" => [
+            "restaurantId" => htmlTypeEnum::hidden,
+            "name" => htmlTypeEnum::text,
+            "description" => htmlTypeEnum::text,
+            "stars" => htmlTypeEnum::number,
+            "seats" => htmlTypeEnum::number,
+            "phoneNumber" => htmlTypeEnum::number,
+            "restaurantPrice" => htmlTypeEnum::number
+        ]
+    ];
+
+    public function getHtmlEditFields(foodactivity $a): array
+    {
+        return [
+            "activityId" => $a->getActivity()->getId(),
+            "type" => $a->getActivity()->getType(),
+            "date" => $a->getActivity()->getDate()->format("d-m-Y"),
+            "startTime" => $a->getActivity()->getStartTime()->format("H:i:s"),
+            "endTime" => $a->getActivity()->getEndTime()->format("H:i:s"),
+            "price" => $a->getActivity()->getPrice(),
+            "ticketsLeft" => $a->getActivity()->getTicketsLeft(),
+            "restaurantId" => $a->getRestaurant()->getId(),
+            "name" => $a->getRestaurant()->getName(),
+            "description" => $a->getRestaurant()->getDescription(),
+            "stars" => $a->getRestaurant()->getStars(),
+            "seats" => $a->getRestaurant()->getSeats(),
+            "phoneNumber" => $a->getRestaurant()->getPhoneNumber(),
+            "restaurantPrice" => $a->getRestaurant()->getPrice()
+        ];
+    }
+
     public function getAll(): array
     {
         return $this->db->get([
@@ -40,16 +82,5 @@ class foodactivityService extends activityBaseService
 
     public function getFiltered(string $restaurantName, string $restaurantType, int $minStars){
 
-    }
-
-    // TODO: Add account as arg
-    public function getHtmlDataById(int $id){
-
-        $activityFilter = [];
-        $restaurantFilter = [];
-
-        // TODO: filter by account perms
-
-        return $this->db->get(["id" => $id])->toHtmlArray($activityFilter, $restaurantFilter);
     }
 }

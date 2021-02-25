@@ -12,4 +12,4 @@ $id = (int)$_GET["id"];
 
 $service = new foodactivityService();
 
-echo json_encode($service->getHtmlDataById($id));
+echo json_encode($service->getHtmlEditContent(1));
