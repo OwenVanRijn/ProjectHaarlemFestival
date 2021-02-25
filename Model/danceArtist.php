@@ -6,13 +6,15 @@ class danceArtist extends sqlModel
 {
     private int $id;
     private string $name;
+    private string $description;
 
     protected const sqlTableName = "danceartist";
-    protected const sqlFields = ["id", "name"];
+    protected const sqlFields = ["id", "name", "description"];
 
     public function constructFull(int $id, string $name){
         $this->id = $id;
         $this->name = $name;
+        $this->description = $description;
         return $this;
     }
 
@@ -21,6 +23,7 @@ class danceArtist extends sqlModel
         return [
             "id" => $this->id,
             "name" => $this->name
+            "description" => $this->description
         ];
     }
 
@@ -28,7 +31,8 @@ class danceArtist extends sqlModel
     {
         return (new self())->constructFull(
             $sqlRes[self::sqlTableName . "id"],
-            $sqlRes[self::sqlTableName . "name"]);
+            $sqlRes[self::sqlTableName . "name"],
+            $sqlRes[self::sqlTableName . "description"]);
     }
 
     public function getId(): int
@@ -42,5 +46,9 @@ class danceArtist extends sqlModel
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getDescription(): string{
+        return $this->description;
     }
 }
