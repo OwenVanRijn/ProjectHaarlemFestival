@@ -99,5 +99,5 @@
         }
     }
 
-    httpGetAsync("http://localhost:63342/ProjectHaarlemFestival/hf/API/activityRequest.php?id=2", generateThing)
+    httpGetAsync("API/activityRequest.php?id=2", generateThing)
 </script>
