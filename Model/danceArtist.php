@@ -11,7 +11,7 @@ class danceArtist extends sqlModel
     protected const sqlTableName = "danceartist";
     protected const sqlFields = ["id", "name", "description"];
 
-    public function constructFull(int $id, string $name){
+    public function constructFull(int $id, string $name, string $description){
         $this->id = $id;
         $this->name = $name;
         $this->description = $description;
