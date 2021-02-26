@@ -5,8 +5,13 @@
 
         private function construct(){
             $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-  
-            $this->conn = mysqli_connect("206.189.9.15", "hfuser", "9veW*v9BoCap", "HaarlemFestival") or die ("<br/> Could not connect to the SQL server");
+
+            $filePath = $root . "/../creds.dat"; # This uses a json file called creds.dat stored 1 folder above the site's root. This makes it inaccessible from the web. It stores the database credentials
+            $file = fopen($filePath, "r") or die ("<br/> Unable to open credentials");
+            $fileText = fread($file, filesize($filePath));
+            fclose($file);
+            $json = json_decode($fileText, true);
+            $this->conn = mysqli_connect($json["DB_HOST"], $json["DB_USER"], $json["DB_PASS"], $json["DB_DB"]) or die ("<br/> Could not connect to the SQL server");
         }
 
         private static dbConn $dbConn;
