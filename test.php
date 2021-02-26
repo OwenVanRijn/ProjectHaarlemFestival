@@ -90,11 +90,30 @@
         console.log(jsonText)
         for (var key in jsonText){
             for (var value in jsonText[key]){
-                var thing = document.createElement("input");
-                thing.setAttribute("type", jsonText[key][value].type);
-                thing.setAttribute("value", jsonText[key][value].value);
-                thing.setAttribute("name", value);
-                document.body.appendChild(thing);
+                switch (jsonText[key][value].type){
+                    case "customListMultiple":
+                        var thing = document.createElement("select");
+                        thing.setAttribute("name", value);
+                        thing.setAttribute("multiple", "");
+                        for (var iter in jsonText[key][value].value.options){
+                            var option = document.createElement("option");
+                            const type = jsonText[key][value].value.options[iter];
+                            option.setAttribute("value", type);
+                            option.innerHTML = type;
+                            if (jsonText[key][value].value.selected.includes(type))
+                                option.setAttribute("selected", "");
+                            thing.appendChild(option);
+                        }
+                        document.body.appendChild(thing);
+                        break;
+                    default:
+                        var thing = document.createElement("input");
+                        thing.setAttribute("type", jsonText[key][value].type);
+                        thing.setAttribute("value", jsonText[key][value].value);
+                        thing.setAttribute("name", value);
+                        document.body.appendChild(thing);
+                        break;
+                }
             }
         }
     }
