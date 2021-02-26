@@ -1,7 +1,7 @@
 <?php
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-require_once ($root . "/Service/cookieManager.php");
+require_once($root . "/Utils/cookieManager.php");
 require_once ("sqlModel.php");
 
 class session extends sqlModel

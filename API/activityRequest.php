@@ -2,7 +2,7 @@
 // Page requires an id provided via GET
 // TODO: add logged in check
 
-require_once ("../Service/foodactivityService.php");
+require_once ("../Service/activityService.php");
 header('Content-Type: application/json');
 require_once ("../Service/sessionService.php");
 
@@ -14,6 +14,6 @@ if (!isset($_GET["id"]))
 
 $id = (int)$_GET["id"];
 
-$service = new foodactivityService();
+$service = new activityService();
 
-echo json_encode($service->getHtmlEditContent(1, $user));
+echo json_encode($service->getHtmlEditContent($id, $user));

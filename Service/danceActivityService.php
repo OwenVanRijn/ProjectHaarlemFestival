@@ -73,4 +73,41 @@ class danceActivityService extends activityBaseService
 
         return $this->toDanceActivityArray($res);
     }
+
+    // TODO: this is a lot of dupe code
+    public const getHtmlEditHeader = [
+        "activity" => [
+            "activityId" => htmlTypeEnum::hidden,
+            "type" => htmlTypeEnum::hidden,
+            "date" => [htmlTypeEnum::date, account::accountScheduleManager],
+            "startTime" => [htmlTypeEnum::time, account::accountScheduleManager],
+            "endTime" => [htmlTypeEnum::time, account::accountScheduleManager],
+            "price" => [htmlTypeEnum::number, account::accountTicketManager],
+            "ticketsLeft" => [htmlTypeEnum::number, account::accountTicketManager]
+            // TODO: implement location?
+        ],
+        "artists" => [ // TODO: This needs some custom type!
+            "artistIds" => htmlTypeEnum::hidden,
+        ]
+    ];
+
+    public function getHtmlEditFields(danceActivity $a): array
+    {
+        $artists = $a->getArtists();
+        $artistIds = "";
+        foreach ($artists as $b){
+            $artistIds .= $b->getId();
+        }
+
+        return [
+            "activityId" => $a->getActivity()->getId(),
+            "type" => $a->getActivity()->getType(),
+            "date" => $a->getActivity()->getDate()->format("d-m-Y"),
+            "startTime" => $a->getActivity()->getStartTime()->format("H:i:s"),
+            "endTime" => $a->getActivity()->getEndTime()->format("H:i:s"),
+            "price" => $a->getActivity()->getPrice(),
+            "ticketsLeft" => $a->getActivity()->getTicketsLeft(),
+            "artistIds" => $artistIds
+        ];
+    }
 }

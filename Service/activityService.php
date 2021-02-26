@@ -1,9 +1,10 @@
 <?php
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-require_once ($root . "/DAL/foodactivityDAO.php");
-require_once ($root . "/DAL/danceActivityDAO.php");
-require_once ($root . "/DAL/jazzactivityDAO.php");
+require_once ($root . "/Service/foodactivityService.php");
+require_once ($root . "/Service/danceActivityService.php");
+require_once ($root . "/Service/jazzactivityService.php");
 require_once ($root . "/DAL/activityDAO.php");
+require_once ("baseService.php");
 
 
 class activityService extends baseService
@@ -19,5 +20,21 @@ class activityService extends baseService
         $dance = new danceActivityService();
 
         return array_merge($jazz->getFromActivityIds($ids), $food->getFromActivityIds($ids), $dance->getFromActivityIds($ids));
+    }
+
+    public function getHtmlEditContent(int $id, account $account){
+        $activities = [new foodactivityService(), new jazzactivityService(), new danceActivityService()];
+
+        foreach ($activities as $a){
+            try {
+                return $a->getHtmlEditContent($id, $account);
+            }
+            catch (appException $e){
+                // Do nothing
+            }
+
+        }
+
+        return [];
     }
 }

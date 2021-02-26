@@ -5,6 +5,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/Model/tableInterface.php");
 require_once($root . "/Model/account.php");
 require_once ($root . "/Service/baseService.php");
+require_once ($root . "/Utils/appException.php");
 
 abstract class activityBaseService extends baseService implements tableInterface
 {
@@ -86,7 +87,11 @@ abstract class activityBaseService extends baseService implements tableInterface
 
     public function getHtmlEditContent(int $id, account $account): array
     {
-        $entry = $this->getFromActivityIds([$id])[0];
+        $entries = $this->getFromActivityIds([$id]);
+        if ($entries === [])
+            throw new appException("Id not found");
+
+        $entry = $entries[0];
         $header = static::getHtmlEditHeader;
         $fields = $this->getHtmlEditFields($entry);
 

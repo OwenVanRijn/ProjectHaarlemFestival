@@ -51,6 +51,7 @@ class foodactivityService extends activityBaseService
             "seats" => htmlTypeEnum::number,
             "phoneNumber" => htmlTypeEnum::number,
             "restaurantPrice" => [htmlTypeEnum::number, account::accountTicketManager]
+            // TODO: implement type
         ]
     ];
 

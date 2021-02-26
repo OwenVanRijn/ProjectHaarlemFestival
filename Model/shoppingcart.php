@@ -3,7 +3,7 @@
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
 require_once($root . "/Model/sqlModel.php");
-require_once($root . "/Service/cookieManager.php");
+require_once($root . "/Utils/cookieManager.php");
 
 
 class shoppingcart extends sqlModel

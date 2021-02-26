@@ -8,7 +8,7 @@ require_once ($root . "/DAL/dynamicQueryGen.php");
 require_once ($root . "/DAL/sessionDAO.php");
 require_once ($root . "/DAL/accountDAO.php");
 require_once ("baseService.php");
-require_once ("cookieManager.php");
+require_once($root . "/Utils/cookieManager.php");
 
 class sessionService extends baseService
 {
