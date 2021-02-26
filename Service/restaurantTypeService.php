@@ -6,10 +6,13 @@ require_once($root . "/Model/restaurantTypeLink.php");
 require_once ("baseService.php");
 require_once ($root . "/DAL/restaurantTypeLinkDAO.php");
 require_once ($root . "/DAL/restaurantTypeDAO.php");
+require_once ($root . "/Utils/singleton.php");
 
-class restaurantTypeService extends baseService
+class restaurantTypeService extends singleton
 {
-    public function __construct(){
+    private restaurantTypeLinkDAO $db;
+
+    public function construct(){
         $this->db = new restaurantTypeLinkDAO();
         $this->cache();
     }
