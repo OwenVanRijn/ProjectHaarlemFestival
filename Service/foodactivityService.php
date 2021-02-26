@@ -13,7 +13,7 @@ class foodactivityService extends activityBaseService
 
     public function __construct(){
         $this->db = new foodactivityDAO();
-        $this->types = restaurantTypeService::getInstance();
+        $this->types = new restaurantTypeService();
     }
 
     public function getFields(): array
@@ -64,8 +64,10 @@ class foodactivityService extends activityBaseService
 
     public function getHtmlEditFields(foodactivity $a): array
     {
-        $resTypeStrs = $this->types->getAllTypesAsStr();
-        $resCurTypeStrs = $this->types->getRestaurantTypes($a->getId());
+        $restaurantTypes = new restaurantTypeService();
+
+        $resTypeStrs = $restaurantTypes->getAllTypesAsStr();
+        $resCurTypeStrs = $restaurantTypes->getRestaurantTypes($a->getId());
 
         return [
             "activityId" => $a->getActivity()->getId(),

@@ -1,12 +1,9 @@
 <?php
-$root = realpath($_SERVER["DOCUMENT_ROOT"]);
-require_once ($root . "/Utils/singleton.php");
-
-    class dbConn extends singleton
+    class dbConn
     {
         private $conn = null;
 
-        protected function construct(){
+        private function construct(){
             $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
             $filePath = $root . "/../creds.dat"; # This uses a json file called creds.dat stored 1 folder above the site's root. This makes it inaccessible from the web. It stores the database credentials
@@ -15,6 +12,17 @@ require_once ($root . "/Utils/singleton.php");
             fclose($file);
             $json = json_decode($fileText, true);
             $this->conn = mysqli_connect($json["DB_HOST"], $json["DB_USER"], $json["DB_PASS"], $json["DB_DB"]) or die ("<br/> Could not connect to the SQL server");
+        }
+
+        private static dbConn $dbConn;
+
+        public static function getInstance(){
+            if (!isset(self::$dbConn)){
+                self::$dbConn = new dbConn();
+                self::$dbConn->construct();
+            }
+
+            return self::$dbConn;
         }
 
         public function getConn()
