@@ -3,6 +3,7 @@
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
 require_once($root . "/Model/tableInterface.php");
+require_once($root . "/Model/account.php");
 require_once ($root . "/Service/baseService.php");
 
 abstract class activityBaseService extends baseService implements tableInterface
@@ -83,8 +84,7 @@ abstract class activityBaseService extends baseService implements tableInterface
 
     //public abstract function getHtmlEditFields($entry) : array;
 
-    // TODO: add account later
-    public function getHtmlEditContent(int $id): array
+    public function getHtmlEditContent(int $id, account $account): array
     {
         $entry = $this->getFromActivityIds([$id])[0];
         $header = static::getHtmlEditHeader;
@@ -94,7 +94,12 @@ abstract class activityBaseService extends baseService implements tableInterface
         foreach ($header as $hk => $hv){
             $classField = [];
             foreach ($hv as $k => $v){
-                $classField[$k] = ["type" => $v, "value" => $fields[$k]];
+                if (gettype($v) == "array"){
+                    if (($account->getCombinedRole() & $v[1]))
+                        $classField[$k] = ["type" => $v[0], "value" => $fields[$k]];
+                }
+                else
+                    $classField[$k] = ["type" => $v, "value" => $fields[$k]];
             }
             $res[$hk] = $classField;
         }

@@ -18,7 +18,7 @@ class sessionService extends baseService
     }
 
     // TODO: throw on failure
-    public function createSession(string $username, string $password){
+    public function createSession(string $username, string $password, int $minRole = 1){
         $userDb = new accountDAO();
 
         $user = $userDb->get([
@@ -29,6 +29,9 @@ class sessionService extends baseService
             return false;
 
         if (!$user->validateLogin($username, $password))
+            return false;
+
+        if ($user->getRole() < $minRole)
             return false;
 
         $foundUnusedRandom = false;
@@ -52,19 +55,20 @@ class sessionService extends baseService
         return true;
     }
 
-    public function validateSessionFromCookie(){
+    public function validateSessionFromCookie(int $minRole = 1){
         $cookieManager = new cookieManager("session");
         $id = $cookieManager->get();
         if (is_null($id))
             return false;
-        return $this->validateSession($id);
+        return $this->validateSession($id, $minRole);
     }
 
     /**
      * @param int $sessionId
+     * @param int $minRole
      * @return account|false
      */
-    public function validateSession(int $sessionId) {
+    public function validateSession(int $sessionId, int $minRole) {
         $session = $this->db->get([
             "id" => $sessionId
         ]);
@@ -73,6 +77,9 @@ class sessionService extends baseService
             return false;
 
         if (!$session->verifySession($sessionId))
+            return false;
+
+        if ($session->getAccount()->getRole() < $minRole)
             return false;
 
         return $session->getAccount();

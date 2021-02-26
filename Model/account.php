@@ -16,6 +16,13 @@ class account extends sqlModel
     protected const sqlTableName = "account";
     protected const sqlFields = ["id", "username", "password", "email", "status", "role", "isschedulemanager", "isticketmanager"];
 
+    public const accountNormal = 0;
+    public const accountVolunteer = 1;
+    public const accountAdmin = 2;
+    public const accountSuperAdmin = 3;
+    public const accountScheduleManager = 0x10;
+    public const accountTicketManager = 0x20;
+
     public function __construct()
     {
         $this->id = 0;
@@ -159,5 +166,23 @@ class account extends sqlModel
     public function isTicketManager(): bool
     {
         return $this->isTicketManager;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRole(): int
+    {
+        return $this->role;
+    }
+
+    public function getCombinedRole(): int
+    {
+        $role = $this->role;
+        if ($this->isScheduleManager)
+            $role |= account::accountScheduleManager;
+        if ($this->isTicketManager)
+            $role |= account::accountScheduleManager;
+        return $role;
     }
 }

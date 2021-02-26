@@ -4,6 +4,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
 require_once ("activityBaseService.php");
 require_once ($root . "/DAL/foodactivityDAO.php");
+require_once ($root . "/Model/account.php");
 require_once ("restaurantTypeService.php");
 
 class foodactivityService extends activityBaseService
@@ -35,11 +36,11 @@ class foodactivityService extends activityBaseService
         "activity" => [
             "activityId" => htmlTypeEnum::hidden,
             "type" => htmlTypeEnum::hidden,
-            "date" => htmlTypeEnum::date,
-            "startTime" => htmlTypeEnum::time,
-            "endTime" => htmlTypeEnum::time,
-            "price" => htmlTypeEnum::number,
-            "ticketsLeft" => htmlTypeEnum::number
+            "date" => [htmlTypeEnum::date, account::accountScheduleManager],
+            "startTime" => [htmlTypeEnum::time, account::accountScheduleManager],
+            "endTime" => [htmlTypeEnum::time, account::accountScheduleManager],
+            "price" => [htmlTypeEnum::number, account::accountTicketManager],
+            "ticketsLeft" => [htmlTypeEnum::number, account::accountTicketManager]
             // TODO: implement location?
         ],
         "restaurant" => [
@@ -49,7 +50,7 @@ class foodactivityService extends activityBaseService
             "stars" => htmlTypeEnum::number,
             "seats" => htmlTypeEnum::number,
             "phoneNumber" => htmlTypeEnum::number,
-            "restaurantPrice" => htmlTypeEnum::number
+            "restaurantPrice" => [htmlTypeEnum::number, account::accountTicketManager]
         ]
     ];
 
