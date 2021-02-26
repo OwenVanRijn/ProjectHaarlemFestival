@@ -52,6 +52,13 @@ class foodactivityService extends activityBaseService
             "phoneNumber" => htmlTypeEnum::number,
             "restaurantPrice" => [htmlTypeEnum::number, account::accountTicketManager],
             "restaurantType" => htmlTypeEnum::listMultiple
+        ],
+        "location" => [
+            "locationId" => htmlTypeEnum::hidden,
+            "locationName" => htmlTypeEnum::text,
+            "address" => htmlTypeEnum::text,
+            "postalCode" => htmlTypeEnum::text,
+            "city" => htmlTypeEnum::text
         ]
     ];
 
@@ -68,6 +75,11 @@ class foodactivityService extends activityBaseService
             "endTime" => $a->getActivity()->getEndTime()->format("H:i:s"),
             "price" => $a->getActivity()->getPrice(),
             "ticketsLeft" => $a->getActivity()->getTicketsLeft(),
+            "locationId" => $a->getActivity()->getLocation()->getId(),
+            "locationName" => $a->getActivity()->getLocation()->getName(),
+            "address" => $a->getActivity()->getLocation()->getAddress(),
+            "postalCode" => $a->getActivity()->getLocation()->getPostalcode(),
+            "city" => $a->getActivity()->getLocation()->getCity(),
             "restaurantId" => $a->getRestaurant()->getId(),
             "name" => $a->getRestaurant()->getName(),
             "description" => $a->getRestaurant()->getDescription(),
