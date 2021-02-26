@@ -33,16 +33,6 @@ class foodactivityService extends activityBaseService
     }
 
     public const getHtmlEditHeader = [
-        "activity" => [
-            "activityId" => htmlTypeEnum::hidden,
-            "type" => htmlTypeEnum::hidden,
-            "date" => [htmlTypeEnum::date, account::accountScheduleManager],
-            "startTime" => [htmlTypeEnum::time, account::accountScheduleManager],
-            "endTime" => [htmlTypeEnum::time, account::accountScheduleManager],
-            "price" => [htmlTypeEnum::number, account::accountTicketManager],
-            "ticketsLeft" => [htmlTypeEnum::number, account::accountTicketManager]
-            // TODO: implement location?
-        ],
         "restaurant" => [
             "restaurantId" => htmlTypeEnum::hidden,
             "name" => htmlTypeEnum::text,
@@ -52,36 +42,15 @@ class foodactivityService extends activityBaseService
             "phoneNumber" => htmlTypeEnum::number,
             "restaurantPrice" => [htmlTypeEnum::number, account::accountTicketManager],
             "restaurantType" => htmlTypeEnum::listMultiple
-        ],
-        "location" => [
-            "locationId" => htmlTypeEnum::hidden,
-            "locationName" => htmlTypeEnum::text,
-            "address" => htmlTypeEnum::text,
-            "postalCode" => htmlTypeEnum::text,
-            "city" => htmlTypeEnum::text
         ]
     ];
 
     public function getHtmlEditFields(foodactivity $a): array
     {
-        $restaurantTypes = new restaurantTypeService();
-
-        $resTypeStrs = $restaurantTypes->getAllTypesAsStr();
-        $resCurTypeStrs = $restaurantTypes->getRestaurantTypes($a->getId());
+        $resTypeStrs = $this->types->getAllTypesAsStr();
+        $resCurTypeStrs = $this->types->getRestaurantTypes($a->getId());
 
         return [
-            "activityId" => $a->getActivity()->getId(),
-            "type" => $a->getActivity()->getType(),
-            "date" => $a->getActivity()->getDate()->format("d-m-Y"),
-            "startTime" => $a->getActivity()->getStartTime()->format("H:i:s"),
-            "endTime" => $a->getActivity()->getEndTime()->format("H:i:s"),
-            "price" => $a->getActivity()->getPrice(),
-            "ticketsLeft" => $a->getActivity()->getTicketsLeft(),
-            "locationId" => $a->getActivity()->getLocation()->getId(),
-            "locationName" => $a->getActivity()->getLocation()->getName(),
-            "address" => $a->getActivity()->getLocation()->getAddress(),
-            "postalCode" => $a->getActivity()->getLocation()->getPostalcode(),
-            "city" => $a->getActivity()->getLocation()->getCity(),
             "restaurantId" => $a->getRestaurant()->getId(),
             "name" => $a->getRestaurant()->getName(),
             "description" => $a->getRestaurant()->getDescription(),

@@ -92,8 +92,8 @@ abstract class activityBaseService extends baseService implements tableInterface
             throw new appException("Id not found");
 
         $entry = $entries[0];
-        $header = static::getHtmlEditHeader;
-        $fields = $this->getHtmlEditFields($entry);
+        $header = array_merge(static::getHtmlEditHeader, self::getHtmlBaseEditHeader);
+        $fields = array_merge($this->getHtmlEditFields($entry), $this->getHtmlBaseEditFields($entry));
 
         $res = [];
         foreach ($header as $hk => $hv){
@@ -110,5 +110,43 @@ abstract class activityBaseService extends baseService implements tableInterface
         }
 
         return $res;
+    }
+
+    public const getHtmlBaseEditHeader = [
+        "activity" => [
+            "activityId" => htmlTypeEnum::hidden,
+            "type" => htmlTypeEnum::hidden,
+            "date" => [htmlTypeEnum::date, account::accountScheduleManager],
+            "startTime" => [htmlTypeEnum::time, account::accountScheduleManager],
+            "endTime" => [htmlTypeEnum::time, account::accountScheduleManager],
+            "price" => [htmlTypeEnum::number, account::accountTicketManager],
+            "ticketsLeft" => [htmlTypeEnum::number, account::accountTicketManager]
+        ],
+        "location" => [
+            // "custom" => htmlTypeEnum::list, we need a way to GET the location's details
+            "locationId" => htmlTypeEnum::hidden,
+            "locationName" => htmlTypeEnum::text,
+            "address" => htmlTypeEnum::text,
+            "postalCode" => htmlTypeEnum::text,
+            "city" => htmlTypeEnum::text
+        ]
+    ];
+
+    public function getHtmlBaseEditFields($a): array
+    {
+        return [
+            "activityId" => $a->getActivity()->getId(),
+            "type" => $a->getActivity()->getType(),
+            "date" => $a->getActivity()->getDate()->format("d-m-Y"),
+            "startTime" => $a->getActivity()->getStartTime()->format("H:i:s"),
+            "endTime" => $a->getActivity()->getEndTime()->format("H:i:s"),
+            "price" => $a->getActivity()->getPrice(),
+            "ticketsLeft" => $a->getActivity()->getTicketsLeft(),
+            "locationId" => $a->getActivity()->getLocation()->getId(),
+            "locationName" => $a->getActivity()->getLocation()->getName(),
+            "address" => $a->getActivity()->getLocation()->getAddress(),
+            "postalCode" => $a->getActivity()->getLocation()->getPostalcode(),
+            "city" => $a->getActivity()->getLocation()->getCity(),
+        ];
     }
 }
