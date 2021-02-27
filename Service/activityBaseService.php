@@ -6,6 +6,7 @@ require_once($root . "/Model/tableInterface.php");
 require_once($root . "/Model/account.php");
 require_once ($root . "/Service/baseService.php");
 require_once ($root . "/Utils/appException.php");
+require_once ($root . "/DAL/locationDAO.php");
 
 abstract class activityBaseService extends baseService implements tableInterface
 {
@@ -123,9 +124,8 @@ abstract class activityBaseService extends baseService implements tableInterface
             "ticketsLeft" => [htmlTypeEnum::number, account::accountTicketManager]
         ],
         "location" => [
-            // "custom" => htmlTypeEnum::list, we need a way to GET the location's details
+            "location" => htmlTypeEnum::list, //we need a way to GET the location's details
             "locationId" => htmlTypeEnum::hidden,
-            "locationName" => htmlTypeEnum::text,
             "address" => htmlTypeEnum::text,
             "postalCode" => htmlTypeEnum::text,
             "city" => htmlTypeEnum::text
@@ -134,6 +134,13 @@ abstract class activityBaseService extends baseService implements tableInterface
 
     public function getHtmlBaseEditFields($a): array
     {
+        $locationDAO = new locationDAO();
+        $locations = $locationDAO->get();
+        $locationStrings = [];
+        foreach ($locations as $l){
+            $locationStrings[] = $l->getName();
+        }
+
         return [
             "activityId" => $a->getActivity()->getId(),
             "type" => $a->getActivity()->getType(),
@@ -143,10 +150,13 @@ abstract class activityBaseService extends baseService implements tableInterface
             "price" => $a->getActivity()->getPrice(),
             "ticketsLeft" => $a->getActivity()->getTicketsLeft(),
             "locationId" => $a->getActivity()->getLocation()->getId(),
-            "locationName" => $a->getActivity()->getLocation()->getName(),
             "address" => $a->getActivity()->getLocation()->getAddress(),
             "postalCode" => $a->getActivity()->getLocation()->getPostalcode(),
             "city" => $a->getActivity()->getLocation()->getCity(),
+            "location" => [
+                "options" => $locationStrings,
+                "selected" => $a->getActivity()->getLocation()->getName()
+            ]
         ];
     }
 }

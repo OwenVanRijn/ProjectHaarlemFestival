@@ -9,8 +9,16 @@ require_once ("../Service/sessionService.php");
 $sessionService = new sessionService();
 $user = $sessionService->validateSessionFromCookie();
 
-if (!isset($_GET["id"]))
+if (!$user){
+    http_response_code(403);
     exit();
+}
+
+if (!isset($_GET["id"])){
+    http_response_code(400);
+    exit();
+}
+
 
 $id = (int)$_GET["id"];
 
