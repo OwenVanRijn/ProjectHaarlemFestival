@@ -74,6 +74,8 @@
     ?>
 
 <script>
+    let isBoxOpen = false;
+
     function httpGetAsync(theUrl, callback)
     {
         const xmlHttp = new XMLHttpRequest();
@@ -84,38 +86,6 @@
         }
         xmlHttp.open("GET", theUrl, true); // true for asynchronous
         xmlHttp.send(null);
-    }
-
-    function generateThing(jsonText){
-        console.log(jsonText)
-        for (var key in jsonText){
-            for (var value in jsonText[key]){
-                switch (jsonText[key][value].type){
-                    case "customListMultiple":
-                        var thing = document.createElement("select");
-                        thing.setAttribute("name", value);
-                        thing.setAttribute("multiple", "");
-                        for (var iter in jsonText[key][value].value.options){
-                            var option = document.createElement("option");
-                            const type = jsonText[key][value].value.options[iter];
-                            option.setAttribute("value", type);
-                            option.innerHTML = type;
-                            if (jsonText[key][value].value.selected.includes(type))
-                                option.setAttribute("selected", "");
-                            thing.appendChild(option);
-                        }
-                        document.body.appendChild(thing);
-                        break;
-                    default:
-                        var thing = document.createElement("input");
-                        thing.setAttribute("type", jsonText[key][value].type);
-                        thing.setAttribute("value", jsonText[key][value].value);
-                        thing.setAttribute("name", value);
-                        document.body.appendChild(thing);
-                        break;
-                }
-            }
-        }
     }
 
     function generateInputField(fieldContent, className, fieldName){
@@ -178,6 +148,24 @@
 
     function generateHTML(json){
         console.log(json);
+
+        let form = document.createElement("form");
+        form.setAttribute("id", "formTop");
+
+        let formHeader = document.createElement("section");
+        let type = document.createElement("h3");
+        let exitButton = document.createElement("button");
+        type.innerHTML = json.activity.type.value;
+        exitButton.innerHTML = "Exit";
+        exitButton.onclick = function () {
+            document.getElementById("formTop").remove();
+            isBoxOpen = false;
+        }
+        formHeader.appendChild(type);
+        formHeader.appendChild(exitButton);
+        form.appendChild(formHeader);
+        document.body.appendChild(form);
+
         for (const className in json){
             let section = document.createElement("section");
             let sectionHeader = document.createElement("section");
@@ -205,9 +193,14 @@
                 sectionContent.appendChild(generateInputField(fieldContents, className, fieldName));
             }
 
-            document.body.appendChild(section);
+            form.appendChild(section);
         }
     }
 
-    httpGetAsync("API/activityRequest.php?id=2", generateHTML)
+    function openBox(id){
+        if (!isBoxOpen){
+            httpGetAsync("API/activityRequest.php?id=" + id, generateHTML)
+            isBoxOpen = true;
+        }
+    }
 </script>

@@ -39,7 +39,7 @@ class foodactivityService extends activityBaseService
             "description" => htmlTypeEnum::text,
             "stars" => htmlTypeEnum::number,
             "seats" => htmlTypeEnum::number,
-            "phoneNumber" => htmlTypeEnum::number,
+            "phoneNumber" => htmlTypeEnum::text,
             "restaurantPrice" => [htmlTypeEnum::number, account::accountTicketManager],
             "restaurantType" => htmlTypeEnum::listMultiple
         ]

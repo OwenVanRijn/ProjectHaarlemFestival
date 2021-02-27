@@ -65,6 +65,8 @@ abstract class activityBaseService extends baseService implements tableInterface
                 $local[] = $f($c);
             }
 
+            $local[] = "<button onclick='openBox(". $c->getActivity()->getId() .")'>Edit</button>";
+
             $dates[$dateStr][] = $local;
         }
 

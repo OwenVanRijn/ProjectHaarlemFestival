@@ -36,3 +36,19 @@ nav .aSel:hover {
     margin-left: 160px;
     padding: 0px 10px;
 }
+
+#formTop {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 75%;
+    height: 75%;
+    z-index: 2;
+    background-color: white;
+    border-color: black;
+    border-width: 2px;
+    padding: 10px;
+    border-style: solid;
+    border-radius: 10px;
+}
