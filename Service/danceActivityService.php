@@ -4,6 +4,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
 require_once ("activityBaseService.php");
 require_once ($root . "/DAL/artistOnActivityDAO.php");
+require_once ($root . "/DAL/danceArtistDAO.php");
 require_once ("restaurantTypeService.php");
 
 class danceActivityService extends activityBaseService
@@ -76,20 +77,31 @@ class danceActivityService extends activityBaseService
     
     public const getHtmlEditHeader = [
         "artists" => [ // TODO: This needs some custom type!
-            "artistIds" => htmlTypeEnum::hidden,
+            "eventType" => htmlTypeEnum::text,
+            "artistsOnActivity" => htmlTypeEnum::listMultiple
         ]
     ];
 
     public function getHtmlEditFields(danceActivity $a): array
     {
         $artists = $a->getArtists();
-        $artistIds = "";
+        $artistSelStrs = [];
         foreach ($artists as $b){
-            $artistIds .= $b->getId();
+            $artistSelStrs[] = $b->getName();
+        }
+        // TODO: Split off in different file!
+        $allArtists = (new danceArtistDAO())->get();
+        $artistStrs = [];
+        foreach ($allArtists as $b){
+            $artistStrs[] = $b->getName();
         }
 
         return [
-            "artistIds" => $artistIds
+            "eventType" => $a->getType(),
+            "artistsOnActivity" => [
+                "options" => $artistStrs,
+                "selected" => $artistSelStrs
+            ]
         ];
     }
 }
