@@ -51,15 +51,16 @@ $nav->assignCss([
         switch (fieldContent.type){
             case "customListMultiple":
                 let select = document.createElement("select");
-                select.setAttribute("name", fieldName);
+                select.setAttribute("name", fieldName + "[]");
                 select.setAttribute("multiple", '');
 
                 for (const optionIndex in fieldContent.value.options){
                     const option = fieldContent.value.options[optionIndex];
+                    const optionIndexNum = Number(optionIndex);
                     const optionElem = document.createElement("option");
-                    optionElem.setAttribute("value", option);
+                    optionElem.setAttribute("value", optionIndex);
                     optionElem.innerHTML = option;
-                    if (fieldContent.value.selected.includes(option))
+                    if (fieldContent.value.selected.includes(optionIndexNum))
                         optionElem.setAttribute("selected", "");
 
                     select.appendChild(optionElem);
@@ -74,9 +75,9 @@ $nav->assignCss([
                 for (const optionIndex in fieldContent.value.options){
                     const option = fieldContent.value.options[optionIndex];
                     const optionElem = document.createElement("option");
-                    optionElem.setAttribute("value", option);
+                    optionElem.setAttribute("value", optionIndex);
                     optionElem.innerHTML = option;
-                    if (fieldContent.value.selected === option)
+                    if (fieldContent.value.selected == optionIndex)
                         optionElem.setAttribute("selected", "");
 
                     selectSingle.appendChild(optionElem);
@@ -110,6 +111,8 @@ $nav->assignCss([
 
         let form = document.createElement("form");
         form.setAttribute("id", "formTop");
+        form.setAttribute("action", "../API/activityUpdate.php");
+        form.setAttribute("method", "post");
 
         let formHeader = document.createElement("section");
         let type = document.createElement("h3");
@@ -154,6 +157,10 @@ $nav->assignCss([
 
             form.appendChild(section);
         }
+
+        let send = document.createElement("button");
+        send.innerHTML = "Edit";
+        form.appendChild(send);
     }
 
     function openBox(id){

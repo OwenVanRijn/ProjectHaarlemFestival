@@ -87,13 +87,13 @@ class danceActivityService extends activityBaseService
         $artists = $a->getArtists();
         $artistSelStrs = [];
         foreach ($artists as $b){
-            $artistSelStrs[] = $b->getName();
+            $artistSelStrs[] = $b->getId();
         }
         // TODO: Split off in different file!
         $allArtists = (new danceArtistDAO())->get();
         $artistStrs = [];
         foreach ($allArtists as $b){
-            $artistStrs[] = $b->getName();
+            $artistStrs[(string)$b->getId()] = $b->getName();
         }
 
         return [

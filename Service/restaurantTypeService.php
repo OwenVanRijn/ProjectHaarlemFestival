@@ -36,6 +36,17 @@ class restaurantTypeService extends baseService
         return $this->getTypesFromId($restaurantId);
     }
 
+    public function getRestaurantTypesAsIds(int $restaurantId){
+        $restaurants = [];
+
+        foreach ($this->cache as $c){
+            if ($c->getRestaurant()->getId() == $restaurantId)
+                $restaurants[] = $c->getType()->getId();
+        }
+
+        return $restaurants;
+    }
+
     public function getAllTypes(){
         $resTypeDAO = new restaurantTypeDAO();
         return $resTypeDAO->get();
@@ -45,7 +56,7 @@ class restaurantTypeService extends baseService
         $res = $this->getAllTypes();
         $strs = [];
         foreach ($res as $r){
-            $strs[] = $r->getName();
+            $strs[(string)$r->getId()] = $r->getName();
         }
         return $strs;
     }

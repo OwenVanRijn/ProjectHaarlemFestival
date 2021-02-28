@@ -48,7 +48,7 @@ class jazzactivityService extends activityBaseService
         $bands = (new jazzbandDAO())->get();
         $bandsStr = [];
         foreach ($bands as $b){
-            $bandsStr[] = $b->getName();
+            $bandsStr[(string)$b->getId()] = $b->getName();
         }
 
         $selBand = $a->getJazzband();
@@ -56,7 +56,7 @@ class jazzactivityService extends activityBaseService
         return [
             "band" => [
                 "options" => $bandsStr,
-                "selected" => $selBand->getName()
+                "selected" => $selBand->getId()
             ],
             "bandName" => $selBand->getName(),
             "bandDescription" => $selBand->getDescription(),

@@ -48,7 +48,7 @@ class foodactivityService extends activityBaseService
     public function getHtmlEditFields(foodactivity $a): array
     {
         $resTypeStrs = $this->types->getAllTypesAsStr();
-        $resCurTypeStrs = $this->types->getRestaurantTypes($a->getRestaurant()->getId());
+        $resCurTypeStrs = $this->types->getRestaurantTypesAsIds($a->getRestaurant()->getId());
 
         return [
             "restaurantId" => $a->getRestaurant()->getId(),

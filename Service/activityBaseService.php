@@ -127,7 +127,6 @@ abstract class activityBaseService extends baseService implements tableInterface
         ],
         "location" => [
             "location" => htmlTypeEnum::list, //we need a way to GET the location's details
-            "locationId" => htmlTypeEnum::hidden,
             "address" => htmlTypeEnum::text,
             "postalCode" => htmlTypeEnum::text,
             "city" => htmlTypeEnum::text
@@ -140,25 +139,28 @@ abstract class activityBaseService extends baseService implements tableInterface
         $locations = $locationDAO->get();
         $locationStrings = [];
         foreach ($locations as $l){
-            $locationStrings[] = $l->getName();
+            $locationStrings[(string)$l->getId()] = $l->getName();
         }
 
         return [
             "activityId" => $a->getActivity()->getId(),
             "type" => $a->getActivity()->getType(),
-            "date" => $a->getActivity()->getDate()->format("d-m-Y"),
+            "date" => $a->getActivity()->getDate()->format("Y-m-d"),
             "startTime" => $a->getActivity()->getStartTime()->format("H:i:s"),
             "endTime" => $a->getActivity()->getEndTime()->format("H:i:s"),
             "price" => $a->getActivity()->getPrice(),
             "ticketsLeft" => $a->getActivity()->getTicketsLeft(),
-            "locationId" => $a->getActivity()->getLocation()->getId(),
             "address" => $a->getActivity()->getLocation()->getAddress(),
             "postalCode" => $a->getActivity()->getLocation()->getPostalcode(),
             "city" => $a->getActivity()->getLocation()->getCity(),
             "location" => [
                 "options" => $locationStrings,
-                "selected" => $a->getActivity()->getLocation()->getName()
+                "selected" => $a->getActivity()->getLocation()->getId()
             ]
         ];
+    }
+
+    public function writeHtmlEditFields($post){
+
     }
 }
