@@ -123,6 +123,7 @@ $nav->assignCss([
             document.getElementById("formTop").remove();
             isBoxOpen = false;
         }
+        exitButton.setAttribute("form", "");
         formHeader.appendChild(type);
         formHeader.appendChild(exitButton);
         form.appendChild(formHeader);

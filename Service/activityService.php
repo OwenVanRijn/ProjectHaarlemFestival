@@ -75,6 +75,9 @@ class activityService extends baseService
     }
 
     public function writeHtmlEditFields($post, account $account){
+        if (!isset($post["type"]))
+            throw new appException("No data");
+
         switch ($post["type"]){
             case "Food":
                 $newPost = $this->food->filterHtmlEditResponse($account, $post);
@@ -93,6 +96,7 @@ class activityService extends baseService
         (new locationService())->postEditFields($newPost);
         (new restaurantService())->postEditFields($newPost);
         ($this->dance)->postEditFields($newPost);
+        ($this->jazz)->postEditFields($newPost);
 
         echo json_encode($newPost);
     }

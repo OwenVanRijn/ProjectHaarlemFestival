@@ -13,6 +13,10 @@ if (!$user){
 }
 
 $activity = new activityService();
-$activity->writeHtmlEditFields($_POST, $user);
-
-header('Location: ../CMS/events.php?event=' . strtolower($_POST["type"]));
+try {
+    $activity->writeHtmlEditFields($_POST, $user);
+    header('Location: ../CMS/events.php?event=' . strtolower($_POST["type"]));
+}
+catch (appException $e){
+    http_response_code(400);
+}
