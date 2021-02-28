@@ -175,11 +175,12 @@ $nav->assignCss([
 <?php $nav->generate($user) ?>
 <section class="main">
     <?php
-        if ($_GET["event"] == "jazz")
+        $event = $_GET["event"];
+        if ($event == "jazz")
             $table = new jazzactivityService();
-        elseif ($_GET["event"] == "dance")
+        elseif ($event == "dance")
             $table = new danceActivityService();
-        elseif ($_GET["event"] == "food")
+        elseif ($event == "food")
             $table = new foodactivityService();
         // TODO: make page to select events
 

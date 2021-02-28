@@ -4,8 +4,10 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
 require_once ("activityBaseService.php");
 require_once ($root . "/DAL/artistOnActivityDAO.php");
+require_once ($root . "/DAL/danceActivityDAO.php");
 require_once ($root . "/DAL/danceArtistDAO.php");
 require_once ("restaurantTypeService.php");
+require_once ("artistOnActivityService.php");
 
 class danceActivityService extends activityBaseService
 {
@@ -77,6 +79,7 @@ class danceActivityService extends activityBaseService
     
     public const getHtmlEditHeader = [
         "artists" => [ // TODO: This needs some custom type!
+            "artistActivityId" => htmlTypeEnum::hidden,
             "eventType" => htmlTypeEnum::text,
             "artistsOnActivity" => htmlTypeEnum::listMultiple
         ]
@@ -97,11 +100,27 @@ class danceActivityService extends activityBaseService
         }
 
         return [
+            "artistActivityId" => $a->getId(),
             "eventType" => $a->getType(),
             "artistsOnActivity" => [
                 "options" => $artistStrs,
                 "selected" => $artistSelStrs
             ]
         ];
+    }
+
+    public function postEditFields($post){
+        if (isset($post["artistsIncomplete"]) || $post["type"] != "Dance")
+            return;
+
+        $update = [
+            "id" => (int)$post["artistActivityId"],
+            "sessionType" => $post["eventType"]
+        ];
+
+        (new artistOnActivityService())->updateArtistIds($update["id"], $post["artistsOnActivity"]);
+
+        if (!(new danceActivityDAO())->update($update))
+            throw new appException("Db update failed...");
     }
 }

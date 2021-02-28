@@ -12,4 +12,7 @@ if (!$user){
     exit();
 }
 
-print_r($_POST);
+$activity = new activityService();
+$activity->writeHtmlEditFields($_POST, $user);
+
+header('Location: ../CMS/events.php?event=' . strtolower($_POST["type"]));
