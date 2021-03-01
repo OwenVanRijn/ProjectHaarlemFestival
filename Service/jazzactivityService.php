@@ -37,7 +37,7 @@ class jazzactivityService extends activityBaseService
         "band" => [
             "band" => htmlTypeEnum::list,
             "bandName" => htmlTypeEnum::text,
-            "bandDescription" => htmlTypeEnum::text,
+            "bandDescription" => htmlTypeEnum::textArea,
         ],
         "performance" => [
             "jazzActivityId" => htmlTypeEnum::hidden,

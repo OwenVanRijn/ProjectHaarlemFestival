@@ -10,5 +10,5 @@ abstract class htmlTypeEnum
     public const time = "time";
     public const list = "customList";
     public const listMultiple = "customListMultiple";
-    // TODO: implement a bigtext type
+    public const textArea = "customTextArea";
 }

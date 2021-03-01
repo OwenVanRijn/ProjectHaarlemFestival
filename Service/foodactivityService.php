@@ -36,7 +36,7 @@ class foodactivityService extends activityBaseService
         "restaurant" => [
             "restaurantId" => htmlTypeEnum::hidden,
             "name" => htmlTypeEnum::text,
-            "description" => htmlTypeEnum::text,
+            "description" => htmlTypeEnum::textArea,
             "stars" => htmlTypeEnum::number,
             "seats" => htmlTypeEnum::number,
             "phoneNumber" => htmlTypeEnum::text,

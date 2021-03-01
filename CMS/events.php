@@ -86,9 +86,20 @@ $nav->assignCss([
                 return selectSingle;
 
             default:
-                let input = document.createElement("input");
+                let input;
+                if (fieldContent.type === "customTextArea")
+                    input = document.createElement("textarea");
+                else
+                    input = document.createElement("input");
+
+
                 input.setAttribute("type", fieldContent.type);
-                input.setAttribute("value", fieldContent.value);
+
+                if (fieldContent.type === "customTextArea")
+                    input.innerHTML = fieldContent.value;
+                else
+                    input.setAttribute("value", fieldContent.value);
+
                 input.setAttribute("name", fieldName);
                 input.setAttribute("id", fieldName);
 
