@@ -12,4 +12,11 @@ if (!$user){
     exit();
 }
 
-print_r($_POST);
+$activity = new activityService();
+try {
+    $activity->writeHtmlEditFields($_POST, $user);
+    header('Location: ../CMS/events.php?event=' . strtolower($_POST["type"]));
+}
+catch (appException $e){
+    http_response_code(400);
+}

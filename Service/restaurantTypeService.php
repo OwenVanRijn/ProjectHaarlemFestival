@@ -60,4 +60,18 @@ class restaurantTypeService extends baseService
         }
         return $strs;
     }
+
+    public function updateFieldIds(int $restaurantId, array $typeIds){
+        $this->db->delete([
+            "restaurantid" => $restaurantId
+        ]);
+
+        // TODO: maybe merge call?
+        foreach ($typeIds as $id){
+            $this->db->insert([
+                "restaurantid" => $restaurantId,
+                "restauranttypesid" => (int)$id
+            ]);
+        }
+    }
 }

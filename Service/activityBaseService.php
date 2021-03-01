@@ -88,6 +88,29 @@ abstract class activityBaseService extends baseService implements tableInterface
 
     //public abstract function getHtmlEditFields($entry) : array;
 
+    public function filterHtmlEditResponse(account $account, array $postResonse){
+        $header = array_merge(static::getHtmlEditHeader, self::getHtmlBaseEditHeader);
+        $correctedPostResponse = [];
+
+        foreach ($header as $hk => $hv){
+            foreach ($hv as $k => $v){
+                if (gettype($v) == "array"){
+                    if (($account->getCombinedRole() & $v[1]))
+                        if (array_key_exists($k, $postResonse))
+                            $correctedPostResponse[$k] = $postResonse[$k];
+                        else
+                            $correctedPostResponse[$hk . "Res"] = false;
+                }
+                elseif (array_key_exists($k, $postResonse))
+                    $correctedPostResponse[$k] = $postResonse[$k];
+                else
+                    $correctedPostResponse[$hk . "Incomplete"] = true;
+            }
+        }
+
+        return $correctedPostResponse;
+    }
+
     public function getHtmlEditContent(int $id, account $account): array
     {
         $entries = $this->getFromActivityIds([$id]);
@@ -158,9 +181,5 @@ abstract class activityBaseService extends baseService implements tableInterface
                 "selected" => $a->getActivity()->getLocation()->getId()
             ]
         ];
-    }
-
-    public function writeHtmlEditFields($post){
-
     }
 }

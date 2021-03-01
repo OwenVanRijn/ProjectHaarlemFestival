@@ -46,7 +46,7 @@ class activity extends sqlModel
             "date" => $this->date,
             "startTime" => $this->startTime->format("H:i:s"),
             "endTime" => $this->endTime->format("H:i:s"),
-            "location" => $this->location->getId(),
+            "locationId" => $this->location->getId(),
             "price" =>$this->price,
             "ticketsLeft" =>$this->ticketsLeft
         ];

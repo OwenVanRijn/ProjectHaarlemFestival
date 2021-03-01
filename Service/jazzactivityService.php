@@ -5,6 +5,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once("activityBaseService.php");
 require_once($root . "/DAL/jazzactivityDAO.php");
 require_once($root . "/DAL/jazzbandDAO.php");
+require_once ("jazzBandService.php");
 
 class jazzactivityService extends activityBaseService
 {
@@ -39,6 +40,7 @@ class jazzactivityService extends activityBaseService
             "bandDescription" => htmlTypeEnum::text,
         ],
         "performance" => [
+            "jazzActivityId" => htmlTypeEnum::hidden,
             "hall" => htmlTypeEnum::text,
             "seats" => htmlTypeEnum::number
         ]
@@ -58,10 +60,32 @@ class jazzactivityService extends activityBaseService
                 "options" => $bandsStr,
                 "selected" => $selBand->getId()
             ],
+            "jazzActivityId" => $a->getId(),
             "bandName" => $selBand->getName(),
             "bandDescription" => $selBand->getDescription(),
             "hall" => $a->getHall(),
             "seats" => $a->getSeats()
         ];
+    }
+
+    public function postEditFields($post){
+        if ($post["type"] != "Jazz" || isset($post["performanceIncomplete"]))
+            return;
+
+        $update = [
+            "id" => $post["jazzActivityId"],
+            "hall" => $post["hall"],
+            "seats" => $post["seats"]
+        ];
+
+        if ($post["bandIncomplete"]){
+            $update["jazzbandid"] = (int)$post["band"];
+        }
+        else {
+            (new jazzBandService())->updateBand((int)$post["band"], $post["bandName"], $post["bandDescription"]);
+        }
+
+        if (!$this->db->update($update))
+            throw new appException("Db update failed...");
     }
 }

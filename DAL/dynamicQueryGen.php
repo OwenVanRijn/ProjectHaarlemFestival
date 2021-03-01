@@ -194,7 +194,14 @@ class dynamicQueryGen extends queryBase
             }
         }
 
-        // TODO: add check to only grab the keys that are found in $fields
+        $newKeys = [];
+        foreach ($keys as $k){
+            if (array_key_exists($k, $fields)){
+                $newKeys[] = $k;
+            }
+        }
+
+        $keys = $newKeys;
 
         $query = "INSERT INTO " . $this->class::sqlTableName() . " (";
 
