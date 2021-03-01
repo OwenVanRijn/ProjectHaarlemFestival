@@ -1,0 +1,89 @@
+nav{
+  background-color: #000;
+  overflow: auto;
+  width: 100%;
+}
+nav a
+{
+  float: left;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  color: #FD6A02;
+  font-size: 17px;
+}
+ul{
+  margin-top: 0.5em;
+  list-style-type: none;
+}
+.navItem{
+  margin-left: 6em;
+}
+.logo{
+  height: 40px;
+  width: 40px;
+}
+.image
+{
+  pointer-events: none;
+  float: left;
+  margin-left: 5em;
+}
+.imageRight{
+  pointer-events: none;
+  float: right;
+  margin-right: 5em;
+}
+footer {
+	background: #000;
+    position:absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-family: arial;
+}
+.footerLinks {
+   padding-left: 44%;
+   padding-top: 2%;
+}
+.footerLinks ul {
+	padding: 0;
+  list-style-type: none;
+  margin: 0;
+}
+.footerLinks a {
+	color: #d9d9d9;
+	text-decoration: none;
+	font-size: 18px;
+}
+.logoFooter{
+    height: 100px;
+    width: 100px;
+    float: left;
+    padding-left: 5%;
+    padding-top: 2%;
+}
+.socialMedia{
+  padding-left: 80%;
+  padding-right: 4%;
+}
+.titleSocialMedia
+{
+  color: white;
+}
+.fa {
+  padding: 20px;
+  font-size: 30px;
+  width: 50px;
+  text-align: center;
+  text-decoration: none;
+  margin: 5px 2px;
+}
+.fa-facebook {
+  background: #3B5998;
+  color: white;
+}
+.fa-youtube {
+  background: #bb0000;
+  color: white;
+}
