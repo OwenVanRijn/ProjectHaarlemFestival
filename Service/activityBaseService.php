@@ -97,12 +97,12 @@ abstract class activityBaseService extends baseService implements tableInterface
                 if (gettype($v) == "array"){
                     if (($account->getCombinedRole() & $v[1]))
                         if (array_key_exists($k, $postResonse))
-                            $correctedPostResponse[$k] = $postResonse[$k];
+                            $correctedPostResponse[$k] = htmlSpecialchars($postResonse[$k], ENT_QUOTES);
                         else
-                            $correctedPostResponse[$hk . "Res"] = false;
+                            $correctedPostResponse[$hk . "Incomplete"] = false;
                 }
                 elseif (array_key_exists($k, $postResonse))
-                    $correctedPostResponse[$k] = $postResonse[$k];
+                    $correctedPostResponse[$k] = htmlSpecialchars($postResonse[$k], ENT_QUOTES);
                 else
                     $correctedPostResponse[$hk . "Incomplete"] = true;
             }
