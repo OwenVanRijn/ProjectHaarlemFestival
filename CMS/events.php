@@ -48,11 +48,23 @@ $nav->assignCss([
     }
 
     function generateInputField(fieldContent, className, fieldName){
+        let entry = document.createElement("section");
+        entry.classList.add("displayInlineBlock");
+
         switch (fieldContent.type){
             case "customListMultiple":
+                if (fieldContent.type !== "hidden"){
+                    let label = document.createElement("label");
+                    label.setAttribute("for", fieldName);
+                    label.innerHTML = fieldName;
+                    label.classList.add("leftStack");
+                    entry.appendChild(label);
+                }
+
                 let select = document.createElement("select");
                 select.setAttribute("name", fieldName + "[]");
                 select.setAttribute("multiple", '');
+                select.classList.add("leftStack");
 
                 for (const optionIndex in fieldContent.value.options){
                     const option = fieldContent.value.options[optionIndex];
@@ -66,7 +78,9 @@ $nav->assignCss([
                     select.appendChild(optionElem);
                 }
 
-                return select;
+                entry.appendChild(select);
+
+                return entry;
 
             case "customList":
                 let selectSingle = document.createElement("select");
@@ -86,6 +100,14 @@ $nav->assignCss([
                 return selectSingle;
 
             default:
+                if (fieldContent.type !== "hidden"){
+                    let label = document.createElement("label");
+                    label.setAttribute("for", fieldName);
+                    label.innerHTML = fieldName;
+                    label.classList.add("leftStack");
+                    entry.appendChild(label);
+                }
+
                 let input;
                 if (fieldContent.type === "customTextArea")
                     input = document.createElement("textarea");
@@ -102,18 +124,10 @@ $nav->assignCss([
 
                 input.setAttribute("name", fieldName);
                 input.setAttribute("id", fieldName);
+                input.classList.add("leftStack", "marginRightOption");
+                entry.appendChild(input);
 
-                let label = input;
-
-                if (fieldContent.type !== "hidden"){
-                    label = document.createElement("label");
-                    label.setAttribute("for", fieldName);
-                    label.innerHTML = fieldName;
-                    label.appendChild(input);
-                }
-
-
-                return label;
+                return entry;
         }
     }
 
@@ -127,8 +141,10 @@ $nav->assignCss([
 
         let formHeader = document.createElement("section");
         let type = document.createElement("h3");
+        type.classList.add("marginTopBottom", "displayInlineBlock");
         let exitButton = document.createElement("button");
-        type.innerHTML = json.activity.type.value;
+        exitButton.classList.add("marginTopBottom", "floatRight");
+        type.innerHTML = json.activity.type.value + " Event";
         exitButton.innerHTML = "Exit";
         exitButton.onclick = function () {
             document.getElementById("formTop").remove();
@@ -145,7 +161,9 @@ $nav->assignCss([
             let sectionHeader = document.createElement("section");
             let sectionContent = document.createElement("section");
             sectionContent.setAttribute("id", className + "Section");
+            section.classList.add("clearLeft");
             let header = document.createElement("h3");
+            header.classList.add("marginTopBottom", "displayInlineBlock");
             header.innerHTML = className;
             sectionHeader.appendChild(header);
             section.appendChild(sectionHeader);
@@ -157,9 +175,12 @@ $nav->assignCss([
                 if (className === fieldName){
                     let field = generateInputField(fieldContents, className, fieldName);
                     field.addEventListener('change', () => {
-                        document.getElementById(className + "Section").remove(); // TODO: gives a typeError if element is already deleted
+                        let form = document.getElementById(className + "Section");
+                        if (form != null)
+                            form.remove();
                     })
-                    sectionHeader.appendChild(field)
+                    sectionHeader.appendChild(field);
+                    field.classList.add("marginTopBottom", "marginLeftOption");
                     continue;
                 }
 

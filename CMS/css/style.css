@@ -51,4 +51,38 @@ nav .aSel:hover {
     padding: 10px;
     border-style: solid;
     border-radius: 10px;
+    overflow: auto;
+}
+
+.halfWidth {
+    width: 50%;
+}
+
+.displayInlineBlock {
+    display: inline-block;
+}
+
+.marginTopBottom {
+    margin: 15px 0px 15px 0px;
+}
+
+.floatRight {
+    float: right;
+}
+
+.marginLeftOption {
+    margin-left: 20px;
+}
+
+.marginRightOption {
+    margin-right: 20px;
+}
+
+.leftStack {
+    float: left;
+    clear: left;
+}
+
+.clearLeft {
+    clear: left;
 }
