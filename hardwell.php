@@ -1,6 +1,7 @@
 <?php
-    require_once "UI/navBar.php";
-    require_once "Service/danceActivityService";
+    require_once "Service/artistService.php";
+
+    $name = "hardwell";
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +19,12 @@
     </head>
 
     <body>
+        <?php
+            $service = new artistService();
 
+            $artist = $service->getArtist('hardwell');
+
+        ?>
     </body>
 
 </html>

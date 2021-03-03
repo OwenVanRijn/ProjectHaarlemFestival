@@ -7,8 +7,8 @@
 
 <head>
     <title>Socials - Haarlem Festival</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css";
     <meta charset="UTF-8">
     <meta name="keywords" content="Haarlem, festival, jazz, food, history, party, feest, geschiedenis, eten, restaurant">
     <meta name="description" content="Haarlem Festival">
@@ -28,17 +28,67 @@
     <section class="container-fluid">
         <section class="row h-100">
 
-            <section class="col-6 text-center"  style="padding: 1%">
-
-                <div style="width: 100%" class="w-100"><iframe scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=100%25&amp;height=400&amp;hl=nl&amp;q=Grote%20Markt,%20Haarlem+(Haarlem%20Festival)&amp;t=&amp;z=15&amp;ie=UTF8&amp;iwloc=B&amp;output=embed" width="100%" height="400" frameborder="0"></iframe></div>
-                <p><strong>Haarlem Festival</strong></p>
-                <p><strong>Address:</strong> Grote Markt 2</p>
-                <p><strong>Postalcode:</strong> 2011RD</p>
-                <p><strong>City:</strong> Haarlem</p>
+            <section class="row w-100 justify-content-center align-self-center">
+                <h1>Contact us</h1>
             </section>
 
-            <section class="col-6 text-center">
-                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSez3A6-LcLXnuIU9WqFSv9dHMbm3a2cPadxe09Y6ChcIORk2w/viewform?embedded=true" width="640" height="900" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+            <section class="row w-100 justify-content-center align-self-center">
+                <h3><bold>Send us a message</bold></h3>
+            </section>
+
+            <section class="row w-100 justify-content-center align-self-center">
+                <p>Click on the social media icons to send a message</p>
+            </section>
+
+            <section class="row w-100 justify-content-center align-self-center">
+                <section class="col-3">
+                    <img scr="ïmg/facebook.png">
+                </section>
+
+                <section class="col-3">
+                    <img scr="ïmg/youtube.png">
+                </section>
+            </section>
+
+            <section class="row w-100 justify-content-center align-self-center">
+                <p> Or fill in the contact form</p>
+            </section>
+
+            <!-- ADD ICONS -->
+        </section>
+    </section>
+
+
+    <section class="container">
+        <section class="row h-100 justify-content-center align-self-center">
+            <section class="col-3" style="margin-bottom: 1%">
+                <p style="margin: 0">Firstname</p>
+                <input type="text" placeholder="firstname">
+            </section>
+
+            <section class="col-3" style="margin-bottom: 1%" style="margin: 0">
+                <p style="margin: 0">Lastname</p>
+                <input type="text" placeholder="lastname">
+            </section>
+        </section>
+
+        <section class="row h-100 justify-content-center align-self-center">
+            <section class="col-6" style="margin-bottom: 1%">
+                <p style="margin: 0">E-mail</p>
+                <input type="text" placeholder="email">
+            </section>
+        </section>
+
+        <section class="row h-100 justify-content-center align-self-center">
+            <section class="col-6" style="margin-bottom: 1%">
+                <p style="margin: 0">Message</p>
+                <textarea rows="6" cols="50"></textarea>
+            </section>
+        </section>
+
+        <section class="row h-100 justify-content-center alignt-self-center text-center">
+            <section class="col-6">
+                <button class="button1">Send</button>
             </section>
         </section>
     </section>

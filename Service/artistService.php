@@ -14,8 +14,15 @@ class artistService extends baseService
     }
 
     public function getArtists(){
-        $artistDB = new dynamicQueryGen(danceArtist::class);
+        return $this->db->get();
+    }
 
-        return $artistDB->get();
+    public function getArtist(string $name){
+        $res = $this->db->get()([
+           "danceArtist.name" => $name,
+            "order" => ["danceArtist.id", "danceArtist.name", "danceArtist.description"]
+        ]);
+
+        print_r($res);
     }
 }
