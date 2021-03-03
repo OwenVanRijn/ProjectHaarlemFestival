@@ -3,7 +3,13 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/UI/navBar.php");
 require_once($root . "/Service/foodactivityService.php");
 require_once($root . "/Service/restaurantService.php");
+require_once($root . "/Service/restaurantTypeService.php");
+
+$restaurantService = new restaurantService();
+$restaurantTypeService = new restaurantTypeService();
+
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -57,21 +63,22 @@ require_once($root . "/Service/restaurantService.php");
 
             <section class="cuisine">
                 <p class="filterlabelSubtitle">Cuisine</p>
-
-                <select name="cuisine" id="cuisine">
-                    <option value="1">Argentinian</option>
-                    <option value="2">Dutch</option>
-                    <option value="3">European</option>
-                    <option value="4">Fish</option>
-                    <option value="5">French</option>
-                </select>
+                <form>
+                    <select name="cuisine" id="cuisine" onchange="this.form.submit()">
+                        <option value="1">Argentinian</option>
+                        <option value="2">Dutch</option>
+                        <option value="3">European</option>
+                        <option value="4">Fish</option>
+                        <option value="5">French</option>
+                    </select>
+                </form>
             </section>
 
             <section class="searchbar">
                 <p class="filterlabelSubtitle"><br>Search for a restaurant</p>
-                <form action="/action_page.php">
-                    <input type="text" placeholder="Search.." name="search">
-                    <button type="submit" class="button1">Search</button>
+                <form method="post">
+                    <input type="text" placeholder="Search.." name="searchterm">
+                    <button type="submit" class="button1" name="searchbutton">Search</button>
                 </form>
             </section>
         </section>
@@ -81,57 +88,57 @@ require_once($root . "/Service/restaurantService.php");
     <section class="w3-container">
         <section id="id01" class="w3-modal">
             <section class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
-                <form class="w3-container" action="/action_page.php">
+                <form class="w3-container" <!--action="/action_page.php"--> method="post">
 
-                    <h1>Reservation Restaurant Fris</h1>
+                <h1>Reservation Restaurant Fris</h1>
 
-                    <section class="reservationsection">
-                        <label><b>Amount of seats</b></label>
+                <section class="reservationsection">
+                    <label><b>Amount of seats</b></label>
 
-                        <select name="seats" id="seats">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                    </section>
+                    <select name="seats" id="seats">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </section>
 
-                    <section class="reservationsection">
-                        <label class="labelTitle">Date<br></label>
-                        <input type="radio" class="date" name="date" id="date1" value="1">
-                        <label for="date1">17:30 - 19:00</label><br>
-                        <input type="radio" id="date" name="date" id="date2" value="2">
-                        <label for="date2">19:00 - 20:30</label><br>
-                        <input type="radio" id="date" name="date" id="session3" value="3">
-                        <label for="date3">20:30 - 22:00</label><br><br>
-                    </section>
+                <section class="reservationsection">
+                    <label class="labelTitle">Date<br></label>
+                    <input type="radio" class="date" name="date" id="date1" value="1">
+                    <label for="date1">17:30 - 19:00</label><br>
+                    <input type="radio" id="date" name="date" id="date2" value="2">
+                    <label for="date2">19:00 - 20:30</label><br>
+                    <input type="radio" id="date" name="date" id="session3" value="3">
+                    <label for="date3">20:30 - 22:00</label><br><br>
+                </section>
 
-                    <br>
-                    <section class="reservationsection">
-                        <label class="labelTitle">Session<br></label>
-                        <input type="radio" class="session" name="session" id="session1" value="1">
-                        <label for="session1">17:30 - 19:00</label><br>
-                        <input type="radio" id="session" name="session" id="session2" value="2">
-                        <label for="session2">19:00 - 20:30</label><br>
-                        <input type="radio" id="session" name="session" id="session3" value="3">
-                        <label for="session3">20:30 - 22:00</label><br><br>
-                    </section>
+                <br>
+                <section class="reservationsection">
+                    <label class="labelTitle">Session<br></label>
+                    <input type="radio" class="session" name="session" id="session1" value="1">
+                    <label for="session1">17:30 - 19:00</label><br>
+                    <input type="radio" id="session" name="session" id="session2" value="2">
+                    <label for="session2">19:00 - 20:30</label><br>
+                    <input type="radio" id="session" name="session" id="session3" value="3">
+                    <label for="session3">20:30 - 22:00</label><br><br>
+                </section>
 
-                    <section class="reservationsection">
-                        <label class="labelTitle">Note</label>
-                        <p>Do you have any dietary requirements, allergies or other comments?</p>
-                        <textarea id="noteTextArea" rows="3"></textarea>
-                    </section>
+                <section class="reservationsection">
+                    <label class="labelTitle">Note</label>
+                    <p>Do you have any dietary requirements, allergies or other comments?</p>
+                    <textarea id="noteTextArea" rows="3" name="notes"></textarea>
+                </section>
 
 
-                    <section class="w3-container w3-border-top w3-padding-16 w3-light-grey">
-                        <button onclick="document.getElementById('id01').style.display='none'" type="button"
-                                class="w3-button w3-red">Cancel
-                        </button>
-                        <input class="w3-button w3-green w3-right w3-padding" type="submit" name="reservation"
-                               id="session3" value="Send">
-                    </section>
+                <section class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+                    <button onclick="document.getElementById('id01').style.display='none'" type="button"
+                            class="w3-button w3-red">Cancel
+                    </button>
+                    <input class="w3-button w3-green w3-right w3-padding" type="submit" name="reservation"
+                           id="session3" value="Make a reservation">
+                </section>
                 </form>
 
             </section>
@@ -149,22 +156,87 @@ require_once($root . "/Service/restaurantService.php");
 
     <section class="container-fluid w-70">
         <?php
-        $restaurantService = new restaurantService();
-
         $format = "HH:MM";
 
-        $restaurants = $restaurantService->getAll();
 
+        if (isset($_POST["searchbutton"])) {
+
+            $searchTerm = $_POST["searchterm"];
+
+            $stars3 = "false";
+            $stars4 = "false";
+            $restaurants = $restaurantService->getBySearch($searchTerm, $stars3, $stars4);
+        } else if (isset($_GET["cuisine"])) {
+            $cuisine = $_GET["cuisine"];
+            $restaurants = $restaurantService->getByType($cuisine);
+        } else {
+            $restaurants = $restaurantService->getAll();
+        }
 
         echo "<section class='row' style='margin-top: 2%'>";
+        if ($restaurants != null) {
 
-        foreach ($restaurants
+            if (is_array($restaurants)) {
+                foreach ($restaurants as $restaurant) {
+                    echoRestaurant($restaurant);
+                }
+            }
+            else
+            {
+                echoRestaurant($restaurants);
+            }
+        } else {
+            echo "No results here.";
+        }
 
-        as $restaurant) {
+        if (isset($_POST["restaurantId"])) {
+            $restaurantId = $_POST["restaurantId"];
 
+            echo "RESTAURANT ID IS $restaurantId";
+
+            ?>
+            <script>
+                document.getElementById('id01').style.display = 'block';
+            </script>
+
+            <?php
+        }
+
+        if (isset($_POST["seats"]) && isset($_POST["date"]) && isset($_POST["session"]) && isset($_POST["note"])) {
+
+            $seats = $_POST["seats"];
+            $date = $_POST["date"];
+            $session = $_POST["session"];
+            $note = $_POST["note"];
+            $restaurantId = $_POST["restaurantId"];
+
+
+            $foodActivityService = new foodactivityService();
+            $foodActivityService->getAll([
+                "activity.type" => new dbContains("Food"),
+                "activity.date" => new dbContains($date),
+                "foodActivity.restaurantId" => new dbContains($restaurantId)
+            ]);
+
+            //$danceThing = new artistOnActivityDAO();
+            //print_r($danceThing->get([
+            //    "danceartist.name" => new dbContains("Afro")
+            //]));
+
+
+            $shoppingcartService = new shoppingcartService();
+            $shoppingcartService->getShoppingcart()->addToShoppingcartItemsById($activityId, $seats);
+
+
+        }
+
+
+        function echoRestaurant($restaurant)
+        {
         echo "<section class='col-4 box'>";
         echo "<section class='col-12 text-center' style='background-color: black; color: white; padding-top: 2%;'>";
         $restaurantName = $restaurant->getName();
+        echo $restaurantName;
         $restaurantId = $restaurant->getId();
         echo $restaurantId . " ID";
         $location = $restaurant->getLocation()->getAddress() . " " . $restaurant->getLocation()->getPostalCode();
@@ -184,26 +256,12 @@ require_once($root . "/Service/restaurantService.php");
         </form>
     </section>
     </section>
-
-    <?php
-    }
-    echo "</section>";
-    ?>
+    </section>
     </section>
 
     <?php
-    if (isset($_POST["restaurantId"])) {
-        $restaurantId = $_POST["restaurantId"];
-
-        echo "RESTAURANT ID IS $restaurantId";
-
-        ?>
-        <script>
-            document.getElementById('id01').style.display = 'block';
-        </script>
-
-        <?php
     }
+
     ?>
 
 </main>

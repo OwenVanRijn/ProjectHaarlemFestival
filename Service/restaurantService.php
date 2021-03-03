@@ -2,9 +2,9 @@
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
-require_once ("activityBaseService.php");
-require_once ($root . "/DAL/restaurantDAO.php");
-require_once ("restaurantTypeService.php");
+require_once("activityBaseService.php");
+require_once($root . "/DAL/restaurantDAO.php");
+require_once("restaurantTypeService.php");
 
 class restaurantService extends baseService
 {
@@ -18,7 +18,8 @@ class restaurantService extends baseService
         return $this->db->get();
     }
 
-    public function postEditFields($post){
+    public function postEditFields($post)
+    {
         if (isset($post["restaurantIncomplete"]) || $post["type"] != "Food" || !isset($post["location"]))
             return;
 
@@ -41,5 +42,26 @@ class restaurantService extends baseService
 
         if (!$this->db->update($update))
             throw new appException("Db update failed...");
+    }
+
+    public function getBySearch($searchTerm, $stars3, $stars4)
+    {
+        $filter = array();
+
+        $filter = array_merge($filter, array("restaurant.name" => new dbContains($searchTerm)));
+
+        if (!$stars3 || !$stars4) {
+            $filter = array_merge($filter, array("restaurant.stars" => new dbContains(3)));
+        }
+        return $this->db->get($filter);
+    }
+
+    public function getByType($type)
+    {
+        echo "TYPE IS $type";
+
+        return $this->db->get([
+            "restauranttypelink.restauranttypesid" => new dbContains($type)
+        ]);
     }
 }

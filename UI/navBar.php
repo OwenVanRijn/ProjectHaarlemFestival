@@ -25,26 +25,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
           <li><a class="imageRight"><img class="logo" src="img/shoppingcart.png" alt="logo"></a></li>
         </ul>
      </nav>
-     <footer>
-       <img class="logoFooter" src="img/logo-wit.png" alt="">
-      <section class="footerLinks">
-        <ul>
-          <li><a href="#">> Photo's and video's</a>
-          </li>
-          <li><a href="#">> Online events</a>
-          </li>
-          <li><a href="./contact.php">> Contact us</a>
-          </li>
-          <li><a href="./volunteers.php">> For volunteers</a>
-          </li>
-        </ul>
-      </section>
-      <section class="socialMedia">
-        <p class="titleSocialMedia">Social Media</p>
-        <a href="#" class="fa fa-facebook"></a>
-        <a href="#" class="fa fa-youtube"></a>
-      </section>
-    </footer>
+
 
 </body>
 </html>
