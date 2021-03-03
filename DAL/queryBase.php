@@ -98,8 +98,10 @@ abstract class queryBase
                             $this->localVars[] = $var->format("Y-m-d");
                             break;
                         case "dbContains":
-                            $this->types .= "s";
-                            $this->localVars[] = $var->getContainsStr();
+                            foreach ($var->getContainsArray() as $entry){
+                                $this->types .= "s";
+                                $this->localVars[] = $entry;
+                            }
                             break;
                     }
                     break;

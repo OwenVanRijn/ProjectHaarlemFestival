@@ -99,7 +99,7 @@ class dynamicQueryGen extends queryBase
                     $query .= ") AND ";
                 }
                 else if (gettype($v) == "object" && get_class($v) == "dbContains"){
-                    $query .= "position(? in " . $this->genTableVar($k) . ") > 0 AND ";
+                    $query .= $v->genSql($this->genTableVar($k)) . " AND ";
                 }
                 else {
                     $query .= $this->genTableVar($k) . " = ? AND ";
