@@ -56,6 +56,13 @@ class restaurantService extends baseService
         return $this->db->get($filter);
     }
 
+    public function getById($id)
+    {
+        return $this->db->get([
+            "restaurant.id" => new dbContains($id)
+        ]);
+    }
+
     public function getByType($type)
     {
         echo "TYPE IS $type";

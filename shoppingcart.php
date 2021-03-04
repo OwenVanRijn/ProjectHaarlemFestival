@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/UI/navBar.php");
 require_once($root . "/Service/jazzactivityService.php");
@@ -47,8 +48,6 @@ require_once($root . "/Service/shoppingcartService.php");
         foreach ($shoppingcart as $key => $value) {
             $ids[] = $key;
         }
-        $ids[] = 124;
-        $ids[] = 107;
         echo "<br><br> IDS <br><br>";
         var_dump($ids);
         echo "<br><br> IDS <br><br>";
@@ -190,6 +189,16 @@ function echoTitles($date)
     echo $element;
 }
 
+if (isset($_POST['remove'])){
+    if ($_GET['action'] == 'remove'){
+        $shoppingcartService->removeFromShoppingcartItemsById($_GET["id"]);
+    }
+    else if ($_GET['action'] == 'remove'){
+        $shoppingcartService->removeFromShoppingcartItemsById($_GET["id"]);
+    }
+
+    header("Refresh:0");
+}
 
 function cartElement($activityid, $activityName, $type, $createData, $startTime, $endTime, $price, $amount)
 {
@@ -197,7 +206,7 @@ function cartElement($activityid, $activityName, $type, $createData, $startTime,
 
     $element = "
     
-    <form action=\"cart.php?action=remove&id=$activityid\" method=\"post\" class=\"cart-items\">
+    <form action=\"shoppingcart.php?action=remove&id=$activityid\" method=\"post\" class=\"cart-items\">
                     <section class=\"border rounded\">
                         <section class=\"row bg-white\">
                             <section class=\"col-md-6\">

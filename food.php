@@ -85,67 +85,6 @@ $restaurantTypeService = new restaurantTypeService();
     </section>
 
 
-    <section class="w3-container">
-        <section id="id01" class="w3-modal">
-            <section class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
-                <form class="w3-container" <!--action="/action_page.php"--> method="post">
-
-                <h1>Reservation Restaurant Fris</h1>
-
-                <section class="reservationsection">
-                    <label><b>Amount of seats</b></label>
-
-                    <select name="seats" id="seats">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
-                </section>
-
-                <section class="reservationsection">
-                    <label class="labelTitle">Date<br></label>
-                    <input type="radio" class="date" name="date" id="date1" value="1">
-                    <label for="date1">17:30 - 19:00</label><br>
-                    <input type="radio" id="date" name="date" id="date2" value="2">
-                    <label for="date2">19:00 - 20:30</label><br>
-                    <input type="radio" id="date" name="date" id="session3" value="3">
-                    <label for="date3">20:30 - 22:00</label><br><br>
-                </section>
-
-                <br>
-                <section class="reservationsection">
-                    <label class="labelTitle">Session<br></label>
-                    <input type="radio" class="session" name="session" id="session1" value="1">
-                    <label for="session1">17:30 - 19:00</label><br>
-                    <input type="radio" id="session" name="session" id="session2" value="2">
-                    <label for="session2">19:00 - 20:30</label><br>
-                    <input type="radio" id="session" name="session" id="session3" value="3">
-                    <label for="session3">20:30 - 22:00</label><br><br>
-                </section>
-
-                <section class="reservationsection">
-                    <label class="labelTitle">Note</label>
-                    <p>Do you have any dietary requirements, allergies or other comments?</p>
-                    <textarea id="noteTextArea" rows="3" name="notes"></textarea>
-                </section>
-
-
-                <section class="w3-container w3-border-top w3-padding-16 w3-light-grey">
-                    <button onclick="document.getElementById('id01').style.display='none'" type="button"
-                            class="w3-button w3-red">Cancel
-                    </button>
-                    <input class="w3-button w3-green w3-right w3-padding" type="submit" name="reservation"
-                           id="session3" value="Make a reservation">
-                </section>
-                </form>
-
-            </section>
-        </section>
-    </section>
-
-
     <section class="callout">
         <section class="closebtn" onclick="this.parentElement.style.display='none';">×</section>
         <section class="callout-container">
@@ -180,9 +119,7 @@ $restaurantTypeService = new restaurantTypeService();
                 foreach ($restaurants as $restaurant) {
                     echoRestaurant($restaurant);
                 }
-            }
-            else
-            {
+            } else {
                 echoRestaurant($restaurants);
             }
         } else {
@@ -248,10 +185,16 @@ $restaurantTypeService = new restaurantTypeService();
         echo "<section class='row'><p style='color: orange; font-weight: bold'>Session:</p><bold>{$description}</bold></section>";
         echo "<section class='row'><p style='color: orange; font-weight: bold'>Price:</p><bold>{$price}</bold></section>";
 
-        echo "<form method=\"POST\">";
+        echo "<form method=\"POST\" action=\"restaurant.php\">";
         echo "<input name=\"restaurantId\" type=\"hidden\" value=\"$restaurantId\">";
         ?>
         <input type="submit" class='btn btn-primary' name="moreinformation" value="More information"></input>
+        </form>
+
+        <?php
+        echo "<form method=\"POST\" action=\"foodreservation.php\">";
+        echo "<input name=\"restaurantId\" type=\"hidden\" value=\"$restaurantId\">";
+        ?>
         <input type="submit" class='btn btn-primary' name="makereservation" value="Make a reservation"></input>
         </form>
     </section>

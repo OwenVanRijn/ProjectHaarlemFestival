@@ -5,6 +5,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once ("activityBaseService.php");
 require_once ($root . "/DAL/foodactivityDAO.php");
 require_once ($root . "/Model/account.php");
+require_once ($root . "/DAL/dbContains.php");
 require_once ("restaurantTypeService.php");
 
 class foodactivityService extends activityBaseService
@@ -74,5 +75,22 @@ class foodactivityService extends activityBaseService
 
     public function getFiltered(string $restaurantName, string $restaurantType, int $minStars){
 
+    }
+
+    public function getByRestaurantId(int $restaurantId){
+        return $this->db->get([
+            "restaurant.id" => new dbContains("$restaurantId")
+        ]);
+    }
+
+
+    public function getBySessionDate(string $date, string $startendTime, int $restaurantId){
+        $times = explode("-", $startendTime);
+        return $this->db->get([
+            "activity.date" => new dbContains("$date"),
+            "activity.startTime" => new dbContains("$times[0]"),
+            "activity.endTime" => new dbContains("$times[1]"),
+            "restaurant.id" => new dbContains("$restaurantId")
+        ]);
     }
 }

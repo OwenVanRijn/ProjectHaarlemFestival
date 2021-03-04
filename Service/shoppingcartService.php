@@ -31,7 +31,7 @@ class shoppingcartService extends baseService
         $this->jazzactivityService = new jazzactivityService();
         $this->foodactivityService = new foodactivityService();
         $this->danceActivityService = new danceActivityService();
-        $this->check();
+        //$this->check();
     }
 
 
@@ -51,28 +51,28 @@ class shoppingcartService extends baseService
     public function check()
     {
         // DeleteAll
-        if (isset($_POST["delete"])) {
-            if ($_GET["operation"] == "delete") {
+        if (isset($_POST["remove"])) {
+            if ($_GET["action"] == "remove") {
                 $this->getShoppingcart()->removeFromShoppingcartItemsById($_GET["id"]);
             }
         }
 
         // Aftrekken
-        if (isset($_POST["remove"])) {
-            if ($_GET["operation"] == "remove") {
+        if (isset($_POST["verb"])) {
+            if ($_GET["action"] == "verb") {
                 $this->getShoppingcart()->addToShoppingcartItemsById($_GET["id"], -$_GET["amount"]);
             }
         }
 
         // Toevoegen
         if (isset($_POST["add"])) {
-            if ($_GET["operation"] == "add") {
+            if ($_GET["action"] == "add") {
                 $this->getShoppingcart()->addToShoppingcartItemsById($_GET["id"], $_GET["amount"]);
             }
         }
 
         if (isset($_POST["share"])) {
-            if ($_GET["operation"] == "share") {
+            if ($_GET["action"] == "share") {
                 $shoppingcartDB = new dynamicQueryGen(shoppingcart::class);
                 $shoppingcartDB->insert($this->getShoppingcart()->sqlGetFields());
             }
@@ -117,5 +117,15 @@ class shoppingcartService extends baseService
         }
 
         return 1;
+    }
+
+    public function removeFromShoppingcartItemsById(int $id)
+    {
+        $this->getShoppingcart()->removeFromShoppingcartItemsById($id);
+    }
+
+    public function setShoppingcartItemById(int $id, int $amount)
+    {
+        $this->getShoppingcart()->removeFromShoppingcartItemsById($id);
     }
 }

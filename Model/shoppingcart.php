@@ -96,11 +96,14 @@ class shoppingcart extends sqlModel
         $shoppingcartItems = $this->getShoppingcartItems();
         unset($shoppingcartItems[$shoppingcartItemId]);
         $this->setShoppingcartItems($shoppingcartItems);
+        return $this;
+    }
 
-        //echo "<script>alert('Product has been Removed...!')</script>";
-        //echo "<script>window.location = 'shoppingcart.php'</script>";
-
-
+    public function setShoppingcartItemById($shoppingcartItemId, $amount) //aanpassen
+    {
+        $shoppingcartItems = $this->getShoppingcartItems();
+        $shoppingcartItems[$shoppingcartItemId] = $amount;
+        $this->setShoppingcartItems($shoppingcartItems);
         return $this;
     }
 }
