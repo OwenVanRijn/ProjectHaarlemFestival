@@ -48,7 +48,7 @@ abstract class activityBaseService extends baseService implements tableInterface
         $dates = [];
 
         foreach ($content as $c){
-            $dateStr = $c->getActivity()->getDate()->format("Y-m-d");
+            $dateStr = $c->getActivity()->getDate()->format("l") . " (" . $c->getActivity()->getDate()->format("Y-m-d") . ")";
 
             if (!isset($dates[$dateStr])){
                 $dates[$dateStr] = [];

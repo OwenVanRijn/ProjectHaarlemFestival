@@ -219,6 +219,13 @@ $nav->assignCss([
 
         if (isset($table)){
             $tableGen = new tableGenerator($table);
+            $tableGen->assignCss([
+                "tr" => "cmsTableRow",
+                "table" => "cmsTable",
+                "h3" => "cmsTableHeader",
+                "summary" => "cmsSummary",
+                "details" => "cmsDetails",
+            ]);
             $tableGen->generate();
         }
     ?>

@@ -17,7 +17,9 @@ class tableGenerator extends uiGenerator
             "table" => "",
             "tr" => "",
             "th" => "",
-            "td" => ""
+            "td" => "",
+            "details" => "",
+            "summary" => "",
         ];
     }
 
@@ -42,9 +44,11 @@ class tableGenerator extends uiGenerator
 
         foreach ($table["sections"] as $k => $v){
             echo $this->getHtmlElemStr("h3", $k);
-            echo '<table class="' . $this->cssRules["table"] . '">';
+            echo $this->getEmptyEtmlElemStr("details", "", 'open=""');
+            echo $this->getHtmlElemStr("summary", "", "", 'data-open="Close" data-close="Expand"');
+            echo $this->getEmptyEtmlElemStr("table", "", );
 
-            echo '<tr class="'. $this->cssRules["tr"] .'">';
+            echo $this->getEmptyEtmlElemStr("tr");
 
             foreach ($table["header"] as $h){
                 echo $this->getHtmlElemStr("th", $h);
@@ -53,7 +57,7 @@ class tableGenerator extends uiGenerator
             echo '</tr>';
 
             foreach ($v as $r){
-                echo '<tr class="'. $this->cssRules["tr"] .'">';
+                echo $this->getEmptyEtmlElemStr("tr");
                 foreach ($r as $c){
                     echo $this->getHtmlElemStr("td", $c);
                 }
@@ -61,6 +65,7 @@ class tableGenerator extends uiGenerator
             }
 
             echo '</table>';
+            echo '</details>';
         }
     }
 }

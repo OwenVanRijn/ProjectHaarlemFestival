@@ -5,8 +5,12 @@ abstract class uiGenerator
 {
     protected array $cssRules;
 
-    protected function getHtmlElemStr(string $name, string $content, string $addCSS = ""){
-        return '<'. $name . ' class="' . $this->cssRules[$name] . " " . $addCSS .'">' . $content . "</$name>";
+    protected function getHtmlElemStr(string $name, string $content, string $addCSS = "", string $extraTags = ""){
+        return '<'. $name . ' ' . $extraTags .  ' class="' . $this->cssRules[$name] . " " . $addCSS .'">' . $content . "</$name>";
+    }
+
+    protected function getEmptyEtmlElemStr(string $name, string $addCSS = "", string $extraTags = ""){
+        return '<'. $name . ' ' . $extraTags . ' class="' . $this->cssRules[$name] . " " . $addCSS .'">';
     }
 
     public function assignCss(array $rules){
