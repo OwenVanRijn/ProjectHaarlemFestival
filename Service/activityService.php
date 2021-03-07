@@ -66,7 +66,6 @@ class activityService extends baseService
         if (isset($post["ticketsLeft"]))
             $update["ticketsLeft"] = (int)$post["ticketsLeft"];
 
-        // TODO: restaurant doesn't get updated yet!
         if (isset($post["locationIncomplete"]))
             $update["locationId"] = (int)$post["location"];
 

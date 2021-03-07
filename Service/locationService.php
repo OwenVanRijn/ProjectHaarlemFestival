@@ -21,6 +21,7 @@ class locationService extends baseService
             "address" => $post["address"],
             "postalCode" => $post["postalCode"],
             "city" => $post["city"],
+            "name" => $post["locationName"],
         ];
 
         if (!$this->db->update($update))

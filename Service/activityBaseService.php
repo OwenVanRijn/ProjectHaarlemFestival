@@ -88,6 +88,21 @@ abstract class activityBaseService extends baseService implements tableInterface
 
     //public abstract function getHtmlEditFields($entry) : array;
 
+    private function stripHtmlChars($input){
+        switch (gettype($input)){
+            case "string":
+                return htmlspecialchars($input, ENT_QUOTES);
+            case "array":
+                $new = [];
+                foreach ($input as $a){
+                    $new[] = $this->stripHtmlChars($a);
+                }
+                return $new;
+            default:
+                throw new appException("Can't strip type " . gettype($input));
+        }
+    }
+
     public function filterHtmlEditResponse(account $account, array $postResonse){
         $header = array_merge(static::getHtmlEditHeader, self::getHtmlBaseEditHeader);
         $correctedPostResponse = [];
@@ -97,12 +112,12 @@ abstract class activityBaseService extends baseService implements tableInterface
                 if (gettype($v) == "array"){
                     if (($account->getCombinedRole() & $v[1]))
                         if (array_key_exists($k, $postResonse))
-                            $correctedPostResponse[$k] = htmlSpecialchars($postResonse[$k], ENT_QUOTES);
+                            $correctedPostResponse[$k] = $this->stripHtmlChars($postResonse[$k]);
                         else
-                            $correctedPostResponse[$hk . "Incomplete"] = false;
+                            $correctedPostResponse[$hk . "Incomplete"] = true;
                 }
                 elseif (array_key_exists($k, $postResonse))
-                    $correctedPostResponse[$k] = htmlSpecialchars($postResonse[$k], ENT_QUOTES);
+                    $correctedPostResponse[$k] = $this->stripHtmlChars($postResonse[$k]);
                 else
                     $correctedPostResponse[$hk . "Incomplete"] = true;
             }
@@ -149,6 +164,7 @@ abstract class activityBaseService extends baseService implements tableInterface
             "ticketsLeft" => [htmlTypeEnum::number, account::accountTicketManager]
         ],
         "location" => [
+            "locationName" => htmlTypeEnum::text,
             "location" => htmlTypeEnum::list, //we need a way to GET the location's details
             "address" => htmlTypeEnum::text,
             "postalCode" => htmlTypeEnum::text,
@@ -179,7 +195,8 @@ abstract class activityBaseService extends baseService implements tableInterface
             "location" => [
                 "options" => $locationStrings,
                 "selected" => $a->getActivity()->getLocation()->getId()
-            ]
+            ],
+            "locationName" => $a->getActivity()->getLocation()->getName()
         ];
     }
 }
