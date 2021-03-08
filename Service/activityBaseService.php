@@ -91,7 +91,10 @@ abstract class activityBaseService extends baseService implements tableInterface
     private function stripHtmlChars($input){
         switch (gettype($input)){
             case "string":
-                return htmlspecialchars($input, ENT_QUOTES);
+                if (empty($input))
+                    throw new appException("Empty string provided!");
+
+                return trim(htmlspecialchars($input, ENT_QUOTES));
             case "array":
                 $new = [];
                 foreach ($input as $a){

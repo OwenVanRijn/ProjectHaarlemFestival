@@ -18,13 +18,12 @@ class restaurantService extends baseService
         return $this->db->get();
     }
 
-    public function postEditFields($post)
+    public function postEditFields(&$post)
     {
         if (isset($post["restaurantIncomplete"]) || $post["type"] != "Food" || !isset($post["location"]))
             return;
 
         $update = [
-            "id" => (int)$post["restaurantId"],
             "name" => $post["name"],
             "description" => $post["description"],
             "stars" => (int)$post["stars"],
@@ -32,16 +31,35 @@ class restaurantService extends baseService
             "phonenumber" => (int)$post["phoneNumber"]
         ];
 
-        if (isset($post["locationIncomplete"]))
-            $update["locationId"] = (int)$post["location"];
-
         if (isset($post["restaurantPrice"]))
             $update["price"] = (float)$post["restaurantPrice"];
 
-        (new restaurantTypeService())->updateFieldIds($update["id"], $post["restaurantType"]);
+        if (isset($post["restaurant"]) && (int)$post["restaurant"] == -1){
+            $update["locationid"] = (int)$post["location"];
 
-        if (!$this->db->update($update))
-            throw new appException("Db update failed...");
+            if (!isset($update["price"]))
+                throw new appException("Invalid permissions");
+
+            $res = $this->db->insert($update);
+            if (!$res)
+                throw new appException("Db insert failed...");
+
+            $update["id"] = $res;
+            $post["restaurant"] = $res;
+            $post["restaurantUpdated"] = true;
+        }
+        else {
+            $update["id"] = (int)$post["restaurantId"];
+
+            if (isset($post["locationIncomplete"])){
+                $update["locationid"] = (int)$post["location"];
+            }
+
+            if (!$this->db->update($update))
+                throw new appException("Db update failed...");
+        }
+
+        (new restaurantTypeService())->updateFieldIds($update["id"], $post["restaurantType"]);
     }
 
     public function getBySearch($searchTerm, $stars3, $stars4)
@@ -70,5 +88,14 @@ class restaurantService extends baseService
         return $this->db->get([
             "restauranttypelink.restauranttypesid" => new dbContains($type)
         ]);
+    }
+
+    public function getAllRestaurantsAsStr(){
+        $restaurants = $this->db->get();
+        $restaurantStr = [];
+        foreach ($restaurants as $b){
+            $restaurantStr[(string)$b->getId()] = $b->getName();
+        }
+        return $restaurantStr;
     }
 }

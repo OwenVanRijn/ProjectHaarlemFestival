@@ -4,13 +4,13 @@ require_once ("dbContains.php");
 
 abstract class queryBase
 {
-    protected $conn;
+    protected mysqli $conn;
 
     public function __construct(mysqli $conn){
         $this->conn = $conn;
     }
 
-    protected $stmt;
+    protected mysqli_stmt $stmt;
 
     /**
      * Prepares an SQL query
@@ -91,6 +91,10 @@ abstract class queryBase
                     $this->types .= "i";
                     $this->localVars[] = intval($var);
                     break;
+                case "double":
+                    $this->types .= "d";
+                    $this->localVars[] = $var;
+                    break;
                 case "object":
                     switch (get_class($var)){
                         case "DateTime":
@@ -113,6 +117,7 @@ abstract class queryBase
     }
 
     protected function bindParams(array $vars){
+
         if (empty($vars))
             return;
 

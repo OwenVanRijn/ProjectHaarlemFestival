@@ -78,7 +78,10 @@ class jazzactivityService extends activityBaseService
             "seats" => $post["seats"]
         ];
 
-        if ($post["bandIncomplete"]){
+        if ((int)$post["band"] == -1){
+            $update["jazzbandid"] = (new jazzBandService())->insertBand($post["bandName"], $post["bandDescription"]);
+        }
+        elseif ($post["bandIncomplete"]){
             $update["jazzbandid"] = (int)$post["band"];
         }
         else {

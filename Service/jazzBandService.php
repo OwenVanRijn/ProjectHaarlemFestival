@@ -18,4 +18,11 @@ class jazzBandService extends baseService
             "description" => $bandDesc
         ]);
     }
+
+    public function insertBand(string $bandName, string $bandDesc) : int {
+        return $this->db->insert([
+            "name" => $bandName,
+            "description" => $bandDesc
+        ]);
+    }
 }

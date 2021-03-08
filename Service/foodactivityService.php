@@ -35,14 +35,18 @@ class foodactivityService extends activityBaseService
 
     public const getHtmlEditHeader = [
         "restaurant" => [
-            "restaurantId" => htmlTypeEnum::hidden,
+            "restaurant" => [htmlTypeEnum::list, account::accountTicketManager],
             "name" => htmlTypeEnum::text,
+            "restaurantId" => htmlTypeEnum::hidden,
             "description" => htmlTypeEnum::textArea,
             "stars" => htmlTypeEnum::number,
             "seats" => htmlTypeEnum::number,
             "phoneNumber" => htmlTypeEnum::text,
             "restaurantPrice" => [htmlTypeEnum::number, account::accountTicketManager],
             "restaurantType" => htmlTypeEnum::listMultiple
+        ],
+        "hidden" => [
+            "foodActivityId" => htmlTypeEnum::hidden
         ]
     ];
 
@@ -51,8 +55,15 @@ class foodactivityService extends activityBaseService
         $resTypeStrs = $this->types->getAllTypesAsStr();
         $resCurTypeStrs = $this->types->getRestaurantTypesAsIds($a->getRestaurant()->getId());
 
+        $rest = new restaurantService();
+        $strs = $rest->getAllRestaurantsAsStr();
+
         return [
-            "restaurantId" => $a->getRestaurant()->getId(),
+            "restaurant" => [
+                "options" => $strs,
+                "selected" => $a->getRestaurant()->getId()
+            ],
+            "restaurantId" => $a->getRestaurant()->getId(), // Restaurant may not always be present!
             "name" => $a->getRestaurant()->getName(),
             "description" => $a->getRestaurant()->getDescription(),
             "stars" => $a->getRestaurant()->getStars(),
@@ -62,7 +73,8 @@ class foodactivityService extends activityBaseService
             "restaurantType" => [
                 "options" => $resTypeStrs,
                 "selected" => $resCurTypeStrs
-            ]
+            ],
+            "foodActivityId" => $a->getId(),
         ];
     }
 
@@ -92,5 +104,28 @@ class foodactivityService extends activityBaseService
             "activity.endTime" => new dbContains("$times[1]"),
             "restaurant.id" => new dbContains("$restaurantId")
         ]);
+    }
+
+    public function postEditFields($post){
+        if ($post["type"] != "Food")
+            return;
+
+        if (isset($post["restaurantIncomplete"])){
+            $this->db->update([
+                "id" => (int)$post["foodActivityId"],
+                "restaurantId" => (int)$post["restaurant"] // TODO: check for validity
+            ]);
+        }
+        else {
+            $restaurant = new restaurantService();
+            $restaurant->postEditFields($post);
+
+            if (isset($post["restaurantUpdated"])){
+                $this->db->update([
+                    "id" => (int)$post["foodActivityId"],
+                    "restaurantId" => (int)$post["restaurant"] // TODO: check for validity
+                ]);
+            }
+        }
     }
 }

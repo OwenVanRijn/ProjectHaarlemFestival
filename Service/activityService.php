@@ -91,9 +91,9 @@ class activityService extends baseService
                 throw new appException("An invalid type was requested");
         }
 
-        $this->postEditFields($newPost);
         (new locationService())->postEditFields($newPost);
-        (new restaurantService())->postEditFields($newPost);
+        $this->postEditFields($newPost);
+        ($this->food)->postEditFields($newPost);
         ($this->dance)->postEditFields($newPost);
         ($this->jazz)->postEditFields($newPost);
 
