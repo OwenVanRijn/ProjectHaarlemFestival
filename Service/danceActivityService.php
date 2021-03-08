@@ -6,7 +6,7 @@ require_once ("activityBaseService.php");
 require_once ($root . "/DAL/artistOnActivityDAO.php");
 require_once ($root . "/DAL/danceActivityDAO.php");
 require_once ($root . "/DAL/danceArtistDAO.php");
-require_once ("restaurantTypeService.php");
+require_once("restaurantTypeLinkService.php");
 require_once ("artistOnActivityService.php");
 
 class danceActivityService extends activityBaseService

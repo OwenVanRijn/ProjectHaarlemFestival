@@ -3,10 +3,10 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/UI/navBar.php");
 require_once($root . "/Service/foodactivityService.php");
 require_once($root . "/Service/restaurantService.php");
-require_once($root . "/Service/restaurantTypeService.php");
+require_once($root . "/Service/restaurantTypeLinkService.php");
 
 $restaurantService = new restaurantService();
-$restaurantTypeService = new restaurantTypeService();
+$restaurantTypeService = new restaurantTypeLinkService();
 
 ?>
 
@@ -17,13 +17,14 @@ $restaurantTypeService = new restaurantTypeService();
 <head>
     <title>Food</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dance.css">
     <meta charset="UTF-8">
     <meta name="keywords"
           content="Haarlem, festival, jazz, food, history, party, feest, geschiedenis, eten, restaurant">
     <meta name="description" content="Haarlem Festival">
     <meta name="author" content="Haarlem Festival">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
 </head>
 
 <body>
@@ -50,38 +51,50 @@ $restaurantTypeService = new restaurantTypeService();
 
 
     <section>
-        <section id="filterbar">
-            <section class="stars">
-                <p class="filterlabelSubtitle">Stars</p>
-                <section class="checkboxesStars">
-                    <input type="checkbox" class="filterCheckbox" id="3stars" name="3stars" checked>
-                    <label class="label" for="3stars">3 stars<br></label>
-                    <input type="checkbox" class="filterCheckbox" id="4stars" name="4stars" checked>
-                    <label class="label" for="4stars">4 stars</label>
+        <form method="post">
+            <section id="filterbar">
+                <section class="stars">
+                    <p class="filterlabelSubtitle">Stars</p>
+                    <section class="checkboxesStars">
+                        <input type="checkbox" class="filterCheckbox" id="stars3" name="stars3" checked>
+                        <label class="label" for="stars3">3 stars<br></label>
+                        <input type="checkbox" class="filterCheckbox" id="stars4" name="stars4" checked>
+                        <label class="label" for="stars4">4 stars</label>
+                    </section>
+                </section>
+
+                <section class="cuisine">
+                    <p class="filterlabelSubtitle">Cuisine</p>
+                    <form method="post">
+                        <select name="cuisine" id="cuisine" onchange="this.form.submit()">
+
+                            <?php
+                            $restaurantTypes = $restaurantTypeService->getAllTypes();
+
+
+                            usort($restaurantTypes, function($a, $b)
+                            {
+                                return strcmp($a->getName(), $b->getName());
+                            });
+
+
+                            foreach ($restaurantTypes as $restaurantType) {
+                                $restaurantTypeName = $restaurantType->getName();
+                                $restaurantTypeId = $restaurantType->getId();
+                                echo "<option value=\"$restaurantTypeId\">$restaurantTypeName</option>";
+                            }
+                            ?>
+                        </select>
+                    </form>
+                </section>
+
+                <section class="searchbar">
+                    <p class="filterlabelSubtitle"><br>Search for a restaurant</p>
+                    <input type="text" placeholder="Search.." id="searchterm" name="searchterm">
+                    <button type="submit" class="button1" name="searchbutton">Search</button>
                 </section>
             </section>
-
-            <section class="cuisine">
-                <p class="filterlabelSubtitle">Cuisine</p>
-                <form>
-                    <select name="cuisine" id="cuisine" onchange="this.form.submit()">
-                        <option value="1">Argentinian</option>
-                        <option value="2">Dutch</option>
-                        <option value="3">European</option>
-                        <option value="4">Fish</option>
-                        <option value="5">French</option>
-                    </select>
-                </form>
-            </section>
-
-            <section class="searchbar">
-                <p class="filterlabelSubtitle"><br>Search for a restaurant</p>
-                <form method="post">
-                    <input type="text" placeholder="Search.." name="searchterm">
-                    <button type="submit" class="button1" name="searchbutton">Search</button>
-                </form>
-            </section>
-        </section>
+        </form>
     </section>
 
 
@@ -100,14 +113,34 @@ $restaurantTypeService = new restaurantTypeService();
 
         if (isset($_POST["searchbutton"])) {
 
-            $searchTerm = $_POST["searchterm"];
+            // searchterm
+            if (isset($_POST["searchterm"])) {
+                $searchTerm = $_POST["searchterm"];
+                echo "<script>document.getElementById(\"searchterm\").value = '$searchTerm'</script>";
+            } else {
+                $searchTerm = "";
+            }
 
-            $stars3 = "false";
-            $stars4 = "false";
+            // stars : 3
+            if (isset($_POST["stars3"])) {
+                $stars3 = true;
+            } else {
+                $stars3 = false;
+                echo "<script>document.getElementById(\"stars3\").checked = false</script>";
+            }
+
+            // stars : 4
+            if (isset($_POST["stars4"])) {
+                $stars4 = true;
+            } else {
+                $stars4 = false;
+                echo "<script>document.getElementById(\"stars4\").checked = false</script>";
+            }
             $restaurants = $restaurantService->getBySearch($searchTerm, $stars3, $stars4);
-        } else if (isset($_GET["cuisine"])) {
-            $cuisine = $_GET["cuisine"];
-            $restaurants = $restaurantService->getByType($cuisine);
+        }
+        if (isset($_POST["cuisine"])) {
+            $cuisine = $_POST["cuisine"];
+            $restaurants = $restaurantTypeService->getByType($cuisine);
         } else {
             $restaurants = $restaurantService->getAll();
         }
@@ -123,7 +156,7 @@ $restaurantTypeService = new restaurantTypeService();
                 echoRestaurant($restaurants);
             }
         } else {
-            echo "No results here.";
+            echo "<p>No results here.</p>";
         }
 
         if (isset($_POST["restaurantId"])) {
@@ -173,7 +206,7 @@ $restaurantTypeService = new restaurantTypeService();
         echo "<section class='col-4 box'>";
         echo "<section class='col-12 text-center' style='background-color: black; color: white; padding-top: 2%;'>";
         $restaurantName = $restaurant->getName();
-        echo $restaurantName;
+        echo "<h3 class='restaurantName'>$restaurantName</h3>";
         $restaurantId = $restaurant->getId();
         echo $restaurantId . " ID";
         $location = $restaurant->getLocation()->getAddress() . " " . $restaurant->getLocation()->getPostalCode();
@@ -181,9 +214,9 @@ $restaurantTypeService = new restaurantTypeService();
         $price = "€" . $restaurant->getPrice() . ",-";
 
         echo "<p style='color: orange; font-weight: bold'>{$restaurantName}</p>";
-        echo "<section class='row'><p style='color: orange; font-weight: bold'>Location:</p><bold>{$location}</bold></section>";
-        echo "<section class='row'><p style='color: orange; font-weight: bold'>Session:</p><bold>{$description}</bold></section>";
-        echo "<section class='row'><p style='color: orange; font-weight: bold'>Price:</p><bold>{$price}</bold></section>";
+        echo "<section class='row'><p style='color: orange; font-weight: bold'>Location:</p><p>{$location}</p></section>";
+        echo "<section class='row'><p style='color: orange; font-weight: bold'>Session:</p><p>{$description}</p></section>";
+        echo "<section class='row'><p style='color: orange; font-weight: bold'>Price:</p><p>{$price}</p></section>";
 
         echo "<form method=\"POST\" action=\"restaurant.php\">";
         echo "<input name=\"restaurantId\" type=\"hidden\" value=\"$restaurantId\">";

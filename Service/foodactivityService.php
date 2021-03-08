@@ -6,15 +6,15 @@ require_once ("activityBaseService.php");
 require_once ($root . "/DAL/foodactivityDAO.php");
 require_once ($root . "/Model/account.php");
 require_once ($root . "/DAL/dbContains.php");
-require_once ("restaurantTypeService.php");
+require_once("restaurantTypeLinkService.php");
 
 class foodactivityService extends activityBaseService
 {
-    private restaurantTypeService $types;
+    private restaurantTypeLinkService $types;
 
     public function __construct(){
         $this->db = new foodactivityDAO();
-        $this->types = new restaurantTypeService();
+        $this->types = new restaurantTypeLinkService();
     }
 
     public function getFields(): array

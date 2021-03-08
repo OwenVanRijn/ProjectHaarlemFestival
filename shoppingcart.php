@@ -7,6 +7,8 @@ require_once($root . "/Service/jazzactivityService.php");
 require_once($root . "/Service/foodactivityService.php");
 require_once($root . "/Service/danceActivityService.php");
 require_once($root . "/Service/shoppingcartService.php");
+
+
 ?>
 
 
@@ -92,14 +94,10 @@ require_once($root . "/Service/shoppingcartService.php");
                 $total += echoDay($dates[$i], $days[$i]);
             }
         }
-        if (isset($_POST["pay"])) {
-            header("Location: /payment/account.php");
-        }
 
         ?>
-        <form method="post">
-            <input type="submit" class="btn btn-primary" name="pay" value="Pay €<?php echo $total ?>"/>
-        </form>
+        <button class="btn btn-primary"
+                onclick="window.location.href='/payment/account.php'"><?php echo "Pay $total" ?> </button>
         <?php
 
         echo "done";
@@ -111,6 +109,19 @@ require_once($root . "/Service/shoppingcartService.php");
 
 </section>
 <?php
+
+
+if (isset($_POST["edit"]) || isset($_POST["remove"])) {
+    echo "SET IS TRUE";
+    if ($_GET['action'] == 'remove') {
+        $shoppingcartService->removeFromShoppingcartItemsById($_GET["id"]);
+    } else if ($_GET['action'] == 'edit') {
+        $shoppingcartService->getShoppingcart()->setShoppingcartItemById($_GET["id"], $_POST["amount"]);
+    }
+
+    header("Refresh:0");
+}
+
 
 
 function echoDay($date, $activitiesOfTheDay)
@@ -189,25 +200,13 @@ function echoTitles($date)
     echo $element;
 }
 
-if (isset($_POST['remove'])){
-    if ($_GET['action'] == 'remove'){
-        $shoppingcartService->removeFromShoppingcartItemsById($_GET["id"]);
-    }
-    else if ($_GET['action'] == 'remove'){
-        $shoppingcartService->removeFromShoppingcartItemsById($_GET["id"]);
-    }
-
-    header("Refresh:0");
-}
-
 function cartElement($activityid, $activityName, $type, $createData, $startTime, $endTime, $price, $amount)
 {
     $totalPrice = $amount * $price;
 
     $element = "
     
-    <form action=\"shoppingcart.php?action=remove&id=$activityid\" method=\"post\" class=\"cart-items\">
-                    <section class=\"border rounded\">
+                        <section class=\"border rounded\">
                         <section class=\"row bg-white\">
                             <section class=\"col-md-6\">
                                 <h3 class=\"pt-2\">$activityName $activityid</h3>
@@ -215,18 +214,21 @@ function cartElement($activityid, $activityName, $type, $createData, $startTime,
                                 <p class=\"titleInfo\">$startTime-$endTime</p>
                                 <p class=\"titleInfo\">€$price</p>
                                 <p class=\"titleInfo\">€$totalPrice</p>
+                                <form action=\"shoppingcart.php?action=remove&id=$activityid\" method=\"post\" class=\"cart-items\">
                                 <button type=\"submit\" class=\"btn btn-danger mx-2\" name=\"remove\">Remove</button>
+                                              </form>
                             </section>
                             <section class=\"col-md-3 py-5\">
                                 <section>
-                                    <button type=\"button\" class=\"btn bg-light border rounded-circle\"><i class=\"fas fa-minus\"></i></button>
-                                    <input type=\"text\" value=\"$amount\" class=\"form-control w-25 d-inline\">
-                                    <button type=\"button\" class=\"btn bg-light border rounded-circle\"><i class=\"fas fa-plus\"></i></button>
+                                    <form action=\"shoppingcart.php?action=edit&id=$activityid\" method=\"post\" class=\"cart-items\">
+                                        <input type=\"text\" value=\"$amount\" class=\"form-control w-25 d-inline\" name=\"amount\">
+                                        <button type=\"submit\" class=\"btn bg-light border rounded-circle\" name=\"edit\"><i class=\"fas fa-minus\"></i></button>
+                                    </form>
                                 </section>
                             </section>
                         </section>
                     </section>
-                </form>
+  
     
     ";
     echo $element;

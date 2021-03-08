@@ -4,7 +4,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
 require_once("activityBaseService.php");
 require_once($root . "/DAL/restaurantDAO.php");
-require_once("restaurantTypeService.php");
+require_once("restaurantTypeLinkService.php");
 
 class restaurantService extends baseService
 {
@@ -38,7 +38,7 @@ class restaurantService extends baseService
         if (isset($post["restaurantPrice"]))
             $update["price"] = (float)$post["restaurantPrice"];
 
-        (new restaurantTypeService())->updateFieldIds($update["id"], $post["restaurantType"]);
+        (new restaurantTypeLinkService())->updateFieldIds($update["id"], $post["restaurantType"]);
 
         if (!$this->db->update($update))
             throw new appException("Db update failed...");
@@ -50,8 +50,16 @@ class restaurantService extends baseService
 
         $filter = array_merge($filter, array("restaurant.name" => new dbContains($searchTerm)));
 
-        if (!$stars3 || !$stars4) {
-            $filter = array_merge($filter, array("restaurant.stars" => new dbContains(3)));
+        $stars = array();
+        if ($stars3) {
+            $stars[] = "3";
+        }
+
+        if ($stars4) {
+            $stars[] = "4";
+        }
+        if (count($stars) > 0) {
+            $filter = array_merge($filter, array("restaurant.stars" => new dbContains($stars)));
         }
         return $this->db->get($filter);
     }
@@ -60,15 +68,6 @@ class restaurantService extends baseService
     {
         return $this->db->get([
             "restaurant.id" => new dbContains($id)
-        ]);
-    }
-
-    public function getByType($type)
-    {
-        echo "TYPE IS $type";
-
-        return $this->db->get([
-            "restauranttypelink.restauranttypesid" => new dbContains($type)
         ]);
     }
 }

@@ -8,7 +8,7 @@ require_once($root . "/DAL/dbContains.php");
 require_once($root . "/DAL/restaurantTypeLinkDAO.php");
 require_once($root . "/DAL/restaurantTypeDAO.php");
 
-class restaurantTypeService extends baseService
+class restaurantTypeLinkService extends baseService
 {
     public function __construct()
     {
@@ -82,6 +82,25 @@ class restaurantTypeService extends baseService
                 "restauranttypesid" => (int)$id
             ]);
         }
+    }
+
+
+    public function getByType($type)
+    {
+        $restaurantTypeLinks = $this->db->get([
+            "restauranttypes.id" => new dbContains("$type")
+        ]);
+        $restaurants = array();
+        if (is_array($restaurantTypeLinks)) {
+            foreach ($restaurantTypeLinks as $restaurantTypeLink) {
+                $restaurant = $restaurantTypeLink->getRestaurant();
+                $restaurants[] = $restaurant;
+            }
+        } else {
+            $restaurant = $restaurantTypeLinks->getRestaurant();
+            $restaurants[] = $restaurant;
+        }
+        return $restaurants;
     }
 
 }

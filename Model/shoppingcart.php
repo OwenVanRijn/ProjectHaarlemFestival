@@ -25,13 +25,12 @@ class shoppingcart extends sqlModel
         $this->createDate = new DateTime();
         $this->shoppingcartItems = array();
         $this->cookieManager = new cookieManager("shoppingcart");
-        $this->addToShoppingcartItemsById(2,5);
-        $this->addToShoppingcartItemsById(1,6);
-        $this->addToShoppingcartItemsById(121,2);
+        $this->addToShoppingcartItemsById(2, 5);
+        $this->addToShoppingcartItemsById(1, 6);
+        $this->addToShoppingcartItemsById(121, 2);
 
         return $this;
     }
-
 
 
     public function constructFull(int $id, string $url, DateTime $createDate)
@@ -80,6 +79,7 @@ class shoppingcart extends sqlModel
     public function setShoppingcartItems(array $shoppingcart)
     {
         $this->cookieManager->set(serialize($shoppingcart), 0);
+        $this->shoppingcartItems = $shoppingcart;
     }
 
     public function addToShoppingcartItemsById($shoppingcartItemId, $amount)
@@ -101,6 +101,8 @@ class shoppingcart extends sqlModel
 
     public function setShoppingcartItemById($shoppingcartItemId, $amount) //aanpassen
     {
+
+        echo "set shopping cart id $shoppingcartItemId naar $amount";
         $shoppingcartItems = $this->getShoppingcartItems();
         $shoppingcartItems[$shoppingcartItemId] = $amount;
         $this->setShoppingcartItems($shoppingcartItems);
