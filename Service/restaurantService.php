@@ -18,7 +18,7 @@ class restaurantService extends baseService
         return $this->db->get();
     }
 
-    public function updateRestaurant(int $id, ?string $name, ?string $description, ?int $stars, ?int $seats, ?int $phoneNumber, float $price, int $locationId) : bool {
+    public function updateRestaurant(int $id, ?string $name, ?string $description, ?int $stars, ?int $seats, ?int $phoneNumber, ?float $price, ?int $locationId) : bool {
         $update = [
             "id" => $id,
         ];

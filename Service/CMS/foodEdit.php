@@ -74,7 +74,7 @@ class foodEdit extends editBase
                     (int)$post["stars"],
                     (int)$post["seats"],
                     (int)$post["phoneNumber"],
-                    (float)$post["restaurantPrice"],
+                    (isset($post["restaurantPrice"])) ? (float)$post["restaurantPrice"] : null,
                     (int)$post["location"]
                 );
 
@@ -93,7 +93,7 @@ class foodEdit extends editBase
                     (int)$post["stars"],
                     (int)$post["seats"],
                     (int)$post["phoneNumber"],
-                    (float)$post["restaurantPrice"],
+                    (isset($post["restaurantPrice"])) ? (float)$post["restaurantPrice"] : null,
                     (isset($post["locationIncomplete"])) ? (int)$post["location"] : null
                 );
 

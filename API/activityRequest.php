@@ -6,6 +6,8 @@ require_once ("../Service/activityService.php");
 header('Content-Type: application/json');
 require_once ("../Service/sessionService.php");
 
+require_once ("../Service/CMS/editActivity.php");
+
 $sessionService = new sessionService();
 $user = $sessionService->validateSessionFromCookie();
 
@@ -24,4 +26,8 @@ $id = (int)$_GET["id"];
 
 $service = new activityService();
 
-echo json_encode($service->getHtmlEditContent($id, $user));
+//echo json_encode($service->getHtmlEditContent($id, $user));
+
+$service2 = new editActivity();
+
+echo json_encode($service2->getContent($id, $user));

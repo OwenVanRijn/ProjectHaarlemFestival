@@ -2,12 +2,12 @@
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
 require_once ("baseService.php");
-require_once ($root . "/DAL/danceActivityDAO.php");
+require_once ($root . "/DAL/danceArtistDAO.php");
 
 class danceArtistService extends baseService
 {
     public function __construct(){
-        $this->db = new danceActivityDAO();
+        $this->db = new danceArtistDAO();
     }
 
     public function getAllAsStr(){

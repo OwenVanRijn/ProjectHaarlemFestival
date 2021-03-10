@@ -132,7 +132,7 @@ abstract class editBase implements editInterface
         return $res;
     }
 
-    protected function processEditResponse(array $post, account $account) {
+    public function processEditResponse(array $post, account $account) {
         $validatedPost = $this->filterHtmlEditResponse($account, $post);
         unset($post); // To prevent misuse
 
@@ -149,7 +149,7 @@ abstract class editBase implements editInterface
                     $validatedPost["address"],
                     $validatedPost["postalCode"],
                     $validatedPost["city"],
-                    $validatedPost["name"]
+                    $validatedPost["locationName"]
                 );
 
                 if (!$res)
@@ -164,7 +164,7 @@ abstract class editBase implements editInterface
                     $validatedPost["address"],
                     $validatedPost["postalCode"],
                     $validatedPost["city"],
-                    $validatedPost["name"]
+                    $validatedPost["locationName"]
                 ))
                     throw new appException("[Location] db update failed... ");
             }
@@ -175,10 +175,10 @@ abstract class editBase implements editInterface
         $activityService->updateActivity(
             (int)$validatedPost["activityId"],
             (new date())->fromYMD($validatedPost["date"]),
-            (new time())->fromYMD($validatedPost["beginTime"]),
+            (new time())->fromYMD($validatedPost["startTime"]),
             (new time())->fromYMD($validatedPost["endTime"]),
-            (float)$validatedPost["price"],
-            (int)$validatedPost["ticketsLeft"],
+            (isset($validatedPost["price"])) ? (float)$validatedPost["price"] : null,
+            (isset($validatedPost["ticketsLeft"])) ? (int)$validatedPost["ticketsLeft"] : null,
             (isset($validatedPost["locationIncomplete"])) ? (int)$validatedPost["location"] : null);
 
         $this->processEditResponseChild($validatedPost);
