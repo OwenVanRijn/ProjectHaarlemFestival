@@ -132,12 +132,58 @@ abstract class editBase implements editInterface
         return $res;
     }
 
-    protected function processBaseEditResponse(array $post, account $account) {
+    protected function processEditResponse(array $post, account $account) {
+        $validatedPost = $this->filterHtmlEditResponse($account, $post);
+        unset($post); // To prevent misuse
 
+        if (isset($validatedPost["activityIncomplete"]) || !isset($validatedPost["location"]))
+            throw new appException("Activity not found in post request");
+
+
+        // Updating the location table
+        if (!isset($validatedPost["locationIncomplete"])){
+            $locationService = new locationService();
+
+            if ((int)$validatedPost["location"] == -1){
+                $res = $locationService->insertLocation(
+                    $validatedPost["address"],
+                    $validatedPost["postalCode"],
+                    $validatedPost["city"],
+                    $validatedPost["name"]
+                );
+
+                if (!$res)
+                    throw new appException("[Location] db insert failed...");
+
+                $validatedPost["locationIncomplete"] = true;
+                $validatedPost["location"] = $res;
+            }
+            else {
+                if (!$locationService->updateLocation(
+                    $validatedPost["location"],
+                    $validatedPost["address"],
+                    $validatedPost["postalCode"],
+                    $validatedPost["city"],
+                    $validatedPost["name"]
+                ))
+                    throw new appException("[Location] db update failed... ");
+            }
+        }
+
+        // Updating the activity table
+        $activityService = new activityService();
+        $activityService->updateActivity(
+            (int)$validatedPost["activityId"],
+            (new date())->fromYMD($validatedPost["date"]),
+            (new time())->fromYMD($validatedPost["beginTime"]),
+            (new time())->fromYMD($validatedPost["endTime"]),
+            (float)$validatedPost["price"],
+            (int)$validatedPost["ticketsLeft"],
+            (isset($validatedPost["locationIncomplete"])) ? (int)$validatedPost["location"] : null);
     }
 
     public const htmlEditHeader = [];
 
     public abstract function getHtmlEditFields(sqlModel $a) : array;
-    public abstract function processEditResponse(array $post, account $account);
+    protected abstract function processEditResponseChild(array $verifiedPost);
 }

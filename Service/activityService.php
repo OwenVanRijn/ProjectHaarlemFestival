@@ -43,7 +43,7 @@ class activityService extends baseService
         return [];
     }
 
-    public function updateActivity(int $id, ?string $date, ?string $startTime, ?string $endTime, ?float $price, ?int $ticketsLeft, ?int $locationId){
+    public function updateActivity(int $id, ?date $date, ?time $startTime, ?time $endTime, ?float $price, ?int $ticketsLeft, ?int $locationId){
         $update = [
             "id" => $id
         ];

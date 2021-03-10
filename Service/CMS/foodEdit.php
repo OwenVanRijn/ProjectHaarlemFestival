@@ -62,9 +62,7 @@ class foodEdit extends editBase
         ];
     }
 
-    public function processEditResponse(array $post, account $account){
-        $validatedPost = $this->filterHtmlEditResponse($account, $post);
-
+    protected function processEditResponseChild(array $verifiedPost){
 
     }
 }

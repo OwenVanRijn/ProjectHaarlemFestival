@@ -1,6 +1,10 @@
 <?php
+$root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
 require_once ("dbContains.php");
+require_once($root . "/Model/date.php");
+require_once($root . "/Model/time.php");
+require_once ($root . "/Utils/appException.php");
 
 abstract class queryBase
 {
@@ -107,11 +111,20 @@ abstract class queryBase
                                 $this->localVars[] = $entry;
                             }
                             break;
+                        case "date":
+                        case "time":
+                            $this->types .= "s";
+                            $this->localVars[] = $var->toString();
+                            break;
+                        default:
+                            throw new appException("[DB] Unknown class " . gettype($var));
                     }
                     break;
                 case "array":
                     $this->getTypeParam($var);
                     break;
+                default:
+                    throw new appException("[DB] Unknown type " . gettype($var));
             }
         }
     }
