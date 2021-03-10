@@ -8,6 +8,12 @@ require_once($root . "/Service/restaurantTypeLinkService.php");
 $restaurantService = new restaurantService();
 $restaurantTypeService = new restaurantTypeLinkService();
 
+
+if (isset($_POST["gotooverview"])) {
+    header('Location: food.php');
+    exit();
+}
+
 ?>
 
 
@@ -17,13 +23,14 @@ $restaurantTypeService = new restaurantTypeLinkService();
 <head>
     <title>Food</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/food.css">
+
     <meta charset="UTF-8">
     <meta name="keywords"
           content="Haarlem, festival, jazz, food, history, party, feest, geschiedenis, eten, restaurant">
     <meta name="description" content="Haarlem Festival">
     <meta name="author" content="Haarlem Festival">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 
 <body>
@@ -46,42 +53,102 @@ $restaurantTypeService = new restaurantTypeLinkService();
         if (isset($_GET["restaurantId"])) {
             $restaurantId = $_GET["restaurantId"];
             $restaurants = $restaurantService->getById($restaurantId);
-        }
 
-        echo "<section class='row' style='margin-top: 2%'>";
-        if ($restaurants != null) {
-            if (is_array($restaurants)) {
-                foreach ($restaurants as $restaurant) {
-                    echoRestaurant($restaurant);
+            if ($restaurants != null) {
+                echo "<section class='row' style='margin-top: 2%'>";
+                if (is_array($restaurants)) {
+                    foreach ($restaurants as $restaurant) {
+                        echoRestaurant($restaurant);
+                    }
+                } else {
+                    echoRestaurant($restaurants);
                 }
             } else {
-                echoRestaurant($restaurants);
+                echo "Could not get information about this restaurant.";
             }
         } else {
-            echo "No results here.";
+            header("Location: food.php");
         }
-
         function echoRestaurant($restaurant)
         {
         echo "<section class='col-4 box'>";
-        echo "<section class='col-12 text-center' style='background-color: black; color: white; padding-top: 2%;'>";
+        echo "<section class='col-12 text-center'>";
         $restaurantName = $restaurant->getName();
-        echo $restaurantName;
         $restaurantId = $restaurant->getId();
-        echo $restaurantId . " ID";
         $location = $restaurant->getLocation()->getAddress() . ", " . $restaurant->getLocation()->getPostalCode();
         $description = $restaurant->getDescription();
-        $price = "€" . $restaurant->getPrice() . ",-";
-        $childrenPrice = "€" . $restaurant->getPrice() / 2 . ",-";
+        $parking = $restaurant->getParking();
+        $price = $restaurant->getPrice();
+        $childrenPrice = $restaurant->getPrice() / 2;
         $stars = $restaurant->getStars();
         $seats = $restaurant->getSeats();
+
+        $restaurantService = new restaurantService();
+        $times = $restaurantService->getTimesByRestaurantId($restaurantId);
+        $dates = $restaurantService->getDatesByRestaurantId($restaurantId);
+
+        // Contact
         $phoneNumber = $restaurant->getPhoneNumber();
+        $website = $restaurant->getWebsite();
+        $contactpage = $restaurant->getContact();
+        $menu = $restaurant->getMenu();
 
+        echo "<h3 id='starsHeader'>$restaurantName</h3>";
+        for ($x = 0; $x < $stars; $x++) {
+            echo "<img class='stars' src='/img/icons/star.png' alt='ster'>";
+        }
+        echo "<section class='row'><p style='color: orange; font-weight: bold'>Description:</p><p>{$description}</p></section>";
 
-        echo "<section class='row'><p style='color: orange; font-weight: bold'>Description:</p><bold>{$restaurantName}</bold></section>";
-        echo "<section class='row'><p style='color: orange; font-weight: bold'>Description:</p><bold>{$description}</bold></section>";
-        echo "<section class='row'><p style='color: orange; font-weight: bold'>Price:</p><bold>{$price}</bold></section>";
-        echo "<section class='row'><p style='color: orange; font-weight: bold'>Address:</p><bold>{$location}</bold></section>";
+        if (!empty($parking)) {
+            echo "<section class='row'><p style='color: orange; font-weight: bold'>Parking:</p><p>{$parking}</p></section>";
+        }
+
+        // PRICE
+        echo "<img class='imgIcons' src='/img/icons/costs.png' alt='costs'>";
+        echo "<section class='row'><p style='color: orange; font-weight: bold'>Costs:</p>
+<p><i>Diner costs</i></p>
+<p>€{$price} p.p.</p>
+<sup>Children til 12 years: € " . $childrenPrice . ",- p.p.</sup>
+
+<p><i>Reservation costs</i></p>
+<p>€ 10,- </p>
+</section>";
+
+        // SESSIONS
+        echo "<img class='imgIcons' src='/img/icons/clockb.png'>";
+        echo "<section class='row'><p class='infotext' style='color: orange; font-weight: bold'>Sessions:</p>";
+        foreach ($times as $beginTime => $endTime) {
+            echo "<p class='infotext'>$beginTime-$endTime</p>";
+        }
+
+        // DAYS
+        echo "<section class='row'><p style='color: orange; font-weight: bold'>Days:</p>";
+        foreach ($dates as $date) {
+            echo "<p>$date</p>";
+        }
+
+        echo "</section>";
+
+        // LOCATION
+        echo "<img class='imgIcons' src='/img/icons/location.png' alt='location'>";
+        echo "<section class='row'><p style='color: orange; font-weight: bold'>Address:</p><p>{$location}</p></section>";
+
+        if (!empty($website)) {
+            echo "<img class='imgIcons' src='/img/icons/links.png'>";
+            echo "<section class='row'><p style='color: orange; font-weight: bold'>Links:</p><p>
+<a href=\"$website\">Website</a><br>
+<a href=\"$menu\">Menu</a><br>
+<a href=\"$contactpage\">Contact</a>
+</p></section>";
+        }
+        ?>
+        <form method="post">
+            <input type="submit" class='btn btn-primary w-100' name="gotooverview" value="Go back to overview"></input>
+        </form>
+
+        <?php
+        echo "<form method=\"post\" action=\"foodreservation.php\">";
+        echo "<input name=\"restaurantId\" type=\"hidden\" value=\"$restaurantId\">";
         ?>
         <input type="submit" class='btn btn-primary' name="makereservation" value="Make a reservation"></input>
         </form>

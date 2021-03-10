@@ -1,9 +1,72 @@
 header {
-    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/Food.png);
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/Food.png);
     padding-top: 50px;
     height: 28vh;
 }
 
-.foodimg{
+.foodimg {
     width: 20%;
+}
+
+.btn-primary, .btn-primary:hover {
+    background-color: #FD6A02 !important;
+    color: black !important;
+    font-family: Arial !important;
+    font-size: 0.9em !important;
+    font-weight: bold !important;
+    border: transparent !important;
+}
+
+.btn-primary:hover {
+    background-color: orange !important;
+    color: white !important;
+    font-family: Arial !important;
+    font-size: 0.9em !important;
+    font-weight: bold !important;
+    border: transparent;
+}
+
+.box {
+    box-model: border-box !important;
+    border: 3px solid transparent !important;
+    background-clip: padding-box !important;
+}
+
+.stars {
+    display: inline;
+    width: 1em;
+    margin-right: 4px;
+}
+
+#starsHeader {
+    display: inline;
+}
+
+.imgIcons {
+    display: inline;
+    float: left;
+    width: 1em;
+    margin-right: 4px;
+}
+
+.infotext {
+    margin-left: 5px;
+}
+
+/* FILTERBAR */
+
+.filterlabelSubtitle {
+    font-weight: bold;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-gap: 10px;
+    background-color: #A5A5A5;
+    padding: 1px 8px 1px 8px;
+}
+
+.grid-container > section {
+    /*background-color: rgba(255, 255, 255);*/
 }

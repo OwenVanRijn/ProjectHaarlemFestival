@@ -33,8 +33,8 @@ class restaurant extends sqlModel
         $this->price = $price;
         $this->parking = $parking;
         $this->website = $website;
-        $this->menu = $this->website . "/" . $this->menu;
-        $this->contact = $this->website . "/" . $this->contact;
+        $this->menu = "$this->website/$menu";
+        $this->contact = "$this->website/$contact";
         return $this;
     }
 

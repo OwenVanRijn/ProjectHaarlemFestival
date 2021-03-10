@@ -1,6 +1,7 @@
 /* CONTENT */
 body {
     background-color: #CECECE;
+    margin: 0;
 }
 
 * {
@@ -159,12 +160,6 @@ a.button1:hover,
 .button1:hover {
     color: #000000;
     background-color: #FFFFFF;
-}
-
-#filterbar {
-    background-color: #A5A5A5;
-    padding: 20px;
-    column-count: 3;
 }
 
 /*jazz filterbar*/

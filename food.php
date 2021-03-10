@@ -16,10 +16,9 @@ $restaurantTypeService = new restaurantTypeLinkService();
 
 <head>
     <title>Food</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/dance.css">
-    <link rel="stylesheet" href="css/food.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/food.css">
     <meta charset="UTF-8">
     <meta name="keywords"
           content="Haarlem, festival, jazz, food, history, party, feest, geschiedenis, eten, restaurant">
@@ -54,46 +53,43 @@ $restaurantTypeService = new restaurantTypeLinkService();
 
     <section>
         <form method="post">
-            <section id="filterbar">
-                <section class="stars">
+            <section class="grid-container" id="filterbarFood">
+                <section class="starscheck">
                     <p class="filterlabelSubtitle">Stars</p>
                     <section class="checkboxesStars">
                         <input type="checkbox" class="filterCheckbox" id="stars3" name="stars3" checked>
-                        <label class="label" for="stars3">3 stars<br></label>
+                        <label class="label" for="stars3">3 stars</label><br>
                         <input type="checkbox" class="filterCheckbox" id="stars4" name="stars4" checked>
-                        <label class="label" for="stars4">4 stars</label>
+                        <label class="label" for="stars4">4 stars</label><br>
                     </section>
                 </section>
-
                 <section class="cuisine">
                     <p class="filterlabelSubtitle">Cuisine</p>
-                    <form method="post">
-                        <select name="cuisine" id="cuisine" onchange="this.form.submit()">
+                    <select name="cuisine" id="cuisine">
 
-                            <?php
-                            $restaurantTypes = $restaurantTypeService->getAllTypes();
-
-
-                            usort($restaurantTypes, function($a, $b)
-                            {
-                                return strcmp($a->getName(), $b->getName());
-                            });
+                        <?php
+                        $restaurantTypes = $restaurantTypeService->getAllTypes();
 
 
-                            foreach ($restaurantTypes as $restaurantType) {
-                                $restaurantTypeName = $restaurantType->getName();
-                                $restaurantTypeId = $restaurantType->getId();
-                                echo "<option value=\"$restaurantTypeId\">$restaurantTypeName</option>";
-                            }
-                            ?>
-                        </select>
-                    </form>
+                        usort($restaurantTypes, function ($a, $b) {
+                            return strcmp($a->getName(), $b->getName());
+                        });
+
+                        echo "<option value=\"0\">All cuisines</option>";
+                        foreach ($restaurantTypes as $restaurantType) {
+                            $restaurantTypeName = $restaurantType->getName();
+                            $restaurantTypeId = $restaurantType->getId();
+                            echo "<option value=\"$restaurantTypeId\">$restaurantTypeName</option>";
+                        }
+                        ?>
+                    </select>
                 </section>
-
                 <section class="searchbar">
-                    <p class="filterlabelSubtitle"><br>Search for a restaurant</p>
-                    <input type="text" placeholder="Search.." id="searchterm" name="searchterm">
-                    <button type="submit" class="button1" name="searchbutton">Search</button>
+                    <p class="filterlabelSubtitle">Search for a restaurant</p>
+                    <section id="searchbarGroup">
+                        <input type="text" placeholder="Search.." id="searchterm" name="searchterm">
+                        <button type="submit" class="button1" name="searchbutton">Search</button>
+                    </section>
                 </section>
             </section>
         </form>
@@ -129,11 +125,13 @@ $restaurantTypeService = new restaurantTypeLinkService();
                 $stars4 = false;
                 echo "<script>document.getElementById(\"stars4\").checked = false</script>";
             }
-            $restaurants = $restaurantService->getBySearch($searchTerm, $stars3, $stars4);
-        }
-        if (isset($_POST["cuisine"])) {
-            $cuisine = $_POST["cuisine"];
-            $restaurants = $restaurantTypeService->getByType($cuisine);
+
+            if (isset($_POST["cuisine"])) {
+                $cuisine = $_POST["cuisine"];
+                $restaurants = $restaurantTypeService->getBySearch($cuisine, $searchTerm, $stars3, $stars4);
+
+                echo "<script>document.getElementById(\"cuisine\").value = \"$cuisine\";</script>";
+            }
         } else {
             $restaurants = $restaurantService->getAll();
         }
@@ -189,8 +187,6 @@ $restaurantTypeService = new restaurantTypeLinkService();
 
             $shoppingcartService = new shoppingcartService();
             $shoppingcartService->getShoppingcart()->addToShoppingcartItemsById($activityId, $seats);
-
-
         }
 
 
@@ -232,13 +228,11 @@ $restaurantTypeService = new restaurantTypeLinkService();
 
     <?php
     }
-    if (isset($_SESSION["foodreservationName"]))
-    {
-        var_dump($_SESSION["foodreservationName"] );
+    if (isset($_SESSION["foodreservationName"])) {
+        var_dump($_SESSION["foodreservationName"]);
 
         $restaurantName = $_SESSION["foodreservationName"];
-        if (empty($restaurantName))
-        {
+        if (empty($restaurantName)) {
             $restaurantName = "a restaurant";
         }
 

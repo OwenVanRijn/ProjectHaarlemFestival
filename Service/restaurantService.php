@@ -3,6 +3,7 @@
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
 require_once("activityBaseService.php");
+require_once("foodactivityService.php");
 require_once($root . "/DAL/restaurantDAO.php");
 require_once("restaurantTypeLinkService.php");
 
@@ -44,7 +45,7 @@ class restaurantService extends baseService
             throw new appException("Db update failed...");
     }
 
-    public function getBySearch($searchTerm, $stars3, $stars4)
+    public function getBySearch($searchTerm, $cuisine, $stars3, $stars4)
     {
         $filter = array();
 
@@ -59,7 +60,7 @@ class restaurantService extends baseService
             $stars[] = "4";
         }
         if (count($stars) > 0) {
-            $filter = array_merge($filter, array("restaurant.stars" => new dbContains($stars)));
+            $filter = array_merge($filter, array("restaurant.stars" => $stars));
         }
         return $this->db->get($filter);
     }
@@ -70,4 +71,46 @@ class restaurantService extends baseService
             "restaurant.id" => new dbContains($id)
         ]);
     }
+
+    public function getTimesByRestaurantId($restaurantId)
+    {
+        $foodActivityService = new foodactivityService();
+        $activities = $foodActivityService->getByRestaurantId($restaurantId);
+        return $this->getTimes($activities);
+    }
+
+    public function getDatesByRestaurantId($restaurantId)
+    {
+        $foodActivityService = new foodactivityService();
+        $activities = $foodActivityService->getByRestaurantId($restaurantId);
+        return $this->getDates($activities);
+    }
+
+    function getTimes($foodactivities)
+    {
+        $times = array();
+
+        foreach ($foodactivities as $foodactivity) {
+            $startTime = $foodactivity->getActivity()->getStartTime();
+            $endTime = $foodactivity->getActivity()->getEndTime();
+            $startTimeStr = date_format($startTime, 'H:i');
+            $endTimeStr = date_format($endTime, 'H:i');
+
+            $times["$startTimeStr"] = $endTimeStr;
+        }
+        return $times;
+    }
+
+    function getDates($foodactivities)
+    {
+        $dates = array();
+
+        foreach ($foodactivities as $foodactivity) {
+            $date = $foodactivity->getActivity()->getDate();
+            $date = date_format($date, "Y-m-d");
+            $dates["$date"] = $date;
+        }
+        return $dates;
+    }
+
 }
