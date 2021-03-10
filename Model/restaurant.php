@@ -13,11 +13,15 @@ class restaurant extends sqlModel
     private int $seats;
     private int $phoneNumber;
     private float $price;
+    private string $parking;
+    private string $website;
+    private string $menu;
+    private string $contact;
     protected const sqlTableName = "restaurant";
-    protected const sqlFields = ["id", "locationid", "name", "description", "stars", "seats", "phonenumber", "price"];
+    protected const sqlFields = ["id", "locationid", "name", "description", "stars", "seats", "phonenumber", "price", "parking", "website", "menu", "contact"];
     protected const sqlLinks = ["locationid" => location::class];
 
-    public function constructFull(int $id, location $location, string $name, string $description, int $stars, int $seats, int $phoneNumber, float $price)
+    public function constructFull(int $id, location $location, string $name, string $description, int $stars, int $seats, int $phoneNumber, float $price, string $parking, string $website, string $menu, string $contact)
     {
         $this->id = $id;
         $this->location = $location;
@@ -27,6 +31,10 @@ class restaurant extends sqlModel
         $this->seats = $seats;
         $this->phoneNumber = $phoneNumber;
         $this->price = $price;
+        $this->parking = $parking;
+        $this->website = $website;
+        $this->menu = $this->website . "/" . $this->menu;
+        $this->contact = $this->website . "/" . $this->contact;
         return $this;
     }
 
@@ -41,7 +49,11 @@ class restaurant extends sqlModel
             "stars" => $this->stars,
             "seats" => $this->seats,
             "phonenumber" => $this->phoneNumber,
-            "price" => $this->price
+            "price" => $this->price,
+            "parking" => $this->parking,
+            "website" => $this->website,
+            "menu" => $this->menu,
+            "contact" => $this->contact
         ];
     }
 
@@ -55,7 +67,11 @@ class restaurant extends sqlModel
             $sqlRes[self::sqlTableName . "stars"],
             $sqlRes[self::sqlTableName . "seats"],
             $sqlRes[self::sqlTableName . "phonenumber"],
-            $sqlRes[self::sqlTableName . "price"]
+            $sqlRes[self::sqlTableName . "price"],
+            $sqlRes[self::sqlTableName . "parking"],
+            $sqlRes[self::sqlTableName . "website"],
+            $sqlRes[self::sqlTableName . "menu"],
+            $sqlRes[self::sqlTableName . "contact"]
         );
     }
 
@@ -127,6 +143,46 @@ class restaurant extends sqlModel
     public function setPrice($price)
     {
         $this->price = $price;
+    }
+
+    public function getParking()
+    {
+        return $this->parking;
+    }
+
+    public function setParking($parking)
+    {
+        $this->parking = $parking;
+    }
+
+    public function getWebsite()
+    {
+        return $this->website;
+    }
+
+    public function setWebsite($website)
+    {
+        $this->website = $website;
+    }
+
+    public function getMenu()
+    {
+        return $this->menu;
+    }
+
+    public function setMenu($menu)
+    {
+        $this->menu = $menu;
+    }
+
+    public function setContact($contact)
+    {
+        $this->contact = $contact;
+    }
+
+    public function getContact()
+    {
+        return $this->contact;
     }
 
 }

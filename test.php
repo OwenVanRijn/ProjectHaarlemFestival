@@ -4,7 +4,7 @@
     require_once ("Service/danceActivityService.php");
     require_once ("DAL/activityDAO.php");
     require_once("UI/tableGenerator.php");
-    require_once("Service/restaurantTypeService.php");
+    require_once("Service/restaurantTypeLinkService.php");
     require_once ("UI/navBarCMSGenerator.php");
     require_once ("DAL/accountDAO.php");
 

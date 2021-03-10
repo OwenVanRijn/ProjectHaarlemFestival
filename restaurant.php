@@ -43,8 +43,8 @@ $restaurantTypeService = new restaurantTypeLinkService();
 
     <section class="container-fluid w-70">
         <?php
-        if (isset($_POST["restaurantId"])) {
-            $restaurantId = $_POST["restaurantId"];
+        if (isset($_GET["restaurantId"])) {
+            $restaurantId = $_GET["restaurantId"];
             $restaurants = $restaurantService->getById($restaurantId);
         }
 

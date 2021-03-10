@@ -31,11 +31,9 @@ a:active {
 
 h1,
 h2,
-.restaurantName{
+h3,
+.restaurantName {
     font-family: Tahoma;
-    font-style: normal;
-    font-weight: bold;
-    text-decoration: none;
 }
 
 h1 {
@@ -44,6 +42,11 @@ h1 {
 }
 
 h2 {
+    text-align: left;
+    font-size: 1.5em;
+}
+
+h3 {
     text-align: left;
     font-size: 1em;
 }
@@ -54,7 +57,7 @@ a.button1,
 .button1,
 label,
 input,
-form{
+form {
     font-family: Arial;
     font-size: 0.9em;
 }
@@ -119,7 +122,7 @@ s .row:after {
 }
 
 header {
-    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/Background.png);
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/Background.png);
     padding-top: 50px;
     background-size: cover;
     height: 25vh;
@@ -159,21 +162,23 @@ a.button1:hover,
 }
 
 #filterbar {
-  background-color: #A5A5A5;
-  padding: 20px;
-  column-count: 3;
+    background-color: #A5A5A5;
+    padding: 20px;
+    column-count: 3;
 }
+
 /*jazz filterbar*/
-#filter{
-  background-color: #A5A5A5;
-  column-count: 3;
-  padding-top: 15px;
-  padding-left: 10px;
-  padding-right: 10px;
-  height: 50px;
-  width: 1700px;
+#filter {
+    background-color: #A5A5A5;
+    column-count: 3;
+    padding-top: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 50px;
+    width: 1700px;
 
 }
+
 .filterlabelTitle {
     position: relative;
     top: 10px;
@@ -189,7 +194,8 @@ a.button1:hover,
     display: inline-block;
     display: block;
 }
-@media all and (max-width:30em) {
+
+@media all and (max-width: 30em) {
     a.button1,
     .button1 {
         display: block;
@@ -228,3 +234,8 @@ a.button1:hover,
 
 /* title */
 
+
+/* SHOPPINGCART*/
+.form-control {
+    width: 40px;
+}

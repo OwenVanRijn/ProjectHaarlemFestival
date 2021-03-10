@@ -7,8 +7,6 @@ require_once($root . "/Service/jazzactivityService.php");
 require_once($root . "/Service/foodactivityService.php");
 require_once($root . "/Service/danceActivityService.php");
 require_once($root . "/Service/shoppingcartService.php");
-
-
 ?>
 
 
@@ -23,6 +21,16 @@ require_once($root . "/Service/shoppingcartService.php");
     <title>Shoppingcart</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/dance.css">
+
+    <script language=Javascript>
+        function isNumberKey(evt)
+        {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+            return true;
+        }
+    </script>
 </head>
 
 <body>
@@ -34,7 +42,6 @@ require_once($root . "/Service/shoppingcartService.php");
 
     $total = 0;
     if (isset($_SESSION['shoppingcart'])) {
-
         $shoppingcartService = new shoppingcartService();
         $jazzActivityService = new jazzActivityService();
         $foodActivityService = new foodActivityService();
@@ -50,57 +57,56 @@ require_once($root . "/Service/shoppingcartService.php");
         foreach ($shoppingcart as $key => $value) {
             $ids[] = $key;
         }
-        echo "<br><br> IDS <br><br>";
-        var_dump($ids);
-        echo "<br><br> IDS <br><br>";
 
-        $foodActivityService->getFromActivityIds([3, 1]);
+        if (count($ids) == 0) {
+            echo "<p>Cart is Empty</p>";
+        } else {
+            echo "<br><br> IDS <br><br>";
+            var_dump($ids);
+            echo "<br><br> IDS <br><br>";
 
-        echo "werkt nog";
+            $activities = array_merge($danceActivityService->getFromActivityIds($ids), $foodActivityService->getFromActivityIds($ids), $jazzActivityService->getFromActivityIds($ids));
 
-        $activities = array_merge($danceActivityService->getFromActivityIds($ids), $foodActivityService->getFromActivityIds($ids), $jazzActivityService->getFromActivityIds($ids));
-
-        $dates = array('2021-06-26', '2021-06-27', '2021-06-28', '2021-06-29');
+            $dates = array('2021-06-26', '2021-06-27', '2021-06-28', '2021-06-29');
 
 
-        $days = array();
-        $thursdayActivities = array();
-        $fridayActivities = array();
-        $saturdayActivities = array();
-        $sundayActivities = array();
+            $days = array();
+            $thursdayActivities = array();
+            $fridayActivities = array();
+            $saturdayActivities = array();
+            $sundayActivities = array();
 
-        foreach ($activities as $activity) {
-            if ($activity->getActivity()->getDate()->format("Y-m-d") == $dates[0]) {
-                $thursdayActivities[] = $activity;
+            foreach ($activities as $activity) {
+                if ($activity->getActivity()->getDate()->format("Y-m-d") == $dates[0]) {
+                    $thursdayActivities[] = $activity;
+                }
+                if ($activity->getActivity()->getDate()->format("Y-m-d") == $dates[1]) {
+                    $fridayActivities[] = $activity;
+                }
+                if ($activity->getActivity()->getDate()->format("Y-m-d") == $dates[2]) {
+                    $saturdayActivities[] = $activity;
+                }
+                if ($activity->getActivity()->getDate()->format("Y-m-d") == $dates[3]) {
+                    $sundayActivities[] = $activity;
+                }
             }
-            if ($activity->getActivity()->getDate()->format("Y-m-d") == $dates[1]) {
-                $fridayActivities[] = $activity;
+
+            $days[0] = $thursdayActivities;
+            $days[1] = $fridayActivities;
+            $days[2] = $saturdayActivities;
+            $days[3] = $sundayActivities;
+
+            for ($i = 0; $i < count($days); $i++) {
+                if ($days[$i] != 0) {
+                    $total += echoDay($dates[$i], $days[$i]);
+                }
             }
-            if ($activity->getActivity()->getDate()->format("Y-m-d") == $dates[2]) {
-                $saturdayActivities[] = $activity;
-            }
-            if ($activity->getActivity()->getDate()->format("Y-m-d") == $dates[3]) {
-                $sundayActivities[] = $activity;
-            }
+
+            ?>
+            <button class="btn btn-primary"
+                    onclick="window.location.href='/payment/account.php'"><?php echo "Pay €$total" ?> </button>
+            <?php
         }
-
-        $days[0] = $thursdayActivities;
-        $days[1] = $fridayActivities;
-        $days[2] = $saturdayActivities;
-        $days[3] = $sundayActivities;
-
-        for ($i = 0; $i < count($days); $i++) {
-            if ($days[$i] != 0) {
-                $total += echoDay($dates[$i], $days[$i]);
-            }
-        }
-
-        ?>
-        <button class="btn btn-primary"
-                onclick="window.location.href='/payment/account.php'"><?php echo "Pay $total" ?> </button>
-        <?php
-
-        echo "done";
     } else {
         echo "<p>Cart is Empty</p>";
     }
@@ -116,66 +122,62 @@ if (isset($_POST["edit"]) || isset($_POST["remove"])) {
     if ($_GET['action'] == 'remove') {
         $shoppingcartService->removeFromShoppingcartItemsById($_GET["id"]);
     } else if ($_GET['action'] == 'edit') {
-        $shoppingcartService->getShoppingcart()->setShoppingcartItemById($_GET["id"], $_POST["amount"]);
+        $newAmount = $_POST["amount"];
+        if ($newAmount == 0) {
+            $shoppingcartService->removeFromShoppingcartItemsById($_GET["id"]);
+        } else {
+            $shoppingcartService->getShoppingcart()->setShoppingcartItemById($_GET["id"], $newAmount);
+        }
     }
-
-    header("Refresh:0");
+    //header("Refresh:0");
+    $page = basename($_SERVER["SCRIPT_FILENAME"]);
+    echo "<script>window.location.href = '$page';</script>";
 }
-
 
 
 function echoDay($date, $activitiesOfTheDay)
 {
-    $totalPriceDay = 0;
-    echoTitles($date);
+    if (count($activitiesOfTheDay) != 0) {
+        $totalPriceDay = 0;
+        echoTitles($date);
 
-    //echo "<br><br> ACTIVITY ON DAY <br><br>";
-    //var_dump($activitiesOfTheDay);
-    //echo get_class($activitiesOfTheDay[0]);
-    //echo "<br><br> ACTIVITY ON DAY <br><br>";
 
-    foreach ($activitiesOfTheDay as $activity) {
-        $price = $activity->getActivity()->getPrice();
-        $amount = 1;
-        $totalPriceActivity = $amount * $price;
-        $type = $activity->getActivity()->getType();
-        $activityId = $activity->getActivity()->getId();
-        $startTime = $activity->getActivity()->getStartTime();
-        $endTime = $activity->getActivity()->getEndTime();
+        //echo "<br><br> ACTIVITY ON DAY <br><br>";
+        //var_dump($activitiesOfTheDay);
+        //echo get_class($activitiesOfTheDay[0]);
+        //echo "<br><br> ACTIVITY ON DAY <br><br>";
 
-        if (get_class($activity) == "foodactivity") {
-            $activityName = $activity->getRestaurant()->getName();
-        } else if (get_class($activity) == "jazzactivity") {
-            $activityName = $activity->getJazzband()->getName();
-        } else {
-            $activityName = "dance activity";
+        foreach ($activitiesOfTheDay as $activity) {
+            $price = $activity->getActivity()->getPrice();
+            $activityId = $activity->getActivity()->getId();
+            $shoppingcartService = new shoppingcartService();
+            $amount = $shoppingcartService->getAmountByActivityId($activityId);
+            $totalPriceActivity = $amount * $price;
+            $type = $activity->getActivity()->getType();
+            $activityId = $activity->getActivity()->getId();
+            $startTime = $activity->getActivity()->getStartTime();
+            $endTime = $activity->getActivity()->getEndTime();
+
+            if (get_class($activity) == "foodactivity") {
+                $activityName = $activity->getRestaurant()->getName();
+            } else if (get_class($activity) == "jazzactivity") {
+                $activityName = $activity->getJazzband()->getName();
+            } else {
+                $activityName = "dance activity";
+            }
+
+            $shoppingcartService = new shoppingcartService();
+            $amount = $shoppingcartService->getAmountByActivityId($activityId);
+            cartElement($activityId, $activityName, $type, date("Y-m-d"), $startTime->format('H:i'), $endTime->format('H:i'), $price, $amount);
+
+
+            $totalPriceDay += $totalPriceActivity;
         }
 
-        $shoppingcartService = new shoppingcartService();
-        $amount = $shoppingcartService->getAmountByActivityId($activityId);
-        cartElement($activityId, $activityName, $type, date("Y-m-d"), $startTime->format('H:i:s'), $endTime->format('H:i:s'), $price, $amount);
 
-
-        $totalPriceDay += $totalPriceActivity;
+        return $totalPriceDay;
     }
-
-
-    return $totalPriceDay;
-
-
-    echo '<h2>' . date("D", strtotime($date)) . ' (' . $date . ')</h2>';
-    //$product_id = array_column($_SESSION['shoppingcart'], 'id');
-
-    $total = 0;
-    foreach (unserialize($_SESSION['shoppingcart']) as $id) {
-
-        echo "<br>Gegeven ID is $id<br>";
-        //$result = $shoppingcartService->getInformationById($id);
-        $result = $this->shoppingcartService->getEventActivityInformationById($id);
-
-    }
-
-    return $total;
+    return 0;
 }
 
 
@@ -185,7 +187,7 @@ function echoTitles($date)
     <section class=\"border rounded\">
     <section class=\"row bg-white\">
         <section class=\"col-md-6\">
-         <h1 class=\"pt-2\">$date</h1>
+         <h2 class=\"pt-2\">$date</h2>
             <p class=\"titleInfo\">Amount</p>
             <p class=\"titleInfo\">Event</p>
             <p class=\"titleInfo\">Type</p>
@@ -221,8 +223,8 @@ function cartElement($activityid, $activityName, $type, $createData, $startTime,
                             <section class=\"col-md-3 py-5\">
                                 <section>
                                     <form action=\"shoppingcart.php?action=edit&id=$activityid\" method=\"post\" class=\"cart-items\">
-                                        <input type=\"text\" value=\"$amount\" class=\"form-control w-25 d-inline\" name=\"amount\">
-                                        <button type=\"submit\" class=\"btn bg-light border rounded-circle\" name=\"edit\"><i class=\"fas fa-minus\"></i></button>
+                                        <input type=\"text\" onkeypress=\"return isNumberKey(event)\" value=\"$amount\" class=\"form-control w-25 d-inline\" name=\"amount\">
+                                        <button type=\"submit\" class=\"btn bg-light border rounded-circle\" name=\"edit\">Set</button>
                                     </form>
                                 </section>
                             </section>

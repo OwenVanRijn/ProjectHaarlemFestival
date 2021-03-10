@@ -84,13 +84,12 @@ class foodactivityService extends activityBaseService
     }
 
 
-    public function getBySessionDate(string $date, string $startendTime, int $restaurantId){
-        $times = explode("-", $startendTime);
+    public function getBySessionDate(string $date, array $times, int $restaurantId){
         return $this->db->get([
-            "activity.date" => new dbContains("$date"),
-            "activity.startTime" => new dbContains("$times[0]"),
-            "activity.endTime" => new dbContains("$times[1]"),
-            "restaurant.id" => new dbContains("$restaurantId")
+            "activity.date" => $date,
+            "activity.startTime" => "$times[0]",
+            "activity.endTime" => "$times[1]",
+            "restaurant.id" => $restaurantId
         ]);
     }
 }

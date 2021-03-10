@@ -1,4 +1,5 @@
 <?php
+session_start();
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/UI/navBar.php");
 require_once($root . "/Service/foodactivityService.php");
@@ -7,7 +8,6 @@ require_once($root . "/Service/restaurantTypeLinkService.php");
 
 $restaurantService = new restaurantService();
 $restaurantTypeService = new restaurantTypeLinkService();
-
 ?>
 
 
@@ -18,6 +18,8 @@ $restaurantTypeService = new restaurantTypeLinkService();
     <title>Food</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/dance.css">
+    <link rel="stylesheet" href="css/food.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <meta charset="UTF-8">
     <meta name="keywords"
           content="Haarlem, festival, jazz, food, history, party, feest, geschiedenis, eten, restaurant">
@@ -97,15 +99,6 @@ $restaurantTypeService = new restaurantTypeLinkService();
         </form>
     </section>
 
-
-    <section class="callout">
-        <section class="closebtn" onclick="this.parentElement.style.display='none';">×</section>
-        <section class="callout-container">
-            <h1>Berichtgeving hier</h1>
-            <p>Berichtgeving hier</p>
-        </section>
-    </section>
-
     <section class="container-fluid w-70">
         <?php
         $format = "HH:MM";
@@ -156,7 +149,7 @@ $restaurantTypeService = new restaurantTypeLinkService();
                 echoRestaurant($restaurants);
             }
         } else {
-            echo "<p>No results here.</p>";
+            echo "<p>Could not find an restaurant.</p>";
         }
 
         if (isset($_POST["restaurantId"])) {
@@ -205,9 +198,11 @@ $restaurantTypeService = new restaurantTypeLinkService();
         {
         echo "<section class='col-4 box'>";
         echo "<section class='col-12 text-center' style='background-color: black; color: white; padding-top: 2%;'>";
-        $restaurantName = $restaurant->getName();
-        echo "<h3 class='restaurantName'>$restaurantName</h3>";
         $restaurantId = $restaurant->getId();
+        $restaurantName = $restaurant->getName();
+
+        echo "<img class=\"foodimg\" src=\"img/Restaurants/restaurant$restaurantId.png\" alt=\"Photo of $restaurantName\">";
+        echo "<h3 class='restaurantName'>$restaurantName</h3>";
         echo $restaurantId . " ID";
         $location = $restaurant->getLocation()->getAddress() . " " . $restaurant->getLocation()->getPostalCode();
         $description = $restaurant->getDescription();
@@ -218,10 +213,10 @@ $restaurantTypeService = new restaurantTypeLinkService();
         echo "<section class='row'><p style='color: orange; font-weight: bold'>Session:</p><p>{$description}</p></section>";
         echo "<section class='row'><p style='color: orange; font-weight: bold'>Price:</p><p>{$price}</p></section>";
 
-        echo "<form method=\"POST\" action=\"restaurant.php\">";
+        echo "<form method=\"GET\" action=\"restaurant.php\">";
         echo "<input name=\"restaurantId\" type=\"hidden\" value=\"$restaurantId\">";
         ?>
-        <input type="submit" class='btn btn-primary' name="moreinformation" value="More information"></input>
+        <input type="submit" class='btn btn-primary' value="More information"></input>
         </form>
 
         <?php
@@ -237,7 +232,27 @@ $restaurantTypeService = new restaurantTypeLinkService();
 
     <?php
     }
+    if (isset($_SESSION["foodreservationName"]))
+    {
+        var_dump($_SESSION["foodreservationName"] );
 
+        $restaurantName = $_SESSION["foodreservationName"];
+        if (empty($restaurantName))
+        {
+            $restaurantName = "a restaurant";
+        }
+
+        ?>
+        <section class="callout" id="popupConfirmMessage">
+            <section class="closebtn" onclick="this.parentElement.style.display='none';">×</section>
+            <section class="callout-container">
+                <h1>Reservation created</h1>
+                <p>Added your reservation at <?php echo $restaurantName ?> to the shoppingcart.</p>
+            </section>
+        </section>
+        <?php
+        unset($_SESSION["foodreservationName"]);
+    }
     ?>
 
 </main>

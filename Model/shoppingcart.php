@@ -25,9 +25,9 @@ class shoppingcart extends sqlModel
         $this->createDate = new DateTime();
         $this->shoppingcartItems = array();
         $this->cookieManager = new cookieManager("shoppingcart");
-        $this->addToShoppingcartItemsById(2, 5);
-        $this->addToShoppingcartItemsById(1, 6);
-        $this->addToShoppingcartItemsById(121, 2);
+        //$this->addToShoppingcartItemsById(2, 5);
+        //$this->addToShoppingcartItemsById(1, 6);
+        //$this->addToShoppingcartItemsById(121, 2);
 
         return $this;
     }

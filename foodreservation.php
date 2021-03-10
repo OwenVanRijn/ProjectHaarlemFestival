@@ -17,23 +17,35 @@ if (!isset($_POST["restaurantId"])) {
 }
 $foodactivities = $foodactivityService->getByRestaurantId($restaurantId);
 
+if (isset($_POST["reservation"])) {
+    if (isset($_POST["session"]) && isset($_POST["date"])) {
+        $restaurantId = $_POST["restaurantId"];
+        $seats = $_POST["seats"];
+        $session = $_POST["session"];
+        $date = $_POST["date"];
 
-if (isset($_POST["session"]) && isset($_POST["date"])) {
+        try {
+            $times = explode("-", $session);
+            $foodactivity = $foodactivityService->getBySessionDate($date, $times, $restaurantId);
 
+            if ($foodactivity == NULL) {
+                echo "Could not find a valid activity. Please choose a valid date and session.";
+            } else {
+                $shoppingcartService = new shoppingcartService();
+                $shoppingcartService->getShoppingcart()->addToShoppingcartItemsById($foodactivity->getActivity()->getId(), $seats);
 
-    $restaurantId = $_POST["restaurantId"];
-    $seats = $_POST["seats"];
-    $session = $_POST["session"];
-    $date = $_POST["date"];
-
-
-    $foodactivity = $foodactivityService->getBySessionDate($date, $session, $restaurantId);
-
-
-    $shoppingcartService = new shoppingcartService();
-    $shoppingcartService->getShoppingcart()->addToShoppingcartItemsById($foodactivity->getActivity()->getId(), $seats);
-    header("Location: food.php", true, 301);
-    exit();
+                header("Location: food.php", true, 301);
+                $_SESSION["foodreservationName"] = $foodactivity->getRestaurant()->getName();
+                exit();
+            }
+        } catch (Exception $exception) {
+            echo "Could not create an reservation. Please try again.";
+        }
+    }
+    else
+    {
+        echo "Please select an session and date.";
+    }
 }
 ?>
 
@@ -81,7 +93,7 @@ if (isset($_POST["session"]) && isset($_POST["date"])) {
                     $times = getTimes($foodactivities);
 
                     foreach ($times as $startTimeStr => $endTimeStr) {
-                        echo "<input type=\"radio\" class=\"session\" name=\"session\" id=\"session$index\" value=\"$startTimeStr-$endTimeStr\">";
+                        echo "<input type=\"radio\" class=\"session\" name=\"session\" id=\"session$index\" value=\"$startTimeStr-$endTimeStr\" required>";
                         echo "<label for=\"session$index\">$startTimeStr - $endTimeStr</label><br>";
                         $index++;
                     }
@@ -96,7 +108,7 @@ if (isset($_POST["session"]) && isset($_POST["date"])) {
                     $dates = getDates($foodactivities);
 
                     foreach ($dates as $date) {
-                        echo "<input type=\"radio\" class=\"date\" name=\"date\" id=\"date$index\" value=\"$date\">";
+                        echo "<input type=\"radio\" class=\"date\" name=\"date\" id=\"date$index\" value=\"$date\" required>";
                         echo "<label for=\"date$index\">$date</label><br>";
                         $index++;
                     }
@@ -112,14 +124,12 @@ if (isset($_POST["session"]) && isset($_POST["date"])) {
 
 
                 <section class="w3-container w3-border-top w3-padding-16 w3-light-grey">
-                    <button onclick="document.getElementById('id01').style.display='none'" type="button"
-                            class="w3-button w3-red">Cancel
-                    </button>
+                    <input type="button" onclick="location.href='food.php'" value="Cancel"/>
                     <?php
                     echo "<input name=\"restaurantId\" type=\"hidden\" value=\"$restaurantId\">";
                     ?>
                     <input class="w3-button w3-green w3-right w3-padding" type="submit" name="reservation"
-                           id="session3" value="Make a reservation!">
+                           id="session3" value="Make a reservation">
                 </section>
             </form>
 
