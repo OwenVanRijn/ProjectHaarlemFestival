@@ -33,51 +33,6 @@ class foodactivityService extends activityBaseService
         ];
     }
 
-    public const getHtmlEditHeader = [
-        "restaurant" => [
-            "restaurant" => [htmlTypeEnum::list, account::accountTicketManager],
-            "name" => htmlTypeEnum::text,
-            "restaurantId" => htmlTypeEnum::hidden,
-            "description" => htmlTypeEnum::textArea,
-            "stars" => htmlTypeEnum::number,
-            "seats" => htmlTypeEnum::number,
-            "phoneNumber" => htmlTypeEnum::text,
-            "restaurantPrice" => [htmlTypeEnum::number, account::accountTicketManager],
-            "restaurantType" => htmlTypeEnum::listMultiple
-        ],
-        "hidden" => [
-            "foodActivityId" => htmlTypeEnum::hidden
-        ]
-    ];
-
-    public function getHtmlEditFields(foodactivity $a): array
-    {
-        $resTypeStrs = $this->types->getAllTypesAsStr();
-        $resCurTypeStrs = $this->types->getRestaurantTypesAsIds($a->getRestaurant()->getId());
-
-        $rest = new restaurantService();
-        $strs = $rest->getAllRestaurantsAsStr();
-
-        return [
-            "restaurant" => [
-                "options" => $strs,
-                "selected" => $a->getRestaurant()->getId()
-            ],
-            "restaurantId" => $a->getRestaurant()->getId(), // Restaurant may not always be present!
-            "name" => $a->getRestaurant()->getName(),
-            "description" => $a->getRestaurant()->getDescription(),
-            "stars" => $a->getRestaurant()->getStars(),
-            "seats" => $a->getRestaurant()->getSeats(),
-            "phoneNumber" => $a->getRestaurant()->getPhoneNumber(),
-            "restaurantPrice" => $a->getRestaurant()->getPrice(),
-            "restaurantType" => [
-                "options" => $resTypeStrs,
-                "selected" => $resCurTypeStrs
-            ],
-            "foodActivityId" => $a->getId(),
-        ];
-    }
-
     public function getAll(): array
     {
         return $this->db->get([
@@ -103,6 +58,13 @@ class foodactivityService extends activityBaseService
             "activity.startTime" => new dbContains("$times[0]"),
             "activity.endTime" => new dbContains("$times[1]"),
             "restaurant.id" => new dbContains("$restaurantId")
+        ]);
+    }
+
+    public function updateRestaurantId(int $id, int $restaurantId){
+        return $this->db->update([
+            "id" => $id,
+            "restaurantId" => $restaurantId // TODO: check for validity
         ]);
     }
 

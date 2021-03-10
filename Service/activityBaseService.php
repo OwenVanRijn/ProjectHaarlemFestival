@@ -116,13 +116,18 @@ abstract class activityBaseService extends baseService implements tableInterface
                     if (($account->getCombinedRole() & $v[1]))
                         if (array_key_exists($k, $postResonse))
                             $correctedPostResponse[$k] = $this->stripHtmlChars($postResonse[$k]);
-                        else
+                        else {
                             $correctedPostResponse[$hk . "Incomplete"] = true;
+                            $correctedPostResponse[$k] = null;
+                        }
+
                 }
                 elseif (array_key_exists($k, $postResonse))
                     $correctedPostResponse[$k] = $this->stripHtmlChars($postResonse[$k]);
-                else
+                else {
                     $correctedPostResponse[$hk . "Incomplete"] = true;
+                    $correctedPostResponse[$k] = null;
+                }
             }
         }
 

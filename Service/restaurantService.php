@@ -18,6 +18,44 @@ class restaurantService extends baseService
         return $this->db->get();
     }
 
+    /**
+     * @param int $id
+     * @param string|null $description
+     * @param int|null $stars
+     * @param int|null $seats
+     * @param int|null $phoneNumber
+     */
+    public function updateRestaurant(int $id, ?string $description, ?int $stars, ?int $seats, ?int $phoneNumber) : bool {
+        $update = [
+            "id" => $id,
+        ];
+
+        if (!is_null($description))
+            $update["description"] = $description;
+
+        if (!is_null($stars))
+            $update["stars"] = $stars;
+
+        if (!is_null($seats))
+            $update["seats"] = $seats;
+
+        if (!is_null($phoneNumber))
+            $update["phonenumber"] = $phoneNumber;
+
+        return $this->db->update($update);
+    }
+
+    public function insertRestaurant(string $description, int $stars, int $seats, int $phoneNumber){
+        $insert = [
+            "description" => $description,
+            "stars" => $stars,
+            "seats" => $seats,
+            "phonenumber" => $phoneNumber
+        ];
+
+        return $this->db->insert($insert);
+    }
+
     public function postEditFields(&$post)
     {
         if (isset($post["restaurantIncomplete"]) || $post["type"] != "Food" || !isset($post["location"]))

@@ -43,6 +43,32 @@ class activityService extends baseService
         return [];
     }
 
+    public function updateActivity(int $id, ?string $date, ?string $startTime, ?string $endTime, ?float $price, ?int $ticketsLeft, ?int $locationId){
+        $update = [
+            "id" => $id
+        ];
+
+        if (!is_null($date))
+            $update["date"] = $date;
+
+        if (!is_null($startTime))
+            $update["startTime"] = $startTime;
+
+        if (!is_null($endTime))
+            $update["endTime"] = $endTime;
+
+        if (!is_null($price))
+            $update["price"] = $price;
+
+        if (!is_null($ticketsLeft))
+            $update["ticketsLeft"] = $ticketsLeft;
+
+        if (!is_null($locationId))
+            $update["locationId"] = $locationId;
+
+        return $this->db->update($update);
+    }
+
     public function postEditFields($post){
         if (isset($post["activityIncomplete"]) || !isset($post["location"]))
             throw new appException("Activity not found in post request");
