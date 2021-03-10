@@ -68,6 +68,23 @@ class jazzactivityService extends activityBaseService
         ];
     }
 
+    public function updateActivity(int $id, ?string $hall, ?int $seats, ?int $jazzBandId){
+        $update = [
+            "id" => $id,
+        ];
+
+        if (!is_null($hall))
+            $update["hall"] = $hall;
+
+        if (!is_null($seats))
+            $update["seats"] = $seats;
+
+        if (!is_null($jazzBandId))
+            $update["jazzbandid"] = $jazzBandId;
+
+        return $this->db->update($update);
+    }
+
     public function postEditFields($post){
         if ($post["type"] != "Jazz" || isset($post["performanceIncomplete"]))
             return;

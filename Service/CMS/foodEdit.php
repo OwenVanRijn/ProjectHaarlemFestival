@@ -5,7 +5,6 @@ require_once ("editBase.php");
 require_once ($root . "/Service/foodactivityService.php");
 require_once ($root . "/Service/restaurantService.php");
 require_once ($root . "/Service/restaurantTypeService.php");
-require_once ($root . "/Service/danceArtistService.php");
 
 class foodEdit extends editBase
 {

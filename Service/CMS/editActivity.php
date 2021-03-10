@@ -2,6 +2,7 @@
 
 require_once ("foodEdit.php");
 require_once ("danceEdit.php");
+require_once ("jazzEdit.php");
 
 class editActivity
 {
@@ -14,7 +15,8 @@ class editActivity
     {
         $this->editServices = [
             new foodEdit(),
-            new danceEdit()
+            new danceEdit(),
+            new jazzEdit()
         ];
     }
 
