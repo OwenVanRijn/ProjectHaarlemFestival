@@ -18,17 +18,13 @@ class restaurantService extends baseService
         return $this->db->get();
     }
 
-    /**
-     * @param int $id
-     * @param string|null $description
-     * @param int|null $stars
-     * @param int|null $seats
-     * @param int|null $phoneNumber
-     */
-    public function updateRestaurant(int $id, ?string $description, ?int $stars, ?int $seats, ?int $phoneNumber) : bool {
+    public function updateRestaurant(int $id, ?string $name, ?string $description, ?int $stars, ?int $seats, ?int $phoneNumber, float $price, int $locationId) : bool {
         $update = [
             "id" => $id,
         ];
+
+        if (!is_null($name))
+            $update["name"] = $name;
 
         if (!is_null($description))
             $update["description"] = $description;
@@ -42,15 +38,24 @@ class restaurantService extends baseService
         if (!is_null($phoneNumber))
             $update["phonenumber"] = $phoneNumber;
 
+        if (!is_null($price))
+            $update["price"] = $price;
+
+        if (!is_null($locationId))
+            $update["locationid"] = $locationId;
+
         return $this->db->update($update);
     }
 
-    public function insertRestaurant(string $description, int $stars, int $seats, int $phoneNumber){
+    public function insertRestaurant(string $name, string $description, int $stars, int $seats, int $phoneNumber, float $price, int $locationId){
         $insert = [
+            "name" => $name,
             "description" => $description,
             "stars" => $stars,
             "seats" => $seats,
-            "phonenumber" => $phoneNumber
+            "phonenumber" => $phoneNumber,
+            "price" => $price,
+            "locationid" => $locationId
         ];
 
         return $this->db->insert($insert);

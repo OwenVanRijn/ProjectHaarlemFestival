@@ -11,7 +11,7 @@ require_once ("editInterface.php");
 
 abstract class editBase implements editInterface
 {
-    private activityBaseService $service;
+    protected activityBaseService $service;
 
     public function __construct(activityBaseService $service){
         $this->service = $service;
@@ -180,10 +180,13 @@ abstract class editBase implements editInterface
             (float)$validatedPost["price"],
             (int)$validatedPost["ticketsLeft"],
             (isset($validatedPost["locationIncomplete"])) ? (int)$validatedPost["location"] : null);
+
+        $this->processEditResponseChild($validatedPost);
     }
 
     public const htmlEditHeader = [];
+    public const editType = "None";
 
     public abstract function getHtmlEditFields(sqlModel $a) : array;
-    protected abstract function processEditResponseChild(array $verifiedPost);
+    protected abstract function processEditResponseChild(array $validatedPost);
 }

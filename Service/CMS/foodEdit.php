@@ -18,6 +18,8 @@ class foodEdit extends editBase
         $this->restaurantTypeService = new restaurantTypeService();
     }
 
+    public const editType = "Food";
+
     public const htmlEditHeader = [
         "restaurant" => [
             "restaurant" => [htmlTypeEnum::list, account::accountTicketManager],
@@ -62,7 +64,55 @@ class foodEdit extends editBase
         ];
     }
 
-    protected function processEditResponseChild(array $verifiedPost){
+    protected function processEditResponseChild(array $post){
+        if (!isset($post["restaurantIncomplete"]) && isset($post["location"])){
+            $restaurantId = -1;
 
+            if (isset($post["restaurant"]) && (int)$post["restaurant"] == -1){
+                $res = $this->restaurantService->insertRestaurant(
+                    $post["name"],
+                    $post["description"],
+                    (int)$post["stars"],
+                    (int)$post["seats"],
+                    (int)$post["phoneNumber"],
+                    (float)$post["restaurantPrice"],
+                    (int)$post["location"]
+                );
+
+                if (!$res)
+                    throw new appException("[Restaurant] db insert failed...");
+
+                $post["restaurant"] = $res;
+                $restaurantId = $res;
+                $post["restaurantIncomplete"] = true;
+            }
+            else {
+                $res = $this->restaurantService->updateRestaurant(
+                    (int)$post["restaurantId"],
+                    $post["name"],
+                    $post["description"],
+                    (int)$post["stars"],
+                    (int)$post["seats"],
+                    (int)$post["phoneNumber"],
+                    (float)$post["restaurantPrice"],
+                    (isset($post["locationIncomplete"])) ? (int)$post["location"] : null
+                );
+
+                $restaurantId = (int)$post["restaurantId"];
+
+                if (!$res)
+                    throw new appException("[Restaurant] db update failed...");
+            }
+
+
+            $this->restaurantTypeService->updateFieldIds($restaurantId, $post["restaurantType"]);
+        }
+
+        if (isset($post["restaurantIncomplete"])){
+            $this->service->updateRestaurantId(
+                (int)$post["foodActivityId"],
+                (isset($post["restaurant"])) ? (int)$post["restaurant"] : (int)$post["restaurantId"]
+            );
+        }
     }
 }
