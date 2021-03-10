@@ -8,6 +8,7 @@ require_once ($root . "/DAL/danceActivityDAO.php");
 require_once ($root . "/DAL/danceArtistDAO.php");
 require_once ("restaurantTypeService.php");
 require_once ("artistOnActivityService.php");
+require_once ("danceArtistService.php");
 
 class danceActivityService extends activityBaseService
 {
@@ -92,12 +93,8 @@ class danceActivityService extends activityBaseService
         foreach ($artists as $b){
             $artistSelStrs[] = $b->getId();
         }
-        // TODO: Split off in different file!
-        $allArtists = (new danceArtistDAO())->get();
-        $artistStrs = [];
-        foreach ($allArtists as $b){
-            $artistStrs[(string)$b->getId()] = $b->getName();
-        }
+
+        $artistStrs = (new danceArtistService())->getAllAsStr();
 
         return [
             "artistActivityId" => $a->getId(),
@@ -107,6 +104,13 @@ class danceActivityService extends activityBaseService
                 "selected" => $artistSelStrs
             ]
         ];
+    }
+
+    public function updateSessionType(int $id, string $sessionType){
+        return (new danceActivityDAO())->update([
+            "id" => $id,
+            "sessionType" => $sessionType
+        ]);
     }
 
     public function postEditFields($post){

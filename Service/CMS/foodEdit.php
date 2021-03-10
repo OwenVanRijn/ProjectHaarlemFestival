@@ -5,6 +5,7 @@ require_once ("editBase.php");
 require_once ($root . "/Service/foodactivityService.php");
 require_once ($root . "/Service/restaurantService.php");
 require_once ($root . "/Service/restaurantTypeService.php");
+require_once ($root . "/Service/danceArtistService.php");
 
 class foodEdit extends editBase
 {
@@ -66,8 +67,6 @@ class foodEdit extends editBase
 
     protected function processEditResponseChild(array $post){
         if (!isset($post["restaurantIncomplete"]) && isset($post["location"])){
-            $restaurantId = -1;
-
             if (isset($post["restaurant"]) && (int)$post["restaurant"] == -1){
                 $res = $this->restaurantService->insertRestaurant(
                     $post["name"],
