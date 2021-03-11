@@ -12,19 +12,34 @@ class locationService extends baseService
         $this->db = new locationDAO();
     }
 
-    public function postEditFields($post){
-        if (isset($post["locationIncomplete"]))
-            return;
-
+    public function updateLocation(int $id, ?string $address, ?string $postalCode, ?string $city, ?string $name){
         $update = [
-            "id" => (int)$post["location"],
-            "address" => $post["address"],
-            "postalCode" => $post["postalCode"],
-            "city" => $post["city"],
-            "name" => $post["locationName"],
+            "id" => $id
         ];
 
-        if (!$this->db->update($update))
-            throw new appException("Db update failed...");
+        if (!is_null($address))
+            $update["address"] = $address;
+
+        if (!is_null($postalCode))
+            $update["postalCode"] = $postalCode;
+
+        if (!is_null($city))
+            $update["city"] = $city;
+
+        if (!is_null($name))
+            $update["name"] = $name;
+
+        return $this->db->update($update);
+    }
+
+    public function insertLocation(string $address, string $postalCode, string $city, string $name){
+        $insert = [
+            "address" => $address,
+            "postalCode" => $postalCode,
+            "city" => $city,
+            "name" => $name
+        ];
+
+        return $this->db->insert($insert);
     }
 }

@@ -1,16 +1,20 @@
 <?php
+$root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
 require_once ("dbContains.php");
+require_once($root . "/Model/date.php");
+require_once($root . "/Model/time.php");
+require_once ($root . "/Utils/appException.php");
 
 abstract class queryBase
 {
-    protected $conn;
+    protected mysqli $conn;
 
     public function __construct(mysqli $conn){
         $this->conn = $conn;
     }
 
-    protected $stmt;
+    protected mysqli_stmt $stmt;
 
     /**
      * Prepares an SQL query
@@ -91,6 +95,10 @@ abstract class queryBase
                     $this->types .= "i";
                     $this->localVars[] = intval($var);
                     break;
+                case "double":
+                    $this->types .= "d";
+                    $this->localVars[] = $var;
+                    break;
                 case "object":
                     switch (get_class($var)){
                         case "DateTime":
@@ -103,16 +111,26 @@ abstract class queryBase
                                 $this->localVars[] = $entry;
                             }
                             break;
+                        case "date":
+                        case "time":
+                            $this->types .= "s";
+                            $this->localVars[] = $var->toString();
+                            break;
+                        default:
+                            throw new appException("[DB] Unknown class " . gettype($var));
                     }
                     break;
                 case "array":
                     $this->getTypeParam($var);
                     break;
+                default:
+                    throw new appException("[DB] Unknown type " . gettype($var));
             }
         }
     }
 
     protected function bindParams(array $vars){
+
         if (empty($vars))
             return;
 

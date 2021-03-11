@@ -183,7 +183,11 @@ class dynamicQueryGen extends queryBase
         return $this->execQueryResult($this->class::sqlParseFunc());
     }
 
-    // Expects an k,v array
+    /**
+     * Expects an k,v array
+     * @param array $fields
+     * @return int|false
+     */
     public function insert(array $fields){
         $keys = $this->class::sqlFields();
         $values = [];
@@ -224,7 +228,13 @@ class dynamicQueryGen extends queryBase
 
         $this->prepareQuery($query);
         $this->bindParams($values);
-        return $this->execAndCloseQuery();
+        $ret = $this->execQuery();
+        $id = $this->stmt->insert_id;
+        $this->closeQuery();
+        if ($ret){
+            return $id;
+        }
+        return false;
     }
 
     public function delete(array $filter){

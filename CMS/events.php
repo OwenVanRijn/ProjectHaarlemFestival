@@ -97,6 +97,11 @@ $nav->assignCss([
                     selectSingle.appendChild(optionElem);
                 }
 
+                const optionElem = document.createElement("option");
+                optionElem.setAttribute("value", "-1");
+                optionElem.innerHTML = "-- Add --";
+                selectSingle.appendChild(optionElem);
+
                 return selectSingle;
 
             default:
@@ -125,6 +130,7 @@ $nav->assignCss([
                 input.setAttribute("name", fieldName);
                 input.setAttribute("id", fieldName);
                 input.classList.add("leftStack", "marginRightOption");
+                input.setAttribute("required", "");
                 entry.appendChild(input);
 
                 return entry;
@@ -169,15 +175,42 @@ $nav->assignCss([
             section.appendChild(sectionHeader);
             section.appendChild(sectionContent);
 
+            if (className === "hidden"){
+                section.setAttribute("hidden", "");
+            }
+
             for (const fieldName in json[className]){
                 const fieldContents = json[className][fieldName];
 
                 if (className === fieldName){
                     let field = generateInputField(fieldContents, className, fieldName);
                     field.addEventListener('change', () => {
-                        let form = document.getElementById(className + "Section");
-                        if (form != null)
-                            form.remove();
+                        let classSection = document.getElementById(className + "Section");
+
+                        if (field.children[field.selectedIndex].hasAttribute("selected")){
+                            classSection.classList.remove("hidden");
+                            classSection.removeAttribute("hidden");
+                        }
+                        else if (field.children[field.selectedIndex].attributes.value.value == -1) {
+                            classSection.classList.remove("hidden");
+                            classSection.removeAttribute("hidden");
+                            for (let i = 0; i < classSection.children.length; i++){
+                                if (classSection.children[i].children.length > 1){
+                                    switch (classSection.children[i].children[1].tagName){
+                                        case "INPUT":
+                                            classSection.children[i].children[1].setAttribute("value", "");
+                                            break;
+                                        case "TEXTAREA":
+                                            classSection.children[i].children[1].innerHTML = "";
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            classSection.classList.add("hidden");
+                            classSection.setAttribute("hidden", "");
+                        }
                     })
                     sectionHeader.appendChild(field);
                     field.classList.add("marginTopBottom", "marginLeftOption");
@@ -193,6 +226,12 @@ $nav->assignCss([
 
         let send = document.createElement("button");
         send.innerHTML = "Edit";
+        send.onclick = function() {
+            let hidden = document.getElementsByClassName("hidden");
+            while (hidden.length){
+                hidden[0].remove();
+            }
+        }
         form.appendChild(send);
     }
 

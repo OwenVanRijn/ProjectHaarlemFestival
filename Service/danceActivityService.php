@@ -8,6 +8,7 @@ require_once ($root . "/DAL/danceActivityDAO.php");
 require_once ($root . "/DAL/danceArtistDAO.php");
 require_once("restaurantTypeLinkService.php");
 require_once ("artistOnActivityService.php");
+require_once ("danceArtistService.php");
 
 class danceActivityService extends activityBaseService
 {
@@ -76,51 +77,11 @@ class danceActivityService extends activityBaseService
 
         return $this->toDanceActivityArray($res);
     }
-    
-    public const getHtmlEditHeader = [
-        "artists" => [ // TODO: This needs some custom type!
-            "artistActivityId" => htmlTypeEnum::hidden,
-            "eventType" => htmlTypeEnum::text,
-            "artistsOnActivity" => htmlTypeEnum::listMultiple
-        ]
-    ];
 
-    public function getHtmlEditFields(danceActivity $a): array
-    {
-        $artists = $a->getArtists();
-        $artistSelStrs = [];
-        foreach ($artists as $b){
-            $artistSelStrs[] = $b->getId();
-        }
-        // TODO: Split off in different file!
-        $allArtists = (new danceArtistDAO())->get();
-        $artistStrs = [];
-        foreach ($allArtists as $b){
-            $artistStrs[(string)$b->getId()] = $b->getName();
-        }
-
-        return [
-            "artistActivityId" => $a->getId(),
-            "eventType" => $a->getType(),
-            "artistsOnActivity" => [
-                "options" => $artistStrs,
-                "selected" => $artistSelStrs
-            ]
-        ];
-    }
-
-    public function postEditFields($post){
-        if (isset($post["artistsIncomplete"]) || $post["type"] != "Dance")
-            return;
-
-        $update = [
-            "id" => (int)$post["artistActivityId"],
-            "sessionType" => $post["eventType"]
-        ];
-
-        (new artistOnActivityService())->updateArtistIds($update["id"], $post["artistsOnActivity"]);
-
-        if (!(new danceActivityDAO())->update($update))
-            throw new appException("Db update failed...");
+    public function updateSessionType(int $id, string $sessionType){
+        return (new danceActivityDAO())->update([
+            "id" => $id,
+            "sessionType" => $sessionType
+        ]);
     }
 }

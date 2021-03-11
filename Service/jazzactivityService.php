@@ -33,59 +33,20 @@ class jazzactivityService extends activityBaseService
         ]);
     }
 
-    public const getHtmlEditHeader = [
-        "band" => [
-            "band" => htmlTypeEnum::list,
-            "bandName" => htmlTypeEnum::text,
-            "bandDescription" => htmlTypeEnum::textArea,
-        ],
-        "performance" => [
-            "jazzActivityId" => htmlTypeEnum::hidden,
-            "hall" => htmlTypeEnum::text,
-            "seats" => htmlTypeEnum::number
-        ]
-    ];
-
-    public function getHtmlEditFields(jazzactivity $a){
-        $bands = (new jazzbandDAO())->get();
-        $bandsStr = [];
-        foreach ($bands as $b){
-            $bandsStr[(string)$b->getId()] = $b->getName();
-        }
-
-        $selBand = $a->getJazzband();
-
-        return [
-            "band" => [
-                "options" => $bandsStr,
-                "selected" => $selBand->getId()
-            ],
-            "jazzActivityId" => $a->getId(),
-            "bandName" => $selBand->getName(),
-            "bandDescription" => $selBand->getDescription(),
-            "hall" => $a->getHall(),
-            "seats" => $a->getSeats()
-        ];
-    }
-
-    public function postEditFields($post){
-        if ($post["type"] != "Jazz" || isset($post["performanceIncomplete"]))
-            return;
-
+    public function updateActivity(int $id, ?string $hall, ?int $seats, ?int $jazzBandId){
         $update = [
-            "id" => $post["jazzActivityId"],
-            "hall" => $post["hall"],
-            "seats" => $post["seats"]
+            "id" => $id,
         ];
 
-        if ($post["bandIncomplete"]){
-            $update["jazzbandid"] = (int)$post["band"];
-        }
-        else {
-            (new jazzBandService())->updateBand((int)$post["band"], $post["bandName"], $post["bandDescription"]);
-        }
+        if (!is_null($hall))
+            $update["hall"] = $hall;
 
-        if (!$this->db->update($update))
-            throw new appException("Db update failed...");
+        if (!is_null($seats))
+            $update["seats"] = $seats;
+
+        if (!is_null($jazzBandId))
+            $update["jazzbandid"] = $jazzBandId;
+
+        return $this->db->update($update);
     }
 }

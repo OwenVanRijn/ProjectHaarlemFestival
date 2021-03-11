@@ -27,76 +27,29 @@ class activityService extends baseService
         return array_merge($this->jazz->getFromActivityIds($ids), $this->food->getFromActivityIds($ids), $this->dance->getFromActivityIds($ids));
     }
 
-    public function getHtmlEditContent(int $id, account $account){
-        $activities = [$this->food, $this->jazz, $this->dance];
-
-        foreach ($activities as $a){
-            try {
-                return $a->getHtmlEditContent($id, $account);
-            }
-            catch (appException $e){
-                // Do nothing
-            }
-
-        }
-
-        return [];
-    }
-
-    public function postEditFields($post){
-        if (isset($post["activityIncomplete"]) || !isset($post["location"]))
-            throw new appException("Activity not found in post request");
-
+    public function updateActivity(int $id, ?date $date, ?time $startTime, ?time $endTime, ?float $price, ?int $ticketsLeft, ?int $locationId){
         $update = [
-            "id" => (int)$post["activityId"]
+            "id" => $id
         ];
 
-        if (isset($post["date"]))
-            $update["date"] = $post["date"];
+        if (!is_null($date))
+            $update["date"] = $date;
 
-        if (isset($post["startTime"]))
-            $update["startTime"] = $post["startTime"];
+        if (!is_null($startTime))
+            $update["startTime"] = $startTime;
 
-        if (isset($post["endTime"]))
-            $update["endTime"] = $post["endTime"];
+        if (!is_null($endTime))
+            $update["endTime"] = $endTime;
 
-        if (isset($post["price"]))
-            $update["price"] = (float)$post["price"];
+        if (!is_null($price))
+            $update["price"] = $price;
 
-        if (isset($post["ticketsLeft"]))
-            $update["ticketsLeft"] = (int)$post["ticketsLeft"];
+        if (!is_null($ticketsLeft))
+            $update["ticketsLeft"] = $ticketsLeft;
 
-        if (isset($post["locationIncomplete"]))
-            $update["locationId"] = (int)$post["location"];
+        if (!is_null($locationId))
+            $update["locationId"] = $locationId;
 
-        if (!$this->db->update($update))
-            throw new appException("Db update failed...");
-    }
-
-    public function writeHtmlEditFields($post, account $account){
-        if (!isset($post["type"]))
-            throw new appException("No data");
-
-        switch ($post["type"]){
-            case "Food":
-                $newPost = $this->food->filterHtmlEditResponse($account, $post);
-                break;
-            case "Dance":
-                $newPost = $this->dance->filterHtmlEditResponse($account, $post);
-                break;
-            case "Jazz":
-                $newPost = $this->jazz->filterHtmlEditResponse($account, $post);
-                break;
-            default:
-                throw new appException("An invalid type was requested");
-        }
-
-        $this->postEditFields($newPost);
-        (new locationService())->postEditFields($newPost);
-        (new restaurantService())->postEditFields($newPost);
-        ($this->dance)->postEditFields($newPost);
-        ($this->jazz)->postEditFields($newPost);
-
-        echo json_encode($newPost);
+        return $this->db->update($update);
     }
 }

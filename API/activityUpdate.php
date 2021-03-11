@@ -3,6 +3,7 @@
 require_once ("../Service/activityService.php");
 header('Content-Type: application/json');
 require_once ("../Service/sessionService.php");
+require_once ("../Service/CMS/editActivity.php");
 
 $sessionService = new sessionService();
 $user = $sessionService->validateSessionFromCookie();
@@ -12,9 +13,9 @@ if (!$user){
     exit();
 }
 
-$activity = new activityService();
+$activity = new editActivity();
 try {
-    $activity->writeHtmlEditFields($_POST, $user);
+    $activity->editContent($_POST, $user);
     header('Location: ../CMS/events.php?event=' . strtolower($_POST["type"]));
 }
 catch (appException $e){

@@ -19,30 +19,47 @@ class restaurantService extends baseService
         return $this->db->get();
     }
 
-    public function postEditFields($post)
-    {
-        if (isset($post["restaurantIncomplete"]) || $post["type"] != "Food" || !isset($post["location"]))
-            return;
-
+    public function updateRestaurant(int $id, ?string $name, ?string $description, ?int $stars, ?int $seats, ?int $phoneNumber, ?float $price, ?int $locationId) : bool {
         $update = [
-            "id" => (int)$post["restaurantId"],
-            "name" => $post["name"],
-            "description" => $post["description"],
-            "stars" => (int)$post["stars"],
-            "seats" => (int)$post["seats"],
-            "phonenumber" => (int)$post["phoneNumber"]
+            "id" => $id,
         ];
 
-        if (isset($post["locationIncomplete"]))
-            $update["locationId"] = (int)$post["location"];
+        if (!is_null($name))
+            $update["name"] = $name;
 
-        if (isset($post["restaurantPrice"]))
-            $update["price"] = (float)$post["restaurantPrice"];
+        if (!is_null($description))
+            $update["description"] = $description;
 
-        (new restaurantTypeLinkService())->updateFieldIds($update["id"], $post["restaurantType"]);
+        if (!is_null($stars))
+            $update["stars"] = $stars;
 
-        if (!$this->db->update($update))
-            throw new appException("Db update failed...");
+        if (!is_null($seats))
+            $update["seats"] = $seats;
+
+        if (!is_null($phoneNumber))
+            $update["phonenumber"] = $phoneNumber;
+
+        if (!is_null($price))
+            $update["price"] = $price;
+
+        if (!is_null($locationId))
+            $update["locationid"] = $locationId;
+
+        return $this->db->update($update);
+    }
+
+    public function insertRestaurant(string $name, string $description, int $stars, int $seats, int $phoneNumber, float $price, int $locationId){
+        $insert = [
+            "name" => $name,
+            "description" => $description,
+            "stars" => $stars,
+            "seats" => $seats,
+            "phonenumber" => $phoneNumber,
+            "price" => $price,
+            "locationid" => $locationId
+        ];
+
+        return $this->db->insert($insert);
     }
 
     public function getBySearch($searchTerm, $cuisine, $stars3, $stars4)
@@ -113,4 +130,12 @@ class restaurantService extends baseService
         return $dates;
     }
 
+    public function getAllRestaurantsAsStr(){
+        $restaurants = $this->db->get();
+        $restaurantStr = [];
+        foreach ($restaurants as $b){
+            $restaurantStr[(string)$b->getId()] = $b->getName();
+        }
+        return $restaurantStr;
+    }
 }
