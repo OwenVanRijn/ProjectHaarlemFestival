@@ -21,7 +21,12 @@ abstract class queryBase
      * @param string $query
      */
     protected function prepareQuery($query)  {
-        $this->stmt = $this->conn->prepare($query);
+        $stmt = $this->conn->prepare($query);
+
+        if (!$stmt)
+            throw new appException($this->conn->error);
+
+        $this->stmt = $stmt;
     }
 
     /**
