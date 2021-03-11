@@ -67,27 +67,4 @@ class foodactivityService extends activityBaseService
             "restaurantId" => $restaurantId // TODO: check for validity
         ]);
     }
-
-    public function postEditFields($post){
-        if ($post["type"] != "Food")
-            return;
-
-        if (isset($post["restaurantIncomplete"])){
-            $this->db->update([
-                "id" => (int)$post["foodActivityId"],
-                "restaurantId" => (int)$post["restaurant"] // TODO: check for validity
-            ]);
-        }
-        else {
-            $restaurant = new restaurantService();
-            $restaurant->postEditFields($post);
-
-            if (isset($post["restaurantUpdated"])){
-                $this->db->update([
-                    "id" => (int)$post["foodActivityId"],
-                    "restaurantId" => (int)$post["restaurant"] // TODO: check for validity
-                ]);
-            }
-        }
-    }
 }

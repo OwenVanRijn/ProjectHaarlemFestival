@@ -24,10 +24,6 @@ if (!isset($_GET["id"])){
 
 $id = (int)$_GET["id"];
 
-$service = new activityService();
+$service = new editActivity();
 
-//echo json_encode($service->getHtmlEditContent($id, $user));
-
-$service2 = new editActivity();
-
-echo json_encode($service2->getContent($id, $user));
+echo json_encode($service->getContent($id, $user));

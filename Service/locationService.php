@@ -42,31 +42,4 @@ class locationService extends baseService
 
         return $this->db->insert($insert);
     }
-
-    public function postEditFields(&$post){
-        if (isset($post["locationIncomplete"]))
-            return;
-
-        $update = [
-            "address" => $post["address"],
-            "postalCode" => $post["postalCode"],
-            "city" => $post["city"],
-            "name" => $post["locationName"],
-        ];
-
-        if ((int)$post["location"] == -1){
-            $res = $this->db->insert($update);
-            if (!$res)
-                throw new appException("Db insert failed...");
-
-            $post["locationIncomplete"] = true;
-            $post["location"] = $res;
-        }
-        else {
-            $update["id"] = (int)$post["location"];
-
-            if (!$this->db->update($update))
-                throw new appException("Db update failed...");
-        }
-    }
 }

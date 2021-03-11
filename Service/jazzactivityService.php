@@ -33,41 +33,6 @@ class jazzactivityService extends activityBaseService
         ]);
     }
 
-    public const getHtmlEditHeader = [
-        "band" => [
-            "band" => htmlTypeEnum::list,
-            "bandName" => htmlTypeEnum::text,
-            "bandDescription" => htmlTypeEnum::textArea,
-        ],
-        "performance" => [
-            "jazzActivityId" => htmlTypeEnum::hidden,
-            "hall" => htmlTypeEnum::text,
-            "seats" => htmlTypeEnum::number
-        ]
-    ];
-
-    public function getHtmlEditFields(jazzactivity $a){
-        $bands = (new jazzbandDAO())->get();
-        $bandsStr = [];
-        foreach ($bands as $b){
-            $bandsStr[(string)$b->getId()] = $b->getName();
-        }
-
-        $selBand = $a->getJazzband();
-
-        return [
-            "band" => [
-                "options" => $bandsStr,
-                "selected" => $selBand->getId()
-            ],
-            "jazzActivityId" => $a->getId(),
-            "bandName" => $selBand->getName(),
-            "bandDescription" => $selBand->getDescription(),
-            "hall" => $a->getHall(),
-            "seats" => $a->getSeats()
-        ];
-    }
-
     public function updateActivity(int $id, ?string $hall, ?int $seats, ?int $jazzBandId){
         $update = [
             "id" => $id,
@@ -83,29 +48,5 @@ class jazzactivityService extends activityBaseService
             $update["jazzbandid"] = $jazzBandId;
 
         return $this->db->update($update);
-    }
-
-    public function postEditFields($post){
-        if ($post["type"] != "Jazz" || isset($post["performanceIncomplete"]))
-            return;
-
-        $update = [
-            "id" => $post["jazzActivityId"],
-            "hall" => $post["hall"],
-            "seats" => $post["seats"]
-        ];
-
-        if ((int)$post["band"] == -1){
-            $update["jazzbandid"] = (new jazzBandService())->insertBand($post["bandName"], $post["bandDescription"]);
-        }
-        elseif ($post["bandIncomplete"]){
-            $update["jazzbandid"] = (int)$post["band"];
-        }
-        else {
-            (new jazzBandService())->updateBand((int)$post["band"], $post["bandName"], $post["bandDescription"]);
-        }
-
-        if (!$this->db->update($update))
-            throw new appException("Db update failed...");
     }
 }
