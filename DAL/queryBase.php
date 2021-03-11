@@ -44,7 +44,6 @@ abstract class queryBase
      */
     protected function execQueryResult($parse){
         $this->execQuery();
-
         $array = array();
         $queryResult = $this->stmt->get_result();
         while ($row = $queryResult->fetch_array()){

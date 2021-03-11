@@ -21,25 +21,44 @@ class danceActivityService extends activityBaseService
         return $this->getAll();
     }
 
-    public function getFields(): array
+    public function getTablesChild(account $a, array $cssRules, array $dates) : array
     {
-        return [
-            "Name" => function (danceActivity $a){
+        $tables = [];
+
+        foreach ($dates as $k => $v){
+            $table = new table();
+            $table->setTitle($k);
+            $table->setIsCollapsable(true);
+            $table->addHeader("Time", "Name", "Location", "Type");
+            foreach ($v as $c){
+                $startDateStr = $c->getActivity()->getStartTime()->format("H:i");
+                $endDateStr = $c->getActivity()->getEndTime()->format("H:i");
+
                 $artists = "";
 
-                foreach ($a->getArtists() as $artist){
+                foreach ($c->getArtists() as $artist){
                     $artists .= $artist->getName() . " & ";
                 }
 
-                return substr($artists, 0, -3);
-            },
-            "Location" => function (danceActivity $a){
-                return $a->getActivity()->getLocation()->getName();
-            },
-            "Type" => function (danceActivity $a){
-                return $a->getType();
+                $artists = substr($artists, 0, -3);
+
+                $tableRow = new tableRow();
+                $tableRow->addString(
+                    "$startDateStr to $endDateStr",
+                    $artists,
+                    $c->getActivity()->getLocation()->getName(),
+                    $c->getType()
+                );
+
+                $tableRow->addButton('openBox('. $c->getActivity()->getId() . ')', "Edit");
+
+                $table->addTableRows($tableRow);
             }
-        ];
+            $table->assignCss($cssRules);
+            $tables[] = $table;
+        }
+
+        return $tables;
     }
 
     private function toDanceActivityArray(array $aoaArray){

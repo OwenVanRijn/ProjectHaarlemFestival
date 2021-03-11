@@ -4,18 +4,18 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once ("editBase.php");
 require_once ($root . "/Service/foodactivityService.php");
 require_once ($root . "/Service/restaurantService.php");
-require_once ($root . "/Service/restaurantTypeService.php");
+require_once ($root . "/Service/restaurantTypeLinkService.php");
 
 class foodEdit extends editBase
 {
     private restaurantService $restaurantService;
-    private restaurantTypeService $restaurantTypeService;
+    private restaurantTypeLinkService $restaurantTypeService;
 
     public function __construct()
     {
         parent::__construct(new foodactivityService());
         $this->restaurantService = new restaurantService();
-        $this->restaurantTypeService = new restaurantTypeService();
+        $this->restaurantTypeService = new restaurantTypeLinkService();
     }
 
     public const editType = "Food";
@@ -41,7 +41,6 @@ class foodEdit extends editBase
     {
         $resTypeStrs = $this->restaurantTypeService->getAllTypesAsStr();
         $resCurTypeStrs = $this->restaurantTypeService->getRestaurantTypesAsIds($a->getRestaurant()->getId());
-
         $strs = $this->restaurantService->getAllRestaurantsAsStr();
 
         return [

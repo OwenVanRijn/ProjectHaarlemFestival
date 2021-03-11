@@ -21,7 +21,6 @@ class restaurantDAO extends dynamicQueryGen
      */
     public function get(array $filter = [])
     {
-        var_dump($filter);
         return parent::get($filter);
     }
 }

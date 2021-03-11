@@ -8,10 +8,8 @@ require_once ($root . "/Service/baseService.php");
 require_once ($root . "/Utils/appException.php");
 require_once ($root . "/DAL/locationDAO.php");
 
-abstract class activityBaseService extends baseService implements tableInterface
+abstract class activityBaseService extends baseService
 {
-    public abstract function getFields() : array;
-
     public abstract function getAll() : array;
 
     public function getFromActivityIds(array $ids){
@@ -29,18 +27,13 @@ abstract class activityBaseService extends baseService implements tableInterface
         return $ret;
     }
 
-    public function getTableContent(): array
-    {
-        $table = [];
-        $table["header"] = ["Time"];
+    public abstract function getTablesChild(account $a, array $cssRules, array $dates) : array;
 
-        foreach ($this->getFields() as $f => $_) {
-            $table["header"][] = $f;
-        }
-
+    public function getTables(account $a, array $cssRules){
         $content = $this->getAll();
+
         if (is_null($content))
-            return $table;
+            return [];
 
         if (gettype($content) != "array")
             $content = [$content];
@@ -48,30 +41,10 @@ abstract class activityBaseService extends baseService implements tableInterface
         $dates = [];
 
         foreach ($content as $c){
-            $dateStr = $c->getActivity()->getDate()->format("l") . " (" . $c->getActivity()->getDate()->format("Y-m-d") . ")";
-
-            if (!isset($dates[$dateStr])){
-                $dates[$dateStr] = [];
-            }
-
-            $startDateStr = $c->getActivity()->getStartTime()->format("H:i");
-            $endDateStr = $c->getActivity()->getEndTime()->format("H:i");
-
-            $local = [
-                "$startDateStr to $endDateStr"
-            ];
-
-            foreach ($this->getFields() as $f) {
-                $local[] = $f($c);
-            }
-
-            $local[] = "<button onclick='openBox(". $c->getActivity()->getId() .")'>Edit</button>";
-
-            $dates[$dateStr][] = $local;
+            $curDate = $c->getActivity()->getDate()->format("l (Y-m-d)");
+            $dates[$curDate][] = $c;
         }
 
-        $table["sections"] = $dates;
-
-        return $table;
+        return $this->getTablesChild($a, $cssRules, $dates);
     }
 }

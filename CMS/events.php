@@ -257,16 +257,18 @@ $nav->assignCss([
         // TODO: make page to select events
 
         if (isset($table)){
-            $tableGen = new tableGenerator($table);
-            $tableGen->assignCss([
+            $tables = $table->getTables($user, [
                 "tr" => "cmsTableRow",
                 "table" => "cmsTable",
                 "h3" => "cmsTableHeader",
                 "summary" => "cmsSummary",
-                "details" => "cmsDetails",
-            ]);
-            $tableGen->generate();
+                "details" => "cmsDetails",]);
+
+            foreach ($tables as $t){
+                $t->display();
+            }
         }
+
     ?>
 </section>
 </body>

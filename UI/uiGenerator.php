@@ -9,7 +9,7 @@ abstract class uiGenerator
         return '<'. $name . ' ' . $extraTags .  ' class="' . $this->cssRules[$name] . " " . $addCSS .'">' . $content . "</$name>";
     }
 
-    protected function getEmptyEtmlElemStr(string $name, string $addCSS = "", string $extraTags = ""){
+    protected function getEmptyHtmlElemStr(string $name, string $addCSS = "", string $extraTags = ""){
         return '<'. $name . ' ' . $extraTags . ' class="' . $this->cssRules[$name] . " " . $addCSS .'">';
     }
 

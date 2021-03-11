@@ -7,6 +7,7 @@ require_once ($root . "/DAL/foodactivityDAO.php");
 require_once ($root . "/Model/account.php");
 require_once ($root . "/DAL/dbContains.php");
 require_once("restaurantTypeLinkService.php");
+require_once ($root . "/UI/table.php");
 
 class foodactivityService extends activityBaseService
 {
@@ -17,20 +18,37 @@ class foodactivityService extends activityBaseService
         $this->types = new restaurantTypeLinkService();
     }
 
-    public function getFields(): array
+    public function getTablesChild(account $a, array $cssRules, array $dates) : array
     {
-        return [
-            "Name" => function ($a){
-                return $a->getRestaurant()->getName();
-            },
-            "Location" => function ($a){
-                return $a->getActivity()->getLocation()->getAddress();
-            },
-            "Type" => function ($a){
-                $types = $this->types->getRestaurantTypes($a->getRestaurant()->getId());
-                return join("/", $types);
+        $tables = [];
+
+        foreach ($dates as $k => $v){
+            $table = new table();
+            $table->setTitle($k);
+            $table->setIsCollapsable(true);
+            $table->addHeader("Time", "Name", "Location", "Type");
+            foreach ($v as $c){
+
+                $startDateStr = $c->getActivity()->getStartTime()->format("H:i");
+                $endDateStr = $c->getActivity()->getEndTime()->format("H:i");
+
+                $tableRow = new tableRow();
+                $tableRow->addString(
+                    "$startDateStr to $endDateStr",
+                    $c->getRestaurant()->getName(),
+                    $c->getActivity()->getLocation()->getAddress(),
+                    join('/', $this->types->getRestaurantTypes($c->getRestaurant()->getId()))
+                );
+
+                $tableRow->addButton('openBox('. $c->getActivity()->getId() . ')', "Edit");
+
+                $table->addTableRows($tableRow);
             }
-        ];
+            $table->assignCss($cssRules);
+            $tables[] = $table;
+        }
+
+        return $tables;
     }
 
     public function getAll(): array

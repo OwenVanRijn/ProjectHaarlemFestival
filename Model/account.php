@@ -189,4 +189,12 @@ class account extends sqlModel
 
         return $role;
     }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
 }

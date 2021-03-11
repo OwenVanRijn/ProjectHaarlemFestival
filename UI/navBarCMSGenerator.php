@@ -26,6 +26,10 @@ class navBarCMSGenerator extends uiGenerator
         "View Food Events" => "events.php?event=food"
     ];
 
+    private static array $ticketVolunteerPages = [
+        "Users" => "users.php"
+    ];
+
     private function findInArray(string $needle, array $haystack){
         if ($needle == "")
             return "";
@@ -56,8 +60,12 @@ class navBarCMSGenerator extends uiGenerator
             return $pages;
         }
 
-        if ($account->isScheduleManager()){
+        if ($account->getCombinedRole() & account::accountScheduleManager){
             $pages = array_merge($pages, self::$timeVolunteerPages);
+        }
+
+        if ($account->getCombinedRole() & account::accountTicketManager){
+            $pages = array_merge($pages, self::$ticketVolunteerPages);
         }
 
         // TODO: Implement rest of headers
