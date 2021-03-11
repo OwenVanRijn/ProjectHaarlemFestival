@@ -1,6 +1,7 @@
-
 <?php
-    require_once "UI/navBar.php"
+  require_once "UI/navBar.php";
+  require_once "Service/jazzActivityService.php";
+  require_once "Service/jazzbandService.php"
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +13,10 @@
     <meta name="author" content="Haarlem Festival">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css";
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta charset="UTF-8">
+
     <title>Jazz</title>
   </head>
   <body>
@@ -58,6 +62,33 @@
 
         </section>
       </section>
+        <section>
+          <?php
+            $service = new jazzActivityService();
+            (array)$jazzActivities = $service->getAll();
+            echo "<section class='row' style='margin-top: 2%'>";
+
+            foreach ($jazzActivities as $activities) {
+              echo "<section class='col-4 box'>";
+
+              $name = $activities->getJazzband()->getName();
+
+              $starttime = $activities->getActivity()->getStartTime()->format("H:i");
+              $endtime = $activities->getActivity()->getEndTime()->format("H:i");
+              echo "<section class='col-12 text-center' style='background-color: grey; color: black; padding-top: 2%;'>";
+              echo "<p style='color: orange; font-weight: bold'>{$name}</p>";
+              echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'></p>{$starttime} - {$endtime}</section>";
+              echo "<input type='submit' class='btn btn-primary'style='background-color: orange; color: white; name='moreinformation' value='More information'></input>";
+              echo "<input type='submit' class='btn btn-primary'style='background-color: orange; color: white; name='addtocart' value='Add to cart'></input>";
+              echo "</section>";
+              echo "</section>";
+            }
+            echo "</section>";
+          ?>
+        </section>
     </main>
+    <?php
+    require_once "UI/footer.php";
+     ?>
   </body>
 </html>
