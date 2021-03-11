@@ -57,4 +57,17 @@ class ticket extends sqlModel
     {
         return $this->id;
     }
+
+    public function getActivity(): activity
+    {
+        return $this->activity;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAmount(): float
+    {
+        return $this->amount;
+    }
 }

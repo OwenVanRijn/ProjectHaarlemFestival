@@ -4,6 +4,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
 require_once ("baseService.php");
 require_once ($root . "/DAL/artistOnActivityDAO.php");
+require_once ($root . "/DAL/danceArtistDAO.php");
 
 class artistOnActivityService extends baseService
 {
@@ -23,5 +24,12 @@ class artistOnActivityService extends baseService
                 "danceartistid" => (int)$id
             ]);
         }
+    }
+
+    public function getActivityByArtist($artist){
+        $aoa = new artistOnActivityDAO();
+        return $aoa->get([
+            "danceartist.name" => new dbContains($artist)
+        ]);
     }
 }

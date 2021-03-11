@@ -44,7 +44,10 @@
     <meta name="description" content="Haarlem Festival">
     <meta name="author" content="Haarlem Festival">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script></head>
 
 <body>
     <header>
@@ -57,6 +60,7 @@
     </header>
 
     <section class="container h-100">
+
         <?php
             $service = new artistService();
             (array)$artistArray = $service->getArtists();
@@ -76,7 +80,7 @@
 
                 echo "<section class='col-2'>
                 <img src='img/Artists/{$nameStripped}.png' class='w-100' alt='{$name}'>
-                <a href = '#' class='btn btn-primary' style='border-radius: 0;'>Click here for {$name} performances</a></section>";
+                <a href = 'danceartist.php?name={$name}' class='btn btn-primary' style='border-radius: 0;'>Click here for {$name} performances</a></section>";
             }
             echo "</section>";
         ?>
@@ -94,7 +98,18 @@
         </form>
 
         <section class="row h-100" style="background-color: #C0C0C0 ">
-            <section class="col text-center fonttickets" style="padding: 0.5em; background-color: #FD6A02;"><a>Filters ˅</a></section>
+            <section class="row h-100" style="background-color: #C0C0C0 ">
+                <section class="col text-center fonttickets" style="padding: 0.5em; background-color: #FD6A02;">
+                    <a class="btn btn-primary" data-toggle="collapse" href="#filtercollapse">Filters ˅</a>
+                </section>
+            </section>
+
+            <section class="collapse in" id="filtercollapse">
+                <section class="card card-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                </section>
+            </section>
+
         </section>
 
         <section class="container-fluid">
