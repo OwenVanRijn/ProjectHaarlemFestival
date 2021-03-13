@@ -2,37 +2,25 @@
 require_once "./lib/dompdf/autoload.inc.php";
 require_once  "./Service/ticketService.php";
 
+
 $service = new ticketService();
 
 $array = $service->getTicketsByOrder(2);
 
-$html = '<!DOCTYPE html>
-<html>
+ob_start();
+include 'htmlpdf.php';
+$rawHtml = ob_get_clean();
 
-    <body>
-        <h1>HAARLEM FESTIVAL TICKET</h1>
-        
-        <section>
-            <?php
-            foreach ($array as $item){
-                $date = date_format($item->getActivity()->getDate(), "d/m/y");
-                $startTime = date_format($item->getActivity()->getStartTime(), "H:m");
-                $endTime = date_format($item->getActivity()->getEndTime(), "H:m");
-                $type = $item->getActivity()->getType();
-                $price = $item->getActivity()->getPrice();
-
-                echo "<p>{$type} - {$startTime} / {$endTime} @ {$date}. Price:{$price}</p>";
-            }
-            ?>
-        </section>
-    </body>
-
-</html>';
 
 use Dompdf\Dompdf;
+use Dompdf\Options;
 
-$dompdf = new Dompdf();
-$dompdf->loadHtml($html);
+$options = new Options();
+$options->set('defaultFont', 'Courier');
+
+
+$dompdf = new Dompdf($options);
+$dompdf->loadHtml($rawHtml);
 
 // (Optional) Setup the paper size and orientation
 $dompdf->setPaper('A4', 'landscape');
