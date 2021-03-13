@@ -4,7 +4,7 @@ require_once  "./Service/ticketService.php";
 
 $service = new ticketService();
 
-$array = $service->getTicketsByOrder(1);
+$array = $service->getTicketsByOrder(2);
 
 $html = '<!DOCTYPE html>
 <html>

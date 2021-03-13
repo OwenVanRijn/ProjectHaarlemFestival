@@ -1,21 +1,21 @@
 <?php
 
 require_once ("sqlModel.php");
-require_once ("location.php");
 require_once ("account.php");
+require_once ("customerLocation.php");
 
 class customer extends sqlModel
 {
     private int $id;
     private string $firstName;
     private string $lastname;
-    private location $location;
+    private customerLocation $customerlocation;
     private int $phoneNumber;
     private account $account;
 
     protected const sqlTableName = "customer";
-    protected const sqlFields = ["id", "firstName", "lastname", "locationId", "phoneNumber", "accountId"];
-    protected const sqlLinks = ["locationId" => location::class, "accountId" => account::class];
+    protected const sqlFields = ["id", "firstName", "lastname", "phoneNumber", "accountId", "locationId"];
+    protected const sqlLinks = ["locationId" => customerLocation::class, "accountId" => account::class];
 
     public function __construct()
     {
@@ -26,12 +26,12 @@ class customer extends sqlModel
         $this->phoneNumber = 0;
     }
 
-    public function constructFull(int $id, string $firstName, string $lastname, location $location, int $phoneNumber, account $account)
+    public function constructFull(int $id, string $firstName, string $lastname, customerLocation $customerlocation, int $phoneNumber, account $account)
     {
         $this->id = $id;
         $this->firstName = $firstName;
         $this->lastname = $lastname;
-        $this->location = $location;
+        $this->customerlocation = $customerlocation;
         $this->phoneNumber = $phoneNumber;
         $this->account = $account;
         return $this;
@@ -43,7 +43,7 @@ class customer extends sqlModel
             "id" => $this->id,
             "firstName" => $this->firstName,
             "lastname" => $this->lastname,
-            "locationId" => $this->location->getId(),
+            "locationId" => $this->customerlocation->getId(),
             "phoneNumber" => $this->phoneNumber,
             "accountId" => $this->account->getId()
         ];
@@ -55,7 +55,7 @@ class customer extends sqlModel
             $sqlRes[self::sqlTableName . "id"],
             $sqlRes[self::sqlTableName . "firstName"],
             $sqlRes[self::sqlTableName . "lastname"],
-            location::sqlParse($sqlRes),
+            customerLocation::sqlParse($sqlRes),
             $sqlRes[self::sqlTableName . "phoneNumber"],
             account::sqlParse($sqlRes),
         );
@@ -104,7 +104,7 @@ class customer extends sqlModel
 
     public function getLocation()
     {
-        return $this->location;
+        return $this->customerlocation;
     }
 
     public function setLocation($location)

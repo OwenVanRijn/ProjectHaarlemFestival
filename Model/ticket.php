@@ -13,7 +13,7 @@ class ticket extends sqlModel
     private orders $order;
     private float $amount;
 
-    protected const sqlTableName = "location";
+    protected const sqlTableName = "ticket";
     protected const sqlFields = ["id", "activityId", "customerId", "orderId", "amount"];
     protected const sqlLinks = [
         "activityId" => activity::class,
