@@ -63,6 +63,31 @@ class foodEdit extends editBase
         ];
     }
 
+    public function getHtmlEditFieldsEmpty() : array
+    {
+        $resTypeStrs = $this->restaurantTypeService->getAllTypesAsStr();
+        $strs = $this->restaurantService->getAllRestaurantsAsStr();
+
+        return [
+            "restaurant" => [
+                "options" => $strs,
+                "selected" => -1
+            ],
+            "restaurantId" => "none",
+            "name" => "",
+            "description" => "",
+            "stars" => "",
+            "seats" => "",
+            "phoneNumber" => "",
+            "restaurantPrice" => "",
+            "restaurantType" => [
+                "options" => $resTypeStrs,
+                "selected" => []
+            ],
+            "foodActivityId" => "none",
+        ];
+    }
+
     protected function processEditResponseChild(array $post){
         if (!isset($post["restaurantIncomplete"]) && isset($post["location"])){
             if (isset($post["restaurant"]) && (int)$post["restaurant"] == -1){
@@ -111,5 +136,33 @@ class foodEdit extends editBase
                 (isset($post["restaurant"])) ? (int)$post["restaurant"] : (int)$post["restaurantId"]
             );
         }
+    }
+
+    protected function processNewResponseChild(array $post, int $activityId){
+
+        if (!isset($post["restaurant"])) {
+            throw new appException("Invalid POST");
+        }
+
+        if (isset($post["restaurant"]) && (int)$post["restaurant"] == -1){
+            $res = $this->restaurantService->insertRestaurant(
+                $post["name"],
+                $post["description"],
+                (int)$post["stars"],
+                (int)$post["seats"],
+                (int)$post["phoneNumber"],
+                (isset($post["restaurantPrice"])) ? (float)$post["restaurantPrice"] : null,
+                (int)$post["location"]
+            );
+
+            if (!$res)
+                throw new appException("[Restaurant] db insert failed...");
+
+            $post["restaurant"] = $res;
+            $post["restaurantIncomplete"] = true;
+            $this->restaurantTypeService->updateFieldIds($post["restaurant"], $post["restaurantType"]);
+        }
+
+        $this->service->insertFoodActivity($activityId, (int)$post["restaurant"]);
     }
 }

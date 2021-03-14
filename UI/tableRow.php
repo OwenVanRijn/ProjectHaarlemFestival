@@ -24,8 +24,8 @@ class tableRow extends uiGenerator
             $this->contents[] = $str;
     }
 
-    public function addButton(string $onclick, string $inner){
-        $this->contents[] = $this->getHtmlElemStr("button", $inner, "", "onclick=\"$onclick\"");
+    public function addButton(string $onclick, string $inner, string $extraTags = ""){
+        $this->contents[] = $this->getHtmlElemStr("button", $inner, "", "onclick=\"$onclick\" " . $extraTags);
     }
 
     public function display(){

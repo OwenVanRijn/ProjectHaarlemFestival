@@ -34,7 +34,7 @@ class jazzactivityService extends activityBaseService
                     $c->getActivity()->getLocation()->getAddress(),
                 );
 
-                $tableRow->addButton('openBox('. $c->getActivity()->getId() . ')', "Edit");
+                $tableRow->addButton('openBox('. $c->getActivity()->getId() . ')', "Edit", "aid=\"". $c->getActivity()->getId() . "\"");
 
                 $table->addTableRows($tableRow);
             }

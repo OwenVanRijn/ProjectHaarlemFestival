@@ -46,6 +46,19 @@ class danceEdit extends editBase
         ];
     }
 
+    public function getHtmlEditFieldsEmpty(){
+        $artistStrs = (new danceArtistService())->getAllAsStr();
+
+        return [
+            "artistActivityId" => "new",
+            "eventType" => "",
+            "artistsOnActivity" => [
+                "options" => $artistStrs,
+                "selected" => []
+            ]
+        ];
+    }
+
     protected function processEditResponseChild(array $post)
     {
         if (isset($post["artistsIncomplete"]))
@@ -53,5 +66,13 @@ class danceEdit extends editBase
 
         $this->service->updateSessionType((int)$post["artistActivityId"], $post["eventType"]);
         $this->aoaService->updateArtistIds((int)$post["artistActivityId"], $post["artistsOnActivity"]);
+    }
+
+    public function processNewResponseChild(array $post, int $activityId){
+        if (isset($post["artistsIncomplete"]))
+            throw new appException("Artist section is incomplete!");
+
+        $id = $this->service->insertDanceActivity($activityId, $post["eventType"]);
+        $this->aoaService->updateArtistIds($id, $post["artistsOnActivity"]);
     }
 }

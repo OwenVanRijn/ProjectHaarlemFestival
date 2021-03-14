@@ -3,7 +3,6 @@
 require_once ("sqlModel.php");
 require_once ("restaurant.php");
 require_once ("activity.php");
-require_once ("restaurant.php");
 require_once ("htmlTypeEnum.php");
 
 

@@ -16,14 +16,15 @@ if (!$user){
     exit();
 }
 
-if (!isset($_GET["id"])){
-    http_response_code(400);
-    exit();
-}
-
-
-$id = (int)$_GET["id"];
-
 $service = new editActivity();
 
-echo json_encode($service->getContent($id, $user));
+if (isset($_GET["id"])){
+    $id = (int)$_GET["id"];
+    echo json_encode($service->getContent($id, $user));
+}
+else if (isset($_GET["type"])){
+    echo json_encode($service->getEmptyContent($user, $_GET["type"]));
+}
+else {
+    http_response_code(400);
+}

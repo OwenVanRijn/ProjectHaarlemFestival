@@ -52,4 +52,41 @@ class activityService extends baseService
 
         return $this->db->update($update);
     }
+
+    public function insertActivity(string $type, date $date, time $startTime, time $endTime, float $price, int $ticketsLeft, int $locationId){
+        $insert  = [
+            "type" => $type,
+            "date" => $date,
+            "startTime" => $startTime,
+            "endTime" => $endTime,
+            "price" => $price,
+            "ticketsLeft" => $ticketsLeft,
+            "locationId" => $locationId
+        ];
+
+        return $this->db->insert($insert);
+    }
+
+    public function swapActivityTime(int $activity1, int $activity2){
+        $activities = $this->db->get([
+                "id" => [$activity1, $activity2]
+        ]);
+
+        if (count($activities) != 2)
+            throw new appException("One or more of the provided activities is invalid");
+
+        $this->db->update([
+            "id" => $activities[0]->getId(),
+            "date" => $activities[1]->getDateAsDate(),
+            "startTime" => $activities[1]->getStartTimeAsTime(),
+            "endTime" => $activities[1]->getEndTimeAsTime()
+        ]);
+
+        $this->db->update([
+            "id" => $activities[1]->getId(),
+            "date" => $activities[0]->getDateAsDate(),
+            "startTime" => $activities[0]->getStartTimeAsTime(),
+            "endTime" => $activities[0]->getEndTimeAsTime()
+        ]);
+    }
 }

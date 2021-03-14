@@ -14,8 +14,13 @@ class time
         return $this;
     }
 
-    public function fromYMD(string $time){
+    public function fromHIS(string $time){
         $this->time = date_create_from_format("H:i:s", $time);
+        return $this;
+    }
+
+    public function fromHI(string $time){
+        $this->time = date_create_from_format("H:i", $time);
         return $this;
     }
 

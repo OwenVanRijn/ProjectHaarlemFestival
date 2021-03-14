@@ -12,9 +12,12 @@ require_once ("danceArtistService.php");
 
 class danceActivityService extends activityBaseService
 {
+    private $activityDAO;
+
     public function __construct()
     {
         $this->db = new artistOnActivityDAO();
+        $this->activityDAO = new danceActivityDAO();
     }
 
     public function getActivities(){
@@ -50,7 +53,7 @@ class danceActivityService extends activityBaseService
                     $c->getType()
                 );
 
-                $tableRow->addButton('openBox('. $c->getActivity()->getId() . ')', "Edit");
+                $tableRow->addButton('openBox('. $c->getActivity()->getId() . ')', "Edit", "aid=\"". $c->getActivity()->getId() . "\"");
 
                 $table->addTableRows($tableRow);
             }
@@ -98,9 +101,18 @@ class danceActivityService extends activityBaseService
     }
 
     public function updateSessionType(int $id, string $sessionType){
-        return (new danceActivityDAO())->update([
+        return $this->activityDAO->update([
             "id" => $id,
             "sessionType" => $sessionType
         ]);
+    }
+
+    public function insertDanceActivity(int $activityId, string $sessionType){
+        $insert = [
+            "activityid" => $activityId,
+            "sessionType" => $sessionType
+        ];
+
+        return $this->activityDAO->insert($insert);
     }
 }

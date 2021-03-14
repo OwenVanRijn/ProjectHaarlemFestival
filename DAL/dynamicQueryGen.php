@@ -205,6 +205,9 @@ class dynamicQueryGen extends queryBase
             }
         }
 
+        if (empty($newKeys))
+            throw new appException("No keys were given!");
+
         $keys = $newKeys;
 
         $query = "INSERT INTO " . $this->class::sqlTableName() . " (";

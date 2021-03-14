@@ -50,6 +50,23 @@ class jazzEdit extends editBase
         ];
     }
 
+    public function getHtmlEditFieldsEmpty(): array
+    {
+        $bandsStr = $this->jazzBandService->getAllAsStr();
+
+        return [
+            "band" => [
+                "options" => $bandsStr,
+                "selected" => "-1"
+            ],
+            "jazzActivityId" => "new",
+            "bandName" => "",
+            "bandDescription" => "",
+            "hall" => "",
+            "seats" => ""
+        ];
+    }
+
     protected function processEditResponseChild(array $post)
     {
         if (isset($post["performanceIncomplete"]))
@@ -83,4 +100,6 @@ class jazzEdit extends editBase
         ))
             throw new appException("[Jazz] db update failed...");
     }
+
+    // TODO: implement processNewResponseChild
 }
