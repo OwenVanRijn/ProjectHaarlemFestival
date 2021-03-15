@@ -62,30 +62,10 @@ class restaurantService extends baseService
         return $this->db->insert($insert);
     }
 
-    public function getBySearch($searchTerm, $cuisine, $stars3, $stars4)
-    {
-        $filter = array();
-
-        $filter = array_merge($filter, array("restaurant.name" => new dbContains($searchTerm)));
-
-        $stars = array();
-        if ($stars3) {
-            $stars[] = "3";
-        }
-
-        if ($stars4) {
-            $stars[] = "4";
-        }
-        if (count($stars) > 0) {
-            $filter = array_merge($filter, array("restaurant.stars" => $stars));
-        }
-        return $this->db->get($filter);
-    }
-
     public function getById($id)
     {
         return $this->db->get([
-            "restaurant.id" => new dbContains($id)
+            "restaurant.id" => $id
         ]);
     }
 
@@ -137,5 +117,48 @@ class restaurantService extends baseService
             $restaurantStr[(string)$b->getId()] = $b->getName();
         }
         return $restaurantStr;
+    }
+
+    public function getBySearch($searchTerm, $cuisine, $stars3, $stars4)
+    {
+        $filter = array();
+
+        $filter = array_merge($filter, array("restaurant.name" => new dbContains($searchTerm)));
+
+        $stars = array();
+        if ($stars3) {
+            $stars[] = "3";
+        }
+
+        if ($stars4) {
+            $stars[] = "4";
+        }
+        if (count($stars) > 0) {
+            $filter = array_merge($filter, array("restaurant.stars" => $stars));
+        }
+        return $this->db->get($filter);
+    }
+
+    public function getBySearchTerm($searchTerm)
+    {
+        $restaurants = $this->db->get(["restaurant.name" => new dbContains($searchTerm)]);
+        return $restaurants;
+    }
+
+    public function getByStars($stars3, $stars4)
+    {
+        if (!$stars3 && !$stars4) {
+            return null;
+        }
+
+        $stars = array();
+        if ($stars3) {
+            $stars[] = "3";
+        }
+
+        if ($stars4) {
+            $stars[] = "4";
+        }
+        return $this->db->get(["restaurant.stars" => $stars]);
     }
 }

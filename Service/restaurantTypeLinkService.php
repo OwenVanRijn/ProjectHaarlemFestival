@@ -110,6 +110,21 @@ class restaurantTypeLinkService extends baseService
 
         $restaurantTypeLinks = $this->db->get($filter);
 
+        return $this->getRestaurants($restaurantTypeLinks);
+    }
+
+
+    public function getByType($typeID)
+    {
+        if ($typeID > 0) {
+            $restaurantTypeLinks = $this->db->get(["restauranttypes.id" => $typeID]);
+        }
+
+        return $this->getRestaurants($restaurantTypeLinks);
+    }
+
+    function getRestaurants($restaurantTypeLinks)
+    {
         if ($restaurantTypeLinks == null)
         {
             return null;
@@ -130,7 +145,6 @@ class restaurantTypeLinkService extends baseService
         }
         return $restaurants;
     }
-
 
     private function checkDuplicate($restaurants, $restaurantId)
     {

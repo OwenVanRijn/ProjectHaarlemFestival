@@ -2,6 +2,7 @@
 body {
     background-color: #CECECE;
     margin: 0;
+    font-size: 1em;
 }
 
 * {
@@ -44,23 +45,40 @@ h1 {
 
 h2 {
     text-align: left;
-    font-size: 1.5em;
+    font-size: 1.7em;
 }
 
 h3 {
     text-align: left;
-    font-size: 1em;
+    font-size: 1.4em;
+}
+
+h4 {
+    text-align: left;
+    font-size: 1.1em;
 }
 
 
 p,
+a,
 a.button1,
 .button1,
 label,
 input,
 form {
     font-family: Arial;
-    font-size: 0.9em;
+    font-size: 1em;
+}
+
+a.button1,
+.button1,
+a {
+    cursor: pointer;
+}
+
+sup {
+    font-family: Arial;
+    font-size: 0.6em;
 }
 
 
@@ -160,6 +178,12 @@ a.button1:hover,
 .button1:hover {
     color: #000000;
     background-color: #FFFFFF;
+}
+
+input[type="submit"]:disabled {
+    background-color: #BEBEBE;
+    border: 0.1em solid #A9A9A9;
+    color: #989898;
 }
 
 /*jazz filterbar*/

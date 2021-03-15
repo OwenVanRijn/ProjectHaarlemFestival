@@ -7,7 +7,7 @@ require_once($root . "/Service/restaurantService.php");
 require_once($root . "/Service/restaurantTypeLinkService.php");
 
 $restaurantService = new restaurantService();
-$restaurantTypeService = new restaurantTypeLinkService();
+$restaurantTypeLinkService = new restaurantTypeLinkService();
 ?>
 
 
@@ -52,23 +52,26 @@ $restaurantTypeService = new restaurantTypeLinkService();
 
 
     <section>
-        <form method="post">
-            <section class="grid-container" id="filterbarFood">
-                <section class="starscheck">
-                    <p class="filterlabelSubtitle">Stars</p>
+
+        <section class="grid-container" id="filterbarFood">
+            <section class="starscheck">
+                <p class="filterlabelSubtitle">Stars</p>
+                <form method="post">
                     <section class="checkboxesStars">
-                        <input type="checkbox" class="filterCheckbox" id="stars3" name="stars3" checked>
+                        <input type="checkbox" class="filterCheckbox" id="stars3" name="stars3" checked onclick="this.form.submit()">
                         <label class="label" for="stars3">3 stars</label><br>
-                        <input type="checkbox" class="filterCheckbox" id="stars4" name="stars4" checked>
+                        <input type="checkbox" class="filterCheckbox" id="stars4" name="stars4" checked onclick="this.form.submit()">
                         <label class="label" for="stars4">4 stars</label><br>
                     </section>
-                </section>
-                <section class="cuisine">
-                    <p class="filterlabelSubtitle">Cuisine</p>
-                    <select name="cuisine" id="cuisine">
+                </form>
+            </section>
+            <section class="cuisine">
+                <p class="filterlabelSubtitle">Cuisine</p>
+                <form method="post">
+                    <select name="cuisine" id="cuisine" onchange="this.form.submit()">
 
                         <?php
-                        $restaurantTypes = $restaurantTypeService->getAllTypes();
+                        $restaurantTypes = $restaurantTypeLinkService->getAllTypes();
 
 
                         usort($restaurantTypes, function ($a, $b) {
@@ -83,33 +86,26 @@ $restaurantTypeService = new restaurantTypeLinkService();
                         }
                         ?>
                     </select>
-                </section>
-                <section class="searchbar">
-                    <p class="filterlabelSubtitle">Search for a restaurant</p>
+                </form>
+            </section>
+            <section class="searchbar">
+                <p class="filterlabelSubtitle">Search for a restaurant</p>
+                <form method="post">
                     <section id="searchbarGroup">
                         <input type="text" placeholder="Search.." id="searchterm" name="searchterm">
                         <button type="submit" class="button1" name="searchbutton">Search</button>
                     </section>
-                </section>
+                </form>
             </section>
-        </form>
+        </section>
+
     </section>
 
     <section class="container-fluid w-70">
         <?php
         $format = "HH:MM";
 
-
-        if (isset($_POST["searchbutton"])) {
-
-            // searchterm
-            if (isset($_POST["searchterm"])) {
-                $searchTerm = $_POST["searchterm"];
-                echo "<script>document.getElementById(\"searchterm\").value = '$searchTerm'</script>";
-            } else {
-                $searchTerm = "";
-            }
-
+        if (isset($_POST["stars3"]) || isset($_POST["stars4"])) {
             // stars : 3
             if (isset($_POST["stars3"])) {
                 $stars3 = true;
@@ -126,11 +122,23 @@ $restaurantTypeService = new restaurantTypeLinkService();
                 echo "<script>document.getElementById(\"stars4\").checked = false</script>";
             }
 
-            if (isset($_POST["cuisine"])) {
-                $cuisine = $_POST["cuisine"];
-                $restaurants = $restaurantTypeService->getBySearch($cuisine, $searchTerm, $stars3, $stars4);
+            $restaurants = $restaurantService->getByStars($stars3, $stars4);
+        } else if (isset($_POST["cuisine"])) {
+            $cuisine = $_POST["cuisine"];
+            $restaurants = $restaurantTypeLinkService->getByType($cuisine);
 
-                echo "<script>document.getElementById(\"cuisine\").value = \"$cuisine\";</script>";
+            echo "<script>document.getElementById(\"cuisine\").value = \"$cuisine\";</script>";
+
+            $restaurants = $restaurantTypeLinkService->getByType($cuisine);
+        } else if (isset($_POST["searchbutton"])) {
+            // searchterm
+            if (isset($_POST["searchterm"])) {
+                $searchTerm = $_POST["searchterm"];
+                echo "<script>document.getElementById(\"searchterm\").value = '$searchTerm'</script>";
+                $restaurants = $restaurantService->getBySearchTerm($searchTerm);
+            } else {
+                $searchTerm = "";
+                $restaurants = $restaurantService->getAll();
             }
         } else {
             $restaurants = $restaurantService->getAll();
@@ -152,9 +160,6 @@ $restaurantTypeService = new restaurantTypeLinkService();
 
         if (isset($_POST["restaurantId"])) {
             $restaurantId = $_POST["restaurantId"];
-
-            echo "RESTAURANT ID IS $restaurantId";
-
             ?>
             <script>
                 document.getElementById('id01').style.display = 'block';
@@ -198,13 +203,16 @@ $restaurantTypeService = new restaurantTypeLinkService();
         $restaurantName = $restaurant->getName();
 
         echo "<img class=\"foodimg\" src=\"img/Restaurants/restaurant$restaurantId.png\" alt=\"Photo of $restaurantName\">";
-        echo "<h3 class='restaurantName'>$restaurantName</h3>";
-        echo $restaurantId . " ID";
+        echo "<br><h3 class='restaurantName' id='starsHeader'>$restaurantName</h3>";
+        $stars = $restaurant->getStars();
+        for ($x = 0; $x < $stars; $x++) {
+            echo "<img class='stars' src='/img/icons/starw.png' alt='ster'>";
+        }
+
         $location = $restaurant->getLocation()->getAddress() . " " . $restaurant->getLocation()->getPostalCode();
         $description = $restaurant->getDescription();
         $price = "€" . $restaurant->getPrice() . ",-";
 
-        echo "<p style='color: orange; font-weight: bold'>{$restaurantName}</p>";
         echo "<section class='row'><p style='color: orange; font-weight: bold'>Location:</p><p>{$location}</p></section>";
         echo "<section class='row'><p style='color: orange; font-weight: bold'>Session:</p><p>{$description}</p></section>";
         echo "<section class='row'><p style='color: orange; font-weight: bold'>Price:</p><p>{$price}</p></section>";

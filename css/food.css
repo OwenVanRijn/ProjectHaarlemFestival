@@ -1,12 +1,31 @@
 header {
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/Food.png);
-    padding-top: 50px;
-    height: 28vh;
+}
+
+
+h3 {
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+p {
+    margin: 0;
 }
 
 .foodimg {
     width: 20%;
 }
+
+#buttonOverview,
+#buttonReservation {
+    float: right;
+    width: 20%;
+}
+
+#makeareservation {
+    margin-right: 0px;
+}
+
 
 .btn-primary, .btn-primary:hover {
     background-color: #FD6A02 !important;
@@ -26,12 +45,6 @@ header {
     border: transparent;
 }
 
-.box {
-    box-model: border-box !important;
-    border: 3px solid transparent !important;
-    background-clip: padding-box !important;
-}
-
 .stars {
     display: inline;
     width: 1em;
@@ -43,14 +56,11 @@ header {
 }
 
 .imgIcons {
+    margin-top: 4px;
     display: inline;
-    float: left;
+    float: right;
     width: 1em;
     margin-right: 4px;
-}
-
-.infotext {
-    margin-left: 5px;
 }
 
 /* FILTERBAR */
@@ -69,4 +79,246 @@ header {
 
 .grid-container > section {
     /*background-color: rgba(255, 255, 255);*/
+}
+
+.filterbarFood {
+    margin-left: unset;
+}
+
+
+/* RESTAURANTRESERVATION */
+
+#restaurantNameReservation {
+    text-align: left;
+}
+
+.wrapper {
+    display: grid;
+    grid-gap: 0px;
+    grid-template-columns: repeat(4, [col] 60% );
+    grid-template-rows: repeat(2, [row] auto  );
+    background-color: #fff;
+}
+
+.confirmationBox {
+    grid-column: col 3 / span 2;
+    grid-row: row 2;
+}
+
+.formBox {
+    grid-column: col / span 2;
+    grid-row: row 2;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr 1fr;
+}
+
+.seatsBox {
+    grid-column: 1 / 3;
+    grid-row: 1;
+}
+
+.sectionsBox {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.datesBox {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.noteBox {
+    grid-column: 1 / span 2;
+    grid-row: 3;
+}
+
+
+.confirmationBoxTitle {
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.confirmationBoxSubtitle {
+    font-style: italic;
+}
+
+
+/* FOOD RESTAURANT INFO */
+.container {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    grid-template-areas: "restaurantContentDescription restaurantContentInfoPictureCosts restaurantContentInfoCosts restaurantContentInfoCosts"
+  "restaurantContentDescription restaurantContentInfoPictureTime restaurantContentInfoSessions restaurantContentInfoDays"
+  "restaurantContentDescription restaurantContentInfoPictureLocation restaurantContentInfoAddress restaurantContentInfoAddress"
+  "restaurantContentDescription restaurantContentInfoPictureLinks restaurantContentInfoLinks restaurantContentInfoLinks";
+    grid-template-columns: auto 4% 20% 20%;
+}
+
+.container > section {
+    /* border: 1px dashed #888; */
+}
+
+.restaurantContentDescription {
+    margin-right: 0px;
+    border-right: 2px solid black;
+    grid-area: restaurantContentDescription;
+}
+
+.restaurantContentInfoPictureCosts {
+    grid-area: restaurantContentInfoPictureCosts;
+}
+
+.restaurantContentInfoCosts {
+    grid-area: restaurantContentInfoCosts;
+}
+
+.restaurantContentInfoPictureTime {
+    grid-area: restaurantContentInfoPictureTime;
+}
+
+.restaurantContentInfoSessions {
+    grid-area: restaurantContentInfoSessions;
+}
+
+.restaurantContentInfoDays {
+    grid-area: restaurantContentInfoDays;
+}
+
+.restaurantContentInfoPictureLocation {
+    grid-area: restaurantContentInfoPictureLocation;
+}
+
+.restaurantContentInfoAddress {
+    grid-area: restaurantContentInfoAddress;
+}
+
+.restaurantContentInfoPictureLinks {
+    grid-area: restaurantContentInfoPictureLinks;
+}
+
+.restaurantContentInfoLinks {
+    grid-area: restaurantContentInfoLinks;
+}
+
+
+/* RESTAURANT RESERVATION */
+
+#noteTextArea {
+    height: 3%;
+    width: 80%;
+    font-family: Arial;
+    font-size: 1em;
+}
+
+#confirmationBoxTitleCosts {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+#costsBox {
+    position: relative;
+    height: 100%;
+}
+
+#makeareservation {
+    float: right;
+    width: 42%;
+}
+
+#noteSubNoteLabel {
+    margin-top: 5px;
+}
+
+.restaurantReservationCLCostsTitle,
+.restaurantReservationCLReservationcosts,
+.restaurantReservationCLAmount,
+.confirmationBoxAmount,
+.restaurantReservationCLTotal,
+.restaurantReservationCLDays,
+.restaurantReservationCLSession,
+.restaurantReservationCLYourNote {
+    background: #EFEFEF;
+}
+
+.restaurantReservationCLCostsTitle,
+.restaurantReservationCLReservationcosts,
+.restaurantReservationCLDays,
+.restaurantReservationCLYourNote {
+    padding-left: 6px;
+}
+
+.containerReservation {
+    display: grid;
+    min-width: 80vw;
+    height: 100%;
+    grid-template-areas: "restaurantReservationCLRestaurantLabel restaurantReservationCLRestaurantLabel restaurantReservationCLCostsTitle restaurantReservationCLCostsTitle restaurantReservationCLCostsTitle"
+  "restaurantReservationCISeatsTitle restaurantReservationCISeatsCB restaurantReservationCLReservationcosts restaurantReservationCLAmount restaurantReservationCLTotal"
+  "restaurantReservationCIDays restaurantReservationCISessions restaurantReservationCLDays restaurantReservationCLDays restaurantReservationCLSession"
+  "restaurantReservationCINote restaurantReservationCINote restaurantReservationCLYourNote restaurantReservationCLYourNote restaurantReservationCLYourNote"
+  "restaurantReservationCINote restaurantReservationCINote restaurantReservationCLSideNote restaurantReservationCLSideNote restaurantReservationCLSideNote";
+    grid-template-columns: 25% auto 14% 14% 14%;
+    grid-temgrid-template-rows: 8% 12% 20% 40% 20%;
+}
+
+.containerReservation > section {
+    /*border: 1px dashed #888;*/
+}
+
+.restaurantReservationCLRestaurantLabel {
+    grid-area: restaurantReservationCLRestaurantLabel;
+}
+
+.restaurantReservationCLCostsTitle {
+    grid-area: restaurantReservationCLCostsTitle;
+}
+
+.restaurantReservationCISeatsTitle {
+    grid-area: restaurantReservationCISeatsTitle;
+}
+
+.restaurantReservationCISeatsCB {
+    grid-area: restaurantReservationCISeatsCB;
+}
+
+.restaurantReservationCLReservationcosts {
+    grid-area: restaurantReservationCLReservationcosts;
+}
+
+.restaurantReservationCLAmount {
+    grid-area: restaurantReservationCLAmount;
+}
+
+.restaurantReservationCLTotal {
+    grid-area: restaurantReservationCLTotal;
+}
+
+.restaurantReservationCIDays {
+    grid-area: restaurantReservationCIDays;
+}
+
+.restaurantReservationCISessions {
+    grid-area: restaurantReservationCISessions;
+}
+
+.restaurantReservationCLDays {
+    grid-area: restaurantReservationCLDays;
+}
+
+.restaurantReservationCLSession {
+    grid-area: restaurantReservationCLSession;
+}
+
+.restaurantReservationCINote {
+    grid-area: restaurantReservationCINote;
+}
+
+.restaurantReservationCLYourNote {
+    grid-area: restaurantReservationCLYourNote;
+}
+
+.restaurantReservationCLSideNote {
+    grid-area: restaurantReservationCLSideNote;
 }
