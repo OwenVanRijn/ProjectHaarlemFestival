@@ -47,8 +47,9 @@ if (isset($_POST["gotooverview"])) {
 </header>
 
 <main class="content">
+    <section>
 
-    <section class="container-fluid w-70">
+
         <?php
         if (isset($_GET["restaurantId"])) {
             $restaurantId = $_GET["restaurantId"];
@@ -71,97 +72,108 @@ if (isset($_POST["gotooverview"])) {
         }
         function echoRestaurant($restaurant)
         {
-        echo "<section class='col-4 box'>";
-        echo "<section class='col-12 text-center'>";
-        $restaurantName = $restaurant->getName();
-        $restaurantId = $restaurant->getId();
-        $location = $restaurant->getLocation()->getAddress() . ", " . $restaurant->getLocation()->getPostalCode();
-        $description = $restaurant->getDescription();
-        $parking = $restaurant->getParking();
-        $price = $restaurant->getPrice();
-        $childrenPrice = $restaurant->getPrice() / 2;
-        $stars = $restaurant->getStars();
-        $seats = $restaurant->getSeats();
+            $restaurantName = $restaurant->getName();
+            $description = $restaurant->getDescription();
+            $stars = $restaurant->getStars();
+            $restaurantId = $restaurant->getId();
+            $location = $restaurant->getLocation()->getAddress() . ", " . $restaurant->getLocation()->getPostalCode();
+            $parking = $restaurant->getParking();
+            $price = $restaurant->getPrice();
+            $childrenPrice = $restaurant->getPrice() / 2;
 
-        $restaurantService = new restaurantService();
-        $times = $restaurantService->getTimesByRestaurantId($restaurantId);
-        $dates = $restaurantService->getDatesByRestaurantId($restaurantId);
+            $seats = $restaurant->getSeats();
 
-        // Contact
-        $phoneNumber = $restaurant->getPhoneNumber();
-        $website = $restaurant->getWebsite();
-        $contactpage = $restaurant->getContact();
-        $menu = $restaurant->getMenu();
+            $restaurantService = new restaurantService();
+            $times = $restaurantService->getTimesByRestaurantId($restaurantId);
+            $dates = $restaurantService->getDatesByRestaurantId($restaurantId);
 
-        echo "<h3 id='starsHeader'>$restaurantName</h3>";
-        for ($x = 0; $x < $stars; $x++) {
-            echo "<img class='stars' src='/img/icons/star.png' alt='ster'>";
+            // Contact
+            $phoneNumber = $restaurant->getPhoneNumber();
+            $website = $restaurant->getWebsite();
+            $contactpage = $restaurant->getContact();
+            $menu = $restaurant->getMenu();
+            ?>
+
+            <section class="container">
+                <section class="restaurantContentDescription">
+                    <h3 id='starsHeader'><?php echo $restaurantName ?></h3>
+                    <?php
+                    for ($x = 0; $x < $stars; $x++) {
+                        echo "<img class='stars' src='/img/icons/star.png' alt='ster'>";
+                    }
+                    ?>
+                    <p> <?php echo $description ?></p>
+                    <br>
+                    <img src="/img/Restaurants/restaurant<?php echo $restaurantId ?>.png"
+                         alt="Photo of <?php echo $restaurantName ?>" width="300">
+                </section>
+                <section class="restaurantContentInfoPictureCosts">
+                    <img class="imgIcons" src="/img/icons/costs.png" alt="costs">
+                </section>
+                <section class="restaurantContentInfoCosts">
+                    <h3 class="informationRestaurantLabel">Costs</h3>
+                    <p><i>Diner costs</i></p>
+                    <p>€<?php echo $price ?> p.p.</p>
+                    <sup>Children til 12 years: € <?php echo $childrenPrice ?> p.p.</sup>
+
+                    <p><i>Reservation costs</i></p>
+                    <p>€ 10 </p>
+                </section>
+                <section class="restaurantContentInfoPictureTime">
+                    <img class="imgIcons" src="/img/icons/clockb.png" alt="clock">
+                </section>
+                <section class="restaurantContentInfoSessions">
+                    <h3 class="informationRestaurantLabel">Sessions</h3>
+                    <?php
+                    foreach ($times as $beginTime => $endTime) {
+                        echo "<p class='infotext'>$beginTime-$endTime</p>";
+                    }
+                    ?>
+                </section>
+                <section class="restaurantContentInfoDays">
+                    <h3 class="informationRestaurantLabel">Days</h3>
+                    <?php
+                    foreach ($dates as $date) {
+                        echo "<p>$date</p>";
+                    }
+                    ?>
+                </section>
+                <section class="restaurantContentInfoPictureLocation">
+                    <img class="imgIcons" src="/img/icons/location.png" alt="location">
+                </section>
+                <section class="restaurantContentInfoAddress">
+                    <h3 class="informationRestaurantLabel">Location</h3>
+                    <p><?php echo $location ?> Haarlem</p>
+                </section>
+                <section class="restaurantContentInfoPictureLinks">
+                    <img class="imgIcons" src="/img/icons/links.png" alt="links">
+                </section>
+                <section class="restaurantContentInfoLinks">
+                    <?php
+                    if (!empty($website)) {
+                        ?>
+                        <h3 class="informationRestaurantLabel">Location</h3>
+                        <a href="<?php echo $website ?>">Website</a><br>
+                        <a href="<?php echo $menu ?>">Menu</a><br>
+                        <a href="<?php echo $contactpage ?>">Contact</a>
+                        <?php
+                    }
+                    ?>
+                </section>
+            </section>
+            <?php
         }
-        echo "<section class='row'><p style='color: orange; font-weight: bold'>Description:</p><p>{$description}</p></section>";
 
-        if (!empty($parking)) {
-            echo "<section class='row'><p style='color: orange; font-weight: bold'>Parking:</p><p>{$parking}</p></section>";
-        }
-
-        // PRICE
-        echo "<img class='imgIcons' src='/img/icons/costs.png' alt='costs'>";
-        echo "<section class='row'><p style='color: orange; font-weight: bold'>Costs:</p>
-<p><i>Diner costs</i></p>
-<p>€{$price} p.p.</p>
-<sup>Children til 12 years: € " . $childrenPrice . ",- p.p.</sup>
-
-<p><i>Reservation costs</i></p>
-<p>€ 10,- </p>
-</section>";
-
-        // SESSIONS
-        echo "<img class='imgIcons' src='/img/icons/clockb.png'>";
-        echo "<section class='row'><p class='infotext' style='color: orange; font-weight: bold'>Sessions:</p>";
-        foreach ($times as $beginTime => $endTime) {
-            echo "<p class='infotext'>$beginTime-$endTime</p>";
-        }
-
-        // DAYS
-        echo "<section class='row'><p style='color: orange; font-weight: bold'>Days:</p>";
-        foreach ($dates as $date) {
-            echo "<p>$date</p>";
-        }
-
-        echo "</section>";
-
-        // LOCATION
-        echo "<img class='imgIcons' src='/img/icons/location.png' alt='location'>";
-        echo "<section class='row'><p style='color: orange; font-weight: bold'>Address:</p><p>{$location}</p></section>";
-
-        if (!empty($website)) {
-            echo "<img class='imgIcons' src='/img/icons/links.png'>";
-            echo "<section class='row'><p style='color: orange; font-weight: bold'>Links:</p><p>
-<a href=\"$website\">Website</a><br>
-<a href=\"$menu\">Menu</a><br>
-<a href=\"$contactpage\">Contact</a>
-</p></section>";
-        }
         ?>
-        <form method="post">
-            <input type="submit" class='btn btn-primary w-100' name="gotooverview" value="Go back to overview"></input>
+        <form method="post" action="foodreservation.php">
+            <input name="restaurantId" type="hidden" value="<?php echo $restaurantId ?>">
+            <input type="submit" class='btn button1' id="buttonReservation" name="makereservation" value="Make a reservation"></input>
+        </form>
+        <form method="post" action=food.php>
+            <input type="submit" class='btn button1' id="buttonOverview" name="gotooverview" value="Go back to overview"></input>
         </form>
 
-        <?php
-        echo "<form method=\"post\" action=\"foodreservation.php\">";
-        echo "<input name=\"restaurantId\" type=\"hidden\" value=\"$restaurantId\">";
-        ?>
-        <input type="submit" class='btn btn-primary' name="makereservation" value="Make a reservation"></input>
-        </form>
     </section>
-    </section>
-    </section>
-    </section>
-
-    <?php
-    }
-
-    ?>
-
 </main>
 </body>
 
