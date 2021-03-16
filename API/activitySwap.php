@@ -30,6 +30,8 @@ if (isset($_POST)){
     if (count($_POST["tableCheck"]) != 2)
         callback("You selected not enough or too many items");
 
+    //echo count($_POST["tableCheck"]);
+
     try {
         $activitySession = new activityService();
         $activitySession->swapActivityTime((int)$_POST["tableCheck"][0], (int)$_POST["tableCheck"][1]);

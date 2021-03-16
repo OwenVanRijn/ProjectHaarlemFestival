@@ -68,4 +68,15 @@ class jazzactivityService extends activityBaseService
 
         return $this->db->update($update);
     }
+
+    public function insertActivity(int $activityId, string $hall, int $seats, int $jazzBandId){
+        $insert = [
+            "jazzbandid" => $jazzBandId,
+            "activityId" => $activityId,
+            "hall" => $hall,
+            "seats" => $seats
+        ];
+
+        return $this->db->insert($insert);
+    }
 }

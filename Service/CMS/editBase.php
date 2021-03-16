@@ -12,9 +12,11 @@ require_once ("editInterface.php");
 abstract class editBase implements editInterface
 {
     protected activityBaseService $service;
+    protected activityService $activityService;
 
     public function __construct(activityBaseService $service){
         $this->service = $service;
+        $this->activityService = new activityService();
     }
 
     public const htmlBaseEditHeader = [
@@ -288,9 +290,19 @@ abstract class editBase implements editInterface
         $this->processNewResponseChild($validatedPost, $id);
     }
 
+    // TODO: get account on class creation
+    public function processDeleteResponse(array $activityIds, account $account){
+        if (($account->getCombinedRole() & (account::accountTicketManager | account::accountScheduleManager)) != (account::accountTicketManager | account::accountScheduleManager))
+            throw new appException("Invalid permissions");
+
+        $this->service->deleteTypedActivity($activityIds);
+        $this->activityService->deleteActivity($activityIds);
+    }
+
     public const htmlEditHeader = [];
     public const editType = "None";
 
     public abstract function getHtmlEditFields(sqlModel $a) : array;
     protected abstract function processEditResponseChild(array $validatedPost);
+    protected abstract function processNewResponseChild(array $post, int $activityId);
 }

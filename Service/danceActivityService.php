@@ -115,4 +115,30 @@ class danceActivityService extends activityBaseService
 
         return $this->activityDAO->insert($insert);
     }
+
+    public function deleteTypedActivity(array $activityIds)
+    {
+        $danceActivity = $this->db->get([
+            "activityid" => $activityIds
+        ]);
+
+        if (is_null($danceActivity))
+            throw new appException("No id was found");
+
+        if (gettype($danceActivity) != "array")
+            $danceActivity = [$danceActivity];
+
+        $idList = [];
+        foreach ($danceActivity as $a){
+            $idList[] = $a->getId();
+        }
+
+        $this->db->delete([
+            "danceactivityid" => $idList
+        ]);
+
+        return $this->db->delete([
+            "id" => $idList
+        ]);
+    }
 }

@@ -74,7 +74,6 @@ class jazzEdit extends editBase
 
         $bandId = null;
 
-
         if (!isset($post["band"]))
             throw new appException("Invalid POST");
 
@@ -101,5 +100,33 @@ class jazzEdit extends editBase
             throw new appException("[Jazz] db update failed...");
     }
 
-    // TODO: implement processNewResponseChild
+    protected function processNewResponseChild(array $post, int $activityId)
+    {
+        if (isset($post["performanceIncomplete"]))
+            throw new appException("Jazz form not filled in");
+
+        $bandId = null;
+
+        if (!isset($post["band"]))
+            throw new appException("Invalid POST");
+
+        if ((int)$post["band"] == -1){
+            $res = $this->jazzBandService->insertBand($post["bandName"], $post["bandDescription"]);
+            if (!$res)
+                throw new appException("[JazzBand] Failed to insert...");
+
+            $bandId = $res;
+        }
+        elseif (isset($post["bandIncomplete"])) {
+            $bandId = (int)$post["band"];
+        }
+
+        if (!$this->service->insertActivity(
+            $activityId,
+            $post["hall"],
+            (int)$post["seats"],
+            $bandId
+        ))
+            throw new appException("[Jazz] db insert failed...");
+    }
 }

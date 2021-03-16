@@ -47,4 +47,10 @@ abstract class activityBaseService extends baseService
 
         return $this->getTablesChild($a, $cssRules, $dates);
     }
+
+    public function deleteTypedActivity(array $activityIds){
+        return $this->db->delete([
+            "activityId" => $activityIds
+        ]);
+    }
 }

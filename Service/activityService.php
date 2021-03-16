@@ -89,4 +89,10 @@ class activityService extends baseService
             "endTime" => $activities[0]->getEndTimeAsTime()
         ]);
     }
+
+    public function deleteActivity(array $activityIds){
+        return $this->db->delete([
+            "id" => $activityIds
+        ]);
+    }
 }

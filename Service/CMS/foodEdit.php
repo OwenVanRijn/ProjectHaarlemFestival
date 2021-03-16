@@ -29,7 +29,7 @@ class foodEdit extends editBase
             "stars" => htmlTypeEnum::number,
             "seats" => htmlTypeEnum::number,
             "phoneNumber" => htmlTypeEnum::text,
-            "restaurantPrice" => [htmlTypeEnum::number, account::accountTicketManager],
+            "restaurantPrice" => [htmlTypeEnum::float, account::accountTicketManager],
             "restaurantType" => htmlTypeEnum::listMultiple
         ],
         "hidden" => [

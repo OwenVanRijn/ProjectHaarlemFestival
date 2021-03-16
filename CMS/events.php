@@ -311,7 +311,13 @@ $nav->assignCss([
             addCheckBoxes("../API/activitySwap.php");
             isBoxOpen = true;
         }
+    }
 
+    function openDel(){
+        if (!isBoxOpen){
+            addCheckBoxes("../API/activityDelete.php");
+            isBoxOpen = true;
+        }
     }
 </script>
 
@@ -333,7 +339,7 @@ $nav->assignCss([
             echo "<p class='err'>$err</p>";
         }
 
-        if (isset($_GET["done"])){
+        if (isset($_GET["done"])){ // TODO: We should *really* post this
             $done = htmlspecialchars($_GET["done"], ENT_QUOTES);
             echo "<p class='done'>$done</p>";
         }
@@ -355,6 +361,7 @@ $nav->assignCss([
 
     <button onclick="openNew('<?php echo ucfirst($_GET["event"]) ?>')" type="button">Hey!</button>
     <button onclick="openSwap()" type="button">What</button>
+    <button onclick="openDel()" type="button">Del</button>
     <button>Submit</button>
 </section>
 </body>

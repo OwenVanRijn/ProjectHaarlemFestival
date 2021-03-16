@@ -62,4 +62,13 @@ class editActivity
 
         return false;
     }
+
+    public function deleteContent(array $ids, string $type, account $account){
+        foreach ($this->editServices as $service){
+            if ($service::editType == $type){
+                $service->processDeleteResponse($ids, $account);
+                return;
+            }
+        }
+    }
 }

@@ -146,3 +146,10 @@ body {
     padding: 4px 0 4px;
     color: white;
 }
+
+nav a:first-child {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid white;
+}
