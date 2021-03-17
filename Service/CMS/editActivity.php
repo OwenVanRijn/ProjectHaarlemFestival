@@ -33,17 +33,42 @@ class editActivity
         return [];
     }
 
+    public function getEmptyContent(account $account, string $type){
+        switch ($type){ // TODO: change to foreach
+            case "Dance":
+                return $this->editServices[1]->getHtmlEditContentEmpty($account);
+            case "Food":
+                return $this->editServices[0]->getHtmlEditContentEmpty($account);
+            case "Jazz":
+                return $this->editServices[2]->getHtmlEditContentEmpty($account);
+            default:
+                throw new appException("Invalid type");
+        }
+    }
+
     public function editContent(array $post, account $account){
         if (!isset($post["type"]))
             throw new appException("invalid POST");
 
         foreach ($this->editServices as $service){
             if ($service::editType == $post["type"]){
-                $service->processEditResponse($post, $account);
+                if ($post["activityId"] === "new")
+                    $service->processNewResponse($post, $account);
+                else
+                    $service->processEditResponse($post, $account);
                 return true;
             }
         }
 
         return false;
+    }
+
+    public function deleteContent(array $ids, string $type, account $account){
+        foreach ($this->editServices as $service){
+            if ($service::editType == $type){
+                $service->processDeleteResponse($ids, $account);
+                return;
+            }
+        }
     }
 }

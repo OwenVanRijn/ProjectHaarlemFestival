@@ -1,0 +1,74 @@
+/* OVERALL */
+body {
+    background: #FD6A02;
+}
+
+#sharebutton{
+    background-color: #D8D8D8;
+    color: #000000;
+    border: none;
+    border-radius: 6px;
+}
+
+.example::-webkit-scrollbar {
+    display: none;
+}
+
+.contentShoppingcart {
+    background: #FAFAFA;
+    border: 3px solid green;
+    margin-right: 5%;
+    margin-left: 5%;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    height: 100vh;
+}
+
+.contentAccount {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.step, .stepNext {
+    background-color: #FD6A02;
+    border: none;
+    color: white;
+    padding: 8px 8px 8px 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 0px 0px;
+    border-radius: 8px;
+}
+
+.stepNext {
+    margin: 10px 0px;
+}
+#shareButtonBox,
+.step{
+    text-align: center;
+}
+
+.labelInputField {
+    font-size: 1em;
+    font-weight: normal;
+    margin-bottom: 0px;
+}
+
+/* PAY */
+#paybox {
+    background-color: #B0B0B0;
+    border: none;
+    padding: 8px 8px 8px 8px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 0px 0px;
+    border-radius: 8px 8px 0px 0px;
+    width: 30%;
+}
+
+#payButton {
+    width: 30%;
+}

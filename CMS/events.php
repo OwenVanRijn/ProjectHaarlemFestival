@@ -51,6 +51,8 @@ $nav->assignCss([
         let entry = document.createElement("section");
         entry.classList.add("displayInlineBlock");
 
+        let stepNum = false;
+
         switch (fieldContent.type){
             case "customListMultiple":
                 if (fieldContent.type !== "hidden"){
@@ -65,6 +67,7 @@ $nav->assignCss([
                 select.setAttribute("name", fieldName + "[]");
                 select.setAttribute("multiple", '');
                 select.classList.add("leftStack");
+                select.setAttribute("required", "");
 
                 for (const optionIndex in fieldContent.value.options){
                     const option = fieldContent.value.options[optionIndex];
@@ -86,9 +89,12 @@ $nav->assignCss([
                 let selectSingle = document.createElement("select");
                 selectSingle.setAttribute("name", fieldName);
 
-                for (const optionIndex in fieldContent.value.options){
+                fieldContent.value.options[-1] = ("-- Add --");
+
+                for (let optionIndex in fieldContent.value.options){
                     const option = fieldContent.value.options[optionIndex];
                     const optionElem = document.createElement("option");
+
                     optionElem.setAttribute("value", optionIndex);
                     optionElem.innerHTML = option;
                     if (fieldContent.value.selected == optionIndex)
@@ -97,13 +103,16 @@ $nav->assignCss([
                     selectSingle.appendChild(optionElem);
                 }
 
-                const optionElem = document.createElement("option");
-                optionElem.setAttribute("value", "-1");
-                optionElem.innerHTML = "-- Add --";
-                selectSingle.appendChild(optionElem);
+                //const optionElem = document.createElement("option");
+                //optionElem.setAttribute("value", "-1");
+                //optionElem.innerHTML = "-- Add --";
+                //selectSingle.appendChild(optionElem);
 
                 return selectSingle;
 
+            case "numberStepped":
+                stepNum = true;
+                fieldContent.type = "number";
             default:
                 if (fieldContent.type !== "hidden"){
                     let label = document.createElement("label");
@@ -132,6 +141,10 @@ $nav->assignCss([
                 input.classList.add("leftStack", "marginRightOption");
                 input.setAttribute("required", "");
                 entry.appendChild(input);
+
+                if (stepNum){
+                    input.setAttribute("step", "0.01");
+                }
 
                 return entry;
         }
@@ -235,9 +248,74 @@ $nav->assignCss([
         form.appendChild(send);
     }
 
+    function readGetRequest(elem){
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(elem);
+    }
+
+    function addCheckBoxes(postUrl){
+        const mainSection = document.getElementsByClassName("main")[0];
+        let form = document.createElement("form");
+        form.appendChild(mainSection);
+        form.setAttribute("method", "post");
+        form.setAttribute("action", postUrl);
+
+        const type = document.createElement("input");
+        type.setAttribute("type", "hidden");
+        type.value = readGetRequest("event");
+        type.name = "type";
+        form.appendChild(type);
+
+        document.body.appendChild(form);
+
+        const tables = document.getElementsByClassName("cmsTable");
+        for (let idx = 0; idx < tables.length; idx++){
+            const table = tables[idx].firstChild;
+
+            for (let i = 0; i < table.childNodes.length; i++){
+                if (i == 0){
+                    const newHeader = document.createElement("th");
+                    table.childNodes[i].insertBefore(newHeader, table.childNodes[i].firstChild);
+                }
+                else {
+                    const newEntry = document.createElement("td");
+                    const checkBox = document.createElement("input");
+                    checkBox.setAttribute("type", "checkbox");
+                    checkBox.setAttribute("value", table.childNodes[i].lastChild.firstChild.getAttribute("aid"));
+                    checkBox.name = "tableCheck[]";
+                    newEntry.appendChild(checkBox);
+                    table.childNodes[i].insertBefore(newEntry, table.childNodes[i].firstChild);
+                }
+            }
+
+            console.log(table);
+        }
+    }
+
     function openBox(id){
         if (!isBoxOpen){
             httpGetAsync("../API/activityRequest.php?id=" + id, generateHTML)
+            isBoxOpen = true;
+        }
+    }
+
+    function openNew(type){
+        if (!isBoxOpen){
+            httpGetAsync("../API/activityRequest.php?type=" + type, generateHTML)
+            isBoxOpen = true;
+        }
+    }
+
+    function openSwap(){
+        if (!isBoxOpen){
+            addCheckBoxes("../API/activitySwap.php");
+            isBoxOpen = true;
+        }
+    }
+
+    function openDel(){
+        if (!isBoxOpen){
+            addCheckBoxes("../API/activityDelete.php");
             isBoxOpen = true;
         }
     }
@@ -256,6 +334,16 @@ $nav->assignCss([
             $table = new foodactivityService();
         // TODO: make page to select events
 
+        if (isset($_GET["err"])){
+            $err = htmlspecialchars($_GET["err"], ENT_QUOTES);
+            echo "<p class='err'>$err</p>";
+        }
+
+        if (isset($_GET["done"])){ // TODO: We should *really* post this
+            $done = htmlspecialchars($_GET["done"], ENT_QUOTES);
+            echo "<p class='done'>$done</p>";
+        }
+
         if (isset($table)){
             $tables = $table->getTables($user, [
                 "tr" => "cmsTableRow",
@@ -270,5 +358,10 @@ $nav->assignCss([
         }
 
     ?>
+
+    <button onclick="openNew('<?php echo ucfirst($_GET["event"]) ?>')" type="button">Hey!</button>
+    <button onclick="openSwap()" type="button">What</button>
+    <button onclick="openDel()" type="button">Del</button>
+    <button>Submit</button>
 </section>
 </body>

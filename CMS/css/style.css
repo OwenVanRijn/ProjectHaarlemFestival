@@ -126,3 +126,30 @@ nav .aSel:hover {
     opacity: 1;
     font-size: 14px;
 }
+
+body {
+    margin-top: 0;
+}
+
+.err {
+    text-align: center;
+    margin-top: 0;
+    background-color: red;
+    padding: 4px 0 4px;
+    color: white;
+}
+
+.done {
+    text-align: center;
+    margin-top: 0;
+    background-color: green;
+    padding: 4px 0 4px;
+    color: white;
+}
+
+nav a:first-child {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid white;
+}

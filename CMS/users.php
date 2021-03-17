@@ -45,7 +45,7 @@ $nav->assignCss([
 
         $table = new table();
         $table->setTitle("Users");
-        $table->addHeader("Name", "Email", "phoneNumber", "Address");
+        $table->addHeader("Name", "Email", "Phone Number", "Address");
 
         foreach ($customers as $c){
             $tableRow = new tableRow();

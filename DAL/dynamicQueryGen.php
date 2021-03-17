@@ -205,6 +205,9 @@ class dynamicQueryGen extends queryBase
             }
         }
 
+        if (empty($newKeys))
+            throw new appException("No keys were given!");
+
         $keys = $newKeys;
 
         $query = "INSERT INTO " . $this->class::sqlTableName() . " (";
@@ -246,6 +249,9 @@ class dynamicQueryGen extends queryBase
 
         $this->deleteFrom($this->class::sqlTableName());
         $this->where($filter);
+
+        if (count($this->args) <= 0)
+            throw new appException("You likely don't want to delete the entire table");
 
         $this->prepareQuery($this->query);
         $this->bindParams($this->args);

@@ -1,6 +1,4 @@
 <?php
-// Page requires an id provided via GET
-// TODO: add logged in check
 
 require_once ("../Service/activityService.php");
 header('Content-Type: application/json');
@@ -18,12 +16,10 @@ if (!$user){
 
 $service = new editActivity();
 
-if (isset($_GET["id"])){
-    $id = (int)$_GET["id"];
-    echo json_encode($service->getContent($id, $user));
-}
-else if (isset($_GET["type"])){
-    echo json_encode($service->getEmptyContent($user, $_GET["type"]));
+if (isset($_POST["tableCheck"]) && isset($_POST["type"])){
+    $activity = new editActivity();
+    $activity->deleteContent(array_map("intval", $_POST["tableCheck"]), ucfirst($_POST["type"]), $user);
+    header('Location: ../CMS/events.php?event=' . $_POST["type"]);
 }
 else {
     http_response_code(400);

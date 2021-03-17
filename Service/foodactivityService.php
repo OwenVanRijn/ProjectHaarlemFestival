@@ -40,7 +40,7 @@ class foodactivityService extends activityBaseService
                     join('/', $this->types->getRestaurantTypes($c->getRestaurant()->getId()))
                 );
 
-                $tableRow->addButton('openBox('. $c->getActivity()->getId() . ')', "Edit");
+                $tableRow->addButton('openBox('. $c->getActivity()->getId() . ')', "Edit", "aid=\"". $c->getActivity()->getId() . "\"");
 
                 $table->addTableRows($tableRow);
             }
@@ -82,6 +82,13 @@ class foodactivityService extends activityBaseService
         return $this->db->update([
             "id" => $id,
             "restaurantId" => $restaurantId // TODO: check for validity
+        ]);
+    }
+
+    public function insertFoodActivity(int $activityId, int $restaurantId){
+        return $this->db->insert([
+            "restaurantId" => $restaurantId,
+            "activityId" => $activityId
         ]);
     }
 }

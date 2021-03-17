@@ -34,7 +34,7 @@ class jazzactivityService extends activityBaseService
                     $c->getActivity()->getLocation()->getAddress(),
                 );
 
-                $tableRow->addButton('openBox('. $c->getActivity()->getId() . ')', "Edit");
+                $tableRow->addButton('openBox('. $c->getActivity()->getId() . ')', "Edit", "aid=\"". $c->getActivity()->getId() . "\"");
 
                 $table->addTableRows($tableRow);
             }
@@ -67,5 +67,16 @@ class jazzactivityService extends activityBaseService
             $update["jazzbandid"] = $jazzBandId;
 
         return $this->db->update($update);
+    }
+
+    public function insertActivity(int $activityId, string $hall, int $seats, int $jazzBandId){
+        $insert = [
+            "jazzbandid" => $jazzBandId,
+            "activityId" => $activityId,
+            "hall" => $hall,
+            "seats" => $seats
+        ];
+
+        return $this->db->insert($insert);
     }
 }

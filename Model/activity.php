@@ -4,6 +4,8 @@ require_once ("sqlModel.php");
 require_once ("location.php");
 require_once ("htmlTypeEnum.php");
 require_once ("sqlModel.php");
+require_once ("date.php");
+require_once ("time.php");
 
 class activity extends sqlModel
 {
@@ -125,5 +127,23 @@ class activity extends sqlModel
     public function getTicketsLeft(): int
     {
         return $this->ticketsLeft;
+    }
+
+    public function getDateAsDate(): date {
+        $date = new date();
+        $date->fromDateTime($this->date);
+        return $date;
+    }
+
+    public function getStartTimeAsTime() : time {
+        $time = new time();
+        $time->fromDateTime($this->startTime);
+        return $time;
+    }
+
+    public function getEndTimeAsTime() : time {
+        $time = new time();
+        $time->fromDateTime($this->endTime);
+        return $time;
     }
 }
