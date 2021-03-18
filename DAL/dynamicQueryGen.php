@@ -183,6 +183,17 @@ class dynamicQueryGen extends queryBase
         return $this->execQueryResult($this->class::sqlParseFunc());
     }
 
+    public function getArray(array $filter = []) : array {
+        $val = self::get($filter);
+        if (is_null($val))
+            return [];
+
+        if (gettype($val) != "array")
+            return [$val];
+
+        return $val;
+    }
+
     /**
      * Expects an k,v array
      * @param array $fields
