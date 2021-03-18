@@ -36,6 +36,9 @@ class location extends sqlModel
 
     public static function sqlParse(array $sqlRes): self
     {
+        if (is_null($sqlRes[self::sqlTableName . "id"]))
+            return new self();
+
         return (new self())->constructFull(
             $sqlRes[self::sqlTableName . "id"],
             $sqlRes[self::sqlTableName . "name"],

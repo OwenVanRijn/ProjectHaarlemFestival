@@ -121,7 +121,7 @@ class dynamicQueryGen extends queryBase
     protected function joinClass($srcClass, $dstClass, $varName){
         $query = "";
         if (!in_array($dstClass::sqlTableName(), $this->joinedClasses)){
-            $query = "INNER JOIN " . $dstClass::sqlTableName() . " ON " . $srcClass::sqlTableName() . "." . $varName . " = " . $dstClass::sqlTableName() . "." . $dstClass::sqlPrimaryKey() . " ";
+            $query = "LEFT JOIN " . $dstClass::sqlTableName() . " ON " . $srcClass::sqlTableName() . "." . $varName . " = " . $dstClass::sqlTableName() . "." . $dstClass::sqlPrimaryKey() . " ";
             $this->joinedClasses[] = $dstClass::sqlTableName();
         }
         foreach ($dstClass::sqlLinks() as $k => $v){

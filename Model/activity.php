@@ -26,14 +26,21 @@ class activity extends sqlModel
         $this->ticketsLeft = 0;
     }
 
-    public function constructFull(int $id, string $type, DateTime $date, DateTime $startTime, DateTime $endTime,
-                                location $location, float $price, $ticketsLeft){
+    public function constructFull(int $id, string $type, ?DateTime $date, DateTime $startTime, ?DateTime $endTime,
+                                ?location $location, float $price, ?int $ticketsLeft){
         $this->id = $id;
         $this->type = $type;
-        $this->date = $date;
+        if (!is_null($date))
+            $this->date = $date;
+
         $this->startTime = $startTime;
-        $this->endTime = $endTime;
-        $this->location = $location;
+
+        if (!is_null($endTime))
+            $this->endTime = $endTime;
+
+        if (!is_null($location))
+            $this->location = $location;
+
         $this->price = $price;
         if (!is_null($ticketsLeft))
             $this->ticketsLeft = $ticketsLeft;
@@ -56,12 +63,26 @@ class activity extends sqlModel
 
     public static function sqlParse(array $sqlRes): self
     {
+        $date = null;
+        $stime = null;
+        $etime = null;
+
+        if (!is_null($sqlRes[self::sqlTableName . "date"]))
+            $date = date_create_from_format("Y-m-d", $sqlRes[self::sqlTableName . "date"]);
+
+        if (!is_null($sqlRes[self::sqlTableName . "startTime"]))
+            $stime = date_create_from_format("H:i:s", $sqlRes[self::sqlTableName . "startTime"]);
+
+        if (!is_null($sqlRes[self::sqlTableName . "endTime"]))
+            $etime = date_create_from_format("H:i:s", $sqlRes[self::sqlTableName . "endTime"]);
+
+
         return (new self())->constructFull(
             $sqlRes[self::sqlTableName . "id"],
             $sqlRes[self::sqlTableName . "type"],
-            date_create_from_format("Y-m-d", $sqlRes[self::sqlTableName . "date"]),
-            date_create_from_format("H:i:s", $sqlRes[self::sqlTableName . "startTime"]),
-            date_create_from_format("H:i:s", $sqlRes[self::sqlTableName . "endTime"]),
+            $date,
+            $stime,
+            $etime,
             location::sqlParse($sqlRes),
             $sqlRes[self::sqlTableName . "price"],
             $sqlRes[self::sqlTableName . "ticketsLeft"]
