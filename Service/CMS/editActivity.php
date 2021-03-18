@@ -10,20 +10,32 @@ class editActivity
      * @var editBase[]
      */
     private array $editServices;
+    private account $account;
 
-    public function __construct()
+    public function __construct(account $account)
     {
         $this->editServices = [
             new foodEdit(),
             new danceEdit(),
             new jazzEdit()
         ];
+
+        $this->account = $account;
     }
 
-    public function getContent(int $id, account $account){
+    private function loopServices(string $type, $whenType){
+        foreach ($this->editServices as $service){
+            if ($service::editType == $type){
+                return $whenType($service);
+            }
+        }
+        throw new appException("Invalid type");
+    }
+
+    public function getContent(int $id){
         foreach ($this->editServices as $service){
             try {
-                return $service->getHtmlEditContent($id, $account);
+                return $service->getHtmlEditContent($id, $this->account);
             }
             catch (appException $e) {
                 // Do nothing
@@ -33,42 +45,28 @@ class editActivity
         return [];
     }
 
-    public function getEmptyContent(account $account, string $type){
-        switch ($type){ // TODO: change to foreach
-            case "Dance":
-                return $this->editServices[1]->getHtmlEditContentEmpty($account);
-            case "Food":
-                return $this->editServices[0]->getHtmlEditContentEmpty($account);
-            case "Jazz":
-                return $this->editServices[2]->getHtmlEditContentEmpty($account);
-            default:
-                throw new appException("Invalid type");
-        }
+    public function getEmptyContent(string $type){
+        return $this->loopServices($type, function (editBase $service) {
+            return $service->getHtmlEditContentEmpty($this->account);
+        });
     }
 
-    public function editContent(array $post, account $account){
+    public function editContent(array $post){
         if (!isset($post["type"]))
             throw new appException("invalid POST");
 
-        foreach ($this->editServices as $service){
-            if ($service::editType == $post["type"]){
-                if ($post["activityId"] === "new")
-                    $service->processNewResponse($post, $account);
-                else
-                    $service->processEditResponse($post, $account);
-                return true;
-            }
-        }
-
-        return false;
+        return $this->loopServices($post["type"], function (editBase $service) use ($post){
+            if ($post["activityId"] === "new")
+                $service->processNewResponse($post, $this->account);
+            else
+                $service->processEditResponse($post, $this->account);
+            return true;
+        });
     }
 
-    public function deleteContent(array $ids, string $type, account $account){
-        foreach ($this->editServices as $service){
-            if ($service::editType == $type){
-                $service->processDeleteResponse($ids, $account);
-                return;
-            }
-        }
+    public function deleteContent(array $ids, string $type){
+        return $this->loopServices($type, function (editBase $service) use ($ids) {
+            return $service->processDeleteResponse($ids, $this->account);
+        });
     }
 }

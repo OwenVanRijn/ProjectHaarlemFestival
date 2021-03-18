@@ -13,9 +13,9 @@ if (!$user){
     exit();
 }
 
-$activity = new editActivity();
+$activity = new editActivity($user);
 try {
-    $activity->editContent($_POST, $user);
+    $activity->editContent($_POST);
     header('Location: ../CMS/events.php?event=' . strtolower($_POST["type"]));
 }
 catch (appException $e){

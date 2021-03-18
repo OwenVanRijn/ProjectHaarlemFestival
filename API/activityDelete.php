@@ -14,11 +14,11 @@ if (!$user){
     exit();
 }
 
-$service = new editActivity();
+$service = new editActivity($user);
 
 if (isset($_POST["tableCheck"]) && isset($_POST["type"])){
     $activity = new editActivity();
-    $activity->deleteContent(array_map("intval", $_POST["tableCheck"]), ucfirst($_POST["type"]), $user);
+    $activity->deleteContent(array_map("intval", $_POST["tableCheck"]), ucfirst($_POST["type"]));
     header('Location: ../CMS/events.php?event=' . $_POST["type"]);
 }
 else {
