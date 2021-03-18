@@ -167,4 +167,12 @@ class activity extends sqlModel
         $time->fromDateTime($this->endTime);
         return $time;
     }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
 }

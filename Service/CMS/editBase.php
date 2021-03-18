@@ -8,6 +8,7 @@ require_once ($root . "/Service/baseService.php");
 require_once ($root . "/Utils/appException.php");
 require_once ($root . "/DAL/locationDAO.php");
 require_once ("editInterface.php");
+require_once ($root . "/Service/activityLogService.php");
 
 abstract class editBase implements editInterface
 {
@@ -186,6 +187,7 @@ abstract class editBase implements editInterface
         return $res;
     }
 
+    // TODO: maybe parse POST into object, then use object?
     public function processEditResponse(array $post, account $account) {
         $validatedPost = $this->filterHtmlEditResponse($account, $post);
         unset($post); // To prevent misuse
@@ -236,6 +238,7 @@ abstract class editBase implements editInterface
             (isset($validatedPost["locationIncomplete"])) ? (int)$validatedPost["location"] : null);
 
         $this->processEditResponseChild($validatedPost);
+        $this->createLog(activityLog::edit, (int)$validatedPost["activityId"], $account);
     }
 
     public function processNewResponse(array $post, account $account){
@@ -288,6 +291,7 @@ abstract class editBase implements editInterface
             (int)$validatedPost["location"]);
 
         $this->processNewResponseChild($validatedPost, $id);
+        $this->createLog(activityLog::create, $id, $account);
     }
 
     // TODO: get account on class creation
@@ -297,10 +301,26 @@ abstract class editBase implements editInterface
 
         $this->service->deleteTypedActivity($activityIds);
         $this->activityService->deleteActivity($activityIds);
+        $this->createLog(activityLog::delete, null, $account);
     }
 
     public const htmlEditHeader = [];
     public const editType = "None";
+
+    private function createLog(string $type, ?int $activityId, account $account){
+        $log = new activityLog();
+        $log->setAccount($account);
+        $log->setType($type);
+
+        if (!is_null($activityId)){
+            $activity = new activity();
+            $activity->setId($activityId);
+            $log->setActivity($activity);
+        }
+
+        $logService = new activityLogService();
+        $logService->insert($log);
+    }
 
     public abstract function getHtmlEditFields(sqlModel $a) : array;
     protected abstract function processEditResponseChild(array $validatedPost);

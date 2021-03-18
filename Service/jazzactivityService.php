@@ -45,6 +45,10 @@ class jazzactivityService extends activityBaseService
         return $tables;
     }
 
+    public function getName(jazzactivity $activity){
+        return $activity->getJazzband()->getName();
+    }
+
     public function getAll(): array
     {
         return $this->db->get([

@@ -34,7 +34,7 @@ if (isset($_POST)){
 
     try {
         $activitySession = new activityService();
-        $activitySession->swapActivityTime((int)$_POST["tableCheck"][0], (int)$_POST["tableCheck"][1]);
+        $activitySession->swapActivityTime((int)$_POST["tableCheck"][0], (int)$_POST["tableCheck"][1], $user);
         callback(null, "Successfully swapped entries");
     }
     catch (appException $e){

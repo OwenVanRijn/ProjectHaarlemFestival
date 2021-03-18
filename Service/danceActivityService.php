@@ -90,6 +90,16 @@ class danceActivityService extends activityBaseService
         return $this->toDanceActivityArray(parent::getFromActivityIds($ids));
     }
 
+    public function getName(danceActivity $activity){
+        $artists = "";
+
+        foreach ($activity->getArtists() as $artist){
+            $artists .= $artist->getName() . " & ";
+        }
+
+        return $artists;
+    }
+
     // Format Y-m-d. Needs change
     public function getAllWithDate(string $date){
         $res =  $this->db->get([

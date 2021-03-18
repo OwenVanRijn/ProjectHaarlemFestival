@@ -8,7 +8,7 @@ require_once ($root . "/DAL/activityDAO.php");
 require_once ("restaurantService.php");
 require_once ("locationService.php");
 require_once ("baseService.php");
-
+require_once ("activityLogService.php");
 
 class activityService extends baseService
 {
@@ -68,13 +68,37 @@ class activityService extends baseService
         return $this->db->insert($insert);
     }
 
-    public function swapActivityTime(int $activity1, int $activity2){
-        $activities = $this->db->get([
-                "id" => [$activity1, $activity2]
-        ]);
+    private function getNameFromTypedActivity($a){
+        switch (get_class($a)){
+            case "jazzactivity":
+                return $this->jazz->getName($a);
+            case "danceActivity":
+                return $this->dance->getName($a);
+            case "foodactivity":
+                return $this->food->getName($a);
+            default:
+                throw new appException("Invalid type provided");
+        }
+    }
 
-        if (count($activities) != 2)
+    public function getNames(array $activityIds){
+        $typedActivities = $this->getTypedActivityByIds($activityIds);
+        $names = [];
+
+        foreach ($typedActivities as $a){
+            $names[] = $this->getNameFromTypedActivity($a);
+        }
+
+        return $names;
+    }
+
+    public function swapActivityTime(int $activity1, int $activity2, account $account){
+        $typedActivities = $this->getTypedActivityByIds([$activity1, $activity2]);
+
+        if (count($typedActivities) != 2)
             throw new appException("One or more of the provided activities is invalid");
+
+        $activities = [$typedActivities[0]->getActivity(), $typedActivities[1]->getActivity()];
 
         $this->db->update([
             "id" => $activities[0]->getId(),
@@ -89,6 +113,15 @@ class activityService extends baseService
             "startTime" => $activities[0]->getStartTimeAsTime(),
             "endTime" => $activities[0]->getEndTimeAsTime()
         ]);
+
+        $log = new activityLog();
+        $log->setAccount($account);
+        $log->setType(activityLog::swap);
+        $log->setTarget($typedActivities[0]->getActivity()->getType() . " activities " . $this->getNameFromTypedActivity($typedActivities[0]) . " & " .
+            $this->getNameFromTypedActivity($typedActivities[1]));
+
+        $logService = new activityLogService();
+        $logService->insert($log);
     }
 
     public function deleteActivity(array $activityIds){

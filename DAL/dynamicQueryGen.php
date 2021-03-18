@@ -78,7 +78,11 @@ class dynamicQueryGen extends queryBase
             $query .= $this->genTableVar($v) . ", ";
         }
         $query = substr($query, 0, -2);
-        $this->query .= $query;
+        $this->query .= $query . " ";
+    }
+
+    protected function limit(int $limit){
+        $this->query .= "LIMIT " . $limit . " ";
     }
 
     protected function where(array $filter){
@@ -87,6 +91,13 @@ class dynamicQueryGen extends queryBase
             unset($filter["order"]);
             if (gettype($order) != "array")
                 $order = [$order];
+        }
+
+        if (array_key_exists("limit", $filter)){
+            $limit = $filter["limit"];
+            unset($filter["limit"]);
+            if (gettype($limit) != "integer")
+                throw new appException("This is off-limits, literally");
         }
 
         if (!empty($filter)){
@@ -114,6 +125,9 @@ class dynamicQueryGen extends queryBase
 
         if (isset($order))
             $this->orderBy($order);
+
+        if (isset($limit))
+            $this->limit($limit);
     }
 
     private array $joinedClasses;
