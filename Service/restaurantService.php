@@ -19,7 +19,8 @@ class restaurantService extends baseService
         return $this->db->get();
     }
 
-    public function updateRestaurant(int $id, ?string $name, ?string $description, ?int $stars, ?int $seats, ?int $phoneNumber, ?float $price, ?int $locationId): bool
+    // TODO: maybe convert to pass in restaurant object?
+    public function updateRestaurant(int $id, ?string $name, ?string $description, ?int $stars, ?int $seats, ?int $phoneNumber, ?float $price, ?int $locationId, ?string $parking, ?string $website, ?string $menu, ?string $contact): bool
     {
         $update = [
             "id" => $id,
@@ -46,10 +47,22 @@ class restaurantService extends baseService
         if (!is_null($locationId))
             $update["locationid"] = $locationId;
 
+        if (!is_null($parking))
+            $update["parking"] = $parking;
+
+        if (!is_null($website))
+            $update["website"] = $website;
+
+        if (!is_null($menu))
+            $update["menu"] = $menu;
+
+        if (!is_null($contact))
+            $update["contact"] = $contact;
+
         return $this->db->update($update);
     }
 
-    public function insertRestaurant(string $name, string $description, int $stars, int $seats, int $phoneNumber, float $price, int $locationId)
+    public function insertRestaurant(string $name, string $description, int $stars, int $seats, int $phoneNumber, float $price, int $locationId, string $parking, string $website, string $menu, string $contact)
     {
         $insert = [
             "name" => $name,
@@ -58,7 +71,11 @@ class restaurantService extends baseService
             "seats" => $seats,
             "phonenumber" => $phoneNumber,
             "price" => $price,
-            "locationid" => $locationId
+            "locationid" => $locationId,
+            "parking" => $parking,
+            "website" => $website,
+            "menu" => $menu,
+            "contact" => $contact
         ];
 
         return $this->db->insert($insert);

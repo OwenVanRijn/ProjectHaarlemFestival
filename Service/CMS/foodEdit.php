@@ -30,7 +30,11 @@ class foodEdit extends editBase
             "seats" => htmlTypeEnum::number,
             "phoneNumber" => htmlTypeEnum::text,
             "restaurantPrice" => [htmlTypeEnum::float, account::accountTicketManager],
-            "restaurantType" => htmlTypeEnum::listMultiple
+            "restaurantType" => htmlTypeEnum::listMultiple,
+            "restaurantParking" => htmlTypeEnum::text,
+            "restaurantWebsite" => htmlTypeEnum::text,
+            "restaurantMenu" => htmlTypeEnum::text,
+            "restaurantContact" => htmlTypeEnum::text
         ],
         "hidden" => [
             "foodActivityId" => htmlTypeEnum::hidden
@@ -60,6 +64,10 @@ class foodEdit extends editBase
                 "selected" => $resCurTypeStrs
             ],
             "foodActivityId" => $a->getId(),
+            "restaurantParking" => $a->getRestaurant()->getParking(),
+            "restaurantWebsite" => $a->getRestaurant()->getWebsite(),
+            "restaurantMenu" => $a->getRestaurant()->getMenu(),
+            "restaurantContact" => $a->getRestaurant()->getContact(),
         ];
     }
 
@@ -98,7 +106,11 @@ class foodEdit extends editBase
                     (int)$post["seats"],
                     (int)$post["phoneNumber"],
                     (isset($post["restaurantPrice"])) ? (float)$post["restaurantPrice"] : null,
-                    (int)$post["location"]
+                    (int)$post["location"],
+                    $post["restaurantParking"],
+                    $post["restaurantWebsite"],
+                    $post["restaurantMenu"],
+                    $post["restaurantContact"]
                 );
 
                 if (!$res)
@@ -117,7 +129,11 @@ class foodEdit extends editBase
                     (int)$post["seats"],
                     (int)$post["phoneNumber"],
                     (isset($post["restaurantPrice"])) ? (float)$post["restaurantPrice"] : null,
-                    (isset($post["locationIncomplete"])) ? (int)$post["location"] : null
+                    (isset($post["locationIncomplete"])) ? (int)$post["location"] : null,
+                    $post["restaurantParking"],
+                    $post["restaurantWebsite"],
+                    $post["restaurantMenu"],
+                    $post["restaurantContact"]
                 );
 
                 $restaurantId = (int)$post["restaurantId"];
@@ -152,7 +168,11 @@ class foodEdit extends editBase
                 (int)$post["seats"],
                 (int)$post["phoneNumber"],
                 (isset($post["restaurantPrice"])) ? (float)$post["restaurantPrice"] : null,
-                (int)$post["location"]
+                (int)$post["location"],
+                $post["restaurantParking"],
+                $post["restaurantWebsite"],
+                $post["restaurantMenu"],
+                $post["restaurantContact"]
             );
 
             if (!$res)
