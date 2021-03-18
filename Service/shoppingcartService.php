@@ -5,6 +5,7 @@ require_once($root . "/Service/baseService.php");
 require_once($root . "/Model/shoppingcart.php");
 require_once($root . "/DAL/shoppingcartDAO.php");
 require_once($root . "/DAL/activityDAO.php");
+require_once($root . "/DAL/shoppingcartItemDAO.php");
 
 require_once($root . "/Service/jazzactivityService.php");
 require_once($root . "/Service/foodactivityService.php");
@@ -23,6 +24,7 @@ class shoppingcartService extends baseService
     private jazzactivityService $jazzactivityService;
     private foodactivityService $foodactivityService;
     private danceActivityService $danceActivityService;
+    private shoppingcartItemDAO $shoppingcartItemDAO;
 
     public function __construct()
     {
@@ -31,6 +33,7 @@ class shoppingcartService extends baseService
         $this->jazzactivityService = new jazzactivityService();
         $this->foodactivityService = new foodactivityService();
         $this->danceActivityService = new danceActivityService();
+        $this->shoppingcartItemDAO = new shoppingcartItemDAO();
         //$this->check();
     }
 
@@ -127,5 +130,11 @@ class shoppingcartService extends baseService
     public function setShoppingcartItemById(int $id, int $amount)
     {
         $this->getShoppingcart()->removeFromShoppingcartItemsById($id);
+    }
+
+
+    public function getAllFromDB()
+    {
+        $this->shoppingcartItemDAO->get();
     }
 }

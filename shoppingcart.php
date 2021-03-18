@@ -3,6 +3,8 @@ session_start();
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/UI/navBar.php");
+require_once($root . "/Model/activity.php");
+require_once($root . "/Service/activityService.php");
 require_once($root . "/Service/jazzactivityService.php");
 require_once($root . "/Service/foodactivityService.php");
 require_once($root . "/Service/danceActivityService.php");
@@ -23,8 +25,7 @@ require_once($root . "/Service/shoppingcartService.php");
     <link rel="stylesheet" href="css/dance.css">
 
     <script language=Javascript>
-        function isNumberKey(evt)
-        {
+        function isNumberKey(evt) {
             var charCode = (evt.which) ? evt.which : event.keyCode
             if (charCode > 31 && (charCode < 48 || charCode > 57))
                 return false;
@@ -46,6 +47,7 @@ require_once($root . "/Service/shoppingcartService.php");
         $jazzActivityService = new jazzActivityService();
         $foodActivityService = new foodActivityService();
         $danceActivityService = new danceActivityService();
+        $activityService = new activityService();
         $shoppingcart = $shoppingcartService->getShoppingcart()->getShoppingcartItems();
 
         echo "<br><br> shoppingcart <br><br>";
@@ -65,45 +67,56 @@ require_once($root . "/Service/shoppingcartService.php");
             var_dump($ids);
             echo "<br><br> IDS <br><br>";
 
+
+            echo "<br><br> SHOPPINGCARTITEMSDB <br><br>";
+            $shoppingcartItemsDB = $shoppingcartService->getAllFromDB();
+            var_dump($shoppingcartItemsDB);
+            echo "<br><br> SHOPPINGCARTITEMSDB <br><br>";
+
+
             $activities = array_merge($danceActivityService->getFromActivityIds($ids), $foodActivityService->getFromActivityIds($ids), $jazzActivityService->getFromActivityIds($ids));
+            $activitiesDaytickets = $activityService->getAllById($ids);
 
-            $dates = array('2021-06-26', '2021-06-27', '2021-06-28', '2021-06-29');
 
+            echo "<br><br> ACTIVITYESDATEPASS <br><br>";
+            var_dump($activitiesDaytickets);
+            echo "<br><br> ACTIVITYESDATEPASS <br><br>";
 
-            $days = array();
-            $thursdayActivities = array();
-            $fridayActivities = array();
-            $saturdayActivities = array();
-            $sundayActivities = array();
+            echo "<br><br> ACTIVITYES <br><br>";
+            var_dump($activities);
+            echo "<br><br> ACTIVITYES <br><br>";
+
+            $datesOfFestival = array();
 
             foreach ($activities as $activity) {
-                if ($activity->getActivity()->getDate()->format("Y-m-d") == $dates[0]) {
-                    $thursdayActivities[] = $activity;
-                }
-                if ($activity->getActivity()->getDate()->format("Y-m-d") == $dates[1]) {
-                    $fridayActivities[] = $activity;
-                }
-                if ($activity->getActivity()->getDate()->format("Y-m-d") == $dates[2]) {
-                    $saturdayActivities[] = $activity;
-                }
-                if ($activity->getActivity()->getDate()->format("Y-m-d") == $dates[3]) {
-                    $sundayActivities[] = $activity;
+                $activityDate = $activity->getActivity()->getDate()->format("Y-m-d");
+                if (!in_array($activityDate, $datesOfFestival)) {
+                    $datesOfFestival[] = $activityDate;
                 }
             }
 
-            $days[0] = $thursdayActivities;
-            $days[1] = $fridayActivities;
-            $days[2] = $saturdayActivities;
-            $days[3] = $sundayActivities;
+            $dayActivities = array();
+            for ($index = 0; $index <= count($datesOfFestival)-1; $index++) {
 
-            for ($i = 0; $i < count($days); $i++) {
-                if ($days[$i] != 0) {
-                    $total += echoDay($dates[$i], $days[$i]);
+                $activitiesOfThisDay = array();
+
+                foreach ($activities as $activity) {
+                    if ($activity->getActivity()->getDate()->format("Y-m-d") == $datesOfFestival[$index]) {
+                        $activitiesOfThisDay[] = $activity;
+                    }
+                }
+
+                $dayActivities[] = $activitiesOfThisDay;
+            }
+
+            for ($i = 0; $i < count($dayActivities); $i++) {
+                if ($dayActivities[$i] != 0) {
+                    $total += echoDay($datesOfFestival[$i], $dayActivities[$i]);
                 }
             }
 
             ?>
-            <button class="btn btn-primary"
+            <button class="button1"
                     onclick="window.location.href='/payment/account.php'"><?php echo "Pay €$total" ?> </button>
             <?php
         }
@@ -163,7 +176,13 @@ function echoDay($date, $activitiesOfTheDay)
             } else if (get_class($activity) == "jazzactivity") {
                 $activityName = $activity->getJazzband()->getName();
             } else {
-                $activityName = "dance activity";
+
+                $artists = $activity->getArtists();
+                $artistNames = array();
+                foreach ($artists as $artist) {
+                    $artistNames[] = $artist->getName();
+                }
+                $activityName = implode(" ", $artistNames);
             }
 
             $shoppingcartService = new shoppingcartService();

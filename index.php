@@ -57,7 +57,7 @@
         <section class="row justify-content-center align-self-center text-center">
             <section class="col-3">
                 <section class="col-12" style="background-color: black; margin-top: 2%;">
-                    <h2><a href="dance.php">Dance</a></h2>
+                    <h2 class="headereventpage"><a href="dance.php">Dance</a></h2>
                     <img class="eventimg" src="img/Dance.png">
                     <p style="margin-bottom: 0px; padding: 10%" class="discoverBlockContent">Our dance acts focus on dance, house, techno and trance.
                         Haarlem Festival offers 6 of the best DJs in the world. They will perform in back2back and club sessions.
@@ -68,7 +68,7 @@
 
             <section class="col-3 h-100">
                 <section class="col-12" style="background-color: black; margin-top: 2%;">
-                    <h2><a href="jazz.php">Jazz</a></h2>
+                    <h2 class="headereventpage"><a href="jazz.php">Jazz</a></h2>
                     <img class="eventimg" src="img/Jazz.png">
                     <p style="margin-bottom: 0px; padding: 6.5%;" class="discoverBlockContent">
                     Jazz is one of the main acts at the Haarlem Festival.
@@ -83,7 +83,7 @@
 
             <section class="col-3 h-100">
                 <section class="col-12" style="background-color: black; margin-top: 2%;">
-                    <h2><a href="food.php">Food</a></h2>
+                    <h2 class="headereventpage"><a href="food.php">Food</a></h2>
                     <img class="eventimg" src="img/Food.png">
                     <p style="margin-bottom: 0px; padding: 6.5%;" class="discoverBlockContent">
                         We have selected several restaurants in the center of Haarlem for you. 

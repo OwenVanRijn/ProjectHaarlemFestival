@@ -21,7 +21,7 @@ if (isset($_POST["gotooverview"])) {
 <html>
 
 <head>
-    <title>Food</title>
+    <title>Restaurant - Haarlem Festival</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/food.css">
 
@@ -48,24 +48,38 @@ if (isset($_POST["gotooverview"])) {
 
 <main class="content">
     <section>
-
-
         <?php
         if (isset($_GET["restaurantId"])) {
-            $restaurantId = $_GET["restaurantId"];
-            $restaurants = $restaurantService->getById($restaurantId);
+            try {
+                $restaurantId = $_GET["restaurantId"];
 
-            if ($restaurants != null) {
-                echo "<section class='row' style='margin-top: 2%'>";
-                if (is_array($restaurants)) {
-                    foreach ($restaurants as $restaurant) {
-                        echoRestaurant($restaurant);
-                    }
-                } else {
-                    echoRestaurant($restaurants);
+                if (!intval($restaurantId)) {
+                    throw new Exception("Invalid id in addressbar.");
                 }
-            } else {
-                echo "Could not get information about this restaurant.";
+                $restaurant = $restaurantService->getById($restaurantId);
+
+                if ($restaurant != null) {
+                    echoRestaurant($restaurant);
+                    ?>
+                    <form method="post" action="foodreservation.php">
+                        <input name="restaurantId" type="hidden" value="<?php echo $restaurantId ?>">
+                        <input type="submit" class='btn button1' id="buttonReservation" name="makereservation"
+                               value="Make a reservation"></input>
+                    </form>
+                    <form method="post" action=food.php>
+                        <input type="submit" class='btn button1' id="buttonOverview" name="gotooverview"
+                               value="Go back to overview"></input>
+                    </form>
+                    <?php
+                } else {
+                    throw new Exception("Could not get information about this restaurant.");
+                }
+            } catch (Exception $exception) {
+                $excMessage = $exception->getMessage();
+                ?>
+                <h1 class="header1Left">Restaurant not found</h1>
+                <p><?php echo $excMessage ?></p>
+                <?php
             }
         } else {
             header("Location: food.php");
@@ -96,28 +110,52 @@ if (isset($_POST["gotooverview"])) {
 
             <section class="container">
                 <section class="restaurantContentDescription">
-                    <h3 id='starsHeader'><?php echo $restaurantName ?></h3>
+                    <h2 id='starsHeader'><?php echo $restaurantName ?></h2>
                     <?php
                     for ($x = 0; $x < $stars; $x++) {
                         echo "<img class='stars' src='/img/icons/star.png' alt='ster'>";
                     }
+
+                    if (!empty($description)) {
+                        ?>
+
+                        <p> <?php echo $description ?></p>
+
+                        <?php
+                    }
+
+                    if (!empty($parking)) {
+                        ?>
+                        <br><h3>Parking information</h3>
+                        <p><?php echo $parking ?></p>
+                        <?php
+                    }
                     ?>
-                    <p> <?php echo $description ?></p>
                     <br>
-                    <img src="/img/Restaurants/restaurant<?php echo $restaurantId ?>.png"
-                         alt="Photo of <?php echo $restaurantName ?>" width="300">
+                    <p><img src="/img/Restaurants/restaurant<?php echo $restaurantId ?>.png"
+                            alt="Photo of <?php echo $restaurantName ?>" width="300"></p>
                 </section>
                 <section class="restaurantContentInfoPictureCosts">
                     <img class="imgIcons" src="/img/icons/costs.png" alt="costs">
                 </section>
                 <section class="restaurantContentInfoCosts">
                     <h3 class="informationRestaurantLabel">Costs</h3>
-                    <p><i>Diner costs</i></p>
-                    <p>€<?php echo $price ?> p.p.</p>
-                    <sup>Children til 12 years: € <?php echo $childrenPrice ?> p.p.</sup>
+                    <?php
+                    if (!empty($price) && !empty($childrenPrice)) {
+                        ?>
+                        <p><i>Diner costs</i></p>
+                        <p>€<?php echo $price ?> p.p.</p>
+                        <sup>Children til 12 years: € <?php echo $childrenPrice ?> p.p.</sup>
 
-                    <p><i>Reservation costs</i></p>
-                    <p>€ 10 </p>
+                        <p><i>Reservation costs</i></p>
+                        <p>€10 </p>
+                        <?php
+                    } else {
+                        ?>
+                        <p>Could not get information about the costs.</p>
+                        <?php
+                    }
+                    ?>
                 </section>
                 <section class="restaurantContentInfoPictureTime">
                     <img class="imgIcons" src="/img/icons/clockb.png" alt="clock">
@@ -125,28 +163,47 @@ if (isset($_POST["gotooverview"])) {
                 <section class="restaurantContentInfoSessions">
                     <h3 class="informationRestaurantLabel">Sessions</h3>
                     <?php
-                    foreach ($times as $beginTime => $endTime) {
-                        echo "<p class='infotext'>$beginTime-$endTime</p>";
+
+                    if ($times == null || count($times) == 0) {
+                        echo "<p>There are no times at this restaurant.</p>";
+                    } else {
+                        foreach ($times as $beginTime => $endTime) {
+                            echo "<p class='infotext'>$beginTime-$endTime</p>";
+                        }
                     }
                     ?>
                 </section>
                 <section class="restaurantContentInfoDays">
                     <h3 class="informationRestaurantLabel">Days</h3>
                     <?php
-                    foreach ($dates as $date) {
-                        echo "<p>$date</p>";
+                    if ($dates == null || count($dates) == 0) {
+                        echo "<p>There are no dates at this restaurant.</p>";
+                    } else {
+                        foreach ($dates as $date) {
+                            echo "<p>$date</p>";
+                        }
                     }
                     ?>
                 </section>
                 <section class="restaurantContentInfoPictureLocation">
-                    <img class="imgIcons" src="/img/icons/location.png" alt="location">
+                    <p><img class="imgIcons" src="/img/icons/location.png" alt="location"></p>
                 </section>
                 <section class="restaurantContentInfoAddress">
                     <h3 class="informationRestaurantLabel">Location</h3>
-                    <p><?php echo $location ?> Haarlem</p>
+                    <?php
+                    if (isset($location)) {
+                        ?>
+                        <p><?php echo $location ?> Haarlem</p>
+                        <?php
+                    } else {
+                        ?>
+                        <p>No location information about this restaurant.</p>
+                        <?php
+                    }
+                    ?>
                 </section>
                 <section class="restaurantContentInfoPictureLinks">
-                    <img class="imgIcons" src="/img/icons/links.png" alt="links">
+                    <img class="imgIcons" id="restaurantContentInfoPictureLinks" src="/img/icons/links.png" alt="links">
                 </section>
                 <section class="restaurantContentInfoLinks">
                     <?php
@@ -156,6 +213,15 @@ if (isset($_POST["gotooverview"])) {
                         <a href="<?php echo $website ?>">Website</a><br>
                         <a href="<?php echo $menu ?>">Menu</a><br>
                         <a href="<?php echo $contactpage ?>">Contact</a>
+                    <?php
+                    }
+                    else{
+                    ?>
+                        <script>
+                            var link = document.getElementById('restaurantContentInfoPictureLinks');
+                            link.style.display = 'none'; //or
+                            link.style.visibility = 'hidden';
+                        </script>
                         <?php
                     }
                     ?>
@@ -165,14 +231,6 @@ if (isset($_POST["gotooverview"])) {
         }
 
         ?>
-        <form method="post" action="foodreservation.php">
-            <input name="restaurantId" type="hidden" value="<?php echo $restaurantId ?>">
-            <input type="submit" class='btn button1' id="buttonReservation" name="makereservation" value="Make a reservation"></input>
-        </form>
-        <form method="post" action=food.php>
-            <input type="submit" class='btn button1' id="buttonOverview" name="gotooverview" value="Go back to overview"></input>
-        </form>
-
     </section>
 </main>
 </body>

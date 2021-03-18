@@ -12,8 +12,9 @@ p {
     margin: 0;
 }
 
+/* FOOD */
 .foodimg {
-    width: 20%;
+    width: 100%;
 }
 
 #buttonOverview,
@@ -63,7 +64,7 @@ p {
     margin-right: 4px;
 }
 
-/* FILTERBAR */
+/* Filterbar */
 
 .filterlabelSubtitle {
     font-weight: bold;
@@ -81,8 +82,13 @@ p {
     /*background-color: rgba(255, 255, 255);*/
 }
 
-.filterbarFood {
+.filterbarFoodGrid {
     margin-left: unset;
+}
+
+#filterbarFood {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
 }
 
 
@@ -321,4 +327,96 @@ p {
 
 .restaurantReservationCLSideNote {
     grid-area: restaurantReservationCLSideNote;
+}
+
+
+#errorMessage{
+    color: red;
+    text-align: right;
+}
+
+/* GRID FOOD.php */
+.containerFood {
+    padding-left: 5px;
+    padding-left: 10px;
+    padding-right: 5px;
+    padding-bottom: 3%;
+    color: #FFFFFF;
+    background: #000000;
+    display: grid;
+    width: 100%;
+    height: 100%;
+    grid-template-areas: "foodRestaurantName foodRestaurantName foodRestaurantPrice"
+  "foodRestaurantImage foodRestaurantTypes foodRestaurantTypes"
+  "foodRestaurantImage foodRestaurantSession foodRestaurantSession"
+  "foodRestaurantImage foodRestaurantLocation foodRestaurantLocation"
+  "foodRestaurantStars foodRestaurantNote foodRestaurantNote";
+    grid-template-columns: 40% 40% 20%;
+    grid-template-rows: 10% 20% auto 20% 12% 8%
+}
+
+.containerFood > div {
+    border: 1px dashed #888;
+}
+
+.foodRestaurantName {
+    grid-area: foodRestaurantName;
+    color: #FD6A02;
+}
+
+.foodRestaurantPrice {
+    text-align: right;
+    padding-right: 8%;
+    font-size: 1.4em;
+    grid-area: foodRestaurantPrice;
+}
+
+.foodRestaurantImage {
+    grid-area: foodRestaurantImage;
+}
+
+.foodRestaurantTypes {
+    padding-left: 5px;
+    grid-area: foodRestaurantTypes;
+}
+
+.foodRestaurantSession {
+    padding-left: 5px;
+    grid-area: foodRestaurantSession;
+}
+
+.foodRestaurantLocation {
+    padding-left: 5px;
+    grid-area: foodRestaurantLocation;
+}
+
+.foodRestaurantStars {
+    text-align: center;
+    grid-area: foodRestaurantStars;
+}
+
+.foodRestaurantNote {
+    grid-area: foodRestaurantNote;
+}
+
+section#foodRestaurantContainer {
+    width: 48%;
+    float: left;
+    margin: 1%;
+}
+
+.btnFood{
+    width: 50%;
+    float: left;
+    margin-right: 0;
+    margin-left: 0;
+}
+
+section.starscheck {
+    padding-left: 19%;
+}
+
+
+#reservationCreated{
+    text-align: left;
 }

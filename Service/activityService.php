@@ -3,6 +3,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once ("foodactivityService.php");
 require_once ("danceActivityService.php");
 require_once ("jazzactivityService.php");
+require_once ("$root . /DAL/dbContains.php");
 require_once ($root . "/DAL/activityDAO.php");
 require_once ("restaurantService.php");
 require_once ("locationService.php");
@@ -93,6 +94,21 @@ class activityService extends baseService
     public function deleteActivity(array $activityIds){
         return $this->db->delete([
             "id" => $activityIds
+		]); 
+	}
+
+    public function getAll(): array
+    {
+        return $this->db->get([
+            "order" => ["activity.date", "activity.starttime", "activity.endtime"]
+        ]);
+    }
+
+    public function getAllById($ids): array
+    {
+        return $this->db->get([
+            "order" => ["activity.date", "activity.starttime", "activity.endtime"],
+            "id" => $ids
         ]);
     }
 }

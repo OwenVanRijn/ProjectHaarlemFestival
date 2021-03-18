@@ -35,12 +35,18 @@ h1,
 h2,
 h3,
 .restaurantName {
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
     font-family: Tahoma;
 }
 
 h1 {
     text-align: center;
     font-size: 2em;
+}
+
+.header1Left{
+    text-align: left;
 }
 
 h2 {
@@ -65,6 +71,7 @@ a.button1,
 .button1,
 label,
 input,
+select,
 form {
     font-family: Arial;
     font-size: 1em;
@@ -119,6 +126,10 @@ s .row:after {
     color: #ffffff;
 }
 
+.headereventpage{
+    font-size: 1.3em;
+}
+
 
 /* title */
 
@@ -157,6 +168,7 @@ header {
 
 a.button1,
 .button1 {
+    line-height: inherit;
     display: inline-block;
     padding: 0.35em 1.2em;
     border: 0.1em solid #FD6A02;

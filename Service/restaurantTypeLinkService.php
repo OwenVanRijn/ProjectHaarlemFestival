@@ -57,7 +57,9 @@ class restaurantTypeLinkService extends baseService
     public function getAllTypes()
     {
         $resTypeDAO = new restaurantTypeDAO();
-        return $resTypeDAO->get();
+        return $resTypeDAO->get([
+            "order" => "name"
+        ]);
     }
 
     public function getAllTypesAsStr()
@@ -118,6 +120,8 @@ class restaurantTypeLinkService extends baseService
     {
         if ($typeID > 0) {
             $restaurantTypeLinks = $this->db->get(["restauranttypes.id" => $typeID]);
+        } else {
+            $restaurantTypeLinks = $this->db->get();
         }
 
         return $this->getRestaurants($restaurantTypeLinks);
@@ -125,8 +129,7 @@ class restaurantTypeLinkService extends baseService
 
     function getRestaurants($restaurantTypeLinks)
     {
-        if ($restaurantTypeLinks == null)
-        {
+        if ($restaurantTypeLinks == null) {
             return null;
         }
 
@@ -148,10 +151,8 @@ class restaurantTypeLinkService extends baseService
 
     private function checkDuplicate($restaurants, $restaurantId)
     {
-        foreach ($restaurants as $restaurant)
-        {
-            if ($restaurant->getId() == $restaurantId)
-            {
+        foreach ($restaurants as $restaurant) {
+            if ($restaurant->getId() == $restaurantId) {
                 return 0;
             }
         }
