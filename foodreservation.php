@@ -8,51 +8,13 @@ require_once($root . "/Service/shoppingcartService.php");
 
 $foodactivityService = new foodactivityService();
 
-
-if (!isset($_POST["restaurantId"])) {
-    $restaurantId = 1;
-    //header("Location: food.php", true, 301);
-    //exit();
-} else {
-    $restaurantId = $_POST["restaurantId"];
-}
-$foodactivities = $foodactivityService->getByRestaurantId($restaurantId);
-
-if (isset($_POST["reservation"])) {
-    if (isset($_POST["session"]) && isset($_POST["date"])) {
-        $restaurantId = $_POST["restaurantId"];
-        $seats = $_POST["seats"];
-        $session = $_POST["session"];
-        $date = $_POST["date"];
-
-        try {
-            $times = explode("-", $session);
-            $foodactivity = $foodactivityService->getBySessionDate($date, $times, $restaurantId);
-
-            if ($foodactivity == NULL) {
-                echo "Could not find a valid activity. Please choose a valid date and session.";
-            } else {
-                $shoppingcartService = new shoppingcartService();
-                $shoppingcartService->getShoppingcart()->addToShoppingcartItemsById($foodactivity->getActivity()->getId(), $seats);
-
-                header("Location: food.php", true, 301);
-                $_SESSION["foodreservationName"] = $foodactivity->getRestaurant()->getName();
-                exit();
-            }
-        } catch (Exception $exception) {
-            echo "Could not create an reservation. Please try again.";
-        }
-    } else {
-        echo "Please select an session and date.";
-    }
-}
 ?>
 
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Food</title>
+    <title>Reservation - Haarlem Festival</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/food.css">
     <meta charset="UTF-8">
@@ -69,136 +31,202 @@ if (isset($_POST["reservation"])) {
 <section class="content">
     <section id="id01" class="w3-modal">
 
+        <h1 class="header1Left">Make a reservation</h1>
+        <?php
 
-        <form class="" method="post">
-            <section class="reservationsection">
-                <h2>Make a reservation</h2>
+        try {
+            if (isset($_POST["reservation"])) {
+                if (isset($_POST["session"]) && isset($_POST["date"])) {
+                    $restaurantId = $_POST["restaurantId"];
+                    $seats = $_POST["seats"];
+                    $session = $_POST["session"];
+                    $date = $_POST["date"];
 
-                <section class="containerReservation">
-                    <section class="restaurantReservationCLRestaurantLabel">
-                        <h2 id="restaurantNameReservation">Reservation
-                            at <?php echo $foodactivities[0]->getRestaurant()->getName() ?></h2>
-                    </section>
+                    try {
+                        $times = explode("-", $session);
+                        $foodactivity = $foodactivityService->getBySessionDate($date, $times, $restaurantId);
 
+                        if ($foodactivity == NULL) {
+                            throw new Exception("Could not find a valid activity. Please choose a valid date and session.");
+                        } else {
+                            $shoppingcartService = new shoppingcartService();
+                            $shoppingcartService->getShoppingcart()->addToShoppingcartItemsById($foodactivity->getActivity()->getId(), $seats);
 
-                    <section class="restaurantReservationCLCostsTitle">
-                        <section id="costsBox">
-                            <p class="confirmationBoxTitle" id="confirmationBoxTitleCosts">Costs</p>
-                        </section>
-                    </section>
-
-                    <section class="restaurantReservationCISeatsTitle">
-                        <h3 class="labelTitle">Amount of seats</h3>
-                    </section>
-
-                    <section class="restaurantReservationCISeatsCB">
-                        <select name="seats" id="seatsCb" onchange="seatsToScreen()">
-                            <option value="1">1 seat</option>
-                            <option value="2">2 seats</option>
-                            <option value="3">3 seats</option>
-                            <option value="4">4 seats</option>
-                            <option value="5">5 seats</option>
-                        </select>
-                    </section>
-
-
-                    <section class="restaurantReservationCLReservationcosts">
-                        <section class="box confirmationBoxReservation">
-                            <p class="confirmationBoxSubtitle">Reservationcosts</p>
-                            <p class="confirmationBoxText">
-                                €<?php echo $foodactivities[0]->getActivity()->getPrice() ?></p>
-                        </section>
-                    </section>
-                    <section class="restaurantReservationCLAmount">
-                        <section class="box confirmationBoxAmount">
-                            <p class="confirmationBoxSubtitle">Amount</p>
-                            <p id="seatsLabel" class="confirmationBoxText">1</p>
-                        </section>
-                    </section>
-                    <section class="restaurantReservationCLTotal">
-                        <section class="box confirmationBoxTotal">
-                            <p class="confirmationBoxTitle">Total</p>
-                            <p id="totalLabel"
-                               class="confirmationBoxText">
-                                €<?php echo $foodactivities[0]->getActivity()->getPrice() ?></p>
-                        </section>
-                    </section>
-                    <section class="restaurantReservationCIDays">
-                        <section class="reservationsection">
-                            <h3 class="labelTitle">Date</h3>
-                            <?php
-                            $index = 1;
-
-                            $dates = getDates($foodactivities);
-
-                            foreach ($dates as $date) {
-                                echo "<input type=\"radio\" class=\"date\" name=\"date\" id=\"date$index\" value=\"$date\" required onchange='dateToScreen(this.value)'>";
-                                echo "<label for=\"date$index\">$date</label><br>";
-                                $index++;
-                            }
-                            ?>
-                        </section>
-                    </section>
-                    <section class="restaurantReservationCISessions">
-                        <section class="reservationsection">
-                            <h3 class="labelTitle">Session</h3>
-                            <?php
-                            $index = 1;
-
-                            $times = getTimes($foodactivities);
-
-                            foreach ($times as $startTimeStr => $endTimeStr) {
-                                echo "<input type=\"radio\" class=\"session\" name=\"session\" id=\"session$index\" value=\"$startTimeStr-$endTimeStr\" required onchange='sessionToScreen(this.value)'>";
-                                echo "<label for=\"session$index\">$startTimeStr - $endTimeStr</label><br>";
-                                $index++;
-                            }
-                            ?>
-                        </section>
-                    </section>
+                            header("Location: food.php", true, 301);
+                            $_SESSION["foodreservationName"] = $foodactivity->getRestaurant()->getName();
+                            exit();
+                        }
+                    } catch (Exception $exception) {
+                        throw new Exception("Could not create an reservation. Please try again.");
+                    }
+                } else {
+                    throw new Exception("Please select an session and date.");
+                }
+            }
+        } catch (Exception $exception) {
+            $excMessage = $exception->getMessage();
+            echo "<p style='color: red'>$excMessage</p>";
+        }
 
 
-                    <section class="restaurantReservationCLDays">
-                        <section class="box confirmationBoxDate">
-                            <p class="confirmationBoxTitle">Date</p>
-                            <p id="dateLabel" class="confirmationBoxText">-</p>
-                        </section>
-                    </section>
-                    <section class="restaurantReservationCLSession">
-                        <section class="box confirmationBoxSession">
-                            <p class="confirmationBoxTitle">Session</p>
-                            <p id="sessionLabel" class="confirmationBoxText">-</p>
-                        </section>
-                    </section>
-                    <section class="restaurantReservationCINote">
-                        <section class="reservationnote">
-                            <h3 class="labelTitle">Note</h3>
-                            <p>Do you have any dietary requirements, allergies or other comments?</p>
-                            <textarea id="noteTextArea" rows="5" name="notes" onchange="noteToScreen()"></textarea>
-                        </section>
-                    </section>
-                    <section class="restaurantReservationCLYourNote">
-                        <section class="box confirmationBoxNote">
-                            <p class="confirmationBoxTitle">Note</p>
-                            <p id="noteLabel" class="confirmationBoxText">-</p>
-                        </section>
-                    </section>
-                    <section class="restaurantReservationCLSideNote">
-                        <p id="noteSubNoteLabel">Note: You have to pay €10,00 p.p. at checkout for reservation costs</p>
-                    </section>
-                </section>
-            </section>
-
-            <section class="w3-container w3-border-top w3-padding-16 w3-light-grey">
-                <input type="button" class="btn button1 w-100" onclick="location.href='food.php'" value="Cancel"/>
-                <?php
-                echo "<input name=\"restaurantId\" type=\"hidden\" value=\"$restaurantId\">";
+        if (!isset($_POST["restaurantId"])) {
+            header("Location: food.php", true, 301);
+            exit();
+        } else {
+            $restaurantId = $_POST["restaurantId"];
+        }
+        try {
+            $foodactivities = $foodactivityService->getByRestaurantId($restaurantId);
+            if ($foodactivities == null) {
+                throw new Exception("Could not find the eventinformation by this restaurant.");
+            } else {
                 ?>
-                <input disabled class="btn button1 w-100" type="submit" name="reservation" id="makeareservation"
-                       value="Make a reservation">
-            </section>
 
 
-        </form>
+                <form class="" method="post">
+                    <section class="reservationsection">
+                        <section class="containerReservation">
+                            <section class="restaurantReservationCLRestaurantLabel">
+                                <h2 id="restaurantNameReservation">Reservation
+                                    at <?php echo $foodactivities[0]->getRestaurant()->getName() ?></h2>
+                            </section>
+
+
+                            <section class="restaurantReservationCLCostsTitle">
+                                <section id="costsBox">
+                                    <p class="confirmationBoxTitle" id="confirmationBoxTitleCosts">Costs</p>
+                                </section>
+                            </section>
+
+                            <section class="restaurantReservationCISeatsTitle">
+                                <h3 class="labelTitle">Amount of seats</h3>
+                            </section>
+
+                            <section class="restaurantReservationCISeatsCB">
+                                <select name="seats" id="seatsCb" onchange="seatsToScreen()">
+                                    <option value="1">1 seat</option>
+                                    <option value="2">2 seats</option>
+                                    <option value="3">3 seats</option>
+                                    <option value="4">4 seats</option>
+                                    <option value="5">5 seats</option>
+                                </select>
+                            </section>
+
+
+                            <section class="restaurantReservationCLReservationcosts">
+                                <section class="box confirmationBoxReservation">
+                                    <p class="confirmationBoxSubtitle">Reservationcosts</p>
+                                    <p class="confirmationBoxText">
+                                        €<?php echo $foodactivities[0]->getActivity()->getPrice() ?></p>
+                                </section>
+                            </section>
+                            <section class="restaurantReservationCLAmount">
+                                <section class="box confirmationBoxAmount">
+                                    <p class="confirmationBoxSubtitle">Amount</p>
+                                    <p id="seatsLabel" class="confirmationBoxText">1</p>
+                                </section>
+                            </section>
+                            <section class="restaurantReservationCLTotal">
+                                <section class="box confirmationBoxTotal">
+                                    <p class="confirmationBoxTitle">Total</p>
+                                    <p id="totalLabel"
+                                       class="confirmationBoxText">
+                                        €<?php echo $foodactivities[0]->getActivity()->getPrice() ?></p>
+                                </section>
+                            </section>
+                            <section class="restaurantReservationCIDays">
+                                <section class="reservationsection">
+                                    <h3 class="labelTitle">Date</h3>
+                                    <?php
+                                    $index = 1;
+
+                                    $dates = getDates($foodactivities);
+
+                                    foreach ($dates as $date) {
+                                        echo "<input type=\"radio\" class=\"date\" name=\"date\" id=\"date$index\" value=\"$date\" required onchange='dateToScreen(this.value)'>";
+                                        echo "<label for=\"date$index\">$date</label><br>";
+                                        $index++;
+                                    }
+                                    ?>
+                                </section>
+                            </section>
+                            <section class="restaurantReservationCISessions">
+                                <section class="reservationsection">
+                                    <h3 class="labelTitle">Session</h3>
+                                    <?php
+                                    $index = 1;
+
+                                    $times = getTimes($foodactivities);
+
+                                    foreach ($times as $startTimeStr => $endTimeStr) {
+                                        echo "<input type=\"radio\" class=\"session\" name=\"session\" id=\"session$index\" value=\"$startTimeStr-$endTimeStr\" required onchange='sessionToScreen(this.value)'>";
+                                        echo "<label for=\"session$index\">$startTimeStr - $endTimeStr</label><br>";
+                                        $index++;
+                                    }
+                                    ?>
+                                </section>
+                            </section>
+
+
+                            <section class="restaurantReservationCLDays">
+                                <section class="box confirmationBoxDate">
+                                    <p class="confirmationBoxTitle">Date</p>
+                                    <p id="dateLabel" class="confirmationBoxText">-</p>
+                                </section>
+                            </section>
+                            <section class="restaurantReservationCLSession">
+                                <section class="box confirmationBoxSession">
+                                    <p class="confirmationBoxTitle">Session</p>
+                                    <p id="sessionLabel" class="confirmationBoxText">-</p>
+                                </section>
+                            </section>
+                            <section class="restaurantReservationCINote">
+                                <section class="reservationnote">
+                                    <h3 class="labelTitle">Note</h3>
+                                    <p>Do you have any dietary requirements, allergies or other comments?</p>
+                                    <textarea id="noteTextArea" rows="5" name="notes"
+                                              onchange="noteToScreen()"></textarea>
+                                </section>
+                            </section>
+                            <section class="restaurantReservationCLYourNote">
+                                <section class="box confirmationBoxNote">
+                                    <p class="confirmationBoxTitle">Note</p>
+                                    <p id="noteLabel" class="confirmationBoxText">-</p>
+                                </section>
+                            </section>
+                            <section class="restaurantReservationCLSideNote">
+                                <p id="noteSubNoteLabel">Note: You have to pay €10,00 p.p. at checkout for reservation
+                                    costs</p>
+                            </section>
+                        </section>
+                    </section>
+
+                    <section class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+                        <input type="button" class="btn button1 w-100" onclick="location.href='food.php'"
+                               value="Cancel"/>
+                        <?php
+                        echo "<input name=\"restaurantId\" type=\"hidden\" value=\"$restaurantId\">";
+                        ?>
+                        <input disabled class="btn button1 w-100" type="submit" name="reservation" id="makeareservation"
+                               value="Make a reservation">
+                    </section>
+
+
+                </form>
+
+                <?php
+            }
+        } catch (Exception $exception) {
+            $excMessage = $exception->getMessage();
+            ?>
+            <h2>Restaurant eventinformation not found</h2>
+            <p><?php echo $excMessage ?></p>
+            <?php
+        }
+
+        ?>
+
+
     </section>
 </section>
 

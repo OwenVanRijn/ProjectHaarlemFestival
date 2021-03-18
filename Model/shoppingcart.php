@@ -25,9 +25,6 @@ class shoppingcart extends sqlModel
         $this->createDate = new DateTime();
         $this->shoppingcartItems = array();
         $this->cookieManager = new cookieManager("shoppingcart");
-        //$this->addToShoppingcartItemsById(2, 5);
-        //$this->addToShoppingcartItemsById(1, 6);
-        //$this->addToShoppingcartItemsById(121, 2);
 
         return $this;
     }
@@ -42,6 +39,26 @@ class shoppingcart extends sqlModel
         $this->cookieManager = new cookieManager("shoppingcart");
 
         return $this;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    public function setUrl($url)
+    {
+        $this->url = $url;
     }
 
     public function sqlGetFields()
@@ -62,11 +79,6 @@ class shoppingcart extends sqlModel
         );
     }
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
     public function getShoppingcartItems()
     {
         $shoppingCart = $this->cookieManager->get();
@@ -82,7 +94,7 @@ class shoppingcart extends sqlModel
         $this->shoppingcartItems = $shoppingcart;
     }
 
-    public function addToShoppingcartItemsById($shoppingcartItemId, $amount)
+    public function addToShoppingcartItemsById($shoppingcartItemId, $amount) //ACTIVITY ID , AMOUNT
     {
         $shoppingcartItems = $this->getShoppingcartItems();
         $shoppingcartItems[$shoppingcartItemId] = $amount;

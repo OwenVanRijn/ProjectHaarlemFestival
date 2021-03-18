@@ -19,7 +19,8 @@ class restaurantService extends baseService
         return $this->db->get();
     }
 
-    public function updateRestaurant(int $id, ?string $name, ?string $description, ?int $stars, ?int $seats, ?int $phoneNumber, ?float $price, ?int $locationId) : bool {
+    public function updateRestaurant(int $id, ?string $name, ?string $description, ?int $stars, ?int $seats, ?int $phoneNumber, ?float $price, ?int $locationId): bool
+    {
         $update = [
             "id" => $id,
         ];
@@ -48,7 +49,8 @@ class restaurantService extends baseService
         return $this->db->update($update);
     }
 
-    public function insertRestaurant(string $name, string $description, int $stars, int $seats, int $phoneNumber, float $price, int $locationId){
+    public function insertRestaurant(string $name, string $description, int $stars, int $seats, int $phoneNumber, float $price, int $locationId)
+    {
         $insert = [
             "name" => $name,
             "description" => $description,
@@ -85,6 +87,9 @@ class restaurantService extends baseService
 
     function getTimes($foodactivities)
     {
+        if (!is_array($foodactivities)) {
+            return null;
+        }
         $times = array();
 
         foreach ($foodactivities as $foodactivity) {
@@ -100,6 +105,9 @@ class restaurantService extends baseService
 
     function getDates($foodactivities)
     {
+        if (!is_array($foodactivities)) {
+            return null;
+        }
         $dates = array();
 
         foreach ($foodactivities as $foodactivity) {
@@ -110,10 +118,11 @@ class restaurantService extends baseService
         return $dates;
     }
 
-    public function getAllRestaurantsAsStr(){
+    public function getAllRestaurantsAsStr()
+    {
         $restaurants = $this->db->get();
         $restaurantStr = [];
-        foreach ($restaurants as $b){
+        foreach ($restaurants as $b) {
             $restaurantStr[(string)$b->getId()] = $b->getName();
         }
         return $restaurantStr;

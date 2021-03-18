@@ -64,7 +64,7 @@ class foodactivityService extends activityBaseService
 
     public function getByRestaurantId(int $restaurantId){
         return $this->db->get([
-            "restaurant.id" => new dbContains("$restaurantId")
+            "restaurant.id" => $restaurantId
         ]);
     }
 
