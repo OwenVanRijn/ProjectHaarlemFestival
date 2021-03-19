@@ -17,12 +17,13 @@ class activityLog extends sqlModel
 
     protected const sqlTableName = "activityLog";
     protected const sqlFields = ["id", "type", "target", "accountId", "activityId", "editDate", "editTime"];
-    protected const sqlLinks = ["accountId" => account::class, "activityid" => activity::class];
+    protected const sqlLinks = ["accountId" => account::class, "activityId" => activity::class];
 
     public function __construct(){
         $this->date = new date();
         $this->time = new time();
         $this->id = -1;
+        $this->target = null;
     }
 
     public const create = "created";
@@ -70,10 +71,10 @@ class activityLog extends sqlModel
         $account = null;
         $activity = null;
 
-        if (array_key_exists("activityId", $sqlRes))
+        if (!is_null($sqlRes["activityid"]))
             $activity = activity::sqlParse($sqlRes);
 
-        if (array_key_exists("accountId", $sqlRes))
+        if (!is_null($sqlRes["accountid"]))
             $account = account::sqlParse($sqlRes);
 
         return (new self())->constructFull(
@@ -89,7 +90,7 @@ class activityLog extends sqlModel
 
     public function getId()
     {
-        return $this->getId();
+        return $this->id;
     }
 
     /**
@@ -103,7 +104,7 @@ class activityLog extends sqlModel
     /**
      * @return string
      */
-    public function getTarget(): string
+    public function getTarget(): ?string
     {
         return $this->target;
     }
@@ -178,5 +179,9 @@ class activityLog extends sqlModel
     public function setTime(time $time): void
     {
         $this->time = $time;
+    }
+
+    public function isTargetNull() : bool {
+        return is_null($this->target);
     }
 }

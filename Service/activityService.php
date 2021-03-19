@@ -68,17 +68,27 @@ class activityService extends baseService
         return $this->db->insert($insert);
     }
 
-    private function getNameFromTypedActivity($a){
+    private function getNameFromTypedActivity($a, $inclClassName = false){
+        $name = "";
+
         switch (get_class($a)){
             case "jazzactivity":
-                return $this->jazz->getName($a);
+                $name = $this->jazz->getName($a);
+                break;
             case "danceActivity":
-                return $this->dance->getName($a);
+                $name = $this->dance->getName($a);
+                break;
             case "foodactivity":
-                return $this->food->getName($a);
+                $name = $this->food->getName($a);
+                break;
             default:
                 throw new appException("Invalid type provided");
         }
+
+        if ($inclClassName)
+            return get_class($a) . " " . $name;
+        else
+            return $name;
     }
 
     public function getNames(array $activityIds){
@@ -86,7 +96,7 @@ class activityService extends baseService
         $names = [];
 
         foreach ($typedActivities as $a){
-            $names[] = $this->getNameFromTypedActivity($a);
+            $names[] = $this->getNameFromTypedActivity($a, true);
         }
 
         return $names;

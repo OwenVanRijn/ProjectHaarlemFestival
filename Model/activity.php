@@ -76,7 +76,6 @@ class activity extends sqlModel
         if (!is_null($sqlRes[self::sqlTableName . "endTime"]))
             $etime = date_create_from_format("H:i:s", $sqlRes[self::sqlTableName . "endTime"]);
 
-
         return (new self())->constructFull(
             $sqlRes[self::sqlTableName . "id"],
             $sqlRes[self::sqlTableName . "type"],
