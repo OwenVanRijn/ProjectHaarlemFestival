@@ -1,12 +1,12 @@
 <?php
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
-require_once ("editBase.php");
+require_once("editActivityBase.php");
 require_once ($root . "/Service/foodactivityService.php");
 require_once ($root . "/Service/restaurantService.php");
 require_once ($root . "/Service/restaurantTypeLinkService.php");
 
-class foodEdit extends editBase
+class foodEditActivity extends editActivityBase
 {
     private restaurantService $restaurantService;
     private restaurantTypeLinkService $restaurantTypeService;

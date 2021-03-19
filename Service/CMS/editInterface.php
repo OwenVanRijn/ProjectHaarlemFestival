@@ -12,7 +12,7 @@ interface editInterface
     *              value: T
     * ]]]
     */
-    function getHtmlEditFields(sqlModel $a) : array;
+    //function getHtmlEditFields(sqlModel $a) : array;
 
 
     function getHtmlEditContent(int $id, account $account): array;

@@ -98,12 +98,6 @@ class activityService extends baseService
             return $name;
     }
 
-    public function swapActivityTime(int $activity1, int $activity2)
-    {
-        $activities = $this->db->get([
-            "id" => [$activity1, $activity2]
-        ]);
-
     public function getNames(array $activityIds){
         $typedActivities = $this->getTypedActivityByIds($activityIds);
         $names = [];

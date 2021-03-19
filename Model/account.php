@@ -197,4 +197,12 @@ class account extends sqlModel
     {
         return $this->email;
     }
+
+    /**
+     * @return int
+     */
+    public function getStatus(): int
+    {
+        return $this->status;
+    }
 }

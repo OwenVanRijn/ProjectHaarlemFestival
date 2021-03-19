@@ -12,4 +12,5 @@ abstract class htmlTypeEnum
     public const list = "customList";
     public const listMultiple = "customListMultiple";
     public const textArea = "customTextArea";
+    public const checkBox = "checkbox";
 }

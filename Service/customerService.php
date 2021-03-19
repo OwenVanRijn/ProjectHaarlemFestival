@@ -19,4 +19,8 @@ class customerService extends baseService
             "account.role" => $role
         ]);
     }
+
+    public function getFromId(int $customerId){
+        return $this->db->get(["id" => $customerId]);
+    }
 }

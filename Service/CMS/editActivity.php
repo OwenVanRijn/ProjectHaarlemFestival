@@ -1,13 +1,13 @@
 <?php
 
-require_once ("foodEdit.php");
-require_once ("danceEdit.php");
-require_once ("jazzEdit.php");
+require_once("foodEditActivity.php");
+require_once("danceEditActivity.php");
+require_once("jazzEditActivity.php");
 
 class editActivity
 {
     /**
-     * @var editBase[]
+     * @var editActivityBase[]
      */
     private array $editServices;
     private account $account;
@@ -15,9 +15,9 @@ class editActivity
     public function __construct(account $account)
     {
         $this->editServices = [
-            new foodEdit(),
-            new danceEdit(),
-            new jazzEdit()
+            new foodEditActivity(),
+            new danceEditActivity(),
+            new jazzEditActivity()
         ];
 
         $this->account = $account;
@@ -46,7 +46,7 @@ class editActivity
     }
 
     public function getEmptyContent(string $type){
-        return $this->loopServices($type, function (editBase $service) {
+        return $this->loopServices($type, function (editActivityBase $service) {
             return $service->getHtmlEditContentEmpty($this->account);
         });
     }
@@ -55,7 +55,7 @@ class editActivity
         if (!isset($post["type"]))
             throw new appException("invalid POST");
 
-        return $this->loopServices($post["type"], function (editBase $service) use ($post){
+        return $this->loopServices($post["type"], function (editActivityBase $service) use ($post){
             if ($post["activityId"] === "new")
                 $service->processNewResponse($post, $this->account);
             else
@@ -65,7 +65,7 @@ class editActivity
     }
 
     public function deleteContent(array $ids, string $type){
-        return $this->loopServices($type, function (editBase $service) use ($ids) {
+        return $this->loopServices($type, function (editActivityBase $service) use ($ids) {
             return $service->processDeleteResponse($ids, $this->account);
         });
     }

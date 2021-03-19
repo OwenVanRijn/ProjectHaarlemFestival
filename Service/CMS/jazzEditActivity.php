@@ -2,11 +2,11 @@
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
-require_once ("editBase.php");
+require_once("editActivityBase.php");
 require_once ($root . "/Service/jazzactivityService.php");
 require_once ($root . "/Service/jazzBandService.php");
 
-class jazzEdit extends editBase
+class jazzEditActivity extends editActivityBase
 {
     private jazzBandService $jazzBandService;
 
