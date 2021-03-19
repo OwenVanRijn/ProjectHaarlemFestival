@@ -68,10 +68,6 @@ class foodactivityService extends activityBaseService
         ]);
     }
 
-    public function getName(foodactivity $activity){
-        return $activity->getRestaurant()->getName();
-    }
-
     public function getBySessionDate(string $date, array $times, int $restaurantId){
         return $this->db->get([
             "activity.date" => $date,

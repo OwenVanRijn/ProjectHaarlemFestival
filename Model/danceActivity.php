@@ -73,4 +73,14 @@ class danceActivity extends sqlModel
     {
         $this->artists[] = $artist;
     }
+
+    public function getName(){
+        $artists = "";
+
+        foreach ($this->getArtists() as $artist){
+            $artists .= $artist->getName() . " & ";
+        }
+
+        return substr($artists, 0, -3);
+    }
 }

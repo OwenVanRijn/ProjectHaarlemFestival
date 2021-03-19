@@ -73,13 +73,9 @@ class activityService extends baseService
 
         switch (get_class($a)){
             case "jazzactivity":
-                $name = $this->jazz->getName($a);
-                break;
             case "danceActivity":
-                $name = $this->dance->getName($a);
-                break;
             case "foodactivity":
-                $name = $this->food->getName($a);
+                $name = $a->getName();
                 break;
             default:
                 throw new appException("Invalid type provided");
@@ -96,7 +92,7 @@ class activityService extends baseService
         $names = [];
 
         foreach ($typedActivities as $a){
-            $names[] = $this->getNameFromTypedActivity($a, true);
+            $names[$a->getActivity()->getId()] = $this->getNameFromTypedActivity($a, true);
         }
 
         return $names;

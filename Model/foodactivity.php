@@ -93,4 +93,8 @@ class foodactivity extends sqlModel
 
         return $this;
     }
+
+    public function getName(){
+        return $this->getRestaurant()->getName();
+    }
 }

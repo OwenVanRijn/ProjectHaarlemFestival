@@ -122,4 +122,8 @@ class jazzactivity extends sqlModel
 
         return $this;
     }
+
+    public function getName(){
+        return $this->getJazzband()->getName();
+    }
 }

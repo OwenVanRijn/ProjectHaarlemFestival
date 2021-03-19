@@ -28,8 +28,9 @@ class activityLogService extends baseService
         $ids = [];
 
         foreach ($items as $i){
-            if ($i->isTargetNull())
+            if ($i->isTargetNull()) {
                 $ids[] = $i->getActivity()->getId();
+            }
         }
 
         if (!empty($ids)){
@@ -37,8 +38,9 @@ class activityLogService extends baseService
             $names = $activityService->getNames($ids);
 
             foreach ($items as $i){
-                if (is_null($i->getTarget()))
-                    $i->setTarget(array_shift($names));
+                if ($i->isTargetNull()){
+                    $i->setTarget($names[$i->getActivity()->getId()]);
+                }
             }
         }
 
