@@ -88,6 +88,17 @@ class shoppingcart extends sqlModel
         return unserialize($shoppingCart);
     }
 
+
+    public function getShoppingcartItemsCount()
+    {
+        $shoppingCart = $this->cookieManager->get();
+        if (is_null($shoppingCart))
+            return 0;
+
+        $shoppingCart = unserialize($shoppingCart);
+        return count($shoppingCart);
+    }
+
     public function setShoppingcartItems(array $shoppingcart)
     {
         $this->cookieManager->set(serialize($shoppingcart), 0);
@@ -113,7 +124,6 @@ class shoppingcart extends sqlModel
 
     public function setShoppingcartItemById($shoppingcartItemId, $amount) //aanpassen
     {
-
         echo "set shopping cart id $shoppingcartItemId naar $amount";
         $shoppingcartItems = $this->getShoppingcartItems();
         $shoppingcartItems[$shoppingcartItemId] = $amount;

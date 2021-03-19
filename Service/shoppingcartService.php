@@ -111,8 +111,7 @@ class shoppingcartService extends baseService
     public function getAmountByActivityId($id)
     {
         $shoppingcartItems = $this->getShoppingcart()->getShoppingcartItems();
-        foreach ($shoppingcartItems as $key => $value)
-        {
+        foreach ($shoppingcartItems as $key => $value) {
             if ($key == $id) {
                 return $value;
             }
@@ -135,6 +134,12 @@ class shoppingcartService extends baseService
 
     public function getAllFromDB()
     {
-        $this->shoppingcartItemDAO->get();
+        return $this->shoppingcartItemDAO->get();
+    }
+
+
+    public function getShoppingcartItemsCount()
+    {
+        return $this->getShoppingcart()->getShoppingcartItemsCount();
     }
 }

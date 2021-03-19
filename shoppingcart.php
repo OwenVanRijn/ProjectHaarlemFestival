@@ -41,6 +41,22 @@ require_once($root . "/Service/shoppingcartService.php");
     <?php
 
 
+    if (isset($_POST["edit"]) || isset($_POST["remove"])) {
+        $shoppingcartService = new shoppingcartService();
+        echo "SET IS TRUE";
+        if ($_POST['action'] == 'remove') {
+            $shoppingcartService->removeFromShoppingcartItemsById($_POST["id"]);
+        } else if ($_POST['action'] == 'edit') {
+            $newAmount = $_POST["amount"];
+            if ($newAmount == 0) {
+                $shoppingcartService->removeFromShoppingcartItemsById($_POST["id"]);
+            } else {
+                $shoppingcartService->getShoppingcart()->setShoppingcartItemById($_POST["id"], $newAmount);
+            }
+        }
+    }
+
+
     $total = 0;
     if (isset($_SESSION['shoppingcart'])) {
         $shoppingcartService = new shoppingcartService();
@@ -74,51 +90,60 @@ require_once($root . "/Service/shoppingcartService.php");
             echo "<br><br> SHOPPINGCARTITEMSDB <br><br>";
 
 
-            $activities = array_merge($danceActivityService->getFromActivityIds($ids), $foodActivityService->getFromActivityIds($ids), $jazzActivityService->getFromActivityIds($ids));
-            $activitiesDaytickets = $activityService->getAllById($ids);
+            $activities = array_merge($danceActivityService->getFromActivityIds($ids), $foodActivityService->getFromActivityIds($ids), $jazzActivityService->getFromActivityIds($ids), $activityService->getAllById($ids));
 
+            if ($activities != null && count($activities) != 0) {
+                echo "<br><br> ACTIVITYES <br><br>";
+                var_dump($activities);
+                echo "<br><br> ACTIVITYES <br><br>";
 
-            echo "<br><br> ACTIVITYESDATEPASS <br><br>";
-            var_dump($activitiesDaytickets);
-            echo "<br><br> ACTIVITYESDATEPASS <br><br>";
-
-            echo "<br><br> ACTIVITYES <br><br>";
-            var_dump($activities);
-            echo "<br><br> ACTIVITYES <br><br>";
-
-            $datesOfFestival = array();
-
-            foreach ($activities as $activity) {
-                $activityDate = $activity->getActivity()->getDate()->format("Y-m-d");
-                if (!in_array($activityDate, $datesOfFestival)) {
-                    $datesOfFestival[] = $activityDate;
-                }
-            }
-
-            $dayActivities = array();
-            for ($index = 0; $index <= count($datesOfFestival)-1; $index++) {
-
-                $activitiesOfThisDay = array();
+                $datesOfFestival = array();
 
                 foreach ($activities as $activity) {
-                    if ($activity->getActivity()->getDate()->format("Y-m-d") == $datesOfFestival[$index]) {
-                        $activitiesOfThisDay[] = $activity;
+                    if (get_class($activity) == "activity") {
+                        $activityDate = $activity->getDate()->format("Y-m-d");
+                    } else {
+                        $activityDate = $activity->getActivity()->getDate()->format("Y-m-d");
+                    }
+
+                    if (!in_array($activityDate, $datesOfFestival)) {
+                        $datesOfFestival[] = $activityDate;
                     }
                 }
 
-                $dayActivities[] = $activitiesOfThisDay;
-            }
+                $dayActivities = array();
+                for ($index = 0; $index <= count($datesOfFestival) - 1; $index++) {
+                    $activitiesOfThisDay = array();
+                    foreach ($activities as $activity) {
 
-            for ($i = 0; $i < count($dayActivities); $i++) {
-                if ($dayActivities[$i] != 0) {
-                    $total += echoDay($datesOfFestival[$i], $dayActivities[$i]);
+                        if (get_class($activity) == "activity") {
+                            $dateOfActivity = $activity->getDate()->format("Y-m-d");
+                        } else {
+                            $dateOfActivity = $activity->getActivity()->getDate()->format("Y-m-d");
+                        }
+
+                        if ($dateOfActivity == $datesOfFestival[$index]) {
+                            $activitiesOfThisDay[] = $activity;
+                        }
+                    }
+                    $dayActivities[] = $activitiesOfThisDay;
                 }
-            }
 
-            ?>
-            <button class="button1"
-                    onclick="window.location.href='/payment/account.php'"><?php echo "Pay €$total" ?> </button>
-            <?php
+                for ($i = 0; $i < count($dayActivities); $i++) {
+                    if ($dayActivities[$i] != 0) {
+                        $total += echoDay($datesOfFestival[$i], $dayActivities[$i]);
+                    }
+                }
+
+                ?>
+                <button class="button1"
+                        onclick="window.location.href='/payment/account.php'"><?php echo "Pay €$total" ?> </button>
+                <?php
+            }
+            else
+            {
+                echo "<p>Cart is Empty</p>";
+            }
         }
     } else {
         echo "<p>Cart is Empty</p>";
@@ -128,24 +153,6 @@ require_once($root . "/Service/shoppingcartService.php");
 
 </section>
 <?php
-
-
-if (isset($_POST["edit"]) || isset($_POST["remove"])) {
-    echo "SET IS TRUE";
-    if ($_GET['action'] == 'remove') {
-        $shoppingcartService->removeFromShoppingcartItemsById($_GET["id"]);
-    } else if ($_GET['action'] == 'edit') {
-        $newAmount = $_POST["amount"];
-        if ($newAmount == 0) {
-            $shoppingcartService->removeFromShoppingcartItemsById($_GET["id"]);
-        } else {
-            $shoppingcartService->getShoppingcart()->setShoppingcartItemById($_GET["id"], $newAmount);
-        }
-    }
-    //header("Refresh:0");
-    $page = basename($_SERVER["SCRIPT_FILENAME"]);
-    echo "<script>window.location.href = '$page';</script>";
-}
 
 
 function echoDay($date, $activitiesOfTheDay)
@@ -161,28 +168,38 @@ function echoDay($date, $activitiesOfTheDay)
         //echo "<br><br> ACTIVITY ON DAY <br><br>";
 
         foreach ($activitiesOfTheDay as $activity) {
-            $price = $activity->getActivity()->getPrice();
-            $activityId = $activity->getActivity()->getId();
+
+            if (get_class($activity) == "activity") {
+                $activityOTD = $activity;
+            } else {
+                $activityOTD = $activity->getActivity();
+            }
+
+
+            $price = $activityOTD->getPrice();
+            $activityId = $activityOTD->getId();
             $shoppingcartService = new shoppingcartService();
             $amount = $shoppingcartService->getAmountByActivityId($activityId);
             $totalPriceActivity = $amount * $price;
-            $type = $activity->getActivity()->getType();
-            $activityId = $activity->getActivity()->getId();
-            $startTime = $activity->getActivity()->getStartTime();
-            $endTime = $activity->getActivity()->getEndTime();
+            $type = $activityOTD->getType();
+            $activityId = $activityOTD->getId();
+            $startTime = $activityOTD->getStartTime();
+
+            $endTime = $activityOTD->getEndTime();
 
             if (get_class($activity) == "foodactivity") {
                 $activityName = $activity->getRestaurant()->getName();
             } else if (get_class($activity) == "jazzactivity") {
                 $activityName = $activity->getJazzband()->getName();
-            } else {
-
+            } else if (get_class($activity) == "danceactivity") {
                 $artists = $activity->getArtists();
                 $artistNames = array();
                 foreach ($artists as $artist) {
                     $artistNames[] = $artist->getName();
                 }
                 $activityName = implode(" ", $artistNames);
+            } else {
+                $activityName = $activity->getType();
             }
 
             $shoppingcartService = new shoppingcartService();
@@ -235,13 +252,18 @@ function cartElement($activityid, $activityName, $type, $createData, $startTime,
                                 <p class=\"titleInfo\">$startTime-$endTime</p>
                                 <p class=\"titleInfo\">€$price</p>
                                 <p class=\"titleInfo\">€$totalPrice</p>
-                                <form action=\"shoppingcart.php?action=remove&id=$activityid\" method=\"post\" class=\"cart-items\">
-                                <button type=\"submit\" class=\"btn btn-danger mx-2\" name=\"remove\">Remove</button>
+                           
+                                <form method=\"post\" class=\"cart-items\">
+                                        <input type=\"hidden\" name=\"action\" value=\"remove\"/>
+                                        <input type=\"hidden\" name=\"id\" value=\"$activityid\"/>
+                                     <button type=\"submit\" class=\"btn btn-danger mx-2\" name=\"remove\">Remove</button>
                                               </form>
                             </section>
                             <section class=\"col-md-3 py-5\">
                                 <section>
-                                    <form action=\"shoppingcart.php?action=edit&id=$activityid\" method=\"post\" class=\"cart-items\">
+                                    <form method=\"post\" class=\"cart-items\">
+                                        <input type=\"hidden\" name=\"action\" value=\"edit\"/>
+                                        <input type=\"hidden\" name=\"id\" value=\"$activityid\"/>
                                         <input type=\"text\" onkeypress=\"return isNumberKey(event)\" value=\"$amount\" class=\"form-control w-25 d-inline\" name=\"amount\">
                                         <button type=\"submit\" class=\"btn bg-light border rounded-circle\" name=\"edit\">Set</button>
                                     </form>

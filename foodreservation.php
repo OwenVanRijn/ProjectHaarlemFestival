@@ -272,7 +272,7 @@ function getDates($foodactivities)
         document.getElementById("seatsLabel").innerHTML = seats.value;
 
         var price = "<?php echo $foodactivities[0]->getActivity()->getPrice()?>" * seats.value;
-        document.getElementById("totalLabel").innerHTML = price;
+        document.getElementById("totalLabel").innerHTML = '€' + price;
 
         checkMakeAReservationButton();
     }

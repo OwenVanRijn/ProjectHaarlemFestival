@@ -37,6 +37,11 @@ class activity extends sqlModel
 
         if (!is_null($endTime))
             $this->endTime = $endTime;
+        else {
+            $d = new DateTime('2021-01-01T23:59:59');
+
+            $this->endTime = $d;
+        }
 
         if (!is_null($location))
             $this->location = $location;

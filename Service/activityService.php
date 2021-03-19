@@ -9,6 +9,14 @@ require_once ("restaurantService.php");
 require_once ("locationService.php");
 require_once ("baseService.php");
 require_once ("activityLogService.php");
+require_once("foodactivityService.php");
+require_once("danceActivityService.php");
+require_once("jazzactivityService.php");
+require_once("$root . /DAL/dbContains.php");
+require_once($root . "/DAL/activityDAO.php");
+require_once("restaurantService.php");
+require_once("locationService.php");
+require_once("baseService.php");
 
 class activityService extends baseService
 {
@@ -24,11 +32,13 @@ class activityService extends baseService
         $this->dance = new danceActivityService();
     }
 
-    public function getTypedActivityByIds(array $ids){
+    public function getTypedActivityByIds(array $ids)
+    {
         return array_merge($this->jazz->getFromActivityIds($ids), $this->food->getFromActivityIds($ids), $this->dance->getFromActivityIds($ids));
     }
 
-    public function updateActivity(int $id, ?date $date, ?time $startTime, ?time $endTime, ?float $price, ?int $ticketsLeft, ?int $locationId){
+    public function updateActivity(int $id, ?date $date, ?time $startTime, ?time $endTime, ?float $price, ?int $ticketsLeft, ?int $locationId)
+    {
         $update = [
             "id" => $id
         ];
@@ -54,8 +64,9 @@ class activityService extends baseService
         return $this->db->update($update);
     }
 
-    public function insertActivity(string $type, date $date, time $startTime, time $endTime, float $price, int $ticketsLeft, int $locationId){
-        $insert  = [
+    public function insertActivity(string $type, date $date, time $startTime, time $endTime, float $price, int $ticketsLeft, int $locationId)
+    {
+        $insert = [
             "type" => $type,
             "date" => $date,
             "startTime" => $startTime,
@@ -86,6 +97,12 @@ class activityService extends baseService
         else
             return $name;
     }
+
+    public function swapActivityTime(int $activity1, int $activity2)
+    {
+        $activities = $this->db->get([
+            "id" => [$activity1, $activity2]
+        ]);
 
     public function getNames(array $activityIds){
         $typedActivities = $this->getTypedActivityByIds($activityIds);
@@ -130,11 +147,12 @@ class activityService extends baseService
         $logService->insert($log);
     }
 
-    public function deleteActivity(array $activityIds){
+    public function deleteActivity(array $activityIds)
+    {
         return $this->db->delete([
             "id" => $activityIds
-		]); 
-	}
+        ]);
+    }
 
     public function getAll(): array
     {
@@ -143,11 +161,20 @@ class activityService extends baseService
         ]);
     }
 
-    public function getAllById($ids): array
+    public function getAllById($ids)
     {
-        return $this->db->get([
+        $activities = $this->db->get([
             "order" => ["activity.date", "activity.starttime", "activity.endtime"],
-            "id" => $ids
+            "id" => $ids,
+            "type" => new dbContains(["All-Access", "Dayticket"])
         ]);
+
+        if (is_null($activities))
+            return [];
+
+        if (gettype($activities) != "array")
+            return [$activities];
+
+        return $activities;
     }
 }
