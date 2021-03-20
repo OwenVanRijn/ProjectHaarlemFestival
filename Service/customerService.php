@@ -23,4 +23,11 @@ class customerService extends baseService
     public function getFromId(int $customerId){
         return $this->db->get(["id" => $customerId]);
     }
+
+    public function updateCustomer(customer $customer){
+        if ($customer->getId() <= 0)
+            throw new appException("Id can't be <= 0!");
+
+        return $this->db->update($customer->sqlGetFields());
+    }
 }

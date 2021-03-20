@@ -3,14 +3,17 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
 require_once ("editBase.php");
 require_once ($root . "/Service/customerService.php");
+require_once ($root . "/Service/accountService.php");
 
 class customerEdit extends editBase
 {
     private customerService $cs;
+    private accountService $as;
 
     public function __construct(account $account){
         parent::__construct($account);
         $this->cs = new customerService();
+        $this->as = new accountService();
     }
 
     private $lastAccountIsVolunteer = false;
@@ -19,11 +22,13 @@ class customerEdit extends editBase
     {
         $header = [
             "customer" => [
+                "id" => htmlTypeEnum::hidden,
                 "firstName" => htmlTypeEnum::text,
                 "lastName" => htmlTypeEnum::text,
                 "phoneNumber" => htmlTypeEnum::text,
             ],
             "account" => [
+                "accountId" => htmlTypeEnum::hidden,
                 "username" => htmlTypeEnum::text,
                 "email" => htmlTypeEnum::text,
                 "status" => htmlTypeEnum::number,
@@ -46,6 +51,7 @@ class customerEdit extends editBase
             $this->lastAccountIsVolunteer = true;
 
         return [
+            "id" => $entry->getId(),
             "firstName" => $entry->getFirstName(),
             "lastName" => $entry->getLastName(),
             "phoneNumber" => $entry->getPhoneNumber(),
@@ -54,7 +60,8 @@ class customerEdit extends editBase
             "status" => $entry->getAccount()->getStatus(),
             "role" => $entry->getAccount()->getRole(),
             "isScheduleManager" => $entry->getAccount()->isScheduleManager(),
-            "isTicketManager" => $entry->getAccount()->isTicketManager()
+            "isTicketManager" => $entry->getAccount()->isTicketManager(),
+            "accountId" => $entry->getAccount()->getId(),
         ];
     }
 
@@ -66,5 +73,42 @@ class customerEdit extends editBase
             throw new appException("Invalid customer");
 
         return $this->packHtmlEditContent($this->getHtmlEditFields($customer));
+    }
+
+    public function processEditResponse(array $post){
+        $post = $this->filterHtmlEditResponse($post);
+
+        if (!array_key_exists("id", $post) || !array_key_exists("accountId", $post))
+            throw new appException("Invalid POST");
+
+        $customer = new customer();
+        $customer->setId((int)$post["id"]);
+
+        if (array_key_exists("firstName", $post))
+            $customer->setFirstName($post["firstName"]);
+
+        if (array_key_exists("lastName", $post))
+            $customer->setLastname($post["lastName"]);
+
+        if (array_key_exists("phoneNumber", $post))
+            $customer->setPhoneNumber((int)$post["phoneNumber"]);
+
+        $account = new account();
+        $account->setId((int)$post["accountId"]);
+
+        if (array_key_exists("username", $post))
+            $account->setUsername($post["username"]);
+
+        if (array_key_exists("email", $post))
+            $account->setEmail($post["email"]);
+
+        if (array_key_exists("status", $post))
+            $account->setStatus((int)$post["status"]);
+
+        if (array_key_exists("role", $post))
+            $account->setRole((int)$post["role"]);
+
+        $this->cs->updateCustomer($customer);
+        $this->as->updateAccount($account);
     }
 }

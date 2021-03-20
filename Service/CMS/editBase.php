@@ -21,7 +21,7 @@ abstract class editBase
     protected function stripHtmlChars($input){
         switch (gettype($input)){
             case "string":
-                if (empty($input))
+                if (ctype_space($input))
                     throw new appException("Empty string provided!");
 
                 return trim(htmlspecialchars($input, ENT_QUOTES));

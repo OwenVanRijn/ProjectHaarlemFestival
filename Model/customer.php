@@ -20,10 +20,10 @@ class customer extends sqlModel
     public function __construct()
     {
         $this->id = -1;
-        $this->firstName = "firstName";
-        $this->lastname = "lastname";
+        //$this->firstName = "firstName";
+        //$this->lastname = "lastname";
         //$this->location = null;
-        $this->phoneNumber = 0;
+        //$this->phoneNumber = 0;
     }
 
     public function constructFull(int $id, string $firstName, string $lastname, customerLocation $customerlocation, int $phoneNumber, account $account)
@@ -39,14 +39,26 @@ class customer extends sqlModel
 
     public function sqlGetFields()
     {
-        return [
-            "id" => $this->id,
-            "firstName" => $this->firstName,
-            "lastname" => $this->lastname,
-            "locationId" => $this->customerlocation->getId(),
-            "phoneNumber" => $this->phoneNumber,
-            "accountId" => $this->account->getId()
+        $array = [
+            "id" => $this->id
         ];
+
+        if (isset($this->firstName))
+            $array["firstName"] = $this->firstName;
+
+        if (isset($this->lastname))
+            $array["lastName"] = $this->lastname;
+
+        if (isset($this->customerlocation))
+            $array["locationId"] = $this->customerlocation->getId();
+
+        if (isset($this->phoneNumber))
+            $array["phoneNumber"] = $this->phoneNumber;
+
+        if (isset($this->account))
+            $array["accountId"] = $this->account->getId();
+
+        return $array;
     }
 
     public static function sqlParse(array $sqlRes): self

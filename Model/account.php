@@ -25,14 +25,14 @@ class account extends sqlModel
 
     public function __construct()
     {
-        $this->id = 0;
-        $this->username = "username";
-        $this->password = "";
-        $this->email = "username@email.com";
-        $this->status = -1;
-        $this->role = -1;
-        $this->isScheduleManager = false;
-        $this->isTicketManager = false;
+        $this->id = -1;
+        //$this->username = "username";
+        //$this->password = "";
+        //$this->email = "username@email.com";
+        //$this->status = -1;
+        //$this->role = -1;
+        //$this->isScheduleManager = false;
+        //$this->isTicketManager = false;
     }
 
     public function constructFull(int $id, string $username, string $password, string $email, int $status, int $role, bool $isScheduleManager, bool $isTicketManager)
@@ -50,16 +50,32 @@ class account extends sqlModel
 
     public function sqlGetFields()
     {
-        return [
-            "id" => $this->id,
-            "username" => $this->username,
-            "password" => $this->password,
-            "email" => $this->email,
-            "status" => $this->status,
-            "role" => $this->role,
-            "isschedulemanager" => $this->isScheduleManager,
-            "isticketmanager" => $this->isTicketManager
+        $array = [
+            "id" => $this->id
         ];
+
+        if (isset($this->username))
+            $array["username"] = $this->username;
+
+        if (isset($this->password))
+            $array["password"] = $this->password;
+
+        if (isset($this->email))
+            $array["email"] = $this->email;
+
+        if (isset($this->status))
+            $array["status"] = $this->status;
+
+        if (isset($this->role))
+            $array["role"] = $this->role;
+
+        if (isset($this->isScheduleManager))
+            $array["isscheduemanager"] = $this->isScheduleManager;
+
+        if (isset($this->isTicketManager))
+            $array["isticketmanager"] = $this->isTicketManager;
+
+        return $array;
     }
 
     public function validateLogin(string $username, string $password): bool {
@@ -204,5 +220,13 @@ class account extends sqlModel
     public function getStatus(): int
     {
         return $this->status;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 }

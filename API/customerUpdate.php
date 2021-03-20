@@ -1,10 +1,8 @@
 <?php
-// Page requires an id provided via GET
 
 require_once ("../Service/activityService.php");
 header('Content-Type: application/json');
 require_once ("../Service/sessionService.php");
-
 require_once ("../Service/CMS/customerEdit.php");
 
 $sessionService = new sessionService();
@@ -15,17 +13,17 @@ if (!$user){
     exit();
 }
 
-$service = new customerEdit($user);
-
-if (isset($_GET["id"])){
-    $id = (int)$_GET["id"];
-
-    try {
-        echo json_encode($service->getHtmlEditContent($id));
-    } catch (appException $e) {
-        http_response_code(500);
-    }
+if (!isset($_POST)){
+    http_response_code(400);
+    exit();
 }
-else {
+
+
+$edit = new customerEdit($user);
+try {
+    $edit->processEditResponse($_POST);
+    header('Location: ../CMS/users.php');
+}
+catch (appException $e){
     http_response_code(400);
 }

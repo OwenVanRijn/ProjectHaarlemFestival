@@ -30,6 +30,7 @@ $nav->assignCss([
 </head>
 
 <body>
+<script src="editMenu.js"></script>
 <?php $nav->generate($user) ?>
 <section class="main">
     <?php
@@ -55,6 +56,10 @@ $nav->assignCss([
                 $c->getPhoneNumber(),
                 $c->getLocation()->getAddress()
             );
+
+            $customerId = $c->getId();
+
+            $tableRow->addButton("openUser($customerId)", "Edit");
             $table->addTableRows($tableRow);
         }
 
