@@ -1,44 +1,45 @@
-nav {
-    background-color: #000;
-    overflow: auto;
-    width: 100%;
+nav{
+  background-color: #000;
+  overflow: auto;
+  width: 100%;
 }
-
-nav a {
-    float: left;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    color: #FD6A02;
-    font-size: 17px;
+nav a
+{
+  float: left;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  color: #FD6A02;
+  font-size: 17px;
 }
-
-ul {
-    margin-top: 0.5em;
-    list-style-type: none;
+ul{
+  margin-top: 0.5em;
+  list-style-type: none;
 }
-
-.navItem {
-    margin-left: 6em;
+.navItem{
+  margin-left: 6em;
 }
-
-.logo {
-    height: 40px;
-    width: 40px;
+.logo{
+  height: 40px;
+  width: 40px;
 }
-
-.image {
-    pointer-events: none;
-    float: left;
-    margin-left: 5em;
+.image
+{
+  float: left;
+  margin-left: 5em;
 }
-
-.imageRight {
-    pointer-events: none;
-    float: right;
-    margin-right: 5em;
+.imageRight{
+  float: right;
+  margin-right: 5em;
 }
-
+.share{
+  padding-top: 2em;
+  padding-left: 49%;
+}
+.shareButtons{
+  height: 30px;
+  width: 30px;
+}
 footer [class ^= 'footer-'] {
     margin-top: 20px;
     width: 33.3333%;
@@ -55,25 +56,24 @@ footer .footer-right {
     float: right;
     background-color: black;
 }
-
-.logoFooter {
-    width: 150px;
-    height: 150px;
+.footerLinks{
+  margin-top: 0.7em;
 }
-
-.footenav {
-    font-size: 20px;
+.logoFooter{
+  width: 150px;
+  height: 150px;
 }
-
-.fa-facebook, .fa-youtube {
-    padding: 20px;
-    height: 80px;
-    width: 80px;
-    text-align: center;
-    text-decoration: none;
+.footenav{
+  font-size: 20px;
 }
-
-.labelSocialMedia {
-    padding-top: 33px;
-    color: white;
+.fa-facebook,.fa-youtube {
+  padding: 20px;
+  height: 80px;
+  width: 80px;
+  text-align: center;
+  text-decoration: none;
+}
+.labelSocialMedia{
+  padding-top: 33px;
+  color: white;
 }
