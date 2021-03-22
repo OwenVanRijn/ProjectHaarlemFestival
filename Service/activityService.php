@@ -32,8 +32,8 @@ class activityService extends baseService
         $this->dance = new danceActivityService();
     }
 
-    public function getTypedActivityByIds(array $ids)
-    {
+    public function getTypedActivityByIds(array $ids){
+
         return array_merge($this->jazz->getFromActivityIds($ids), $this->food->getFromActivityIds($ids), $this->dance->getFromActivityIds($ids));
     }
 

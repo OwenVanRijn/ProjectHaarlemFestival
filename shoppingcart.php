@@ -40,7 +40,6 @@ require_once($root . "/Service/shoppingcartService.php");
 
     <?php
 
-
     if (isset($_POST["edit"]) || isset($_POST["remove"])) {
         $shoppingcartService = new shoppingcartService();
         echo "SET IS TRUE";
@@ -70,7 +69,6 @@ require_once($root . "/Service/shoppingcartService.php");
         var_dump($shoppingcart);
         echo "<br><br> shoppingcart <br><br>";
 
-
         $ids = array();
         foreach ($shoppingcart as $key => $value) {
             $ids[] = $key;
@@ -87,11 +85,14 @@ require_once($root . "/Service/shoppingcartService.php");
             echo "<br><br> SHOPPINGCARTITEMSDB <br><br>";
             $shoppingcartItemsDB = $shoppingcartService->getAllFromDB();
             var_dump($shoppingcartItemsDB);
+
             echo "<br><br> SHOPPINGCARTITEMSDB <br><br>";
 
 
             $activities = array_merge($danceActivityService->getFromActivityIds($ids), $foodActivityService->getFromActivityIds($ids), $jazzActivityService->getFromActivityIds($ids), $activityService->getAllById($ids));
 
+            $_SESSION['cart'] = $activities;
+            
             if ($activities != null && count($activities) != 0) {
                 echo "<br><br> ACTIVITYES <br><br>";
                 var_dump($activities);
@@ -135,6 +136,7 @@ require_once($root . "/Service/shoppingcartService.php");
                     }
                 }
 
+                $_SESSION['total'] = $total;
                 ?>
                 <button class="button1"
                         onclick="window.location.href='/payment/account.php'"><?php echo "Pay €$total" ?> </button>

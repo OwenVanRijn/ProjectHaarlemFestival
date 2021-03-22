@@ -1,6 +1,43 @@
 <?php
+session_start();
+
+if(isset($_SESSION['cart'])){
+    $cart = $_SESSION['cart'];
+
+    foreach ($cart as $item){
+        print_r($item);
+    }
+}
+
+else{
+    echo 'not cart';
+}
+
+$total = $_SESSION['total'];
+
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/UI/navBar.php");
+
+use Mollie\Api\MollieApiClient;
+require_once "../lib/mollie/vendor/autoload.php";
+
+$mollie = new MollieApiClient();
+$mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
+
+if(isset($_POST['pay'])){
+
+    $payment = $mollie->payments->create([
+        "amount" => [
+            "currency" => "EUR",
+            "value" => "$total.00"
+        ],
+        "description" => "Haarlem Festival",
+        "redirectUrl" => "https://google.com",
+        "webhookUrl"  => "https://nu.nl"
+    ]);
+
+    header("Location: " . $payment->getCheckoutUrl(), true, 303);
+}
 ?>
 
 <!DOCTYPE html>
@@ -25,8 +62,8 @@ require_once($root . "/UI/navBar.php");
         <h1>Payment</h1>
         <section>
             <p class="step">Step 2 / 3</p>
-        </section>
 
+        </section>
 
         <section id="paybox">
             <form method="post" action="payment.php">
@@ -37,22 +74,13 @@ require_once($root . "/UI/navBar.php");
                 <label for="creditcard"><img src="../img/Icons/creditcardlogo.png" height="20px"> Creditcard</label><br>
                 <input type="radio" id="visa" name="paymethod" value="visa">
                 <label for="visa"><img src="../img/Icons/visalogo.gif" height="20px"> Visa</label>
-        </section>
-        <br><input id="payButton" class="button1" type="submit" name="pay" value="Pay €50">
-        </form>
-
-
-        <br>
-        <section id="shareButtonBox">
-            <form method="get">
-                <input name="restaurantId" type="hidden" value="1">
-                <button type="submit" class="button1" id="sharebutton" name="share" value="??"><img
-                            src="https://static.thenounproject.com/png/37730-200.png"
-                            height="20px"> Share with your friends!
-                </button>
             </form>
         </section>
+        <br>
 
+        <form method="post" action="payment.php">
+        <input id="payButton" class="button1" type="submit" name="pay" value="Pay €<?php echo $total?>">
+        </form>
 
     </section>
 </section>

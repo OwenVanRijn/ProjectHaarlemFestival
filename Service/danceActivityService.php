@@ -24,6 +24,12 @@ class danceActivityService extends activityBaseService
         return $this->getAll();
     }
 
+    public function getActivityFromId(int $id){
+        return $this->db->get([
+            "danceactivity.id" => $id
+        ]);
+    }
+
     public function getTablesChild(account $a, array $cssRules, array $dates) : array
     {
         $tables = [];

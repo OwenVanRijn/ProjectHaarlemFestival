@@ -1,8 +1,10 @@
 <?php
 require_once  "./Service/ticketService.php";
+require_once  "./Service/activityService.php";
 require_once "./lib/barcodegen/vendor/autoload.php";
-$service = new ticketService();
-$array = $service->getTicketsByOrder(2);
+$ticket = new ticketService();
+$activity = new activityService();
+$array = $ticket->getTicketsByOrder(2);
 ?>
 
 <!DOCTYPE html>
@@ -27,8 +29,12 @@ $array = $service->getTicketsByOrder(2);
                 $endTime = date_format($item->getActivity()->getEndTime(), "H:i");
                 $type = $item->getActivity()->getType();
                 $price = $item->getActivity()->getPrice();
+                $location = $item->getActivity()->getLocation()->getName();
 
-                echo "<p>{$type} - {$startTime} / {$endTime} @ {$date}. Price: {$price}EUR</p>";
+                //$activityDetails = json_decode(json_encode($activity->getTypedActivityByIds([$item->getActivity()->getId()])), FALSE);
+                //print_r($activityDetails->getLocation());
+
+                echo "<p>{$type} - {$startTime} / {$endTime} @ {$date}. Location: {$location}, Price: {$price}EUR</p>";
                 echo "</section>";
 
                 echo "<section class='col-sm-2'>";

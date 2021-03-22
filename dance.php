@@ -2,8 +2,13 @@
     require_once "Service/artistService.php";
     require_once "Model/danceArtist.php";
     require_once "Service/danceActivityService.php";
+    require_once "Service/locationService.php";
     require_once "UI/navBar.php";
+    require_once "Service/shoppingcartService.php";
 
+    if(isset($_POST['Id'])){
+
+    }
 
     $activeArray = [];
 
@@ -28,6 +33,16 @@
     }
     else {
         $activeArray = $activityService->getAll();
+    }
+
+    if(isset($_POST['addticket'])){
+        $id = $_POST['addticket'];
+
+        $activity = $activityService->getActivityFromId($id);
+//
+//        print_r(count($activity));
+        $shoppingcartService = new shoppingcartService();
+        $shoppingcartService->getShoppingcart()->addToShoppingcartItemsById($activity->getActivity()->getId(), 1);
     }
 ?>
 
@@ -97,22 +112,50 @@
             </section>
         </form>
 
-        <section class="row h-100" style="background-color: #C0C0C0 ">
-            <section class="row h-100" style="background-color: #C0C0C0 ">
-                <section class="col text-center fonttickets" style="padding: 0.5em; background-color: #FD6A02;">
-                    <a class="btn btn-primary" data-toggle="collapse" href="#filtercollapse">Filters ˅</a>
-                </section>
+        <section class="row h-100 align-items-center">
+            <section class="col text-center fonttickets" style="padding: 0.5em; background-color: #FD6A02;">
+                <a class="btn btn-primary w-100" data-toggle="collapse" href="#filtercollapse">Filters ˅</a>
             </section>
-
-            <section class="collapse in" id="filtercollapse">
-                <section class="card card-body">
-                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-                </section>
-            </section>
-
         </section>
 
+        <section class="collapse in w-100" id="filtercollapse" >
+            <section class="card card-body w-100" style="background-color: #FD6A02;">
+                <section class="row">
+                    <section class="col-4">
+                        <p>Artists:</p>
+                        <?php
+                            $artistService = new artistService();
+                            (array)$artistArray = $artistService->getArtists();
+
+                            //TODO Duplicate code removal
+                            foreach ($artistArray as $item){
+                                $name = $item->getName();
+
+                                echo "<section class='row'>";
+                                echo "<input type='radio' name='artistSelected' id= '{$name}' value='{$name}'>";
+                                echo "<label for='{$name}'>$name</label>";
+                                echo "</section>";
+                            }
+                        ?>
+                    </section>
+
+                    <section class="col-4">
+<!--                        <p>Type:</p>-->
+<!--                        --><?php
+//                            $activityService = new danceActivityService();
+//                            $activityArray = $activityService->
+//                        ?>
+                    </section>
+                    <section class="col-4">
+
+                    </section>
+                </section>
+            </section>
+        </section>
+
+
         <section class="container-fluid">
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
             <?php
                 echo "<section class='row' style='margin-top: 2%'>";
 
@@ -127,6 +170,7 @@
                         $artists .= $artist->getName() . " "; 
                     }
 
+                    $id = $item->getId();
                     $time = $item->getActivity()->getStartTime()->format("H:i");
 
                     $location = $item->getActivity()->getLocation()->getName();
@@ -141,11 +185,16 @@
                     echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Session:</p><bold>{$session}</bold></section>";
                     echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Price:</p><bold>{$price}</bold></section>";
                     echo "</section>";
-                    echo "<a href='#' class='btn btn-primary w-100'>Add to cart</a>";
+
+
+                    echo "<input name='id' type='hidden' value='{$id}'>";
+                    echo "<button class= 'btn btn-primary w-100' type='submit' name='addticket' value='{$id}'>Add to cart</button>";
                     echo "</section>";
+
                 }
                 echo "</section>";
             ?>
+            </form>
         </section>
     </section>
 

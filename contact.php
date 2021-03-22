@@ -1,5 +1,18 @@
 <?php
     require_once "UI/navBar.php";
+    require_once "Email/mailer.php";
+
+    if(isset($_POST['mail'])){
+
+        $mailer = new mailer();
+        $firstname = $_POST['firstname'];
+        $lastname = $_POST['lastname'];
+        $email = $_POST['email'];
+        $message = $_POST['message'];
+
+        $mailer->sendMail("haarlemfestival2021@gmail.com", "Contact Message",
+        "Firstname: $firstname. Lastname: $lastname. Email: $email. Message: $message");
+    }
 ?>
 
 <!DOCTYPE html>
@@ -60,37 +73,39 @@
 
 
     <section class="container">
-        <section class="row h-100 justify-content-center align-self-center">
-            <section class="col-3" style="margin-bottom: 1%">
-                <p style="margin: 0">Firstname</p>
-                <input type="text" placeholder="firstname">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+            <section class="row h-100 justify-content-center align-self-center">
+                <section class="col-3" style="margin-bottom: 1%">
+                    <p style="margin: 0">Firstname</p>
+                    <input type="text" placeholder="firstname" name="firstname" required>
+                </section>
+
+                <section class="col-3" style="margin-bottom: 1%" style="margin: 0">
+                    <p style="margin: 0">Lastname</p>
+                    <input type="text" placeholder="lastname" name="lastname" required>
+                </section>
             </section>
 
-            <section class="col-3" style="margin-bottom: 1%" style="margin: 0">
-                <p style="margin: 0">Lastname</p>
-                <input type="text" placeholder="lastname">
+            <section class="row h-100 justify-content-center align-self-center">
+                <section class="col-6" style="margin-bottom: 1%">
+                    <p style="margin: 0">E-mail</p>
+                    <input type="text" placeholder="email" name="email" required>
+                </section>
             </section>
-        </section>
 
-        <section class="row h-100 justify-content-center align-self-center">
-            <section class="col-6" style="margin-bottom: 1%">
-                <p style="margin: 0">E-mail</p>
-                <input type="text" placeholder="email">
+            <section class="row h-100 justify-content-center align-self-center">
+                <section class="col-6" style="margin-bottom: 1%">
+                    <p style="margin: 0">Message</p>
+                    <textarea rows="6" cols="50" name="message" required></textarea>
+                </section>
             </section>
-        </section>
 
-        <section class="row h-100 justify-content-center align-self-center">
-            <section class="col-6" style="margin-bottom: 1%">
-                <p style="margin: 0">Message</p>
-                <textarea rows="6" cols="50"></textarea>
+            <section class="row h-100 justify-content-center align-self-center text-center">
+                <section class="col-6">
+                    <button class="button1" type="submit" name="mail">Send</button>
+                </section>
             </section>
-        </section>
-
-        <section class="row h-100 justify-content-center alignt-self-center text-center">
-            <section class="col-6">
-                <button class="button1">Send</button>
-            </section>
-        </section>
+        </form>
     </section>
 </body>
 </html>
