@@ -13,6 +13,11 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 </head>
 
 <body>
+  <section class="share">
+      <p class="textShare">Share this page</p>
+      <img class="shareButtons" src="img/whatsapp.png" alt="">
+      <img class="shareButtons" src="img/email.png" alt="">
+  </section>
     <footer>
       <section class="footer-left">
         <img class="logoFooter" src="img/logo-wit.png" alt="">
@@ -24,11 +29,11 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
       </section>
       <section class="footer-center">
         <ul>
-          <li><a href="./home.php">Home</a></li>
-          <li><a href="./socials.php">Social</a></li>
-          <li><a href="./contact.php">Contact us</a></li>
-          <li><a href="./shoppingcart.php">Shopping cart</a></li>
-          <li><a href="./volunteers.php">For volunteers</a></li>
+          <li class="footerLinks"><a href="./home.php">Home</a></li>
+          <li class="footerLinks"><a href="./socials.php">Social</a></li>
+          <li class="footerLinks"><a href="./contact.php">Contact us</a></li>
+          <li class="footerLinks"><a href="./shoppingcart.php">Shopping cart</a></li>
+          <li class="footerLinks"><a href="./volunteers.php">For volunteers</a></li>
         </ul>
       </secion>
 </html>
