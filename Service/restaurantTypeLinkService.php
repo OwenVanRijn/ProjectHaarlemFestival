@@ -4,7 +4,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
 require_once($root . "/Model/restaurantTypeLink.php");
 require_once($root . "/Model/restaurant.php");
-require_once("baseService.php");
+require_once($root . "/Service/baseService.php");
 require_once($root . "/DAL/dbContains.php");
 require_once($root . "/DAL/restaurantTypeLinkDAO.php");
 require_once($root . "/DAL/restaurantTypeDAO.php");
