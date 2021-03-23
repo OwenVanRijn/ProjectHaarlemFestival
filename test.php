@@ -15,6 +15,9 @@
 
     $email->sendMail("louellacreemers@gmail.com", "Test", "This is a test");
 
+
+    $number = 4;
+
 //    $jazz = new jazzactivityService();
 //    $food = new foodactivityService();
 //    $dance = new danceActivityService();
