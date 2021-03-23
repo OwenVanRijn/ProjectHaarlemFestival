@@ -3,20 +3,11 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once ("foodactivityService.php");
 require_once ("danceActivityService.php");
 require_once ("jazzactivityService.php");
-require_once ("$root . /DAL/dbContains.php");
+require_once ($root . "/DAL/dbContains.php");
 require_once ($root . "/DAL/activityDAO.php");
 require_once ("restaurantService.php");
 require_once ("locationService.php");
 require_once ("baseService.php");
-require_once ("activityLogService.php");
-require_once("foodactivityService.php");
-require_once("danceActivityService.php");
-require_once("jazzactivityService.php");
-require_once("$root . /DAL/dbContains.php");
-require_once($root . "/DAL/activityDAO.php");
-require_once("restaurantService.php");
-require_once("locationService.php");
-require_once("baseService.php");
 
 class activityService extends baseService
 {
