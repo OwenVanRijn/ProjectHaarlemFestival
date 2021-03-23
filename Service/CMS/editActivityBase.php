@@ -27,7 +27,7 @@ abstract class editActivityBase implements editInterface
             "type" => htmlTypeEnum::hidden,
             "date" => [htmlTypeEnum::date, account::accountScheduleManager],
             "startTime" => [htmlTypeEnum::time, account::accountScheduleManager],
-            "endTime" => [htmlTypeEnum::time, account::accountScheduleManager],
+            "endTime" => [htmlTypeEnum::time, account::accountScheduleManager], // TODO: Maybe replace with length?
             "price" => [htmlTypeEnum::float, account::accountTicketManager],
             "ticketsLeft" => [htmlTypeEnum::number, account::accountTicketManager],
         ],

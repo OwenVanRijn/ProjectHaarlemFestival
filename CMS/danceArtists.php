@@ -44,6 +44,10 @@ $nav->assignCss([
     foreach ($artists as $a){
         $tableRow = new tableRow();
         $tableRow->addString($a->getName());
+
+        $artistId = $a->getId();
+        $tableRow->addButton("openDanceArtist($artistId)", "Edit");
+
         $table->addTableRows($tableRow);
     }
 

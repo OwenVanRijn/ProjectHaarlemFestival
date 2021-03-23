@@ -134,6 +134,10 @@ function generateInputField(fieldContent, className, fieldName){
 
 function generateHTML(json, postUrl){
     console.log(json);
+    if (!json || json.length === 0){
+        isBoxOpen = false;
+        return;
+    }
 
     let form = document.createElement("form");
     form.setAttribute("enctype", "multipart/form-data");
@@ -309,6 +313,13 @@ function openDel(){
 function openUser(id){
     if (!isBoxOpen){
         httpGetAsync("../API/customerRequest.php?id=" + id, generateHTML, "../API/customerUpdate.php");
+        isBoxOpen = true;
+    }
+}
+
+function openDanceArtist(id){
+    if (!isBoxOpen){
+        httpGetAsync("../API/danceArtistRequest.php?id=" + id, generateHTML, "../API/danceArtistUpdate.php");
         isBoxOpen = true;
     }
 }

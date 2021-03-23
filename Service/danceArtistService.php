@@ -18,4 +18,8 @@ class danceArtistService extends baseService
         }
         return $artistStrs;
     }
+
+    public function getFromId(int $id){
+        return $this->db->get(["id" => $id]);
+    }
 }
