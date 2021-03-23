@@ -23,7 +23,8 @@ class navBarCMSGenerator extends uiGenerator
     private static array $timeVolunteerPages = [
         "View Jazz Events" => "events.php?event=jazz",
         "View Dance Events" => "events.php?event=dance",
-        "View Food Events" => "events.php?event=food"
+        "View Food Events" => "events.php?event=food",
+        "Dance Artists" => "danceArtists.php",
     ];
 
     private static array $ticketVolunteerPages = [
@@ -67,8 +68,6 @@ class navBarCMSGenerator extends uiGenerator
         if ($account->getCombinedRole() & account::accountTicketManager){
             $pages = array_merge($pages, self::$ticketVolunteerPages);
         }
-
-        // TODO: Implement rest of headers
 
         return $pages;
     }

@@ -2,7 +2,6 @@
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/Service/sessionService.php");
 require_once($root . "/UI/navBarCMSGenerator.php");
-require_once($root . "/UI/tableGenerator.php");
 require_once ($root . "/Service/jazzactivityService.php");
 require_once ($root . "/Service/foodactivityService.php");
 require_once ($root . "/Service/danceActivityService.php");

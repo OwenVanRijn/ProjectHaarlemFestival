@@ -60,6 +60,7 @@ nav .aSel:hover {
 
 .displayInlineBlock {
     display: inline-block;
+    margin-bottom: 10px;
 }
 
 .marginTopBottom {
@@ -160,4 +161,8 @@ nav a:first-child {
 
 .mt-5 {
     margin-top: 5rem;
+}
+
+.displayInlineBlock > select {
+    margin-right: 20px;
 }

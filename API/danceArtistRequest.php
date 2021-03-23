@@ -2,7 +2,7 @@
 // Page requires an id provided via GET
 
 require_once ("apiRequest.php");
-require_once ("../Service/CMS/customerEdit.php");
+require_once ("../Service/CMS/danceArtistEdit.php");
 
 $api = new apiRequest();
 if (!$api->login()){
@@ -10,4 +10,4 @@ if (!$api->login()){
     exit();
 }
 
-$api->api(new customerEdit($api->getAccount()));
+$api->api(new danceArtistEdit($api->getAccount()));

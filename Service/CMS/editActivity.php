@@ -15,9 +15,9 @@ class editActivity
     public function __construct(account $account)
     {
         $this->editServices = [
-            new foodEditActivity(),
-            new danceEditActivity(),
-            new jazzEditActivity()
+            new foodEditActivity($account),
+            new danceEditActivity($account),
+            new jazzEditActivity($account)
         ];
 
         $this->account = $account;
@@ -35,7 +35,7 @@ class editActivity
     public function getContent(int $id){
         foreach ($this->editServices as $service){
             try {
-                return $service->getHtmlEditContent($id, $this->account);
+                return $service->getHtmlEditContent($id);
             }
             catch (appException $e) {
                 // Do nothing
@@ -47,7 +47,7 @@ class editActivity
 
     public function getEmptyContent(string $type){
         return $this->loopServices($type, function (editActivityBase $service) {
-            return $service->getHtmlEditContentEmpty($this->account);
+            return $service->getHtmlEditContentEmpty();
         });
     }
 
@@ -57,16 +57,16 @@ class editActivity
 
         return $this->loopServices($post["type"], function (editActivityBase $service) use ($post){
             if ($post["activityId"] === "new")
-                $service->processNewResponse($post, $this->account);
+                $service->processNewResponse($post);
             else
-                $service->processEditResponse($post, $this->account);
+                $service->processEditResponse($post);
             return true;
         });
     }
 
     public function deleteContent(array $ids, string $type){
         return $this->loopServices($type, function (editActivityBase $service) use ($ids) {
-            return $service->processDeleteResponse($ids, $this->account);
+            return $service->processDeleteResponse($ids);
         });
     }
 }

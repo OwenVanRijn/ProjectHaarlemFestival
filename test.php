@@ -195,7 +195,7 @@
 <!--                if (className === fieldName){-->
 <!--                    let field = generateInputField(fieldContents, className, fieldName);-->
 <!--                    field.addEventListener('change', () => {-->
-<!--                        document.getElementById(className + "Section").remove(); // TODO: gives a typeError if element is already deleted-->
+<!--                        document.getElementById(className + "Section").remove();
 <!--                    })-->
 <!--                    sectionHeader.appendChild(field)-->
 <!--                    continue;-->

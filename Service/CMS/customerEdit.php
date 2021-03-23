@@ -5,7 +5,7 @@ require_once ("editBase.php");
 require_once ($root . "/Service/customerService.php");
 require_once ($root . "/Service/accountService.php");
 
-class customerEdit extends editBase
+class customerEdit extends editBase implements editUpdate
 {
     private customerService $cs;
     private accountService $as;

@@ -14,7 +14,6 @@ class restaurantTypeLinkService extends baseService
     public function __construct()
     {
         $this->db = new restaurantTypeLinkDAO();
-        $this->cache();
     }
 
     private array $cache; // Cache goes brr
@@ -27,6 +26,9 @@ class restaurantTypeLinkService extends baseService
 
     private function getTypesFromId(int $id)
     {
+        if (!isset($this->cache))
+            $this->cache();
+
         $restaurants = [];
 
         foreach ($this->cache as $c) {
@@ -44,6 +46,9 @@ class restaurantTypeLinkService extends baseService
 
     public function getRestaurantTypesAsIds(int $restaurantId)
     {
+        if (!isset($this->cache))
+            $this->cache();
+
         $restaurants = [];
 
         foreach ($this->cache as $c) {

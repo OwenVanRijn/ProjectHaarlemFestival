@@ -9,14 +9,16 @@ require_once ($root . "/Utils/appException.php");
 require_once ($root . "/DAL/locationDAO.php");
 require_once ("editInterface.php");
 require_once ($root . "/Service/activityLogService.php");
+require_once ("editBase.php");
 
 // TODO: inherit from editBase
-abstract class editActivityBase implements editInterface
+abstract class editActivityBase extends editBase
 {
     protected activityBaseService $service;
     protected activityService $activityService;
 
-    public function __construct(activityBaseService $service){
+    public function __construct(activityBaseService $service, account $account){
+        parent::__construct($account);
         $this->service = $service;
         $this->activityService = new activityService();
     }
@@ -27,9 +29,9 @@ abstract class editActivityBase implements editInterface
             "type" => htmlTypeEnum::hidden,
             "date" => [htmlTypeEnum::date, account::accountScheduleManager],
             "startTime" => [htmlTypeEnum::time, account::accountScheduleManager],
-            "endTime" => [htmlTypeEnum::time, account::accountScheduleManager],
+            "endTime" => [htmlTypeEnum::time, account::accountScheduleManager], // TODO: Maybe replace with length?
             "price" => [htmlTypeEnum::float, account::accountTicketManager],
-            "ticketsLeft" => [htmlTypeEnum::number, account::accountTicketManager]
+            "ticketsLeft" => [htmlTypeEnum::number, account::accountTicketManager],
         ],
         "location" => [
             "locationName" => htmlTypeEnum::text,
@@ -68,6 +70,18 @@ abstract class editActivityBase implements editInterface
         ];
     }
 
+    public function getHtmlEditHeader(){
+        return array_merge(static::htmlEditHeader, self::htmlBaseEditHeader);
+    }
+
+    public function getHtmlEditFields($entry){
+        return array_merge($this->getHtmlBaseEditFields($entry), $this->getHtmlEditFieldsChild($entry));
+    }
+
+    public function getAllHtmlEditFieldsEmpty(){
+        return array_merge($this->getHtmlEditFieldsEmpty(), $this->getHtmlBaseEditFieldsEmpty());
+    }
+
     public function getHtmlBaseEditFieldsEmpty(){
         $locationDAO = new locationDAO();
         $locations = $locationDAO->get();
@@ -95,102 +109,28 @@ abstract class editActivityBase implements editInterface
         ];
     }
 
-    private function stripHtmlChars($input){
-        switch (gettype($input)){
-            case "string":
-                if (empty($input))
-                    throw new appException("Empty string provided!");
-
-                return trim(htmlspecialchars($input, ENT_QUOTES));
-            case "array":
-                $new = [];
-                foreach ($input as $a){
-                    $new[] = $this->stripHtmlChars($a);
-                }
-                return $new;
-            default:
-                throw new appException("Can't strip type " . gettype($input));
-        }
-    }
-
-    public function filterHtmlEditResponse(account $account, array $postResonse){
-        $header = array_merge(static::htmlEditHeader, self::htmlBaseEditHeader);
-        $correctedPostResponse = [];
-
-        foreach ($header as $hk => $hv){
-            foreach ($hv as $k => $v){
-                if (gettype($v) == "array"){
-                    if (($account->getCombinedRole() & $v[1]))
-                        if (array_key_exists($k, $postResonse))
-                            $correctedPostResponse[$k] = $this->stripHtmlChars($postResonse[$k]);
-                        else
-                            $correctedPostResponse[$hk . "Incomplete"] = true;
-                }
-                elseif (array_key_exists($k, $postResonse))
-                    $correctedPostResponse[$k] = $this->stripHtmlChars($postResonse[$k]);
-                else
-                    $correctedPostResponse[$hk . "Incomplete"] = true;
-            }
-        }
-
-        return $correctedPostResponse;
-    }
-
-    public function getHtmlEditContent(int $id, account $account): array
+    public function getHtmlEditContent(int $id): array
     {
         $entries = $this->service->getFromActivityIds([$id]);
         if ($entries === [])
             throw new appException("Id not found");
 
         $entry = $entries[0];
-        $header = array_merge(static::htmlEditHeader, self::htmlBaseEditHeader);
-        $fields = array_merge($this->getHtmlEditFields($entry), $this->getHtmlBaseEditFields($entry));
 
-        $res = [];
-        foreach ($header as $hk => $hv){
-            $classField = [];
-            foreach ($hv as $k => $v){
-                if (gettype($v) == "array"){
-                    if (($account->getCombinedRole() & $v[1]))
-                        $classField[$k] = ["type" => $v[0], "value" => $fields[$k]];
-                }
-                else
-                    $classField[$k] = ["type" => $v, "value" => $fields[$k]];
-            }
-            $res[$hk] = $classField;
-        }
-
-        return $res;
+        return $this->packHtmlEditContent($this->getHtmlEditFields($entry));
     }
 
-    public function getHtmlEditContentEmpty(account $account): array
+    public function getHtmlEditContentEmpty(): array
     {
-        if (($account->getCombinedRole() & (account::accountTicketManager | account::accountScheduleManager)) != (account::accountTicketManager | account::accountScheduleManager))
+        if (($this->account->getCombinedRole() & (account::accountTicketManager | account::accountScheduleManager)) != (account::accountTicketManager | account::accountScheduleManager))
             throw new appException("Invalid permissions");
 
-        $header = array_merge(static::htmlEditHeader, self::htmlBaseEditHeader);
-        $fields = array_merge($this->getHtmlEditFieldsEmpty(), $this->getHtmlBaseEditFieldsEmpty());
-
-        $res = [];
-        foreach ($header as $hk => $hv){
-            $classField = [];
-            foreach ($hv as $k => $v){
-                if (gettype($v) == "array"){
-                    if (($account->getCombinedRole() & $v[1]))
-                        $classField[$k] = ["type" => $v[0], "value" => $fields[$k]];
-                }
-                else
-                    $classField[$k] = ["type" => $v, "value" => $fields[$k]];
-            }
-            $res[$hk] = $classField;
-        }
-
-        return $res;
+        return $this->packHtmlEditContent($this->getAllHtmlEditFieldsEmpty());
     }
 
     // TODO: maybe parse POST into object, then use object?
-    public function processEditResponse(array $post, account $account) {
-        $validatedPost = $this->filterHtmlEditResponse($account, $post);
+    public function processEditResponse(array $post) {
+        $validatedPost = $this->filterHtmlEditResponse($post);
         unset($post); // To prevent misuse
 
         if (isset($validatedPost["activityIncomplete"]) || !isset($validatedPost["location"]))
@@ -226,27 +166,32 @@ abstract class editActivityBase implements editInterface
             $validatedPost["location"] = $res;
         }
 
+        $startTime = (new time())->fromHI($validatedPost["startTime"]);
+        $endTime = (new time())->fromHI($validatedPost["endTime"]);
+
+        if ($startTime->getDateTime()->diff($endTime->getDateTime())->invert)
+            $endTime = $startTime;
 
         // Updating the activity table
         $activityService = new activityService();
         $activityService->updateActivity(
             (int)$validatedPost["activityId"],
             (new date())->fromYMD($validatedPost["date"]),
-            (new time())->fromHI($validatedPost["startTime"]),
-            (new time())->fromHI($validatedPost["endTime"]),
+            $startTime,
+            $endTime,
             (isset($validatedPost["price"])) ? (float)$validatedPost["price"] : null,
             (isset($validatedPost["ticketsLeft"])) ? (int)$validatedPost["ticketsLeft"] : null,
             (isset($validatedPost["locationIncomplete"])) ? (int)$validatedPost["location"] : null);
 
         $this->processEditResponseChild($validatedPost);
-        $this->createLog(activityLog::edit, (int)$validatedPost["activityId"], $account);
+        $this->createLog(activityLog::edit, (int)$validatedPost["activityId"]);
     }
 
-    public function processNewResponse(array $post, account $account){
-        if (($account->getCombinedRole() & (account::accountTicketManager | account::accountScheduleManager)) != (account::accountTicketManager | account::accountScheduleManager))
+    public function processNewResponse(array $post){
+        if (($this->account->getCombinedRole() & (account::accountTicketManager | account::accountScheduleManager)) != (account::accountTicketManager | account::accountScheduleManager))
             throw new appException("Invalid permissions");
 
-        $validatedPost = $this->filterHtmlEditResponse($account, $post);
+        $validatedPost = $this->filterHtmlEditResponse($post);
         unset($post); // To prevent misuse
 
         if (isset($validatedPost["activityIncomplete"]) || !isset($validatedPost["location"]))
@@ -292,25 +237,24 @@ abstract class editActivityBase implements editInterface
             (int)$validatedPost["location"]);
 
         $this->processNewResponseChild($validatedPost, $id);
-        $this->createLog(activityLog::create, $id, $account);
+        $this->createLog(activityLog::create, $id);
     }
 
     // TODO: get account on class creation
-    public function processDeleteResponse(array $activityIds, account $account){
-        if (($account->getCombinedRole() & (account::accountTicketManager | account::accountScheduleManager)) != (account::accountTicketManager | account::accountScheduleManager))
+    public function processDeleteResponse(array $activityIds){
+        if (($this->account->getCombinedRole() & (account::accountTicketManager | account::accountScheduleManager)) != (account::accountTicketManager | account::accountScheduleManager))
             throw new appException("Invalid permissions");
 
         $this->service->deleteTypedActivity($activityIds);
         $this->activityService->deleteActivity($activityIds);
-        $this->createLog(activityLog::delete, null, $account);
+        $this->createLog(activityLog::delete, null);
     }
 
-    public const htmlEditHeader = [];
     public const editType = "None";
 
-    private function createLog(string $type, ?int $activityId, account $account){
+    private function createLog(string $type, ?int $activityId){
         $log = new activityLog();
-        $log->setAccount($account);
+        $log->setAccount($this->account);
         $log->setType($type);
 
         if (!is_null($activityId)){
@@ -323,7 +267,8 @@ abstract class editActivityBase implements editInterface
         $logService->insert($log);
     }
 
-    public abstract function getHtmlEditFields(sqlModel $a) : array;
+    public abstract function getHtmlEditFieldsChild(sqlModel $a) : array;
+    public abstract function getHtmlEditFieldsEmpty();
     protected abstract function processEditResponseChild(array $validatedPost);
     protected abstract function processNewResponseChild(array $post, int $activityId);
 }

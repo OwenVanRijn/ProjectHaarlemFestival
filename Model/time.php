@@ -27,4 +27,12 @@ class time
     public function toString(){
         return $this->time->format("H:i:s");
     }
+
+    /**
+     * @return DateTime
+     */
+    public function getDateTime(): DateTime
+    {
+        return $this->time;
+    }
 }

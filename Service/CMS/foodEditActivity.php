@@ -11,9 +11,9 @@ class foodEditActivity extends editActivityBase
     private restaurantService $restaurantService;
     private restaurantTypeLinkService $restaurantTypeService;
 
-    public function __construct()
+    public function __construct(account $account)
     {
-        parent::__construct(new foodactivityService());
+        parent::__construct(new foodactivityService(), $account);
         $this->restaurantService = new restaurantService();
         $this->restaurantTypeService = new restaurantTypeLinkService();
     }
@@ -34,14 +34,15 @@ class foodEditActivity extends editActivityBase
             "restaurantParking" => htmlTypeEnum::text,
             "restaurantWebsite" => htmlTypeEnum::text,
             "restaurantMenu" => htmlTypeEnum::text,
-            "restaurantContact" => htmlTypeEnum::text
+            "restaurantContact" => htmlTypeEnum::text,
+            "image" => htmlTypeEnum::imgUpload,
         ],
         "hidden" => [
             "foodActivityId" => htmlTypeEnum::hidden
         ]
     ];
 
-    public function getHtmlEditFields(sqlModel $a) : array
+    public function getHtmlEditFieldsChild(sqlModel $a) : array
     {
         $resTypeStrs = $this->restaurantTypeService->getAllTypesAsStr();
         $resCurTypeStrs = $this->restaurantTypeService->getRestaurantTypesAsIds($a->getRestaurant()->getId());
@@ -68,6 +69,7 @@ class foodEditActivity extends editActivityBase
             "restaurantWebsite" => $a->getRestaurant()->getWebsite(),
             "restaurantMenu" => $a->getRestaurant()->getMenu(),
             "restaurantContact" => $a->getRestaurant()->getContact(),
+            "image" => "",
         ];
     }
 
@@ -142,8 +144,13 @@ class foodEditActivity extends editActivityBase
                     throw new appException("[Restaurant] db update failed...");
             }
 
+            $root = realpath($_SERVER["DOCUMENT_ROOT"]);
+            $target_dir = $root . "/img/Restaurants";
+            $target_file = $target_dir . "/restaurant" . $restaurantId . ".png";
+
 
             $this->restaurantTypeService->updateFieldIds($restaurantId, $post["restaurantType"]);
+            $this->handleImage($target_file);
         }
 
         if (isset($post["restaurantIncomplete"])){
@@ -181,6 +188,11 @@ class foodEditActivity extends editActivityBase
             $post["restaurant"] = $res;
             $post["restaurantIncomplete"] = true;
             $this->restaurantTypeService->updateFieldIds($post["restaurant"], $post["restaurantType"]);
+
+            $root = realpath($_SERVER["DOCUMENT_ROOT"]);
+            $target_dir = $root . "/img/Restaurants";
+            $target_file = $target_dir . "/restaurant" . (int)$post["restaurant"] . ".png";
+            $this->handleImage($target_file);
         }
 
         $this->service->insertFoodActivity($activityId, (int)$post["restaurant"]);
