@@ -4,6 +4,8 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once ("baseService.php");
 require_once ($root . "/DAL/danceArtistDAO.php");
 
+// TODO: artistService.php exists
+
 class danceArtistService extends baseService
 {
     public function __construct(){
@@ -21,5 +23,9 @@ class danceArtistService extends baseService
 
     public function getFromId(int $id){
         return $this->db->get(["id" => $id]);
+    }
+
+    public function updateArtist(danceArtist $artist) {
+        return $this->db->update($artist->sqlGetFields());
     }
 }

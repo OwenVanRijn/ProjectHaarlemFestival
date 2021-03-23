@@ -188,6 +188,11 @@ class foodEditActivity extends editActivityBase
             $post["restaurant"] = $res;
             $post["restaurantIncomplete"] = true;
             $this->restaurantTypeService->updateFieldIds($post["restaurant"], $post["restaurantType"]);
+
+            $root = realpath($_SERVER["DOCUMENT_ROOT"]);
+            $target_dir = $root . "/img/Restaurants";
+            $target_file = $target_dir . "/restaurant" . (int)$post["restaurant"] . ".png";
+            $this->handleImage($target_file);
         }
 
         $this->service->insertFoodActivity($activityId, (int)$post["restaurant"]);
