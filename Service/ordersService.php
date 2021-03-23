@@ -7,10 +7,15 @@ class ordersService
         $this->db = new ordersDAO();
     }
 
-    public function insertOrder(){
+    public function insertOrder(int $customerId){
         $this->db->insert([
-            "status" => 1,
+            "status" => 2,
+            "customerId" => $customerId
         ]);
+    }
+
+    public function getByCustomer(int $customerId){
+        return $this->db->get(["customerId" => $customerId]);
     }
 
 }

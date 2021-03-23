@@ -1,6 +1,17 @@
 <?php
+session_start();
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/UI/navBar.php");
+
+if(isset($_POST['submit'])){
+    $firstname = $_POST['firstname'];
+    $lastname = $_POST['lastname'];
+    $email = $_POST['email'];
+
+    $_SESSION['firstname'] = $firstname;
+    $_SESSION['lastname'] = $lastname;
+    $_SESSION['email'] = $email;
+}
 ?>
 
 <!DOCTYPE html>
@@ -36,13 +47,14 @@ require_once($root . "/UI/navBar.php");
 
 
             <h4 class="labelInputField">Firstname</h4>
-            <input type="text" placeholder="firstname" maxlength="40" size="20"></input>
+            <input type="text" placeholder="firstname" name="firstname" maxlength="40" size="20"></input>
 
             <h4 class="labelInputField">Lastname</h4>
-            <input type="text" placeholder="lastname" maxlength="40" size="20"></input>
+            <input type="text" placeholder="lastname" maxlength="40" name="lastname" size="20"></input>
 
             <h4 class="labelInputField">Emailaddress</h4>
-            <input type="text" placeholder="emailaddress" maxlength="40" size="25"></input>
+            <input type="text" placeholder="emailaddress" maxlength="40" name="email" size="25"></input>
+
 
             <br><input type="checkbox" id="account" name="account" value="account"
                        onclick="displayAccountFields('moreAccountFields', this)">
@@ -63,7 +75,6 @@ require_once($root . "/UI/navBar.php");
                     document.getElementById(it).style.display = visable;
                 }
             </script
-
             <section>
                 <input class="stepNext" type="submit" name="submit" value="Next step">
             </section>

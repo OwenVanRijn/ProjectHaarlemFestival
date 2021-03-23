@@ -10,11 +10,11 @@ class customer extends sqlModel
     private string $firstName;
     private string $lastname;
     private customerLocation $customerlocation;
-    private int $phoneNumber;
+    private string $email;
     private account $account;
 
     protected const sqlTableName = "customer";
-    protected const sqlFields = ["id", "firstName", "lastname", "phoneNumber", "accountId", "locationId"];
+    protected const sqlFields = ["id", "firstName", "lastname", "email", "accountId", "locationId"];
     protected const sqlLinks = ["locationId" => customerLocation::class, "accountId" => account::class];
 
     public function __construct()
@@ -26,13 +26,13 @@ class customer extends sqlModel
         //$this->phoneNumber = 0;
     }
 
-    public function constructFull(int $id, string $firstName, string $lastname, customerLocation $customerlocation, int $phoneNumber, account $account)
+    public function constructFull(int $id, string $firstName, string $lastname, customerLocation $customerlocation, string $email, account $account)
     {
         $this->id = $id;
         $this->firstName = $firstName;
         $this->lastname = $lastname;
         $this->customerlocation = $customerlocation;
-        $this->phoneNumber = $phoneNumber;
+        $this->email = $email;
         $this->account = $account;
         return $this;
     }
@@ -52,8 +52,8 @@ class customer extends sqlModel
         if (isset($this->customerlocation))
             $array["locationId"] = $this->customerlocation->getId();
 
-        if (isset($this->phoneNumber))
-            $array["phoneNumber"] = $this->phoneNumber;
+        if (isset($this->email))
+            $array["email"] = $this->email;
 
         if (isset($this->account))
             $array["accountId"] = $this->account->getId();
@@ -68,7 +68,7 @@ class customer extends sqlModel
             $sqlRes[self::sqlTableName . "firstName"],
             $sqlRes[self::sqlTableName . "lastname"],
             customerLocation::sqlParse($sqlRes),
-            $sqlRes[self::sqlTableName . "phoneNumber"],
+            $sqlRes[self::sqlTableName . "email"],
             account::sqlParse($sqlRes),
         );
     }
@@ -127,14 +127,14 @@ class customer extends sqlModel
     }
 
 
-    public function getPhoneNumber()
+    public function getEmail()
     {
-        return $this->phoneNumber;
+        return $this->email;
     }
 
-    public function setPhoneNumber($phoneNumber)
+    public function setEmail($email)
     {
-        $this->phoneNumber = $phoneNumber;
+        $this->email = $email;
 
         return $this;
     }

@@ -17,4 +17,13 @@ class ticketService extends  baseService
             "ticket.orderId" => new dbContains("$orderId")
         ]);
     }
+
+    public function insertTicket(int $activityId, int $customerId, int $orderId, int $amount){
+        $this->db->insert([
+            "activityId" => $activityId,
+            "customerId" => $customerId,
+            "orderId" => $orderId,
+            "amount" => $amount
+        ]);
+    }
 }
