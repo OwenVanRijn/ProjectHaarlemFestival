@@ -1,7 +1,7 @@
 <?php
   require_once "UI/navBar.php";
-  require_once "Service/jazzActivityService.php";
-  require_once "Service/jazzbandService.php"
+  require_once "Service/jazzactivityService.php";
+  require_once "Service/jazzBandService.php";
 ?>
 
 <!DOCTYPE html>
