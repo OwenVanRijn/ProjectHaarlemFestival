@@ -33,7 +33,7 @@ if(isset($_POST['pay'])){
         ],
         "description" => "Haarlem Festival",
         "redirectUrl" => "https://google.com",
-        "webhookUrl"  => "https://nu.nl"
+        "webhookUrl"  => $root . "payment/webhook.php"
     ]);
 
     header("Location: " . $payment->getCheckoutUrl(), true, 303);
