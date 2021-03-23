@@ -332,15 +332,15 @@ abstract class editActivityBase implements editInterface
             return;
 
         if (!getimagesize($_FILES["image"]["tmp_name"])) // is this a valid image?
-            return;
+            throw new appException("File uploaded is not an image");
 
         if ($_FILES["image"]["size"] > 0x100000) // Is the file over 1MB?
-            return;
+            throw new appException("Uploaded file is too large");
 
         $imageFileType = strtolower(pathinfo(basename($_FILES["image"]["name"]),PATHINFO_EXTENSION));
 
         if ($imageFileType != "png") // We only support png's
-            return;
+            throw new appException("Only png's are supported");
 
         move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
     }

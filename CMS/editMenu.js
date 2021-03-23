@@ -87,6 +87,7 @@ function generateInputField(fieldContent, className, fieldName){
             imgInput.setAttribute("id", fieldName);
             imgInput.classList.add("leftStack", "marginRightOption");
             imgInput.setAttribute("type", "file");
+            imgInput.setAttribute("accept", "image/x-png");
             entry.appendChild(imgInput);
 
             return entry;

@@ -148,9 +148,9 @@ class foodEditActivity extends editActivityBase
             $target_dir = $root . "/img/Restaurants";
             $target_file = $target_dir . "/restaurant" . $restaurantId . ".png";
 
-            $this->handleImage($target_file);
 
             $this->restaurantTypeService->updateFieldIds($restaurantId, $post["restaurantType"]);
+            $this->handleImage($target_file);
         }
 
         if (isset($post["restaurantIncomplete"])){
