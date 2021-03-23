@@ -11,10 +11,10 @@ $user = $sessionService->validateSessionFromCookie();
 if (!$user)
     header("Location: login.php");
 
-//if (!($user->getCombinedRole() & account::accountTicketManager))
-//    header("Location: home.php");
+if (!($user->getCombinedRole() & account::accountTicketManager))
+    header("Location: home.php");
 
-$nav = new navBarCMSGenerator("users.php");
+$nav = new navBarCMSGenerator();
 
 $nav->assignCss([
     "sel" => "aSel"
@@ -36,13 +36,6 @@ $nav->assignCss([
     <?php
         $customerService = new customerService();
         $customers = $customerService->getWithRole(0);
-
-        if (is_null($customers)){
-            $customers = [];
-        }
-
-        if (gettype($customers) != "array")
-            $customers = [$customers];
 
         $table = new table();
         $table->setTitle("Users");

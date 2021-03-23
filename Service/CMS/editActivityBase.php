@@ -29,7 +29,7 @@ abstract class editActivityBase implements editInterface
             "startTime" => [htmlTypeEnum::time, account::accountScheduleManager],
             "endTime" => [htmlTypeEnum::time, account::accountScheduleManager],
             "price" => [htmlTypeEnum::float, account::accountTicketManager],
-            "ticketsLeft" => [htmlTypeEnum::number, account::accountTicketManager]
+            "ticketsLeft" => [htmlTypeEnum::number, account::accountTicketManager],
         ],
         "location" => [
             "locationName" => htmlTypeEnum::text,
@@ -128,6 +128,8 @@ abstract class editActivityBase implements editInterface
                 }
                 elseif (array_key_exists($k, $postResonse))
                     $correctedPostResponse[$k] = $this->stripHtmlChars($postResonse[$k]);
+                elseif ($v == htmlTypeEnum::imgUpload)
+                    continue;
                 else
                     $correctedPostResponse[$hk . "Incomplete"] = true;
             }
@@ -321,6 +323,26 @@ abstract class editActivityBase implements editInterface
 
         $logService = new activityLogService();
         $logService->insert($log);
+    }
+
+    // TODO: This is a hack. i'm lazy. i blame php
+    // TODO: implement actual error messages for this
+    protected function handleImage($target_file){
+        if (!isset($_FILES) || !isset($_FILES["image"]) || empty($_FILES["image"]["tmp_name"]))
+            return;
+
+        if (!getimagesize($_FILES["image"]["tmp_name"])) // is this a valid image?
+            return;
+
+        if ($_FILES["image"]["size"] > 0x100000) // Is the file over 1MB?
+            return;
+
+        $imageFileType = strtolower(pathinfo(basename($_FILES["image"]["name"]),PATHINFO_EXTENSION));
+
+        if ($imageFileType != "png") // We only support png's
+            return;
+
+        move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
     }
 
     public abstract function getHtmlEditFields(sqlModel $a) : array;

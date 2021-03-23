@@ -75,6 +75,22 @@ function generateInputField(fieldContent, className, fieldName){
 
             return selectSingle;
 
+        case "customImgUpload":
+            let label = document.createElement("label");
+            label.setAttribute("for", fieldName);
+            label.innerHTML = fieldName;
+            label.classList.add("leftStack");
+            entry.appendChild(label);
+
+            let imgInput = document.createElement("input");
+            imgInput.setAttribute("name", fieldName);
+            imgInput.setAttribute("id", fieldName);
+            imgInput.classList.add("leftStack", "marginRightOption");
+            imgInput.setAttribute("type", "file");
+            entry.appendChild(imgInput);
+
+            return entry;
+
         case "numberStepped":
             stepNum = true;
             fieldContent.type = "number";
@@ -119,6 +135,7 @@ function generateHTML(json, postUrl){
     console.log(json);
 
     let form = document.createElement("form");
+    form.setAttribute("enctype", "multipart/form-data");
     form.setAttribute("id", "formTop");
     form.setAttribute("action", postUrl);
     form.setAttribute("method", "post");

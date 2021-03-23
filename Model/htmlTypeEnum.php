@@ -13,4 +13,5 @@ abstract class htmlTypeEnum
     public const listMultiple = "customListMultiple";
     public const textArea = "customTextArea";
     public const checkBox = "checkbox";
+    public const imgUpload = "customImgUpload";
 }

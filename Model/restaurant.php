@@ -33,8 +33,8 @@ class restaurant extends sqlModel
         $this->price = $price;
         $this->parking = $parking;
         $this->website = $website;
-        $this->menu = "$this->website/$menu";
-        $this->contact = "$this->website/$contact";
+        $this->menu = $menu;
+        $this->contact = $contact;
         return $this;
     }
 
@@ -165,9 +165,17 @@ class restaurant extends sqlModel
         $this->website = $website;
     }
 
-    public function getMenu()
+    /**
+     * @return string
+     */
+    public function getMenu(): string
     {
         return $this->menu;
+    }
+
+    public function getFullMenu()
+    {
+        return $this->website . "/" . $this->menu;
     }
 
     public function setMenu($menu)
@@ -180,9 +188,17 @@ class restaurant extends sqlModel
         $this->contact = $contact;
     }
 
-    public function getContact()
+    /**
+     * @return string
+     */
+    public function getContact(): string
     {
         return $this->contact;
+    }
+
+    public function getFullContact()
+    {
+        return $this->website . "/" . $this->contact;
     }
 
 }

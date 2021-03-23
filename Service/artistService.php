@@ -14,7 +14,7 @@ class artistService extends baseService
     }
 
     public function getArtists(){
-        return $this->db->get();
+        return $this->db->getArray();
     }
 
     public function getArtist(string $name){

@@ -15,7 +15,7 @@ class customerService extends baseService
     }
 
     public function getWithRole(int $role){
-        return $this->db->get([
+        return $this->db->getArray([
             "account.role" => $role
         ]);
     }

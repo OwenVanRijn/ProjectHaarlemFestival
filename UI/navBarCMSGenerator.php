@@ -23,7 +23,8 @@ class navBarCMSGenerator extends uiGenerator
     private static array $timeVolunteerPages = [
         "View Jazz Events" => "events.php?event=jazz",
         "View Dance Events" => "events.php?event=dance",
-        "View Food Events" => "events.php?event=food"
+        "View Food Events" => "events.php?event=food",
+        "Dance Artists" => "danceArtists.php",
     ];
 
     private static array $ticketVolunteerPages = [

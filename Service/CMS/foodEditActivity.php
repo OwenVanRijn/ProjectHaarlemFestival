@@ -34,7 +34,8 @@ class foodEditActivity extends editActivityBase
             "restaurantParking" => htmlTypeEnum::text,
             "restaurantWebsite" => htmlTypeEnum::text,
             "restaurantMenu" => htmlTypeEnum::text,
-            "restaurantContact" => htmlTypeEnum::text
+            "restaurantContact" => htmlTypeEnum::text,
+            "image" => htmlTypeEnum::imgUpload,
         ],
         "hidden" => [
             "foodActivityId" => htmlTypeEnum::hidden
@@ -68,6 +69,7 @@ class foodEditActivity extends editActivityBase
             "restaurantWebsite" => $a->getRestaurant()->getWebsite(),
             "restaurantMenu" => $a->getRestaurant()->getMenu(),
             "restaurantContact" => $a->getRestaurant()->getContact(),
+            "image" => "",
         ];
     }
 
@@ -142,6 +144,11 @@ class foodEditActivity extends editActivityBase
                     throw new appException("[Restaurant] db update failed...");
             }
 
+            $root = realpath($_SERVER["DOCUMENT_ROOT"]);
+            $target_dir = $root . "/img/Restaurants";
+            $target_file = $target_dir . "/restaurant" . $restaurantId . ".png";
+
+            $this->handleImage($target_file);
 
             $this->restaurantTypeService->updateFieldIds($restaurantId, $post["restaurantType"]);
         }
