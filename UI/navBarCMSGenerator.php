@@ -69,8 +69,6 @@ class navBarCMSGenerator extends uiGenerator
             $pages = array_merge($pages, self::$ticketVolunteerPages);
         }
 
-        // TODO: Implement rest of headers
-
         return $pages;
     }
 

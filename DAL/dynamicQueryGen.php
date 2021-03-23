@@ -3,8 +3,6 @@ require_once("dbConn.php");
 require_once("queryBase.php");
 require_once ("dbContains.php");
 
-//TODO: Fix duplicate code
-
 class dynamicQueryGen extends queryBase
 {
     private $class;

@@ -10,9 +10,9 @@ class danceEditActivity extends editActivityBase
 {
     private artistOnActivityService $aoaService;
 
-    public function __construct()
+    public function __construct(account $account)
     {
-        parent::__construct(new danceActivityService());
+        parent::__construct(new danceActivityService(), $account);
         $this->aoaService = new artistOnActivityService();
     }
 
@@ -26,7 +26,7 @@ class danceEditActivity extends editActivityBase
         ]
     ];
 
-    public function getHtmlEditFields(sqlModel $a): array
+    public function getHtmlEditFieldsChild(sqlModel $a): array
     {
         $artists = $a->getArtists();
         $artistSelStrs = [];

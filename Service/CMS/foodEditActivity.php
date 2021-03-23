@@ -11,9 +11,9 @@ class foodEditActivity extends editActivityBase
     private restaurantService $restaurantService;
     private restaurantTypeLinkService $restaurantTypeService;
 
-    public function __construct()
+    public function __construct(account $account)
     {
-        parent::__construct(new foodactivityService());
+        parent::__construct(new foodactivityService(), $account);
         $this->restaurantService = new restaurantService();
         $this->restaurantTypeService = new restaurantTypeLinkService();
     }
@@ -42,7 +42,7 @@ class foodEditActivity extends editActivityBase
         ]
     ];
 
-    public function getHtmlEditFields(sqlModel $a) : array
+    public function getHtmlEditFieldsChild(sqlModel $a) : array
     {
         $resTypeStrs = $this->restaurantTypeService->getAllTypesAsStr();
         $resCurTypeStrs = $this->restaurantTypeService->getRestaurantTypesAsIds($a->getRestaurant()->getId());

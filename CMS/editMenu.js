@@ -228,7 +228,7 @@ function generateHTML(json, postUrl){
     }
 
     let send = document.createElement("button");
-    send.innerHTML = "Edit";
+    send.innerHTML = "Save";
     send.onclick = function() {
         let hidden = document.getElementsByClassName("hidden");
         while (hidden.length){

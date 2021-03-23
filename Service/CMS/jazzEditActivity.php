@@ -10,9 +10,9 @@ class jazzEditActivity extends editActivityBase
 {
     private jazzBandService $jazzBandService;
 
-    public function __construct()
+    public function __construct(account $account)
     {
-        parent::__construct(new jazzactivityService());
+        parent::__construct(new jazzactivityService(), $account);
         $this->jazzBandService = new jazzBandService();
     }
 
@@ -31,7 +31,7 @@ class jazzEditActivity extends editActivityBase
         ]
     ];
 
-    public function getHtmlEditFields(sqlModel $a): array
+    public function getHtmlEditFieldsChild(sqlModel $a): array
     {
         $bandsStr = $this->jazzBandService->getAllAsStr();
 

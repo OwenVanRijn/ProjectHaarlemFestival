@@ -1,6 +1,5 @@
 <?php
 // Page requires an id provided via GET
-// TODO: add logged in check
 
 require_once ("../Service/activityService.php");
 header('Content-Type: application/json');
