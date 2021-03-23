@@ -46,7 +46,6 @@ $nav->assignCss([
             $tableRow->addString(
               $c->getFirstName() . " " . $c->getLastname(),
                 $c->getAccount()->getEmail(),
-                $c->getPhoneNumber(),
                 $c->getLocation()->getAddress()
             );
 

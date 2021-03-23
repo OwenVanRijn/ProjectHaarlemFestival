@@ -25,7 +25,6 @@ class customerEdit extends editBase implements editUpdate
                 "id" => htmlTypeEnum::hidden,
                 "firstName" => htmlTypeEnum::text,
                 "lastName" => htmlTypeEnum::text,
-                "phoneNumber" => htmlTypeEnum::text,
             ],
             "account" => [
                 "accountId" => htmlTypeEnum::hidden,
@@ -54,7 +53,6 @@ class customerEdit extends editBase implements editUpdate
             "id" => $entry->getId(),
             "firstName" => $entry->getFirstName(),
             "lastName" => $entry->getLastName(),
-            "phoneNumber" => $entry->getPhoneNumber(),
             "username" => $entry->getAccount()->getUsername(),
             "email" => $entry->getAccount()->getEmail(),
             "status" => $entry->getAccount()->getStatus(),
@@ -90,17 +88,16 @@ class customerEdit extends editBase implements editUpdate
         if (array_key_exists("lastName", $post))
             $customer->setLastname($post["lastName"]);
 
-        if (array_key_exists("phoneNumber", $post))
-            $customer->setPhoneNumber((int)$post["phoneNumber"]);
-
         $account = new account();
         $account->setId((int)$post["accountId"]);
 
         if (array_key_exists("username", $post))
             $account->setUsername($post["username"]);
 
-        if (array_key_exists("email", $post))
+        if (array_key_exists("email", $post)){
             $account->setEmail($post["email"]);
+            $customer->setEmail($post["email"]);
+        }
 
         if (array_key_exists("status", $post))
             $account->setStatus((int)$post["status"]);
