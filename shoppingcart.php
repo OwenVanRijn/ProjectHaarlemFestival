@@ -1,15 +1,15 @@
 <?php
-session_start();
-
-$root = realpath($_SERVER["DOCUMENT_ROOT"]);
-require_once($root . "/UI/navBar.php");
-require_once($root . "/Model/activity.php");
-require_once($root . "/Service/activityService.php");
-require_once($root . "/Service/jazzactivityService.php");
-require_once($root . "/Service/foodactivityService.php");
-require_once($root . "/Service/danceActivityService.php");
-require_once($root . "/Service/shoppingcartService.php");
-?>
+//session_start();
+//
+//$root = realpath($_SERVER["DOCUMENT_ROOT"]);
+//require_once($root . "/UI/navBar.php");
+//require_once($root . "/Model/activity.php");
+//require_once($root . "/Service/activityService.php");
+//require_once($root . "/Service/jazzactivityService.php");
+//require_once($root . "/Service/foodactivityService.php");
+//require_once($root . "/Service/danceActivityService.php");
+//require_once($root . "/Service/shoppingcartService.php");
+//?>
 
 
 <!doctype html>
