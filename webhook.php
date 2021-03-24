@@ -15,14 +15,16 @@ $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 
 $cart = $_SESSION['cart'];
 
-//$payment = $_SESSION['paymentId'];
-//$_SESSION['paymentId'] = $mollie->payments->get($_POST['id']);
-//
-//var_dump($_POST['id']);
+$_SESSION['paymentId'] = "tr_VVa4KA5rtb";
+
+$payment = $_SESSION['paymentId'];
+
+$paymentnew = $mollie->payments->get($payment);
 
     $mailer = new mailer();
 
-    $mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: {$_POST['id']}");
+    $mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: {$_POST['id']}. payment: {$paymentnew}");
+
 
     $firstname = $_SESSION['firstname'];
     $lastname = $_SESSION['lastname'];
