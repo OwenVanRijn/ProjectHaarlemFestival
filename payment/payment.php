@@ -4,19 +4,10 @@ session_start();
 if(isset($_SESSION['cart'])){
     $cart = $_SESSION['cart'];
 
-    foreach ($cart as $item){
-        print_r($item);
-    }
 }
 
-else{
-    echo 'not cart';
-}
 
 $total = $_SESSION['total'];
-
-$root = realpath($_SERVER["DOCUMENT_ROOT"]);
-require_once($root . "/UI/navBar.php");
 
 use Mollie\Api\MollieApiClient;
 require_once "../lib/mollie/vendor/autoload.php";
@@ -33,7 +24,7 @@ if(isset($_POST['pay'])){
         ],
         "description" => "Haarlem Festival",
         "redirectUrl" => "https://google.com",
-        "webhookUrl"  => "haarlemfestival.louellacreemers.nl/payment/webhook.php"
+        "webhookUrl"  => "https://haarlemfestival.louellacreemers.nl/payment/webhook.php"
     ]);
 
     header("Location: " . $payment->getCheckoutUrl(), true, 303);

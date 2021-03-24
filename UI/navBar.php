@@ -1,9 +1,3 @@
-<?php
-$root = realpath($_SERVER["DOCUMENT_ROOT"]);
-//echo "$root . '/index.php' ? >"
-?>
-
-
 <!DOCTYPE html>
 <html>
 
