@@ -35,8 +35,8 @@ echo $firstname;
 echo $lastname;
 echo $email;
 
-$mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: {$_POST['id']}, {$paymentnew->status},
-firstname={$firstname}, lastnmae={$lastname}, email={$email}");
+//$mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: {$_POST['id']}, {$paymentnew->status},
+//firstname={$firstname}, lastname={$lastname}, email={$email}");
 
 $customer = new customerService();
 $order = new ordersService();
