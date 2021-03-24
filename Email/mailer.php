@@ -1,6 +1,6 @@
 <?php
 
-require_once "lib/swiftmailer/vendor/autoload.php";
+require_once "../lib/swiftmailer/vendor/autoload.php";
 
 class mailer
 {
