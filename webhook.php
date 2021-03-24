@@ -27,13 +27,13 @@ $paymentnew = $mollie->payments->get($payment);
 
 $mailer = new mailer();
 
-$firstname = $_SESSION['firstname'];
-$lastname = $_SESSION['lastname'];
-$email = $_SESSION['email'];
-
-echo $firstname;
-echo $lastname;
-echo $email;
+//$firstname = $_SESSION['firstname'];
+//$lastname = $_SESSION['lastname'];
+//$email = $_SESSION['email'];
+//
+//echo $firstname;
+//echo $lastname;
+//echo $email;
 
 //$mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: {$_POST['id']}, {$paymentnew->status},
 //firstname={$firstname}, lastname={$lastname}, email={$email}");
@@ -42,11 +42,12 @@ $customer = new customerService();
 $order = new ordersService();
 $ticket = new ticketService();
 
-$customer->addCustomer($firstname, $lastname, $email);
+//$customer->addCustomer($firstname, $lastname, $email);
 
 
-    $customerCreated = $customer->getFromEmail("{$email}");
+    $customerCreated = $customer->getFromEmail("louellacreemers@gmail.com");
 
+    var_dump($customerCreated->getId());
     $orderQuery = $order->insertOrder($customerCreated->getId());
 
     $orderCreated = $order->getByCustomer($customerCreated->getId());
