@@ -28,9 +28,9 @@ $paymentnew = $mollie->payments->get($payment);
     $mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: {$_POST['id']}, {$paymentnew->status}");
 
 
-    $firstname = $_SESSION['firstname'];
-    $lastname = $_SESSION['lastname'];
-    $email = $_SESSION['email'];
+    $firstname = "Jan"; //$_SESSION['firstname'];
+    $lastname = "Jansen";//$_SESSION['lastname'];
+    $email = "louellacreemers@gmail.com"; //$_SESSION['email'];
 
     $customer = new customerService();
     $order = new ordersService();
