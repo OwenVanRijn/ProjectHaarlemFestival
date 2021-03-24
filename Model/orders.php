@@ -9,8 +9,8 @@ class orders extends sqlModel
     private customer $customer;
 
     protected const sqlTableName = "orders";
-    protected const sqlFields = ["id", "status", "customerid"];
-    protected const sqlLinks = ["customerid" => customer::class];
+    protected const sqlFields = ["id", "status", "customerId"];
+    protected const sqlLinks = ["customerId" => customer::class];
 
     public function constructFull(int $id, string $status, customer $customer)
     {
@@ -25,7 +25,7 @@ class orders extends sqlModel
         return [
             "id" => $this->id,
             "status" => $this->status,
-            "customerid" => $this->customer->getId()
+            "customerId" => $this->customer->getId()
         ];
     }
 

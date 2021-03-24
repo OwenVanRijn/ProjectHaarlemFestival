@@ -9,6 +9,7 @@ require_once($root . "/Service/ordersService.php");
 require_once($root . "/Service/ticketService.php");
 require_once ($root . "/Email/mailer.php");
 require_once ($root . "/Model/customer.php");
+require_once ($root . "/Model/orders.php");
 
 session_start();
 use Mollie\Api\MollieApiClient;
@@ -47,8 +48,9 @@ $ticket = new ticketService();
 
     $customerCreated = $customer->getFromEmail("louellacreemers@gmail.com");
 
-    var_dump($customerCreated->getId());
-    $orderQuery = $order->insertOrder($customerCreated->getId());
+    $id =  $customerCreated->getId();
+
+    $orderQuery = $order->insertOrder($id);
 
     $orderCreated = $order->getByCustomer($customerCreated->getId());
 
