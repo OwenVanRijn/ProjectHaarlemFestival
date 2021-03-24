@@ -29,22 +29,23 @@ $payment = $_SESSION['paymentId'];
 $paymentnew = $mollie->payments->get($payment);
 
 $mailer = new mailer();
-$mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: {$_POST['id']}, {$paymentnew->status}");
 
-if($paymentnew->status == "paid"){
-    $firstname = $_SESSION['firstname'];
-    $lastname = $_SESSION['lastname'];
-    $email = $_SESSION['email'];
+$firstname = $_SESSION['firstname'];
+$lastname = $_SESSION['lastname'];
+$email = $_SESSION['email'];
 
-    $customer = new customerService();
-    $order = new ordersService();
-    $ticket = new ticketService();
+$mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: {$_POST['id']}, {$paymentnew->status},
+firstname={$firstname}, lastnmae={$lastname}, email={$email}");
 
-    $customer->addCustomer($firstname, $lastname, $email);
+$customer = new customerService();
+$order = new ordersService();
+$ticket = new ticketService();
+
+var_dump($customer->addCustomer($firstname, $lastname, $email));
 
 //    $customerCreated = $customer->getFromEmail("louellacreemers@gmail.com");
 //
-//    //$orderQuery = $order->insertOrder($customerCreated->getId());
+//    $orderQuery = $order->insertOrder($customerCreated->getId());
 //
 //    $orderCreated = $order->getByCustomer($customerCreated->getId());
 //
@@ -62,5 +63,5 @@ if($paymentnew->status == "paid"){
 //    }
 //
 //    $_SESSION['orderId'] = $orderCreated->getId();
-}
+
 ?>

@@ -36,7 +36,7 @@ class customerService extends baseService
     }
 
     public function addCustomer(string $firstname, string $lastname, string $email){
-        $this->db->insert([
+        return $this->db->insert([
             "firstName" => $firstname,
             "lastname" => $lastname,
             "email" => $email,
