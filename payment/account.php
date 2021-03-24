@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/UI/navBar.php");
 
@@ -42,7 +43,7 @@ if(isset($_POST['submit'])){
         </section>
 
 
-        <form method="post" action="payment.php">
+        <form method="post">
             <h2>Your information</h2>
             <h4>Please fill in your personal information</h4>
 
