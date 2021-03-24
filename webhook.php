@@ -22,8 +22,7 @@ $payment = $_SESSION['paymentId'];
 $paymentnew = $mollie->payments->get($payment);
 
     $mailer = new mailer();
-
-    $mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: {$_POST['id']}. payment: {$paymentnew}");
+    $mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: {$_POST['id']}, {$paymentnew->status}");
 
 
     $firstname = $_SESSION['firstname'];
