@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+
 require_once "../Email/mailer.php";
 
 if(isset($_SESSION['cart'])){
@@ -9,8 +10,12 @@ if(isset($_SESSION['cart'])){
 }
 
 $firstname = $_SESSION['firstname'];
+$lastname = $_SESSION['lastname'];
+$email = $_SESSION['email'];
 
 echo $firstname;
+echo $lastname;
+echo $email;
 
 $total = $_SESSION['total'];
 

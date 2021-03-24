@@ -19,9 +19,6 @@ $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 
 $cartservice = $_SESSION['cart'];
 
-var_dump($cartservice);
-
-
 $_SESSION['paymentId'] = "tr_VVa4KA5rtb";
 
 $payment = $_SESSION['paymentId'];
@@ -34,6 +31,10 @@ $firstname = $_SESSION['firstname'];
 $lastname = $_SESSION['lastname'];
 $email = $_SESSION['email'];
 
+echo $firstname;
+echo $lastname;
+echo $email;
+
 $mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: {$_POST['id']}, {$paymentnew->status},
 firstname={$firstname}, lastnmae={$lastname}, email={$email}");
 
@@ -41,7 +42,10 @@ $customer = new customerService();
 $order = new ordersService();
 $ticket = new ticketService();
 
-var_dump($customer->addCustomer($firstname, $lastname, $email));
+$customer->addCustomer($firstname, $lastname, $email);
+
+session_unset();
+session_destroy();
 
 //    $customerCreated = $customer->getFromEmail("louellacreemers@gmail.com");
 //

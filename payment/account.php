@@ -8,6 +8,7 @@ if(isset($_POST['submit'])){
     $lastname = $_POST['lastname'];
     $email = $_POST['email'];
 
+    echo "$firstname, $lastname, $email";
     $_SESSION['firstname'] = $firstname;
     $_SESSION['lastname'] = $lastname;
     $_SESSION['email'] = $email;
