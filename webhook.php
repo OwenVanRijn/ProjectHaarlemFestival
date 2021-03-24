@@ -4,9 +4,17 @@ session_start();
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/Service/customerService.php");
 require_once($root . "/Service/ordersService.php");
-$cart = $_SESSION['cart'];
 
-if(isset($_SESSION['firstname'])){
+use Mollie\Api\MollieApiClient;
+require_once "../lib/mollie/vendor/autoload.php";
+
+$mollie = new MollieApiClient();
+$mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
+
+$cart = $_SESSION['cart'];
+$payment = $mollie->payments->get($_SESSION['paymentId']);
+
+if($payment->isPaid()){
     $firstname = $_SESSION['firstname'];
     $lastname = $_SESSION['lastname'];
     $email = $_SESSION['email'];
