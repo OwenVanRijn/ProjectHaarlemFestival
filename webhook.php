@@ -7,7 +7,7 @@ ini_set('display_startup_errors', 1);
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/Service/customerService.php");
 require_once($root . "/Service/ordersService.php");
-require_once($root . "/Service/ticketService.php");
+require_once($root . "/Service/ticketsService.php");
 require_once ($root . "/Email/mailer.php");
 
 use Mollie\Api\MollieApiClient;
