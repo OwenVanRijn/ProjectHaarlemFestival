@@ -6,13 +6,17 @@ require_once($root . "/Service/customerService.php");
 require_once($root . "/Service/ordersService.php");
 
 use Mollie\Api\MollieApiClient;
-require_once "../lib/mollie/vendor/autoload.php";
+require_once "lib/mollie/vendor/autoload.php";
 
 $mollie = new MollieApiClient();
 $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 
 $cart = $_SESSION['cart'];
-$payment = $mollie->payments->get($_SESSION['paymentId']);
+
+$payment = $_SESSION['paymentId'];
+$_SESSION['paymentId'] = $mollie->payments->get($_POST['id']);
+
+var_dump($_POST['id']);
 
 if($payment->isPaid()){
     $firstname = $_SESSION['firstname'];

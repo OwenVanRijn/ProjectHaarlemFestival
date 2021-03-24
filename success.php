@@ -21,7 +21,7 @@ require_once "UI/navBar.php";
 <body>
 
 <h2> You're going to Haarlem Festival! Your orderid is: <?php
-    echo $_SESSION['orderId']; ?></h2>
+    echo $_SESSION['paymentId']; ?></h2>
 
 <p> We sent you an email with your tickets!</p>
 </body>
