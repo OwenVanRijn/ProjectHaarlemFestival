@@ -23,7 +23,7 @@ if(isset($_POST['pay'])){
             "value" => "$total.00"
         ],
         "description" => "Haarlem Festival",
-        "redirectUrl" => "https://google.com",
+        "redirectUrl" => "https://haarlemfestival.louellacreemers.nl/success.php",
         "webhookUrl"  => "https://haarlemfestival.louellacreemers.nl/webhook.php"
     ]);
 
