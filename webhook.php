@@ -34,7 +34,7 @@ $paymentnew = $mollie->payments->get($payment);
 
     $customer = new customerService();
     $order = new ordersService();
-    $ticket = new ticketsService();
+    $ticket = new ticketService();
 
     $customer->addCustomer($firstname, $lastname, $email);
 
