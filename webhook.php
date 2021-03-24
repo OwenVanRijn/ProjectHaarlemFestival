@@ -44,8 +44,6 @@ $ticket = new ticketService();
 
 $customer->addCustomer($firstname, $lastname, $email);
 
-session_unset();
-session_destroy();
 
 //    $customerCreated = $customer->getFromEmail("louellacreemers@gmail.com");
 //
