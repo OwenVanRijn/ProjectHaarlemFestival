@@ -1,6 +1,8 @@
 <?php
 
-require_once "../lib/swiftmailer/vendor/autoload.php";
+$root = realpath($_SERVER["DOCUMENT_ROOT"]);
+
+require_once $root . "/lib/swiftmailer/vendor/autoload.php";
 
 class mailer
 {
