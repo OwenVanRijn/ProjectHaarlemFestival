@@ -2,8 +2,8 @@
 session_start();
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-require_once ($root . "/Service/customerService.php");
-require_once ($root . "/Service/ordersService.php");
+require_once($root . "/Service/customerService.php");
+require_once($root . "/Service/ordersService.php");
 $cart = $_SESSION['cart'];
 
 if(isset($_SESSION['firstname'])){

@@ -1,5 +1,5 @@
 <?php
-require_once "../DAL/ordersDAO.php";
+require_once "./DAL/ordersDAO.php";
 
 class ordersService
 {
