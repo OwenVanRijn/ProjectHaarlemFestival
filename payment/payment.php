@@ -1,11 +1,16 @@
 <?php
 session_start();
 
+require_once "../Email/mailer.php";
+
 if(isset($_SESSION['cart'])){
     $cart = $_SESSION['cart'];
 
 }
 
+$firstname = $_SESSION['firstname'];
+
+echo $firstname;
 
 $total = $_SESSION['total'];
 
@@ -16,7 +21,6 @@ $mollie = new MollieApiClient();
 $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 
 if(isset($_POST['pay'])){
-
     $payment = $mollie->payments->create([
         "amount" => [
             "currency" => "EUR",

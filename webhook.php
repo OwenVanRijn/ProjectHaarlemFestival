@@ -4,6 +4,7 @@ session_start();
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/Service/customerService.php");
 require_once($root . "/Service/ordersService.php");
+require_once($root . "/Service/ticketService.php");
 
 use Mollie\Api\MollieApiClient;
 require_once "lib/mollie/vendor/autoload.php";
@@ -13,19 +14,22 @@ $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 
 $cart = $_SESSION['cart'];
 
-$payment = $_SESSION['paymentId'];
-$_SESSION['paymentId'] = $mollie->payments->get($_POST['id']);
+//$payment = $_SESSION['paymentId'];
+//$_SESSION['paymentId'] = $mollie->payments->get($_POST['id']);
+//
+//var_dump($_POST['id']);
 
-var_dump($_POST['id']);
+    $mailer = new mailer();
 
-if($payment->isPaid()){
+    $mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: {$_POST['id']}");
+
     $firstname = $_SESSION['firstname'];
     $lastname = $_SESSION['lastname'];
     $email = $_SESSION['email'];
 
     $customer = new customerService();
     $order = new ordersService();
-    $ticket = new ticketService();
+    $ticket = new ticketsService();
 
     $customer->addCustomer($firstname, $lastname, $email);
 
@@ -40,5 +44,5 @@ if($payment->isPaid()){
 
     $_SESSION['orderId'] = $orderCreated->getId();
 
-}
+
 ?>
