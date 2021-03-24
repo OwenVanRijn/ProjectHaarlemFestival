@@ -28,9 +28,9 @@ $paymentnew = $mollie->payments->get($payment);
 
 $mailer = new mailer();
 
-//$firstname = $_SESSION['firstname'];
-//$lastname = $_SESSION['lastname'];
-//$email = $_SESSION['email'];
+$firstname = $_SESSION['firstname'];
+$lastname = $_SESSION['lastname'];
+$email = $_SESSION['email'];
 //
 //echo $firstname;
 //echo $lastname;
@@ -43,7 +43,7 @@ $customer = new customerService();
 $order = new ordersService();
 $ticket = new ticketService();
 
-//$customer->addCustomer($firstname, $lastname, $email);
+$customer->addCustomer($firstname, $lastname, $email);
 
 
     $customerCreated = $customer->getFromEmail("louellacreemers@gmail.com");
