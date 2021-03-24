@@ -1,6 +1,14 @@
 <?php
 session_start();
 require_once "UI/navBar.php";
+
+use Mollie\Api\MollieApiClient;
+require_once "lib/mollie/vendor/autoload.php";
+
+$mollie = new MollieApiClient();
+$mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
+
+var_dump($mollie->payments);
 ?>
 
 
@@ -20,8 +28,8 @@ require_once "UI/navBar.php";
 
 <body>
 
-<h2> You're going to Haarlem Festival! Your orderid is: <?php
-    echo $_SESSION['paymentId']; ?></h2>
+<h2> You're going to Haarlem Festival! Your orderid is:
+</h2>
 
 <p> We sent you an email with your tickets!</p>
 </body>
