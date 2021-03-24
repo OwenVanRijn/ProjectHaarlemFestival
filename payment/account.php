@@ -9,7 +9,6 @@ if(isset($_POST['submit'])){
     $lastname = $_POST['lastname'];
     $email = $_POST['email'];
 
-    echo "$firstname, $lastname, $email";
     $_SESSION['firstname'] = $firstname;
     $_SESSION['lastname'] = $lastname;
     $_SESSION['email'] = $email;
@@ -43,7 +42,7 @@ if(isset($_POST['submit'])){
         </section>
 
 
-        <form method="post">
+        <form method="post" action="payment.php">
             <h2>Your information</h2>
             <h4>Please fill in your personal information</h4>
 
