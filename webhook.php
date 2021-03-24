@@ -45,25 +45,25 @@ $ticket = new ticketService();
 $customer->addCustomer($firstname, $lastname, $email);
 
 
-//    $customerCreated = $customer->getFromEmail("louellacreemers@gmail.com");
-//
-//    $orderQuery = $order->insertOrder($customerCreated->getId());
-//
-//    $orderCreated = $order->getByCustomer($customerCreated->getId());
-//
-//    foreach ($cartservice as $item){
-//
-//        if (get_class($item) == "activity") {
-//            $item = $item;
-//        }
-//        else {
-//            $item = $item->getActivity();
-//        }
-//
-//        var_dump($orderCreated->getId());
-//        $ticket->insertTicket($item->getId(), $customerCreated->getId(), $orderCreated->getId(), 1);
-//    }
-//
-//    $_SESSION['orderId'] = $orderCreated->getId();
+    $customerCreated = $customer->getFromEmail("{$email}");
+
+    $orderQuery = $order->insertOrder($customerCreated->getId());
+
+    $orderCreated = $order->getByCustomer($customerCreated->getId());
+
+    foreach ($cartservice as $item){
+
+        if (get_class($item) == "activity") {
+            $item = $item;
+                    }
+       else {
+          $item = $item->getActivity();
+       }
+
+        var_dump($orderCreated->getId());
+        $ticket->insertTicket($item->getId(), $customerCreated->getId(), $orderCreated->getId(), 1);
+    }
+
+    $_SESSION['orderId'] = $orderCreated->getId();
 
 ?>
