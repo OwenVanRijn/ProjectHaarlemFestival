@@ -8,7 +8,8 @@ require_once "lib/mollie/vendor/autoload.php";
 $mollie = new MollieApiClient();
 $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 
-var_dump($mollie->payments);
+$id = $_SESSION['orderId'];
+//var_dump($mollie->payments);
 ?>
 
 
@@ -28,7 +29,7 @@ var_dump($mollie->payments);
 
 <body>
 
-<h2> You're going to Haarlem Festival! Your orderid is:
+<h2> You're going to Haarlem Festival! Your orderid is: <?php echo $id?>
 </h2>
 
 <p> We sent you an email with your tickets!</p>
