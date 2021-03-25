@@ -22,8 +22,6 @@ static $newId= '$id';
 
 if(isset($_POST['pay'])){
 
-    $currentId = $id;
-
     $payment = $mollie->payments->create([
         "amount" => [
             "currency" => "EUR",
@@ -31,7 +29,7 @@ if(isset($_POST['pay'])){
         ],
         "description" => "Haarlem Festival",
         "redirectUrl" => "https://haarlemfestival.louellacreemers.nl/success.php",
-        "webhookUrl"  => "https://haarlemfestival.louellacreemers.nl/webhook.php?id=$currentId"
+        "webhookUrl"  => "https://haarlemfestival.louellacreemers.nl/webhook.php?id=$secondId"
     ]);
 
     var_dump($payment->webhookUrl);
