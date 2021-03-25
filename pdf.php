@@ -25,10 +25,6 @@ $dompdf->render();
 // Output the generated PDF to Browser
 $dompdf->stream();
 
-$output = $dompdf->output();
-
-file_put_contents('ticket_order'.uniqid(), $output);
-
 ?>
 
 
