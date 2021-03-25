@@ -1,4 +1,5 @@
 <?php
+ini_set('display_errors', -1);
     require_once ("Service/jazzactivityService.php");
     require_once ("Service/foodactivityService.php");
     require_once ("Service/danceActivityService.php");
