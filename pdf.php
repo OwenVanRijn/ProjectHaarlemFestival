@@ -1,20 +1,16 @@
 <?php
-require_once "./lib/dompdf/autoload.inc.php";
+$root = realpath($_SERVER["DOCUMENT_ROOT"]);
+require_once $root . "/lib/dompdf/autoload.inc.php";
 
-ob_start();
+/*ob_start();
 include 'ticketpdf.php';
 $rawHtml = ob_get_clean();
 
-var_dump($rawHtml);
+var_dump($rawHtml);*/
 
 use Dompdf\Dompdf;
-use Dompdf\Options;
-//
-$options = new Options();
-$options->set('defaultFont', 'Courier');
-//
-//
-$dompdf = new Dompdf($options);
+
+$dompdf = new Dompdf();
 $dompdf->loadHtml("hello world");
 
 // (Optional) Setup the paper size and orientation

@@ -41,6 +41,7 @@ if(isset($_POST['pay'])){
 
     if($payment->isPaid()){
         header("Location: https://haarlemfestival.louellacreemers.nl/webhook.php");
+        header("Location: https://haarlemfestival.louellacreemers.nl/webhook.php");
     }
 
     header("Location: " . $payment->getCheckoutUrl(), true, 303);
