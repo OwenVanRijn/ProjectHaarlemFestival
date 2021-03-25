@@ -5,19 +5,19 @@
 // This is dumb, but i don't see another way to union a return type
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-require_once($root . "/Model/shoppingcart.php");
+require_once($root . "/Model/shoppingcartDB.php");
 require_once("dynamicQueryGen.php");
 
 class shoppingcartDAO extends dynamicQueryGen
 {
     public function __construct()
     {
-        parent::__construct(shoppingcart::class);
+        parent::__construct(shoppingcartDB::class);
     }
 
     /**
      * @param array $filter
-     * @return shoppingcart[]|shoppingcart|null
+     * @return shoppingcartDB[]|shoppingcartDB|null
      */
     public function get(array $filter = [])
     {

@@ -9,6 +9,11 @@ require_once($root . "/Service/jazzactivityService.php");
 require_once($root . "/Service/foodactivityService.php");
 require_once($root . "/Service/danceActivityService.php");
 require_once($root . "/Service/shoppingcartService.php");
+require_once($root . "/Service/shoppingcartServiceDB.php");
+
+$shoppingcartServiceDB = new shoppingcartServiceDB();
+$test = $shoppingcartServiceDB->getShoppingcartItems();
+var_dump($test);
 ?>
 
 

@@ -1,25 +1,39 @@
 <?php
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/Model/sqlModel.php");
-require_once($root . "/Model/shoppingcart.php");
+require_once($root . "/Model/shoppingcartDB.php");
 require_once($root . "/Model/activity.php");
 
 class shoppingcartItem extends sqlModel
 {
-    private shoppingcart $shoppingcart;
+    private int $id;
+    private shoppingcartDB $shoppingcart;
     private activity $activity; //same as activityId
     private int $amount; //hoeveel items
+    private float $price; //prijs per item
 
     protected const sqlTableName = "shoppingcartItem";
-    protected const sqlFields = ["amount"];
-    protected const sqlLinks = ["shoppingcartId" => shoppingcart::class, "activityId" => activity::class];
+    protected const sqlFields = ["amount", "price"];
+    protected const sqlLinks = ["shoppingcartId" => shoppingcartDB::class, "activityId" => activity::class];
 
-    public function constructFull(shoppingcart $shoppingcart, activity $activity, int $amount)
+    public function constructFull(int $id, shoppingcartDB $shoppingcart, activity $activity, int $amount, float $price)
     {
+        $this->id = $id;
         $this->shoppingcart = $shoppingcart;
         $this->activity = $activity;
         $this->amount = $amount;
+        $this->price = $price;
         return $this;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     public function getShoppingcart()
@@ -32,11 +46,6 @@ class shoppingcartItem extends sqlModel
         $this->shoppingcart = $shoppingcart;
     }
 
-    public function getId()
-    {
-        return $this->activity->getId();
-    }
-
     public function getActivity()
     {
         return $this->activity;
@@ -46,7 +55,6 @@ class shoppingcartItem extends sqlModel
     {
         $this->activity = $activity;
     }
-
 
     public function getAmount()
     {
@@ -58,21 +66,35 @@ class shoppingcartItem extends sqlModel
         $this->amount = $amount;
     }
 
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    public function setPrice($price)
+    {
+        $this->price = $price;
+    }
+
     public function sqlGetFields()
     {
         return [
+            "id" => $this->getId(),
             "shoppingcartId" => $this->shoppingcart->getId(),
             "activityId" => $this->activity->getId(),
-            "amount" => $this->getAmount()
+            "amount" => $this->getAmount(),
+            "price" => $this->getAmount()
         ];
     }
 
     public static function sqlParse(array $sqlRes): self
     {
         return (new self())->constructFull(
-            $sqlRes[self::sqlTableName . "shoppingcartId"],
-            $sqlRes[self::sqlTableName . "activityId"],
-            $sqlRes[self::sqlTableName . "amount"]
+            $sqlRes[self::sqlTableName . "id"],
+            shoppingcartDB::sqlParse($sqlRes),
+            activity::sqlParse($sqlRes),
+            $sqlRes[self::sqlTableName . "amount"],
+            $sqlRes[self::sqlTableName . "price"]
         );
     }
 }
