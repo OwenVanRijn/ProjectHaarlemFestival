@@ -35,7 +35,3 @@ $id = $_SESSION['orderId'];
 <p> We sent you an email with your tickets!</p>
 </body>
 </html>
-
-<?php
-header("Location: https://haarlemfestival.louellacreemers.nl/webhook.php");
-?>
