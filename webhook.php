@@ -14,14 +14,12 @@ require_once ($root . "/Model/orders.php");
 
 $mailer = new mailer();
 
-use Mollie\Api\MollieApiClient;
-require_once $root . "/lib/mollie/vendor/autoload.php";
-
-
 $mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: {$_POST['id']}");
 
 $cartservice = $_SESSION['cart'];
 $id = $_GET['id'];
+
+$mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "CustomerID = {$id}");
 
 $customer = new customerService();
 $order = new ordersService();
