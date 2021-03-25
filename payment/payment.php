@@ -24,6 +24,8 @@ if(isset($_POST['pay'])){
 
     $id = $_GET['id'];
 
+    echo $id;
+
     $payment = $mollie->payments->create([
         "amount" => [
             "currency" => "EUR",
@@ -35,7 +37,7 @@ if(isset($_POST['pay'])){
     ]);
 
     //var_dump($payment->webhookUrl);
-    header("Location: " . $payment->getCheckoutUrl(), true, 303);
+    //header("Location: " . $payment->getCheckoutUrl(), true, 303);
 }
 ?>
 
