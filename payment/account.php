@@ -18,8 +18,6 @@ if(isset($_POST['submit'])){
 
     $id = $customer->getFromEmail($email)->getId();
 
-    var_dump($id);
-
     $_SESSION['id'] = $id;
 }
 
@@ -58,13 +56,13 @@ if(isset($_POST['submit'])){
 
 
             <h4 class="labelInputField">Firstname</h4>
-            <input type="text" placeholder="firstname" name="firstname" maxlength="40" size="20"></input>
+            <input type="text" placeholder="firstname" name="firstname" maxlength="40" size="20" required></input>
 
             <h4 class="labelInputField">Lastname</h4>
-            <input type="text" placeholder="lastname" maxlength="40" name="lastname" size="20"></input>
+            <input type="text" placeholder="lastname" maxlength="40" name="lastname" size="20" required></input>
 
             <h4 class="labelInputField">Emailaddress</h4>
-            <input type="text" placeholder="emailaddress" maxlength="40" name="email" size="25"></input>
+            <input type="text" placeholder="emailaddress" maxlength="40" name="email" size="25" required></input>
 
 
             <br><input type="checkbox" id="account" name="account" value="account"
