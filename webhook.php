@@ -19,7 +19,6 @@ session_start();
 use Mollie\Api\MollieApiClient;
 require_once $root . "/lib/mollie/vendor/autoload.php";
 
-try{
 $mollie = new MollieApiClient();
 $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 
@@ -33,50 +32,49 @@ $payment = $_SESSION['paymentId'];
 
 $paymentnew = $mollie->payments->get($payment);
 
-    $firstname = $_SESSION['firstname'];
-    $lastname = $_SESSION['lastname'];
-    $email = $_SESSION['email'];
+$firstname = $_SESSION['firstname'];
+$lastname = $_SESSION['lastname'];
+$email = $_SESSION['email'];
 
-    $mailer->sendMail("louellacreemers@gmail.com", "info", " Test 1:$firstname, $lastname, $email");
+$mailer->sendMail("louellacreemers@gmail.com", "info", " Test 1:$firstname, $lastname, $email");
 //
 //echo $firstname;
 //echo $lastname;
 //echo $email;
 
 
-    $customer = new customerService();
-    $order = new ordersService();
-    $ticket = new ticketService();
+$customer = new customerService();
+$order = new ordersService();
+$ticket = new ticketService();
 
-    $customer->addCustomer($firstname, $lastname, $email);
+$customer->addCustomer($firstname, $lastname, $email);
 
-    $customerCreated = $customer->getFromEmail($email);
+$customerCreated = $customer->getFromEmail($email);
 
-    $id =  $customerCreated->getId();
-    $mailer->sendMail("louellacreemers@gmail.com", "Customer created", "test2: $id");
+$id =  $customerCreated->getId();
+$mailer->sendMail("louellacreemers@gmail.com", "Customer created", "test2: $id");
 
-    $orderQuery = $order->insertOrder($id);
+$orderQuery = $order->insertOrder($id);
 
-    $orderCreated = $order->getByCustomer($customerCreated->getId());
+$orderCreated = $order->getByCustomer($customerCreated->getId());
 
-    foreach ($cartservice as $item){
+foreach ($cartservice as $item){
 
-        if (get_class($item) == "activity") {
-            $item = $item;
-        }
-        else {
-            $item = $item->getActivity();
-        }
-
-        $ticket->insertTicket($item->getId(), $customerCreated->getId(), $orderCreated->getId(), 1);
-
-
+    if (get_class($item) == "activity") {
+        $item = $item;
+    }
+    else {
+        $item = $item->getActivity();
     }
 
-//For success page and pdf
-    $_SESSION['orderId'] = $orderCreated->getId();
+    $ticket->insertTicket($item->getId(), $customerCreated->getId(), $orderCreated->getId(), 1);
 
-    $mailer->sendMail("louellacreemers@gmail.com", "Customer created", "test3: {$orderCreated->getId()}");
+
 }
+
+//For success page and pdf
+$_SESSION['orderId'] = $orderCreated->getId();
+
+$mailer->sendMail("louellacreemers@gmail.com", "Customer created", "test3: ");
 
 ?>
