@@ -5,7 +5,7 @@ ini_set('display_errors', -1);
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once "../Email/mailer.php";
-require_once $root . "/Service/customerService.php";
+require_once ($root . "/Service/customerService.php");
 
 if(isset($_SESSION['cart'])){
     $cart = $_SESSION['cart'];
@@ -22,6 +22,7 @@ $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 
 if(isset($_POST['pay'])){
 
+    $id = $_GET['id'];
     $customer = new customerService();
     $newCus = $customer->getFromId();
 
