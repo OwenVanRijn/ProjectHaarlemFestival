@@ -16,8 +16,8 @@
           <li><a class="navItem" href="./dance.php">Dance</a></li>
           <li><a class="navItem" href="./contact.php">Contact</a></li>
           <li><a class="imageRight"><img class="logo" src="img/translate.png" alt="logo"></a></li>
-          <li><a class="imageRight" href="./shoppingcart.php"><img class="logo" src="img/account.png" alt="account"></a></li>
-          <li><a class="imageRight"><img class="logo" src="img/shoppingcart.png" alt="shoppingcart"></a></li>
+          <li><a class="imageRight"><img class="logo" src="img/account.png" alt="account"></a></li>
+          <li><a class="imageRight" href="./shoppingcart.php"><img class="logo" src="img/shoppingcart.png" alt="shoppingcart"></a></li>
         </ul>
      </nav>
 
