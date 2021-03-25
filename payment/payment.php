@@ -3,22 +3,13 @@ session_start();
 
 ini_set('display_errors', -1);
 
-
+$root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once "../Email/mailer.php";
+require_once ("../Service/customerService.php");
 
 if(isset($_SESSION['cart'])){
     $cart = $_SESSION['cart'];
-
 }
-
-
-$firstname = $_SESSION['firstname'];
-$lastname = $_SESSION['lastname'];
-$email = $_SESSION['email'];
-
-echo $firstname;
-echo $lastname;
-echo $email;
 
 $total = $_SESSION['total'];
 
@@ -28,7 +19,11 @@ require_once "../lib/mollie/vendor/autoload.php";
 $mollie = new MollieApiClient();
 $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 
+
 if(isset($_POST['pay'])){
+
+    $id = $_SESSION['id'];
+
     $payment = $mollie->payments->create([
         "amount" => [
             "currency" => "EUR",
@@ -36,12 +31,8 @@ if(isset($_POST['pay'])){
         ],
         "description" => "Haarlem Festival",
         "redirectUrl" => "https://haarlemfestival.louellacreemers.nl/success.php",
-        "webhookUrl"  => "https://haarlemfestival.louellacreemers.nl/webhook.php"
+        "webhookUrl"  => "https://haarlemfestival.louellacreemers.nl/webhook.php?id={$id}"
     ]);
-
-    if(isset($_POST['id'])) {
-        header("Location: https://haarlemfestival.louellacreemers.nl/webhook.php");
-    }
 
     header("Location: " . $payment->getCheckoutUrl(), true, 303);
 }

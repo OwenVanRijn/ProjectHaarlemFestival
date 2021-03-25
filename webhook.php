@@ -1,4 +1,5 @@
 <?php
+session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
@@ -11,62 +12,39 @@ require_once ($root . "/Email/mailer.php");
 require_once ($root . "/Model/customer.php");
 require_once ($root . "/Model/orders.php");
 
-session_start();
-use Mollie\Api\MollieApiClient;
-require_once "lib/mollie/vendor/autoload.php";
-
-$mollie = new MollieApiClient();
-$mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
-
-$cartservice = $_SESSION['cart'];
-
-$_SESSION['paymentId'] = "tr_VVa4KA5rtb";
-
-$payment = $_SESSION['paymentId'];
-
-$paymentnew = $mollie->payments->get($payment);
-
 $mailer = new mailer();
 
-$firstname = $_SESSION['firstname'];
-$lastname = $_SESSION['lastname'];
-$email = $_SESSION['email'];
-//
-//echo $firstname;
-//echo $lastname;
-//echo $email;
+use Mollie\Api\MollieApiClient;
+require_once $root . "/lib/mollie/vendor/autoload.php";
 
-//$mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: {$_POST['id']}, {$paymentnew->status},
-//firstname={$firstname}, lastname={$lastname}, email={$email}");
+
+$mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: {$_POST['id']}");
+
+$cartservice = $_SESSION['cart'];
+$id = $_GET['id'];
 
 $customer = new customerService();
 $order = new ordersService();
 $ticket = new ticketService();
 
-$customer->addCustomer($firstname, $lastname, $email);
-
-$customerCreated = $customer->getFromEmail($email);
-
-$id =  $customerCreated->getId();
-
 $orderQuery = $order->insertOrder($id);
 
-$orderCreated = $order->getByCustomer($customerCreated->getId());
+$orderCreated = $order->getByCustomer($id);
 
 foreach ($cartservice as $item){
 
     if (get_class($item) == "activity") {
         $item = $item;
     }
-   else {
-      $item = $item->getActivity();
-   }
+    else {
+        $item = $item->getActivity();
+    }
 
-    var_dump($orderCreated->getId());
-    $ticket->insertTicket($item->getId(), $customerCreated->getId(), $orderCreated->getId(), 1);
+    $ticket->insertTicket($item->getId(), $id, $orderCreated->getId(), 1);
+
+
 }
 
-//For success page and pdf
-$_SESSION['orderId'] = $orderCreated->getId();
-
+////For success page and pdf
+//$_SESSION['orderId'] = $orderCreated->getId();
 ?>
