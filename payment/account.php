@@ -19,8 +19,6 @@ if(isset($_POST['submit'])){
     $id .= $customer->getFromEmail($email)->getId();
 }
 
-header("Location= https://haarlemfestival.louellacreemers.nl/payment/payment.php?id={$id}");
-
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +48,7 @@ header("Location= https://haarlemfestival.louellacreemers.nl/payment/payment.php
         </section>
 
 
-        <form method="post">
+        <form method="post" action="payment.php?id=<?php echo $id?>">
             <h2>Your information</h2>
             <h4>Please fill in your personal information</h4>
 
