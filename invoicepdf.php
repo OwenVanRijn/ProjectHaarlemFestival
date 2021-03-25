@@ -1,10 +1,20 @@
 <?php
-echo "yes";
+$activity = new activityService();
+$id = $_SESSION['orderId'];
+$total = $_SESSION['total'];
+
+$ticket = new ticketService();
+
+$returnTick = $ticket->getTicketsByOrder($id);
 ?>
 
 <!DOCTYPE html>
 <html>
 <body>
-<p>test</p>
+<?php
+echo $returnTick->getActivity()->getPrice();
+echo "<br>";
+echo $total;
+?>
 </body>
 </html>
