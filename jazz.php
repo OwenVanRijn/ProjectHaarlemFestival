@@ -20,6 +20,9 @@
     <title>Jazz</title>
   </head>
   <body>
+    <?php
+    genNavBar();
+    ?>
     <header class="title">
 
       <h1 class="main-title">Jazz</h1>
