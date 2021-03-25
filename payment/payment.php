@@ -22,7 +22,7 @@ $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 
 if(isset($_POST['pay'])){
 
-    $id = $_SESSION['id'];
+    $id = 2;
 
     $payment = $mollie->payments->create([
         "amount" => [

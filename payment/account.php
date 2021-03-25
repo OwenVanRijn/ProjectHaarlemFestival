@@ -7,18 +7,20 @@ require_once($root . "/UI/navBar.php");
 require_once ($root . "/Service/customerService.php");
 
 
-if(isset($_POST['submit'])){
+if(isset($_POST['submit'])) {
     $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
     $email = $_POST['email'];
 
-    $customer = new customerService();
+//    $customer = new customerService();
+//
+//    $customer->addCustomer($firstname, $lastname, $email);
+//
+//    $id = $customer->getFromEmail($email)->getId();
+//
+//    $_SESSION['id'] = $id;
+//}
 
-    $customer->addCustomer($firstname, $lastname, $email);
-
-    $id = $customer->getFromEmail($email)->getId();
-
-    $_SESSION['id'] = $id;
 }
 
 ?>
@@ -50,7 +52,7 @@ if(isset($_POST['submit'])){
         </section>
 
 
-        <form method="post">
+        <form method="post" action="payment.php?id=2">
             <h2>Your information</h2>
             <h4>Please fill in your personal information</h4>
 
