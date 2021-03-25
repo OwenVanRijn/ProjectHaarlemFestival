@@ -12,15 +12,15 @@ if(isset($_POST['submit'])) {
     $lastname = $_POST['lastname'];
     $email = $_POST['email'];
 
-//    $customer = new customerService();
-//
-//    $customer->addCustomer($firstname, $lastname, $email);
-//
-//    $id = $customer->getFromEmail($email)->getId();
-//
-//    $_SESSION['id'] = $id;
-//}
+    $customer = new customerService();
 
+    $customer->addCustomer($firstname, $lastname, $email);
+
+    $id = $customer->getFromEmail($email)->getId();
+
+    $_SESSION['id'] = $id;
+
+    echo $_SESSION['id'];
 }
 
 ?>
@@ -52,7 +52,7 @@ if(isset($_POST['submit'])) {
         </section>
 
 
-        <form method="post" action="payment.php?id=2">
+        <form method="post">
             <h2>Your information</h2>
             <h4>Please fill in your personal information</h4>
 
