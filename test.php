@@ -4,6 +4,7 @@
     require_once ("Service/danceActivityService.php");
     require_once ("Service/ticketService.php");
     require_once ("Service/activityService.php");
+    require_once ("Service/customerService.php");
     require_once ("DAL/activityDAO.php");
     require_once("UI/tableGenerator.php");
     require_once("Service/restaurantTypeLinkService.php");
@@ -13,10 +14,11 @@
 
     $email = new mailer();
 
-    $email->sendMail("louellacreemers@gmail.com", "Test", "This is a test");
+    $test = new customerService();
 
+    //$email->sendMail("louellacreemers@gmail.com", "Test", "This is a test");
 
-    $number = 4;
+    $test->getFromId(2);
 
 //    $jazz = new jazzactivityService();
 //    $food = new foodactivityService();
