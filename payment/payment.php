@@ -5,7 +5,7 @@ ini_set('display_errors', -1);
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once "../Email/mailer.php";
-require_once ($root . "/Service/customerService.php");
+require_once ("../Service/customerService.php");
 
 if(isset($_SESSION['cart'])){
     $cart = $_SESSION['cart'];
