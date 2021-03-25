@@ -41,7 +41,7 @@ if(isset($_POST['pay'])){
     if($payment->isPaid()){
         header("Location: https://haarlemfestival.louellacreemers.nl/webhook.php");
     }
-    
+
     header("Location: " . $payment->getCheckoutUrl(), true, 303);
 }
 ?>
@@ -72,7 +72,7 @@ if(isset($_POST['pay'])){
         </section>
 
         <section id="paybox">
-            <form method="post" action="payment.php">
+            <form method="post">
                 <p>Select paying method</p>
                 <input type="radio" id="ideal" name="paymethod" value="ideal">
                 <label for="ideal"><img src="../img/Icons/ideallogo.png" height="20px"> iDeal</label><br>
