@@ -1,4 +1,5 @@
 <?php
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
@@ -11,10 +12,12 @@ require_once ($root . "/Email/mailer.php");
 require_once ($root . "/Model/customer.php");
 require_once ($root . "/Model/orders.php");
 
+
 session_start();
 use Mollie\Api\MollieApiClient;
 require_once "lib/mollie/vendor/autoload.php";
 
+try{
 $mollie = new MollieApiClient();
 $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 
@@ -25,10 +28,6 @@ $_SESSION['paymentId'] = "tr_VVa4KA5rtb";
 $payment = $_SESSION['paymentId'];
 
 $paymentnew = $mollie->payments->get($payment);
-
-$mailer = new mailer();
-
-try{
 
     $firstname = $_SESSION['firstname'];
     $lastname = $_SESSION['lastname'];
@@ -71,6 +70,8 @@ try{
 }
 
 catch (Exception $exception){
+
+    $mailer = new mailer();
    $message = $exception->getMessage();
     $mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: {$_POST['id']}, $message");
 }
