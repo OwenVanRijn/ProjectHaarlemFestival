@@ -1,11 +1,5 @@
 <?php
 require_once "./lib/dompdf/autoload.inc.php";
-require_once  "./Service/ticketService.php";
-
-
-$service = new ticketService();
-
-$array = $service->getTicketsByOrder(2);
 
 ob_start();
 include 'htmlpdf.php';
@@ -30,6 +24,10 @@ $dompdf->render();
 
 // Output the generated PDF to Browser
 $dompdf->stream();
+
+$output = $dompdf->output();
+
+file_put_contents('ticket_order'.uniqid(), $output);
 
 ?>
 

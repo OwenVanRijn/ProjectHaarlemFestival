@@ -45,7 +45,7 @@ if(isset($_POST['submit'])){
         </section>
 
 
-        <form method="post">
+        <form method="post" action="payment.php">
             <h2>Your information</h2>
             <h4>Please fill in your personal information</h4>
 

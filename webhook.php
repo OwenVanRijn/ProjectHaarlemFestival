@@ -67,6 +67,8 @@ $customer->addCustomer($firstname, $lastname, $email);
         $ticket->insertTicket($item->getId(), $customerCreated->getId(), $orderCreated->getId(), 1);
     }
 
+    //For success page and email
     $_SESSION['orderId'] = $orderCreated->getId();
+
 
 ?>

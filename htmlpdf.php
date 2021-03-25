@@ -2,9 +2,15 @@
 require_once  "./Service/ticketService.php";
 require_once  "./Service/activityService.php";
 require_once "./lib/barcodegen/vendor/autoload.php";
-$ticket = new ticketService();
 $activity = new activityService();
-$array = $ticket->getTicketsByOrder(2);
+
+$id = $_SESSION['orderId'];
+
+function catchTicketArray($orderId){
+    $ticket = new ticketService();
+    return $ticket->getTicketsByOrder($orderId);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +27,7 @@ $array = $ticket->getTicketsByOrder(2);
 
         <section class="container">
             <?php
-            foreach ($array as $item){
+            foreach (catchTicketArray($id) as $item){
                 echo "<section class = 'row' style='border-style: solid; margin: 2%; padding: 2%'>";
                 echo "<section class='col-sm-10'>";
                 $date = date_format($item->getActivity()->getDate(), "d/m/y");
