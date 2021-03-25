@@ -8,12 +8,7 @@ require_once "../Email/mailer.php";
 
 if(isset($_SESSION['cart'])){
     $cart = $_SESSION['cart'];
-
 }
-
-$firstname = $_SESSION['firstname'];
-$lastname = $_SESSION['lastname'];
-$email = $_SESSION['email'];
 
 $total = $_SESSION['total'];
 
@@ -22,6 +17,10 @@ require_once "../lib/mollie/vendor/autoload.php";
 
 $mollie = new MollieApiClient();
 $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
+
+$newCustomer = $_SESSION['new'];
+
+echo $newCustomer;
 
 if(isset($_POST['pay'])){
 
@@ -32,7 +31,7 @@ if(isset($_POST['pay'])){
         ],
         "description" => "Haarlem Festival",
         "redirectUrl" => "https://haarlemfestival.louellacreemers.nl/success.php",
-        "webhookUrl"  => "https://haarlemfestival.louellacreemers.nl/webhook.php?id={$newCustomer->getId()}"
+        "webhookUrl"  => "https://haarlemfestival.louellacreemers.nl/webhook.php?id={$newCustomer}"
     ]);
 
     header("Location: " . $payment->getCheckoutUrl(), true, 303);
