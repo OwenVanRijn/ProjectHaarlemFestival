@@ -69,10 +69,4 @@ class shoppingcartDB extends sqlModel
             $sqlRes[self::sqlTableName . "createDate"]
         );
     }
-
-
-    public function addShoppingcartToDatabase() //toevoegen van shoppingcartItemsAanDatabase
-    {
-
-    }
 }

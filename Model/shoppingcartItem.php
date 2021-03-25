@@ -13,7 +13,7 @@ class shoppingcartItem extends sqlModel
     private float $price; //prijs per item
 
     protected const sqlTableName = "shoppingcartItem";
-    protected const sqlFields = ["amount", "price"];
+    protected const sqlFields = ["id", "shoppingcartId", "activityId", "amount", "price"];
     protected const sqlLinks = ["shoppingcartId" => shoppingcartDB::class, "activityId" => activity::class];
 
     public function constructFull(int $id, shoppingcartDB $shoppingcart, activity $activity, int $amount, float $price)

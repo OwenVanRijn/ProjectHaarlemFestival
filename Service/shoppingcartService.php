@@ -134,15 +134,16 @@ class shoppingcartService extends baseService
         $this->getShoppingcart()->removeFromShoppingcartItemsById($id);
     }
 
-
-    public function getAllFromDB()
-    {
-        return $this->shoppingcartItemDAO->get();
-    }
-
-
     public function getShoppingcartItemsCount()
     {
         return $this->getShoppingcart()->getShoppingcartItemsCount();
+    }
+
+    public function unsetShoppingcart()
+    {
+        if ($this->getShoppingcart()->unsetShoppingcartItemById()) {
+            return true;
+        }
+
     }
 }

@@ -12,8 +12,7 @@ require_once($root . "/Service/shoppingcartService.php");
 require_once($root . "/Service/shoppingcartServiceDB.php");
 
 $shoppingcartServiceDB = new shoppingcartServiceDB();
-$test = $shoppingcartServiceDB->getShoppingcartItems();
-var_dump($test);
+$shoppingcartServiceDB->addShoppingcartToDatabase();
 ?>
 
 

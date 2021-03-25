@@ -163,4 +163,12 @@ class activityService extends baseService
 
         return $activities;
     }
+
+    public function getById($id)
+    {
+        return $this->db->get([
+            "order" => ["activity.date", "activity.starttime", "activity.endtime"],
+            "id" => $id
+        ]);
+    }
 }

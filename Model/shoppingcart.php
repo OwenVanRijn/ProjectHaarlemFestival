@@ -131,11 +131,9 @@ class shoppingcart extends sqlModel
         return $this;
     }
 
-    public function addShoppingcartToDatabase() //toevoegen van shoppingcartItemsAanDatabase
+    public function unsetShoppingcartItemById($shoppingcartItemId, $amount) //aanpassen
     {
-        $shoppingcartItems = $this->getShoppingcartItems();
-        $shoppingcartItems[$shoppingcartItemId] = $amount;
-        $this->setShoppingcartItems($shoppingcartItems);
-        return $this;
+        $this->cookieManager->del();
+        return true;
     }
 }
