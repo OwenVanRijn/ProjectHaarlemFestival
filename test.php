@@ -18,7 +18,7 @@ ini_set('display_errors', -1);
 
     //$email->sendMail("louellacreemers@gmail.com", "Test", "This is a test");
 
-    var_dump($test->getFromId(2));
+    var_dump($test->getFromId($test->addCustomer("firstname", "lastname", "email")));
 
 //    $jazz = new jazzactivityService();
 //    $food = new foodactivityService();
