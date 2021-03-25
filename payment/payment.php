@@ -20,11 +20,11 @@ $mollie = new MollieApiClient();
 $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 
 
+$id = $_GET['id'];
+echo $id;
+
 if(isset($_POST['pay'])){
 
-    $id = $_GET['id'];
-
-    echo $id;
 
     $payment = $mollie->payments->create([
         "amount" => [
