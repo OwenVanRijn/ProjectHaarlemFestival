@@ -5,7 +5,7 @@ ini_set('display_errors', -1);
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once "../Email/mailer.php";
-require_once ("../Service/customerService.php");
+
 
 if(isset($_SESSION['cart'])){
     $cart = $_SESSION['cart'];
@@ -31,10 +31,11 @@ if(isset($_POST['pay'])){
         ],
         "description" => "Haarlem Festival",
         "redirectUrl" => "https://haarlemfestival.louellacreemers.nl/success.php",
-        "webhookUrl"  => "https://haarlemfestival.louellacreemers.nl/webhook.php?id={$id}"
+        "webhookUrl"  => "https://haarlemfestival.louellacreemers.nl/webhook.php?id=$id"
     ]);
 
-    header("Location: " . $payment->getCheckoutUrl(), true, 303);
+    var_dump($payment->webhookUrl);
+    //header("Location: " . $payment->getCheckoutUrl(), true, 303);
 }
 ?>
 
