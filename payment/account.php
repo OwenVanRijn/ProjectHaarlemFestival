@@ -16,9 +16,9 @@ if(isset($_POST['submit'])) {
 
     $id =$customer->addCustomer($firstname, $lastname, $email);
 
-    var_dump($id);
+    $_SESSION['id'] = $id;
 
-    //$_SESSION['id'] = $id;
+    header("location: https://haarlemfestival.louellacreemers.nl/payment/payment.php?id={$id}");
 }
 
 ?>
