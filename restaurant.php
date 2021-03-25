@@ -38,12 +38,12 @@ if (isset($_POST["gotooverview"])) {
 genNavBar();
 ?>
 <header>
-    <div class="title">
+    <section class="title">
         <h1 class="main-title">Dance</h1>
         <p class="main-title under-title">Haarlem Festival, for the people that enjoy
             <br>a good time
         </p>
-    </div>
+    </section>
 </header>
 
 <section class="content">
