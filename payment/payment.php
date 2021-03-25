@@ -11,6 +11,7 @@ if(isset($_SESSION['cart'])){
 
 }
 
+
 $firstname = $_SESSION['firstname'];
 $lastname = $_SESSION['lastname'];
 $email = $_SESSION['email'];
@@ -38,7 +39,9 @@ if(isset($_POST['pay'])){
         "webhookUrl"  => "https://haarlemfestival.louellacreemers.nl/webhook.php"
     ]);
 
-    header("Location: https://haarlemfestival.louellacreemers.nl/webhook.php");
+    if($payment->isPaid()){
+        header("Location: https://haarlemfestival.louellacreemers.nl/webhook.php");
+    }
 
     header("Location: " . $payment->getCheckoutUrl(), true, 303);
 }
