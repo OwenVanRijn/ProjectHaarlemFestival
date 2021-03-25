@@ -34,8 +34,8 @@ if(isset($_POST['pay'])){
         "webhookUrl"  => "https://haarlemfestival.louellacreemers.nl/webhook.php?id=$id"
     ]);
 
-    var_dump($payment->webhookUrl);
-    //header("Location: " . $payment->getCheckoutUrl(), true, 303);
+    //var_dump($payment->webhookUrl);
+    header("Location: " . $payment->getCheckoutUrl(), true, 303);
 }
 ?>
 
