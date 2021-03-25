@@ -12,6 +12,9 @@ if(isset($_POST['submit'])){
     $_SESSION['firstname'] = $firstname;
     $_SESSION['lastname'] = $lastname;
     $_SESSION['email'] = $email;
+
+    echo $firstname;
+    echo $_SESSION['firstname'];
 }
 ?>
 
@@ -42,7 +45,7 @@ if(isset($_POST['submit'])){
         </section>
 
 
-        <form method="post" action="payment.php">
+        <form method="post">
             <h2>Your information</h2>
             <h4>Please fill in your personal information</h4>
 
@@ -75,7 +78,7 @@ if(isset($_POST['submit'])){
                     var visable = (box.checked) ? "block" : "none";
                     document.getElementById(it).style.display = visable;
                 }
-            </script
+            </script>
             <section>
                 <input class="stepNext" type="submit" name="submit" value="Next step">
             </section>
