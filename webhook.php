@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
@@ -14,49 +14,22 @@ require_once ($root . "/Model/orders.php");
 
 $mailer = new mailer();
 
-
-session_start();
 use Mollie\Api\MollieApiClient;
 require_once $root . "/lib/mollie/vendor/autoload.php";
 
-$mollie = new MollieApiClient();
-$mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 
 $mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: {$_POST['id']}");
 
 $cartservice = $_SESSION['cart'];
-
-$_SESSION['paymentId'] = "tr_VVa4KA5rtb";
-
-$payment = $_SESSION['paymentId'];
-
-$paymentnew = $mollie->payments->get($payment);
-
-$firstname = $_SESSION['firstname'];
-$lastname = $_SESSION['lastname'];
-$email = $_SESSION['email'];
-
-$mailer->sendMail("louellacreemers@gmail.com", "info", " Test 1:$firstname, $lastname, $email");
-//
-//echo $firstname;
-//echo $lastname;
-//echo $email;
-
+$id = $_GET['id'];
 
 $customer = new customerService();
 $order = new ordersService();
 $ticket = new ticketService();
 
-$customer->addCustomer($firstname, $lastname, $email);
-
-$customerCreated = $customer->getFromEmail($email);
-
-$id =  $customerCreated->getId();
-$mailer->sendMail("louellacreemers@gmail.com", "Customer created", "test2: $id");
-
 $orderQuery = $order->insertOrder($id);
 
-$orderCreated = $order->getByCustomer($customerCreated->getId());
+$orderCreated = $order->getByCustomer($id);
 
 foreach ($cartservice as $item){
 
@@ -67,14 +40,11 @@ foreach ($cartservice as $item){
         $item = $item->getActivity();
     }
 
-    $ticket->insertTicket($item->getId(), $customerCreated->getId(), $orderCreated->getId(), 1);
+    $ticket->insertTicket($item->getId(), $id, $orderCreated->getId(), 1);
 
 
 }
 
-//For success page and pdf
-$_SESSION['orderId'] = $orderCreated->getId();
-
-$mailer->sendMail("louellacreemers@gmail.com", "Customer created", "test3: ");
-
+////For success page and pdf
+//$_SESSION['orderId'] = $orderCreated->getId();
 ?>
