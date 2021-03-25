@@ -12,13 +12,11 @@ if(isset($_POST['submit'])) {
     $lastname = $_POST['lastname'];
     $email = $_POST['email'];
 
-    $customer = new customerService();
+    $customer = new customerService();;
 
-    $customer->addCustomer($firstname, $lastname, $email);
+    $id =$customer->addCustomer($firstname, $lastname, $email);
 
-    //$id =
-
-    var_dump($customer->getFromEmail($email)->getId());
+    var_dump($id);
 
     //$_SESSION['id'] = $id;
 }
