@@ -7,7 +7,6 @@ ini_set('display_errors', -1);
     require_once ("Service/activityService.php");
     require_once ("Service/customerService.php");
     require_once ("DAL/activityDAO.php");
-    require_once("UI/tableGenerator.php");
     require_once("Service/restaurantTypeLinkService.php");
     require_once ("UI/navBarCMSGenerator.php");
     require_once ("DAL/accountDAO.php");
