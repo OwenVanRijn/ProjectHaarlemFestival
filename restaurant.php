@@ -101,7 +101,7 @@ if (isset($_POST["gotooverview"])) {
                     <h2 id='starsHeader'><?php echo $restaurantName ?></h2>
                     <?php
                     for ($x = 0; $x < $stars; $x++) {
-                        echo "<img class='stars' src='/img/icons/star.png' alt='ster'>";
+                        echo "<img class='stars' src='/img/Icons/star.png' alt='ster'>";
                     }
 
                     if (!empty($description)) {
@@ -124,7 +124,7 @@ if (isset($_POST["gotooverview"])) {
                             alt="Photo of <?php echo $restaurantName ?>" width="300"></p>
                 </section>
                 <section class="restaurantContentInfoPictureCosts">
-                    <img class="imgIcons" src="/img/icons/costs.png" alt="costs">
+                    <img class="imgIcons" src="/img/Icons/costs.png" alt="costs">
                 </section>
                 <section class="restaurantContentInfoCosts">
                     <h3 class="informationRestaurantLabel">Costs</h3>
@@ -146,7 +146,7 @@ if (isset($_POST["gotooverview"])) {
                     ?>
                 </section>
                 <section class="restaurantContentInfoPictureTime">
-                    <img class="imgIcons" src="/img/icons/clockb.png" alt="clock">
+                    <img class="imgIcons" src="/img/Icons/clockb.png" alt="clock">
                 </section>
                 <section class="restaurantContentInfoSessions">
                     <h3 class="informationRestaurantLabel">Sessions</h3>
@@ -174,7 +174,7 @@ if (isset($_POST["gotooverview"])) {
                     ?>
                 </section>
                 <section class="restaurantContentInfoPictureLocation">
-                    <p><img class="imgIcons" src="/img/icons/location.png" alt="location"></p>
+                    <p><img class="imgIcons" src="/img/Icons/location.png" alt="location"></p>
                 </section>
                 <section class="restaurantContentInfoAddress">
                     <h3 class="informationRestaurantLabel">Location</h3>
@@ -191,7 +191,7 @@ if (isset($_POST["gotooverview"])) {
                     ?>
                 </section>
                 <section class="restaurantContentInfoPictureLinks">
-                    <img class="imgIcons" id="restaurantContentInfoPictureLinks" src="/img/icons/links.png" alt="links">
+                    <img class="imgIcons" id="restaurantContentInfoPictureLinks" src="/img/Icons/links.png" alt="links">
                 </section>
                 <section class="restaurantContentInfoLinks">
                     <?php
