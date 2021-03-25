@@ -8,6 +8,7 @@ require_once ($root . "/DAL/activityDAO.php");
 require_once ("restaurantService.php");
 require_once ("locationService.php");
 require_once ("baseService.php");
+require_once ("activityLogService.php");
 
 class activityService extends baseService
 {
