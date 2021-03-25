@@ -16,11 +16,11 @@ if(isset($_POST['submit'])) {
 
     $customer->addCustomer($firstname, $lastname, $email);
 
-    $id = $customer->getFromEmail($email)->getId();
+    //$id =
 
-    $_SESSION['id'] = $id;
+    var_dump($customer->getFromEmail($email)->getId());
 
-    echo $_SESSION['id'];
+    //$_SESSION['id'] = $id;
 }
 
 ?>
