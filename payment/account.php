@@ -16,7 +16,7 @@ if(isset($_POST['submit'])){
 
     $id = $customer->getFromEmail($email)->getId();
 
-    header("location: https://haarlemfestival.louellacreemers.nl/payment/payment.php?id={$id}");
+    //header("location: https://haarlemfestival.louellacreemers.nl/payment/payment.php?id={$id}");
 }
 
 ?>
