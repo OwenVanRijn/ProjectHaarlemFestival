@@ -2,7 +2,7 @@
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/UI/navBar.php");
-require_once ($root . "/Service/customerService.php");
+require_once ("./Service/customerService.php");
 
 
 if(isset($_POST['submit'])){
@@ -48,7 +48,7 @@ if(isset($_POST['submit'])){
         </section>
 
 
-        <form method="post" action="payment.php">
+        <form method="post">
             <h2>Your information</h2>
             <h4>Please fill in your personal information</h4>
 
