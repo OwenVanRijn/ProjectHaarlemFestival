@@ -8,7 +8,7 @@ $id = $_SESSION['orderId'];
 
 function catchTicketArray($orderId){
     $ticket = new ticketService();
-    return $ticket->getTicketsByOrder($orderId);
+    return $ticket->getTicketsByOrder(35);
 }
 
 ?>
