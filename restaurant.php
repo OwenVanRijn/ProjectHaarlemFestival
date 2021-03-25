@@ -1,6 +1,6 @@
 <?php
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-require_once($root . "/UI/navBar.php");
+//require_once($root . "/UI/navBar.php");
 require_once($root . "/Service/foodactivityService.php");
 require_once($root . "/Service/restaurantService.php");
 require_once($root . "/Service/restaurantTypeLinkService.php");
@@ -9,10 +9,10 @@ $restaurantService = new restaurantService();
 $restaurantTypeService = new restaurantTypeLinkService();
 
 
-if (isset($_POST["gotooverview"])) {
-    header('Location: food.php');
-    exit();
-}
+//if (isset($_POST["gotooverview"])) {
+//    header('Location: food.php');
+//    exit();
+//}
 
 ?>
 
