@@ -58,7 +58,7 @@ $customer->addCustomer($firstname, $lastname, $email);
 
         if (get_class($item) == "activity") {
             $item = $item;
-                    }
+        }
        else {
           $item = $item->getActivity();
        }
@@ -67,8 +67,9 @@ $customer->addCustomer($firstname, $lastname, $email);
         $ticket->insertTicket($item->getId(), $customerCreated->getId(), $orderCreated->getId(), 1);
     }
 
-    //For success page and email
+    //For success page and pdf
     $_SESSION['orderId'] = $orderCreated->getId();
+
 
 
 ?>

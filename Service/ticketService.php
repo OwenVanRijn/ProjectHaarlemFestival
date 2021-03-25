@@ -12,7 +12,7 @@ class ticketService extends  baseService
         $this->db = new ticketDAO();
     }
 
-    public function getTicketsByOrder(string $orderId) : array{
+    public function getTicketsByOrder(string $orderId){
         return $this->db->get([
             "ticket.orderId" => new dbContains("$orderId")
         ]);
