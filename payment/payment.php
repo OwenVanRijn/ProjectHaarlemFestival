@@ -18,9 +18,6 @@ require_once "../lib/mollie/vendor/autoload.php";
 $mollie = new MollieApiClient();
 $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 
-$newCustomer = $_SESSION['new'];
-
-echo $newCustomer;
 
 if(isset($_POST['pay'])){
 
@@ -31,7 +28,7 @@ if(isset($_POST['pay'])){
         ],
         "description" => "Haarlem Festival",
         "redirectUrl" => "https://haarlemfestival.louellacreemers.nl/success.php",
-        "webhookUrl"  => "https://haarlemfestival.louellacreemers.nl/webhook.php?id={$newCustomer}"
+        "webhookUrl"  => "https://haarlemfestival.louellacreemers.nl/webhook.php?id={}"
     ]);
 
     header("Location: " . $payment->getCheckoutUrl(), true, 303);

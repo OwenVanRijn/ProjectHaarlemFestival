@@ -5,17 +5,22 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/UI/navBar.php");
 require_once $root . "/Service/customerService.php";
 
+
+$id = "";
 if(isset($_POST['submit'])){
     $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
     $email = $_POST['email'];
-    
+
     $customer = new customerService();
 
     $customer->addCustomer($firstname, $lastname, $email);
 
-    $_SESSION['new'] = $customer->getFromEmail($email)->getId();
+    $id .= $customer->getFromEmail($email)->getId();
 }
+
+header("Location= https://haarlemfestival.louellacreemers.nl/payment/payment.php?id={$id}");
+
 ?>
 
 <!DOCTYPE html>
@@ -45,7 +50,7 @@ if(isset($_POST['submit'])){
         </section>
 
 
-        <form method="post" action="payment.php">
+        <form method="post">
             <h2>Your information</h2>
             <h4>Please fill in your personal information</h4>
 
