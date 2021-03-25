@@ -18,7 +18,7 @@
 
     //$email->sendMail("louellacreemers@gmail.com", "Test", "This is a test");
 
-    $test->getFromId(2);
+    var_dump($test->getFromId(2));
 
 //    $jazz = new jazzactivityService();
 //    $food = new foodactivityService();
