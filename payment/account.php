@@ -18,9 +18,6 @@ if(isset($_POST['submit'])){
 
     $customer->addCustomer($firstname, $lastname, $email);
 
-    $newCustomer = $customer->getFromEmail($email);
-
-
     header("Location: https://haarlemfestival.louellacreemers.nl/payment/payment.php");
 }
 ?>
