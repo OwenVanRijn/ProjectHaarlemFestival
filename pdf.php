@@ -6,11 +6,10 @@ ob_start();
 include 'ticketpdf.php';
 $rawHtml = ob_get_clean();
 
-
 use Dompdf\Dompdf;
 
 $dompdf = new Dompdf();
-$dompdf->loadHtml("hello world");
+$dompdf->loadHtml($rawHtml);
 
 // (Optional) Setup the paper size and orientation
 $dompdf->setPaper('A4', 'landscape');
