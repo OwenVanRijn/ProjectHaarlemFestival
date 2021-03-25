@@ -34,19 +34,8 @@ if (isset($_POST["gotooverview"])) {
 </head>
 
 <body>
-<?php
-genNavBar();
-?>
-<header>
-    <section class="title">
-        <h1 class="main-title">Dance</h1>
-        <p class="main-title under-title">Haarlem Festival, for the people that enjoy
-            <br>a good time
-        </p>
-    </section>
-</header>
 
-<section class="content">
+<main class="content">
     <section>
         <?php
         if (isset($_GET["restaurantId"])) {
@@ -231,7 +220,7 @@ genNavBar();
 
         ?>
     </section>
-</section>
+</main>
 </body>
 
 </html>
