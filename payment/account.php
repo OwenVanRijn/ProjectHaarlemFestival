@@ -5,8 +5,6 @@ require_once($root . "/UI/navBar.php");
 require_once ($root . "/Service/customerService.php");
 
 
-
-$id = "";
 if(isset($_POST['submit'])){
     $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
@@ -16,7 +14,9 @@ if(isset($_POST['submit'])){
 
     $customer->addCustomer($firstname, $lastname, $email);
 
-    $id .= $customer->getFromEmail($email)->getId();
+    $id = $customer->getFromEmail($email)->getId();
+
+    header("location: https://haarlemfestival.louellacreemers.nl/payment/payment.php?id={$id}");
 }
 
 ?>
@@ -48,7 +48,7 @@ if(isset($_POST['submit'])){
         </section>
 
 
-        <form method="post" action="payment.php?id=<?php echo $id?>">
+        <form method="post" action="payment.php">
             <h2>Your information</h2>
             <h4>Please fill in your personal information</h4>
 
