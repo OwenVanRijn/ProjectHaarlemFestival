@@ -10,7 +10,7 @@ $activity = new activityService();
 $id = $_SESSION['orderId'];
 $ticket = new ticketService();
 
-$returnTick = $ticket->getTicketsByOrder($id + 1);
+$returnTick = $ticket->getTicketsByOrder($id);
 ?>
 
 <!DOCTYPE html>
