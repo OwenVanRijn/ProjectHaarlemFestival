@@ -37,7 +37,7 @@ if(isset($_POST['pay'])){
     ]);
 
     //var_dump($payment->webhookUrl);
-    //header("Location: " . $payment->getCheckoutUrl(), true, 303);
+    header("Location: " . $payment->getCheckoutUrl(), true, 303);
 }
 ?>
 
