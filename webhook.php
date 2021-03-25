@@ -28,44 +28,52 @@ $paymentnew = $mollie->payments->get($payment);
 
 $mailer = new mailer();
 
-$firstname = $_SESSION['firstname'];
-$lastname = $_SESSION['lastname'];
-$email = $_SESSION['email'];
+try{
+
+    $firstname = $_SESSION['firstname'];
+    $lastname = $_SESSION['lastname'];
+    $email = $_SESSION['email'];
 //
 //echo $firstname;
 //echo $lastname;
 //echo $email;
 
-$mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: {$_POST['id']}");
 
-$customer = new customerService();
-$order = new ordersService();
-$ticket = new ticketService();
+    $customer = new customerService();
+    $order = new ordersService();
+    $ticket = new ticketService();
 
-$customer->addCustomer($firstname, $lastname, $email);
+    $customer->addCustomer($firstname, $lastname, $email);
 
-$customerCreated = $customer->getFromEmail($email);
+    $customerCreated = $customer->getFromEmail($email);
 
-$id =  $customerCreated->getId();
+    $id =  $customerCreated->getId();
 
-$orderQuery = $order->insertOrder($id);
+    $orderQuery = $order->insertOrder($id);
 
-$orderCreated = $order->getByCustomer($customerCreated->getId());
+    $orderCreated = $order->getByCustomer($customerCreated->getId());
 
-foreach ($cartservice as $item){
+    foreach ($cartservice as $item){
 
-    if (get_class($item) == "activity") {
-        $item = $item;
+        if (get_class($item) == "activity") {
+            $item = $item;
+        }
+        else {
+            $item = $item->getActivity();
+        }
+
+        var_dump($orderCreated->getId());
+        $ticket->insertTicket($item->getId(), $customerCreated->getId(), $orderCreated->getId(), 1);
     }
-   else {
-      $item = $item->getActivity();
-   }
-
-    var_dump($orderCreated->getId());
-    $ticket->insertTicket($item->getId(), $customerCreated->getId(), $orderCreated->getId(), 1);
-}
 
 //For success page and pdf
-$_SESSION['orderId'] = $orderCreated->getId();
+    $_SESSION['orderId'] = $orderCreated->getId();
+}
+
+catch (Exception $exception){
+   $message = $exception->getMessage();
+    $mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: {$_POST['id']}, $message");
+}
+
 
 ?>
