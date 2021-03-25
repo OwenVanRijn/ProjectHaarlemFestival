@@ -22,9 +22,7 @@ $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 
 if(isset($_POST['pay'])){
 
-    $id = $_GET['id'];
-    $customer = new customerService();
-    $newCus = $customer->getFromId();
+    $id = $_SESSION['id'];
 
     $payment = $mollie->payments->create([
         "amount" => [
@@ -33,7 +31,7 @@ if(isset($_POST['pay'])){
         ],
         "description" => "Haarlem Festival",
         "redirectUrl" => "https://haarlemfestival.louellacreemers.nl/success.php",
-        "webhookUrl"  => "https://haarlemfestival.louellacreemers.nl/webhook.php?id={}"
+        "webhookUrl"  => "https://haarlemfestival.louellacreemers.nl/webhook.php?id={$id}"
     ]);
 
     header("Location: " . $payment->getCheckoutUrl(), true, 303);

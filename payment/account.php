@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/UI/navBar.php");
@@ -16,7 +17,7 @@ if(isset($_POST['submit'])){
 
     $id = $customer->getFromEmail($email)->getId();
 
-    header("location: https://haarlemfestival.louellacreemers.nl/payment/payment.php?id={$id}");
+    $_SESSION['id'] = $id;
 }
 
 ?>
