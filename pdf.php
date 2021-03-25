@@ -6,6 +6,8 @@ ob_start();
 include 'ticketpdf.php';
 $rawHtml = ob_get_clean();
 
+var_dump($rawHtml);
+
 use Dompdf\Dompdf;
 
 $dompdf = new Dompdf();
@@ -18,6 +20,7 @@ $dompdf->setPaper('A4', 'landscape');
 $dompdf->render();
 
 // Output the generated PDF to Browser
+ob_end_clean();
 $dompdf->stream();
 
 ?>
