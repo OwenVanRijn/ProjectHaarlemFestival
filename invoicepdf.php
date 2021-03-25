@@ -1,7 +1,7 @@
 <?php
 $activity = new activityService();
-$id = $_SESSION['orderId'];
-$total = $_SESSION['total'];
+$id = 36; //$_SESSION['orderId'];
+$total = 35.00;$_SESSION['total'];
 
 $ticket = new ticketService();
 
