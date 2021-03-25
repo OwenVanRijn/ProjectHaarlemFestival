@@ -15,6 +15,8 @@ if(isset($_POST['submit'])){
 
     echo $firstname;
     echo $_SESSION['firstname'];
+
+    header("Location: https://haarlemfestival.louellacreemers.nl/payment/payment.php");
 }
 ?>
 
@@ -45,7 +47,7 @@ if(isset($_POST['submit'])){
         </section>
 
 
-        <form method="post" action="payment.php">
+        <form method="post">
             <h2>Your information</h2>
             <h4>Please fill in your personal information</h4>
 
