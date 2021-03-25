@@ -87,7 +87,7 @@ $shoppingcartServiceDB->addShoppingcartToDatabase();
 
 
             echo "<br><br> SHOPPINGCARTITEMSDB <br><br>";
-            $shoppingcartItemsDB = $shoppingcartService->getAllFromDB();
+            $shoppingcartItemsDB = $shoppingcartServiceDB->getShoppingcart();
             var_dump($shoppingcartItemsDB);
 
             echo "<br><br> SHOPPINGCARTITEMSDB <br><br>";

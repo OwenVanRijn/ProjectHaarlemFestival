@@ -131,7 +131,7 @@ class shoppingcart extends sqlModel
         return $this;
     }
 
-    public function unsetShoppingcartItemById($shoppingcartItemId, $amount) //aanpassen
+    public function unsetShoppingcart() //aanpassen
     {
         $this->cookieManager->del();
         return true;
