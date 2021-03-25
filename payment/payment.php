@@ -4,23 +4,16 @@ session_start();
 ini_set('display_errors', -1);
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-require_once $root . "/Service/customerService.php";
 require_once "../Email/mailer.php";
-
 
 if(isset($_SESSION['cart'])){
     $cart = $_SESSION['cart'];
 
 }
 
-
 $firstname = $_SESSION['firstname'];
 $lastname = $_SESSION['lastname'];
 $email = $_SESSION['email'];
-
-echo $firstname;
-echo $lastname;
-echo $email;
 
 $total = $_SESSION['total'];
 
@@ -31,11 +24,6 @@ $mollie = new MollieApiClient();
 $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 
 if(isset($_POST['pay'])){
-    $customer = new customerService();
-
-    $customer->addCustomer($firstname, $lastname, $email);
-
-    $newCustomer = $customer->getFromEmail($email);
 
     $payment = $mollie->payments->create([
         "amount" => [

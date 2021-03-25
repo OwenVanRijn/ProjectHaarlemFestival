@@ -3,6 +3,7 @@ session_start();
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/UI/navBar.php");
+require_once $root . "/Service/customerService.php";
 
 if(isset($_POST['submit'])){
     $firstname = $_POST['firstname'];
@@ -13,8 +14,12 @@ if(isset($_POST['submit'])){
     $_SESSION['lastname'] = $lastname;
     $_SESSION['email'] = $email;
 
-    echo $firstname;
-    echo $_SESSION['firstname'];
+    $customer = new customerService();
+
+    $customer->addCustomer($firstname, $lastname, $email);
+
+    $newCustomer = $customer->getFromEmail($email);
+
 
     header("Location: https://haarlemfestival.louellacreemers.nl/payment/payment.php");
 }
