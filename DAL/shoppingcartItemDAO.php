@@ -21,6 +21,7 @@ class shoppingcartItemDAO extends dynamicQueryGen
      */
     public function get(array $filter = [])
     {
+        var_dump(parent::get($filter));
         return parent::get($filter);
     }
 }
