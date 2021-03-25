@@ -1,6 +1,6 @@
 <?php
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-//require_once($root . "/UI/navBar.php");
+require_once($root . "/UI/navBar.php");
 require_once($root . "/Service/foodactivityService.php");
 require_once($root . "/Service/restaurantService.php");
 require_once($root . "/Service/restaurantTypeLinkService.php");
@@ -9,10 +9,10 @@ $restaurantService = new restaurantService();
 $restaurantTypeService = new restaurantTypeLinkService();
 
 
-//if (isset($_POST["gotooverview"])) {
-//    header('Location: food.php');
-//    exit();
-//}
+if (isset($_POST["gotooverview"])) {
+    header('Location: food.php');
+    exit();
+}
 
 ?>
 
@@ -20,31 +20,20 @@ $restaurantTypeService = new restaurantTypeLinkService();
 <!DOCTYPE html>
 <html>
 
-<!--<head>-->
-<!--    <title>Restaurant - Haarlem Festival</title>-->
-<!--    <link rel="stylesheet" href="css/style.css">-->
-<!--    <link rel="stylesheet" href="css/food.css">-->
-<!---->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="keywords"-->
-<!--          content="Haarlem, festival, jazz, food, history, party, feest, geschiedenis, eten, restaurant">-->
-<!--    <meta name="description" content="Haarlem Festival">-->
-<!--    <meta name="author" content="Haarlem Festival">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--</head>-->
-<!---->
-<!--<body>-->
-<!---->
-<!---->
-<!--<header>-->
-<!--    <div class="title">-->
-<!--        <h1 class="main-title">Food</h1>-->
-<!--        <p class="main-title under-title">Haarlem has several restaurants in the center.-->
-<!--            <br>-->
-<!--            We have selected some of these restaurants for you and give you a great experience.-->
-<!--        </p>-->
-<!--    </div>-->
-<!--</header>-->
+<head>
+    <title>Restaurant - Haarlem Festival</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/food.css">
+
+    <meta charset="UTF-8">
+    <meta name="keywords"
+          content="Haarlem, festival, jazz, food, history, party, feest, geschiedenis, eten, restaurant">
+    <meta name="description" content="Haarlem Festival">
+    <meta name="author" content="Haarlem Festival">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
 
 <main class="content">
     <section>
@@ -112,7 +101,7 @@ $restaurantTypeService = new restaurantTypeLinkService();
                     <h2 id='starsHeader'><?php echo $restaurantName ?></h2>
                     <?php
                     for ($x = 0; $x < $stars; $x++) {
-                        echo "<img class='stars' src='/img/icons/star.png' alt='ster'>";
+                        echo "<img class='stars' src='/img/Icons/star.png' alt='ster'>";
                     }
 
                     if (!empty($description)) {
@@ -135,7 +124,7 @@ $restaurantTypeService = new restaurantTypeLinkService();
                             alt="Photo of <?php echo $restaurantName ?>" width="300"></p>
                 </section>
                 <section class="restaurantContentInfoPictureCosts">
-                    <img class="imgIcons" src="/img/icons/costs.png" alt="costs">
+                    <img class="imgIcons" src="/img/Icons/costs.png" alt="costs">
                 </section>
                 <section class="restaurantContentInfoCosts">
                     <h3 class="informationRestaurantLabel">Costs</h3>
@@ -157,7 +146,7 @@ $restaurantTypeService = new restaurantTypeLinkService();
                     ?>
                 </section>
                 <section class="restaurantContentInfoPictureTime">
-                    <img class="imgIcons" src="/img/icons/clockb.png" alt="clock">
+                    <img class="imgIcons" src="/img/Icons/clockb.png" alt="clock">
                 </section>
                 <section class="restaurantContentInfoSessions">
                     <h3 class="informationRestaurantLabel">Sessions</h3>
@@ -185,7 +174,7 @@ $restaurantTypeService = new restaurantTypeLinkService();
                     ?>
                 </section>
                 <section class="restaurantContentInfoPictureLocation">
-                    <p><img class="imgIcons" src="/img/icons/location.png" alt="location"></p>
+                    <p><img class="imgIcons" src="/img/Icons/location.png" alt="location"></p>
                 </section>
                 <section class="restaurantContentInfoAddress">
                     <h3 class="informationRestaurantLabel">Location</h3>
@@ -202,7 +191,7 @@ $restaurantTypeService = new restaurantTypeLinkService();
                     ?>
                 </section>
                 <section class="restaurantContentInfoPictureLinks">
-                    <img class="imgIcons" id="restaurantContentInfoPictureLinks" src="/img/icons/links.png" alt="links">
+                    <img class="imgIcons" id="restaurantContentInfoPictureLinks" src="/img/Icons/links.png" alt="links">
                 </section>
                 <section class="restaurantContentInfoLinks">
                     <?php
