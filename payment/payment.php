@@ -6,11 +6,6 @@ ini_set('display_errors', -1);
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once "../Email/mailer.php";
 
-
-if(isset($_SESSION['cart'])){
-    $cart = $_SESSION['cart'];
-}
-
 $total = $_SESSION['total'];
 
 use Mollie\Api\MollieApiClient;
@@ -19,9 +14,11 @@ require_once "../lib/mollie/vendor/autoload.php";
 $mollie = new MollieApiClient();
 $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 
-
 $id = $_GET['id'];
-echo $id;
+$secondId = $_SESSION['id'];
+echo "get: $id - post $secondId";
+
+static $newId= '$id';
 
 if(isset($_POST['pay'])){
 
@@ -39,6 +36,10 @@ if(isset($_POST['pay'])){
 
     var_dump($payment->webhookUrl);
     //header("Location: " . $payment->getCheckoutUrl(), true, 303);
+}
+
+function setId($id){
+
 }
 ?>
 
