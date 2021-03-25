@@ -45,31 +45,28 @@ $ticket = new ticketService();
 
 $customer->addCustomer($firstname, $lastname, $email);
 
+$customerCreated = $customer->getFromEmail($email);
 
-    $customerCreated = $customer->getFromEmail("louellacreemers@gmail.com");
+$id =  $customerCreated->getId();
 
-    $id =  $customerCreated->getId();
+$orderQuery = $order->insertOrder($id);
 
-    $orderQuery = $order->insertOrder($id);
+$orderCreated = $order->getByCustomer($customerCreated->getId());
 
-    $orderCreated = $order->getByCustomer($customerCreated->getId());
+foreach ($cartservice as $item){
 
-    foreach ($cartservice as $item){
-
-        if (get_class($item) == "activity") {
-            $item = $item;
-        }
-       else {
-          $item = $item->getActivity();
-       }
-
-        var_dump($orderCreated->getId());
-        $ticket->insertTicket($item->getId(), $customerCreated->getId(), $orderCreated->getId(), 1);
+    if (get_class($item) == "activity") {
+        $item = $item;
     }
+   else {
+      $item = $item->getActivity();
+   }
 
-    //For success page and pdf
-    $_SESSION['orderId'] = $orderCreated->getId();
+    var_dump($orderCreated->getId());
+    $ticket->insertTicket($item->getId(), $customerCreated->getId(), $orderCreated->getId(), 1);
+}
 
-
+//For success page and pdf
+$_SESSION['orderId'] = $orderCreated->getId();
 
 ?>
