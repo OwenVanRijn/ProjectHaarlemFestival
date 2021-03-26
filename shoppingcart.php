@@ -145,7 +145,7 @@ $_SESSION['cartId'] = $cartId;
                         $total += echoDay($datesOfFestival[$i], $dayActivities[$i]);
                     }
                 }
-
+                $_SESSION['total'] = $total;
                 ?>
                 <button class="button1"
                         onclick="window.location.href='/payment/account.php'"><?php echo "Pay €$total" ?> </button>
