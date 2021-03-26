@@ -41,7 +41,7 @@ foreach ($items as $item){
         $item = $item->getActivity();
     }
 
-    $ticket->insertTicket($item->getId(), $id, $orderQuery->getId(), 1);
+    $ticket->insertTicket($item->getId(), $id, $orderQuery->getId(), $item->getAmount());
 
 
 }
