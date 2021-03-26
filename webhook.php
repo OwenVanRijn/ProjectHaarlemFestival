@@ -11,6 +11,7 @@ require_once($root . "/Service/ticketService.php");
 require_once ($root . "/Email/mailer.php");
 require_once ($root . "/Model/customer.php");
 require_once ($root . "/Model/orders.php");
+require_once ($root . "/pdf/emailOrderGen.php");
 
 $mailer = new mailer();
 
@@ -19,6 +20,7 @@ $mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: {$_POST['id']}"
 $order = new ordersService();
 $ticket = new ticketService();
 $cart = new shoppingcartServiceDB();
+$emailgen = new emailOrderGen();
 
 $id = $_GET['id'];
 $cartId = $_GET['cart'];
@@ -52,10 +54,10 @@ else{
             $item = $item->getActivity();
         }
 
-        $ticket->insertTicket($item->getId(), $id, $orderQuery->getId(), $item->getAmount());
+        $ticket->insertTicket($item->getId(), $id, $orderQuery, $item->getAmount());
     }
 }
 
-////For success page and pdf
-//$_SESSION['orderId'] = $orderCreated->getId();
+$emailgen->sendEmail($orderQuery, $id);
+
 ?>
