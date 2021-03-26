@@ -29,7 +29,8 @@ if(isset($_POST['pay'])){
         "webhookUrl"  => "https://haarlemfestival.louellacreemers.nl/webhook.php?id=$secondId&cart=$cartId"
     ]);
 
-    header("Location: " . $payment->getCheckoutUrl(), true, 303);
+    var_dump($payment->webhookUrl);
+    //header("Location: " . $payment->getCheckoutUrl(), true, 303);
 }
 
 function setId($id){
