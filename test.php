@@ -2,6 +2,7 @@
 ini_set('display_errors', -1);
     require_once ("Service/jazzactivityService.php");
     require_once ("Service/foodactivityService.php");
+    require_once ("Service/shoppingcartServiceDB.php");
     require_once ("Service/danceActivityService.php");
     require_once ("Service/ticketService.php");
     require_once ("Service/activityService.php");
@@ -14,11 +15,13 @@ ini_set('display_errors', -1);
 
     $email = new mailer();
 
-    $test = new customerService();
+    $test = new shoppingcartServiceDB();
+
+    var_dump($test->getShoppingcartById(16));
 
     //$email->sendMail("louellacreemers@gmail.com", "Test", "This is a test");
 
-    var_dump($test->getFromId($test->addCustomer("firstname", "lastname", "email")));
+    //var_dump($test->getFromId($test->addCustomer("firstname", "lastname", "email")));
 
 //    $jazz = new jazzactivityService();
 //    $food = new foodactivityService();
