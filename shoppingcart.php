@@ -12,7 +12,9 @@ require_once($root . "/Service/shoppingcartService.php");
 require_once($root . "/Service/shoppingcartServiceDB.php");
 
 $shoppingcartServiceDB = new shoppingcartServiceDB();
-$_SESSION['cartId'] = $shoppingcartServiceDB->addShoppingcartToDatabase();
+$cartId = $shoppingcartServiceDB->addShoppingcartToDatabase();
+
+$_SESSION['cartId'] = $cartId;
 ?>
 
 
@@ -140,10 +142,8 @@ $_SESSION['cartId'] = $shoppingcartServiceDB->addShoppingcartToDatabase();
                     }
                 }
 
-                $_SESSION['total'] = $total;
                 ?>
-                <button class="button1"
-                        onclick="window.location.href='/payment/account.php'"><?php echo "Pay €$total" ?> </button>
+                <button class="button1"><?php echo "Pay €$total" ?> </button>
                 <?php
             }
             else
