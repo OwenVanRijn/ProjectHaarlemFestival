@@ -12,7 +12,7 @@ require_once($root . "/Service/shoppingcartService.php");
 require_once($root . "/Service/shoppingcartServiceDB.php");
 
 $shoppingcartServiceDB = new shoppingcartServiceDB();
-$shoppingcartServiceDB->addShoppingcartToDatabase();
+$_SESSION['cartId'] = $shoppingcartServiceDB->addShoppingcartToDatabase();
 ?>
 
 

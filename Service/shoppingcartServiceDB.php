@@ -65,5 +65,11 @@ class shoppingcartServiceDB extends baseService
         }
     }
 
+    public function getShoppingcartById($id){
+        return $this->shoppingcartItemDAO->get([
+                "id" => $id
+        ]);
+    }
+
 
 }

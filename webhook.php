@@ -5,7 +5,7 @@ ini_set('display_startup_errors', 1);
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/Service/customerService.php");
-require_once($root . "/Service/shoppingcartService.php");
+require_once($root . "/Service/shoppingcartServiceDB.php");
 require_once($root . "/Service/ordersService.php");
 require_once($root . "/Service/ticketService.php");
 require_once ($root . "/Email/mailer.php");
@@ -16,20 +16,23 @@ $mailer = new mailer();
 
 $mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: {$_POST['id']}");
 
-$cartservice = $_SESSION['cart'];
-$id = $_GET['id'];
-
-$mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "CustomerID = {$id}");
-
-$customer = new customerService();
 $order = new ordersService();
 $ticket = new ticketService();
+$cart = new shoppingcartServiceDB();
+
+$id = $_GET['id'];
+$cartId = $_GET['cart'];
+
+$items = (array)$cart->getShoppingcartById($cartId);
+
+$count = count($items);
+
+$mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "CustomerID = {$id}, Count = {$count}");
 
 $orderQuery = $order->insertOrder($id);
 
-$orderCreated = $order->getByCustomer($id);
 
-foreach ($cartservice as $item){
+foreach ($items as $item){
 
     if (get_class($item) == "activity") {
         $item = $item;
@@ -38,7 +41,7 @@ foreach ($cartservice as $item){
         $item = $item->getActivity();
     }
 
-    $ticket->insertTicket($item->getId(), $id, $orderCreated->getId(), 1);
+    $ticket->insertTicket($item->getId(), $id, $orderQuery->getId(), 1);
 
 
 }
