@@ -8,7 +8,7 @@ class ordersService
     }
 
     public function insertOrder(int $customerId){
-        $this->db->insert([
+        return $this->db->insert([
             "status" => 2,
             "customerId" => $customerId
         ]);

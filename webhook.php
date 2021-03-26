@@ -30,7 +30,6 @@ $mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "CustomerID = {$id},
 
 $orderQuery = $order->insertOrder($id);
 
-
 $mailer->sendMail("louellacreemers@gmail.com", "All id", "CustomerID = {$id}, Item = {$items->getId()},
 order = {$orderQuery->getId()}");
 
