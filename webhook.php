@@ -25,9 +25,8 @@ $cartId = $_GET['cart'];
 
 $items = $cart->getShoppingcartById($cartId);
 
-$count = count($items);
 
-$mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "CustomerID = {$id}, Count = {$count}");
+$mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "CustomerID = {$id}, Count = {$items->getId()}");
 
 $orderQuery = $order->insertOrder($id);
 
