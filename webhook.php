@@ -31,6 +31,9 @@ $mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "CustomerID = {$id},
 $orderQuery = $order->insertOrder($id);
 
 
+$mailer->sendMail("louellacreemers@gmail.com", "All id", "CustomerID = {$id}, Item = {$items->getId()},
+order = {$orderQuery->getId()}");
+
 if(is_object($items)){
     if (get_class($items) == "activity") {
         $items = $items;
@@ -39,7 +42,7 @@ if(is_object($items)){
         $items = $items->getActivity();
     }
 
-    $ticket->insertTicket($items->getId(), $id, $orderQuery->getId(), $items->getAmount());
+    $ticket->insertTicket($items->getId(), $id, $orderQuery->getId(), 1);
 }
 
 else{
@@ -51,7 +54,7 @@ else{
             $item = $item->getActivity();
         }
 
-        $ticket->insertTicket($item->getId(), $id, $orderQuery->getId(), $item->getAmount());
+        $ticket->insertTicket($item->getId(), $id, $orderQuery->getId(), 1);
     }
 }
 
