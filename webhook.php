@@ -26,12 +26,11 @@ $cartId = $_GET['cart'];
 $items = $cart->getShoppingcartById($cartId);
 
 
-$mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "CustomerID = {$id}, Count = {$items->getId()}");
+$mailer->sendMail("louellacreemers@gmail.com", "Customer id", "CustomerID = {$id}, Count = {$items->getId()}");
 
 $orderQuery = $order->insertOrder($id);
 
-$mailer->sendMail("louellacreemers@gmail.com", "All id", "CustomerID = {$id}, Item = {$items->getId()},
-order = {$orderQuery->getId()}");
+$mailer->sendMail("louellacreemers@gmail.com", "All id", "CustomerID = {$id},order = $orderQuery");
 
 if(is_object($items)){
     if (get_class($items) == "activity") {
@@ -41,7 +40,7 @@ if(is_object($items)){
         $items = $items->getActivity();
     }
 
-    $ticket->insertTicket($items->getId(), $id, $orderQuery->getId(), 1);
+    $ticket->insertTicket($items->getId(), $id, $orderQuery, 1);
 }
 
 else{
