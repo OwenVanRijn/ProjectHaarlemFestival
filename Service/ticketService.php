@@ -2,7 +2,7 @@
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
 require_once ("baseService.php");
-require_once ("./DAL/ticketDAO.php");
+require_once ($root . "/DAL/ticketDAO.php");
 
 
 class ticketService extends  baseService

@@ -40,7 +40,7 @@ if(is_object($items)){
         $items = $items->getActivity();
     }
 
-    $ticket->insertTicket($items->getId(), $id, $orderQuery, 1);
+    $ticket->insertTicket($items->getId(), $id, $orderQuery, $items->getAmount());
 }
 
 else{
@@ -52,7 +52,7 @@ else{
             $item = $item->getActivity();
         }
 
-        $ticket->insertTicket($item->getId(), $id, $orderQuery->getId(), 1);
+        $ticket->insertTicket($item->getId(), $id, $orderQuery->getId(), $item->getAmount());
     }
 }
 

@@ -7,6 +7,8 @@ ini_set('display_errors', -1);
     require_once ("Service/ticketService.php");
     require_once ("Service/activityService.php");
     require_once ("Service/customerService.php");
+    require_once ("pdf/emailOrderGen.php");
+    require_once ("Service/ordersService.php");
     require_once ("DAL/activityDAO.php");
     require_once("Service/restaurantTypeLinkService.php");
     require_once ("UI/navBarCMSGenerator.php");
@@ -16,10 +18,47 @@ ini_set('display_errors', -1);
     $email = new mailer();
 
     $test = new shoppingcartServiceDB();
+    $ticket = new ticketService();
+    $order = new ordersService();
 
-    var_dump($test->getShoppingcartById(16));
+    $pdf = new emailOrderGen();
 
-    //$email->sendMail("louellacreemers@gmail.com", "Test", "This is a test");
+    $pdf->sendEmail(60, 101);
+
+//    $orderQuery = $order->insertOrder(103);
+//
+//    echo "$orderQuery";
+
+    //$items = $test->getShoppingcartById(16);
+
+
+
+
+//    if(is_object($items)){
+//        if (get_class($items) == "activity") {
+//            $items = $items;
+//        }
+//        else {
+//            $items = $items->getActivity();
+//        }
+//
+//        echo "{$items->getId()}";
+//
+//        echo "OBJECT";
+//
+//        echo "<br>";
+//        var_dump($ticket->insertTicket($items->getId(), 101, 50, 1));
+//    }
+//    else{
+//        foreach ($items as $item){
+//            //echo "{$item->getId()}";
+//
+//            echo "ARRAY";
+//        }
+//    }
+
+
+//$email->sendMail("louellacreemers@gmail.com", "Test", "This is a test");
 
     //var_dump($test->getFromId($test->addCustomer("firstname", "lastname", "email")));
 
