@@ -23,7 +23,7 @@ $cart = new shoppingcartServiceDB();
 $id = $_GET['id'];
 $cartId = $_GET['cart'];
 
-$items = (array)$cart->getShoppingcartById($cartId);
+$items = $cart->getShoppingcartById($cartId);
 
 $count = count($items);
 
@@ -32,18 +32,28 @@ $mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "CustomerID = {$id},
 $orderQuery = $order->insertOrder($id);
 
 
-foreach ($items as $item){
-
-    if (get_class($item) == "activity") {
-        $item = $item;
+if(is_object($items)){
+    if (get_class($items) == "activity") {
+        $items = $items;
     }
     else {
-        $item = $item->getActivity();
+        $items = $items->getActivity();
     }
 
-    $ticket->insertTicket($item->getId(), $id, $orderQuery->getId(), $item->getAmount());
+    $ticket->insertTicket($items->getId(), $id, $orderQuery->getId(), $items->getAmount());
+}
 
+else{
+    foreach ($items as $item){
+        if (get_class($item) == "activity") {
+            $item = $item;
+        }
+        else {
+            $item = $item->getActivity();
+        }
 
+        $ticket->insertTicket($item->getId(), $id, $orderQuery->getId(), $item->getAmount());
+    }
 }
 
 ////For success page and pdf
