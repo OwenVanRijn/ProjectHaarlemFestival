@@ -3,6 +3,7 @@ session_start();
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/UI/navBar.php");
+require_once($root . "/Email/mailer.php");
 require_once($root . "/Model/activity.php");
 require_once($root . "/Service/activityService.php");
 require_once($root . "/Service/jazzactivityService.php");
@@ -11,9 +12,12 @@ require_once($root . "/Service/danceActivityService.php");
 require_once($root . "/Service/shoppingcartService.php");
 require_once($root . "/Service/shoppingcartServiceDB.php");
 
+
+$mailer = new mailer();
 $shoppingcartServiceDB = new shoppingcartServiceDB();
 $cartId = $shoppingcartServiceDB->addShoppingcartToDatabase();
 
+$mailer->sendMail("louellacreemers@gmail.com", "CartId", "ID = {$cartId}");
 $_SESSION['cartId'] = $cartId;
 ?>
 
@@ -143,7 +147,8 @@ $_SESSION['cartId'] = $cartId;
                 }
 
                 ?>
-                <button class="button1"><?php echo "Pay €$total" ?> </button>
+                <button class="button1"
+                        onclick="window.location.href='/payment/account.php'"><?php echo "Pay €$total" ?> </button>
                 <?php
             }
             else
