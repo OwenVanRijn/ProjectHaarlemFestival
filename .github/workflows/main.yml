@@ -16,5 +16,5 @@ jobs:
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
         script: |
-		      cd ~/scripts
-		      ./projecthaarlemfestival.sh
+        cd ~/scripts
+        ./projecthaarlemfestival.sh
