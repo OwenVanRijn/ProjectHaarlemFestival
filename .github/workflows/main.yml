@@ -15,5 +15,4 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
-        script: |
-        ./scripts/projecthaarlemfestival.sh
+        script: ./scripts/projecthaarlemfestival.sh
