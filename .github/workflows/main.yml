@@ -17,4 +17,4 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
         cd ~/scripts
-        ./projecthaarlemfestival.sh
+        projecthaarlemfestival.sh
