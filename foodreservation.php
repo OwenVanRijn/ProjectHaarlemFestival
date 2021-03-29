@@ -2,7 +2,6 @@
 
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-require_once($root . "/UI/navBar.php");
 require_once($root . "/Service/foodactivityService.php");
 require_once($root . "/Service/restaurantService.php");
 require_once($root . "/Service/shoppingcartService.php");
@@ -28,6 +27,9 @@ $foodactivityService = new foodactivityService();
 </head>
 
 <body>
+<?php
+require_once("UI/navBar.php");
+?>
 
 <section class="content">
     <section id="id01" class="w3-modal">
