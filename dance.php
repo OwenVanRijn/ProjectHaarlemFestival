@@ -60,14 +60,14 @@ require_once ("UI/navBar.php");
     </div>
 </header>
 
-<section class="container h-100">
+<section class="container">
 
     <?php
     $service = new artistService();
     (array)$artistArray = $service->getArtists();
 
     //all-access
-    echo "<section class='row h-100 align-items-center' style='background-color: #C0C0C0; margin: 2% 25% 2% 25%;
+    echo "<section class='row justify-content-center align-items-center' style='background-color: #C0C0C0; margin: 2% 25% 2% 25%;
                     padding: 1% 0 1% 0;'>";
     echo "<section class='col-8 fonttickets'>All in ticket (Friday/Saturday/Sunday): €250,-</section>";
     echo "<section class='col-4 text-right'><button class='btn btn-primary'>Add Ticket</button></section>";
