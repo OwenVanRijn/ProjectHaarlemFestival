@@ -1,7 +1,6 @@
 <?php
 session_start();
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-require_once($root . "/UI/navBar.php");
 require_once($root . "/Service/foodactivityService.php");
 require_once($root . "/Service/restaurantService.php");
 require_once($root . "/Service/restaurantTypeLinkService.php");
@@ -29,8 +28,9 @@ $restaurantTypeLinkService = new restaurantTypeLinkService();
 </head>
 
 <body>
-
-
+<?php
+require_once($root . "/UI/navBar.php");
+?>
 <header>
     <div class="title">
         <h1 class="main-title">Food</h1>

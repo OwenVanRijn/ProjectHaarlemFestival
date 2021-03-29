@@ -1,7 +1,8 @@
 <?php
-require_once "UI/navBar.php";
-require_once "Service/jazzActivityService.php";
-require_once "Service/jazzbandService.php"
+$root = realpath($_SERVER["DOCUMENT_ROOT"]);
+require_once ($root . "UI/navBar.php");
+require_once ($root . "Service/jazzActivityService.php");
+require_once ($root . "Service/jazzbandService.php");
 ?>
 
 <!DOCTYPE html>
@@ -18,6 +19,9 @@ require_once "Service/jazzbandService.php"
     <title>Jazz</title>
 </head>
 <body>
+<?php
+require_once($root . "/UI/navBar.php");
+?>
 <header class="title">
 
     <h1 class="main-title">Jazz</h1>
