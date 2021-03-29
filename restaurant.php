@@ -1,4 +1,5 @@
 <?php
+//Alle benodige informatie ophalen
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/Service/foodactivityService.php");
 require_once($root . "/Service/restaurantService.php");
@@ -20,7 +21,7 @@ if (isset($_POST["gotooverview"])) {
 <html>
 
 <head>
-    <title>Restaurantreservation - Haarlem Festival</title>
+    <title>Restaurant - Haarlem Festival</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/food.css">
     <meta charset="UTF-8">
