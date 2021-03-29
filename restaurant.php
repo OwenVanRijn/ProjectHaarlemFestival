@@ -31,43 +31,43 @@ if (isset($_POST["gotooverview"])) {
 require_once("UI/navBar.php");
 ?>
 <main class="content">
-    <section>
-        <?php
-        if (isset($_GET["restaurantId"])) {
-        try {
-        $restaurantId = $_GET["restaurantId"];
-
-        if (!intval($restaurantId)) {
-            throw new Exception("Invalid id in addressbar.");
-        }
-        $restaurant = $restaurantService->getById($restaurantId);
-
-        if ($restaurant != null) {
-        echoRes($restaurant);
-        ?>
-    </section>
-    <section
-    <form method="post" action="foodreservation.php">
-        <input name="restaurantId" type="hidden" value="<?php echo $restaurantId ?>">
-        <input type="submit" class='btn button1' id="buttonReservation" name="makereservation"
-               value="Make a reservation"></input>
-    </form>
-    <form method="post" action=food.php>
-        <input type="submit" class='btn button1' id="buttonOverview" name="gotooverview"
-               value="Go back to overview"></input>
-    </form>
-    <?php
-    } else {
-        throw new Exception("Could not get information about this restaurant.");
-    }
-    } catch (Exception $exception) {
-        $excMessage = $exception->getMessage();
-        ?>
-        <h1 class="header1Left">Restaurant not found</h1>
-        <p><?php echo $excMessage ?></p>
-        <?php
-    }
-    }
+<!--    <section>-->
+<!--        --><?php
+//        if (isset($_GET["restaurantId"])) {
+//        try {
+//        $restaurantId = $_GET["restaurantId"];
+//
+//        if (!intval($restaurantId)) {
+//            throw new Exception("Invalid id in addressbar.");
+//        }
+//        $restaurant = $restaurantService->getById($restaurantId);
+//
+//        if ($restaurant != null) {
+//        echoRes($restaurant);
+//        ?>
+<!--    </section>-->
+<!--    <section-->
+<!--    <form method="post" action="foodreservation.php">-->
+<!--        <input name="restaurantId" type="hidden" value="--><?php //echo $restaurantId ?><!--">-->
+<!--        <input type="submit" class='btn button1' id="buttonReservation" name="makereservation"-->
+<!--               value="Make a reservation"></input>-->
+<!--    </form>-->
+<!--    <form method="post" action=food.php>-->
+<!--        <input type="submit" class='btn button1' id="buttonOverview" name="gotooverview"-->
+<!--               value="Go back to overview"></input>-->
+<!--    </form>-->
+<!--    --><?php
+//    } else {
+//        throw new Exception("Could not get information about this restaurant.");
+//    }
+//    } catch (Exception $exception) {
+//        $excMessage = $exception->getMessage();
+//        ?>
+<!--        <h1 class="header1Left">Restaurant not found</h1>-->
+<!--        <p>--><?php //echo $excMessage ?><!--</p>-->
+<!--        --><?php
+//    }
+//    }
 
     function echoRes($restaurant)
     {
