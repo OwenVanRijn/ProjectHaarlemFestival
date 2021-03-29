@@ -72,9 +72,6 @@ if (isset($_POST["gotooverview"])) {
         <p><?php echo $excMessage ?></p>
         <?php
     }
-    } else {
-        header('Location: food.php');
-        exit();
     }
 
     function echoRes($restaurant)
