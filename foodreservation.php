@@ -1,15 +1,3 @@
-<?php
-
-
-$root = realpath($_SERVER["DOCUMENT_ROOT"]);
-require_once($root . "/Service/foodactivityService.php");
-require_once($root . "/Service/restaurantService.php");
-require_once($root . "/Service/shoppingcartService.php");
-
-$foodactivityService = new foodactivityService();
-
-?>
-
 <!DOCTYPE html>
 <html>
 
@@ -29,6 +17,12 @@ $foodactivityService = new foodactivityService();
 <body>
 <?php
 require_once("UI/navBar.php");
+require_once("/Service/foodactivityService.php");
+require_once("/Service/restaurantService.php");
+require_once("/Service/shoppingcartService.php");
+
+$foodactivityService = new foodactivityService();
+
 ?>
 
 <section class="content">

@@ -31,7 +31,7 @@
 //                {
                 ?>
 
-                    <section class="imageRight fa-stack fa-2x has-badge" data-count="<?php echo $shoppingcartCount ?>"></section>
+<!--                    <section class="imageRight fa-stack fa-2x has-badge" data-count="--><?php //echo $shoppingcartCount ?><!--"></section>-->
 
                     <?php
 //                    }
