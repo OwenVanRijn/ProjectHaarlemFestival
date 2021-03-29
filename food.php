@@ -1,6 +1,3 @@
-<?php
-
-?>
 <!DOCTYPE html>
 <html>
 
@@ -20,6 +17,12 @@
 <?php
 require_once("UI/navBar.php");
 session_start();
+require_once("Service/foodactivityService.php");
+require_once("Service/restaurantService.php");
+require_once("Service/restaurantTypeLinkService.php");
+
+$restaurantService = new restaurantService();
+$restaurantTypeLinkService = new restaurantTypeLinkService();
 ?>
 <header>
     <div class="title">
