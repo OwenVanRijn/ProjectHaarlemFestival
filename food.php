@@ -1,9 +1,8 @@
 <?php
-session_start();
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-require_once($root . "/Service/foodactivityService.php");
-require_once($root . "/Service/restaurantService.php");
-require_once($root . "/Service/restaurantTypeLinkService.php");
+require_once("Service/foodactivityService.php");
+require_once("Service/restaurantService.php");
+require_once("Service/restaurantTypeLinkService.php");
 
 $restaurantService = new restaurantService();
 $restaurantTypeLinkService = new restaurantTypeLinkService();
@@ -12,7 +11,7 @@ $restaurantTypeLinkService = new restaurantTypeLinkService();
 <html>
 
 <head>
-    <title>Foods - Haarlem Festival</title>
+    <title>Food - Haarlem Festival</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/food.css">
     <meta charset="UTF-8">
@@ -26,6 +25,7 @@ $restaurantTypeLinkService = new restaurantTypeLinkService();
 <body>
 <?php
 require_once($root . "/UI/navBar.php");
+session_start();
 ?>
 <header>
     <div class="title">
