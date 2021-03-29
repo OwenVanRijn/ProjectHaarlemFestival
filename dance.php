@@ -65,15 +65,14 @@ require_once ("UI/navBar.php");
     <?php
     $service = new artistService();
     (array)$artistArray = $service->getArtists();
+    ?>
 
-    //all-access
-    echo "<section class='row justify-content-center align-items-center' style='background-color: #C0C0C0;
-                    padding: 1% 0 1% 0;'>";
-    echo "<section class='col-8 fonttickets'>All in ticket (Friday/Saturday/Sunday): €250,-</section>";
-    echo "<section class='col-4 text-right'><button class='btn btn-primary'>Add Ticket</button></section>";
-    echo "</section>";
+    <section class='row justify-content-center align-items-center' style='background-color: #C0C0C0; padding: 1% 0 1% 0;'>
+        <section class='col-8 fonttickets'>All in ticket (Friday/Saturday/Sunday): €250,-</section>
+        <section class='col-4 text-right'><button class='btn btn-primary'>Add Ticket</button></section>
+    </section>
 
-    //Lineup
+    <?
     echo "<section class= 'row' style='padding: 1em'>";
     foreach ($artistArray as $item){
         $name = $item->getName();
