@@ -24,6 +24,8 @@ if (isset($_POST["gotooverview"])) {
     <title>Restaurant - Haarlem Festival</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/food.css">
+    <link rel="stylesheet" href="css/dance.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">;
 
     <meta charset="UTF-8">
     <meta name="keywords"
