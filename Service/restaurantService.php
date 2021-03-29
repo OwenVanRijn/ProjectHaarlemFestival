@@ -16,7 +16,11 @@ class restaurantService extends baseService
 
     public function getAll(): array
     {
-        return $this->db->get();
+        try {
+            return $this->db->get();
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
+        }
     }
 
     // TODO: maybe convert to pass in restaurant object?
@@ -83,23 +87,35 @@ class restaurantService extends baseService
 
     public function getById($id)
     {
-        return $this->db->get([
-            "restaurant.id" => $id
-        ]);
+        try {
+            return $this->db->get([
+                "restaurant.id" => $id
+            ]);
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
+        }
     }
 
     public function getTimesByRestaurantId($restaurantId)
     {
-        $foodActivityService = new foodactivityService();
-        $activities = $foodActivityService->getByRestaurantId($restaurantId);
-        return $this->getTimes($activities);
+        try {
+            $foodActivityService = new foodactivityService();
+            $activities = $foodActivityService->getByRestaurantId($restaurantId);
+            return $this->getTimes($activities);
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
+        }
     }
 
     public function getDatesByRestaurantId($restaurantId)
     {
-        $foodActivityService = new foodactivityService();
-        $activities = $foodActivityService->getByRestaurantId($restaurantId);
-        return $this->getDates($activities);
+        try {
+            $foodActivityService = new foodactivityService();
+            $activities = $foodActivityService->getByRestaurantId($restaurantId);
+            return $this->getDates($activities);
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
+        }
     }
 
     function getTimes($foodactivities)
@@ -137,12 +153,16 @@ class restaurantService extends baseService
 
     public function getAllRestaurantsAsStr()
     {
-        $restaurants = $this->db->get();
-        $restaurantStr = [];
-        foreach ($restaurants as $b) {
-            $restaurantStr[(string)$b->getId()] = $b->getName();
+        try {
+            $restaurants = $this->db->getArray();
+            $restaurantStr = [];
+            foreach ($restaurants as $b) {
+                $restaurantStr[(string)$b->getId()] = $b->getName();
+            }
+            return $restaurantStr;
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
         }
-        return $restaurantStr;
     }
 
     public function getBySearch($searchTerm, $cuisine, $stars3, $stars4)
@@ -167,24 +187,32 @@ class restaurantService extends baseService
 
     public function getBySearchTerm($searchTerm)
     {
-        $restaurants = $this->db->get(["restaurant.name" => new dbContains($searchTerm)]);
-        return $restaurants;
+        try {
+            $restaurants = $this->db->getArray(["restaurant.name" => new dbContains($searchTerm)]);
+            return $restaurants;
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
+        }
     }
 
     public function getByStars($stars3, $stars4)
     {
-        if (!$stars3 && !$stars4) {
-            return null;
-        }
+        try {
+            if (!$stars3 && !$stars4) {
+                return null;
+            }
 
-        $stars = array();
-        if ($stars3) {
-            $stars[] = "3";
-        }
+            $stars = array();
+            if ($stars3) {
+                $stars[] = "3";
+            }
 
-        if ($stars4) {
-            $stars[] = "4";
+            if ($stars4) {
+                $stars[] = "4";
+            }
+            return $this->db->getArray(["restaurant.stars" => $stars]);
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
         }
-        return $this->db->get(["restaurant.stars" => $stars]);
     }
 }

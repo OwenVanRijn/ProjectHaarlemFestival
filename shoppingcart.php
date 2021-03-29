@@ -17,7 +17,7 @@ $mailer = new mailer();
 $shoppingcartServiceDB = new shoppingcartServiceDB();
 $cartId = $shoppingcartServiceDB->addShoppingcartToDatabase();
 
-$mailer->sendMail("louellacreemers@gmail.com", "CartId", "ID = {$cartId}");
+//$mailer->sendMail("louellacreemers@gmail.com", "CartId", "ID = {$cartId}");
 $_SESSION['cartId'] = $cartId;
 ?>
 

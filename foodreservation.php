@@ -4,6 +4,7 @@
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/UI/navBar.php");
 require_once($root . "/Service/foodactivityService.php");
+require_once($root . "/Service/restaurantService.php");
 require_once($root . "/Service/shoppingcartService.php");
 
 $foodactivityService = new foodactivityService();
@@ -36,7 +37,7 @@ $foodactivityService = new foodactivityService();
 
         try {
             if (isset($_POST["reservation"])) {
-                if (isset($_POST["session"]) && isset($_POST["date"])) {
+                if (isset($_POST["session"]) && isset($_POST["date"]) && isset($_POST["seats"])) {
                     $restaurantId = $_POST["restaurantId"];
                     $seats = $_POST["seats"];
                     $session = $_POST["session"];
@@ -45,7 +46,6 @@ $foodactivityService = new foodactivityService();
                     try {
                         $times = explode("-", $session);
                         $foodactivity = $foodactivityService->getBySessionDate($date, $times, $restaurantId);
-
                         if ($foodactivity == NULL) {
                             throw new Exception("Could not find a valid activity. Please choose a valid date and session.");
                         } else {
@@ -57,10 +57,10 @@ $foodactivityService = new foodactivityService();
                             exit();
                         }
                     } catch (Exception $exception) {
-                        throw new Exception("Could not create an reservation. Please try again.");
+                        throw new Exception("{$exception->getMessage()}");
                     }
                 } else {
-                    throw new Exception("Please select an session and date.");
+                    throw new Exception("Please select an amount of seats, session and date.");
                 }
             }
         } catch (Exception $exception) {
@@ -76,10 +76,19 @@ $foodactivityService = new foodactivityService();
             $restaurantId = $_POST["restaurantId"];
         }
         try {
+            if (!is_numeric($restaurantId)) {
+                throw new Exception("Could not find the eventinformation by this restaurant. Restaurant ID $restaurantId is not a valid ID.");
+            }
             $foodactivities = $foodactivityService->getByRestaurantId($restaurantId);
             if ($foodactivities == null) {
                 throw new Exception("Could not find the eventinformation by this restaurant.");
             } else {
+                if (!isset($foodactivities[0])) {
+                    throw new Exception("Could not find an restaurant.");
+                }
+                if (!($foodactivities[0]->getActivity())) {
+                    throw new Exception("Could not find an activity.");
+                }
                 ?>
 
 
@@ -140,7 +149,8 @@ $foodactivityService = new foodactivityService();
                                     <?php
                                     $index = 1;
 
-                                    $dates = getDates($foodactivities);
+                                    $restaurantService = new restaurantService();
+                                    $dates = $restaurantService->getDates($foodactivities);
 
                                     foreach ($dates as $date) {
                                         echo "<input type=\"radio\" class=\"date\" name=\"date\" id=\"date$index\" value=\"$date\" required onchange='dateToScreen(this.value)'>";
@@ -156,7 +166,8 @@ $foodactivityService = new foodactivityService();
                                     <?php
                                     $index = 1;
 
-                                    $times = getTimes($foodactivities);
+                                    $restaurantService = new restaurantService();
+                                    $times = $restaurantService->getTimes($foodactivities);
 
                                     foreach ($times as $startTimeStr => $endTimeStr) {
                                         echo "<input type=\"radio\" class=\"session\" name=\"session\" id=\"session$index\" value=\"$startTimeStr-$endTimeStr\" required onchange='sessionToScreen(this.value)'>";
@@ -221,6 +232,9 @@ $foodactivityService = new foodactivityService();
             ?>
             <h2>Restaurant eventinformation not found</h2>
             <p><?php echo $excMessage ?></p>
+            <br>
+            <button class="btn button1 w-100" onclick="location.href='food.php'">Go back to the foodpage</button>
+            <button class="btn button1 w-100" onclick="location.href='contact.php'">Make contact with our team</button>
             <?php
         }
 
@@ -232,39 +246,6 @@ $foodactivityService = new foodactivityService();
 
 </body>
 </html>
-
-
-<?php
-
-function getTimes($foodactivities)
-{
-    $times = array();
-
-    foreach ($foodactivities as $foodactivity) {
-        $startTime = $foodactivity->getActivity()->getStartTime();
-        $endTime = $foodactivity->getActivity()->getEndTime();
-        $startTimeStr = date_format($startTime, 'H:i');
-        $endTimeStr = date_format($endTime, 'H:i');
-
-        $times["$startTimeStr"] = $endTimeStr;
-    }
-    return $times;
-}
-
-function getDates($foodactivities)
-{
-    $dates = array();
-
-    foreach ($foodactivities as $foodactivity) {
-        $date = $foodactivity->getActivity()->getDate();
-        $date = date_format($date, "Y-m-d");
-        $dates["$date"] = $date;
-    }
-    return $dates;
-}
-
-?>
-
 
 <script>
     function seatsToScreen() {

@@ -46,7 +46,7 @@ $restaurantTypeLinkService = new restaurantTypeLinkService();
     <p style="text-align: center">
         We have selected a few restaurants for you. At these restaurants you can enjoy delicious food at a competitive
         price.
-        <br>You pay € 10.00 per person in advance in reservation costs.
+        <br>You pay €10,00 per person in advance in reservation costs.
         <br>In addition, children under the age of twelve receive a 50% discount on their dinner.
     </p>
 </main>
@@ -101,58 +101,66 @@ $restaurantTypeLinkService = new restaurantTypeLinkService();
 <main class="content">
 
     <?php
-    $format = "HH:MM";
+    try {
+        $format = "HH:MM";
 
-    if (isset($_POST["stars3"]) || isset($_POST["stars4"])) {
-        // stars : 3
-        if (isset($_POST["stars3"])) {
-            $stars3 = true;
-        } else {
-            $stars3 = false;
-            echo "<script>document.getElementById(\"stars3\").checked = false</script>";
-        }
+        if (isset($_POST["stars3"]) || isset($_POST["stars4"])) {
+            // stars : 3
+            if (isset($_POST["stars3"])) {
+                $stars3 = true;
+            } else {
+                $stars3 = false;
+                echo "<script>document.getElementById(\"stars3\").checked = false</script>";
+            }
 
-        // stars : 4
-        if (isset($_POST["stars4"])) {
-            $stars4 = true;
-        } else {
-            $stars4 = false;
-            echo "<script>document.getElementById(\"stars4\").checked = false</script>";
-        }
+            // stars : 4
+            if (isset($_POST["stars4"])) {
+                $stars4 = true;
+            } else {
+                $stars4 = false;
+                echo "<script>document.getElementById(\"stars4\").checked = false</script>";
+            }
 
-        $restaurants = $restaurantService->getByStars($stars3, $stars4);
-    } else if (isset($_POST["cuisine"])) {
-        $cuisine = $_POST["cuisine"];
-        $restaurants = $restaurantTypeLinkService->getByType($cuisine);
+            $restaurants = $restaurantService->getByStars($stars3, $stars4);
+        } else if (isset($_POST["cuisine"])) {
+            $cuisine = $_POST["cuisine"];
+            $restaurants = $restaurantTypeLinkService->getByType($cuisine);
 
-        echo "<script>document.getElementById(\"cuisine\").value = \"$cuisine\";</script>";
+            echo "<script>document.getElementById(\"cuisine\").value = \"$cuisine\";</script>";
 
-        $restaurants = $restaurantTypeLinkService->getByType($cuisine);
-    } else if (isset($_POST["searchbutton"])) {
-        // searchterm
-        if (isset($_POST["searchterm"])) {
-            $searchTerm = $_POST["searchterm"];
-            echo "<script>document.getElementById(\"searchterm\").value = '$searchTerm'</script>";
-            $restaurants = $restaurantService->getBySearchTerm($searchTerm);
-        } else {
-            $searchTerm = "";
-            $restaurants = $restaurantService->getAll();
-        }
-    } else {
-        $restaurants = $restaurantService->getAll();
-    }
-
-    if ($restaurants != null) {
-
-        if (is_array($restaurants)) {
-            foreach ($restaurants as $restaurant) {
-                echoRestaurant($restaurant);
+            $restaurants = $restaurantTypeLinkService->getByType($cuisine);
+        } else if (isset($_POST["searchbutton"])) {
+            // searchterm
+            if (isset($_POST["searchterm"])) {
+                $searchTerm = $_POST["searchterm"];
+                echo "<script>document.getElementById(\"searchterm\").value = '$searchTerm'</script>";
+                $restaurants = $restaurantService->getBySearchTerm($searchTerm);
+            } else {
+                $searchTerm = "";
+                $restaurants = $restaurantService->getAll();
             }
         } else {
-            echoRestaurant($restaurants);
+            $restaurants = $restaurantService->getAll();
         }
-    } else {
-        echo "<p>Could not find an restaurant.</p>";
+
+        if ($restaurants != null) {
+            if (is_array($restaurants)) {
+                foreach ($restaurants as $restaurant) {
+                    echoRestaurant($restaurant);
+                }
+            } else {
+                echoRestaurant($restaurants);
+            }
+        } else {
+            echo "<p>Could not find an restaurant.</p>";
+        }
+    }
+    catch (Exception $exception)
+    {
+        ?>
+        <h2>Cant get connection to the database.</h2>
+        <p><?php echo $exception->getMessage()?></p>
+        <?php
     }
 
     function getTimes($foodactivities)
@@ -184,7 +192,9 @@ $restaurantTypeLinkService = new restaurantTypeLinkService();
         $restaurantTypes = $restaurantTypeLink->getRestaurantTypes($restaurantId);
         $restaurantLocation = $restaurant->getLocation()->getAddress() . " " . $restaurant->getLocation()->getPostalCode();
         $restaurantPrice = "€" . $restaurant->getPrice();
-        $times = getTimes($foodactivities);
+
+        $restaurantService = new restaurantService();
+        $times = $restaurantService->getTimes($foodactivities);
         ?>
 
 
@@ -209,7 +219,7 @@ $restaurantTypeLinkService = new restaurantTypeLinkService();
                 <section class="foodRestaurantStars">
                     <?php
                     for ($x = 0; $x < $stars; $x++) {
-                        echo "<img class='stars' src='/img/icons/starw.png' alt='star'>";
+                        echo "<img class='stars' src='/img/Icons/starw.png' alt='star'>";
                     }
                     ?>
                 </section>

@@ -61,107 +61,135 @@ class restaurantTypeLinkService extends baseService
 
     public function getAllTypes()
     {
-        $resTypeDAO = new restaurantTypeDAO();
-        return $resTypeDAO->get([
-            "order" => "name"
-        ]);
+        try {
+            $resTypeDAO = new restaurantTypeDAO();
+            return $resTypeDAO->getArray([
+                "order" => "name"
+            ]);
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
+        }
     }
 
     public function getAllTypesAsStr()
     {
-        $res = $this->getAllTypes();
-        $strs = [];
-        foreach ($res as $r) {
-            $strs[(string)$r->getId()] = $r->getName();
+        try {
+            $res = $this->getAllTypes();
+            $strs = [];
+            foreach ($res as $r) {
+                $strs[(string)$r->getId()] = $r->getName();
+            }
+            return $strs;
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
         }
-        return $strs;
     }
 
     public function updateFieldIds(int $restaurantId, array $typeIds)
     {
-        $this->db->delete([
-            "restaurantid" => $restaurantId
-        ]);
-
-        // TODO: maybe merge call?
-        foreach ($typeIds as $id) {
-            $this->db->insert([
-                "restaurantid" => $restaurantId,
-                "restauranttypesid" => (int)$id
+        try {
+            $this->db->delete([
+                "restaurantid" => $restaurantId
             ]);
+
+            // TODO: maybe merge call?
+            foreach ($typeIds as $id) {
+                $this->db->insert([
+                    "restaurantid" => $restaurantId,
+                    "restauranttypesid" => (int)$id
+                ]);
+            }
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
         }
     }
 
 
     public function getBySearch($typeID, $searchTerm, $stars3, $stars4)
     {
-        $filter = array();
+        try {
+            $filter = array();
 
-        $filter = array_merge($filter, array("restaurant.name" => new dbContains($searchTerm)));
+            $filter = array_merge($filter, array("restaurant.name" => new dbContains($searchTerm)));
 
-        $stars = array();
-        if ($stars3) {
-            $stars[] = "3";
+            $stars = array();
+            if ($stars3) {
+                $stars[] = "3";
+            }
+
+            if ($stars4) {
+                $stars[] = "4";
+            }
+            if (count($stars) > 0) {
+                $filter = array_merge($filter, array("restaurant.stars" => $stars));
+            }
+
+            if ($typeID > 0) {
+                $filter = array_merge($filter, array("restauranttypes.id" => $typeID));
+            }
+
+            $restaurantTypeLinks = $this->db->get($filter);
+
+            return $this->getRestaurants($restaurantTypeLinks);
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
         }
-
-        if ($stars4) {
-            $stars[] = "4";
-        }
-        if (count($stars) > 0) {
-            $filter = array_merge($filter, array("restaurant.stars" => $stars));
-        }
-
-        if ($typeID > 0) {
-            $filter = array_merge($filter, array("restauranttypes.id" => $typeID));
-        }
-
-        $restaurantTypeLinks = $this->db->get($filter);
-
-        return $this->getRestaurants($restaurantTypeLinks);
     }
 
 
     public function getByType($typeID)
     {
-        if ($typeID > 0) {
-            $restaurantTypeLinks = $this->db->get(["restauranttypes.id" => $typeID]);
-        } else {
-            $restaurantTypeLinks = $this->db->get();
-        }
+        try {
+            if ($typeID > 0) {
+                $restaurantTypeLinks = $this->db->getArray(["restauranttypes.id" => $typeID]);
+            } else {
+                $restaurantTypeLinks = $this->db->getArray();
+            }
 
-        return $this->getRestaurants($restaurantTypeLinks);
+            return $this->getRestaurants($restaurantTypeLinks);
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
+        }
     }
 
     function getRestaurants($restaurantTypeLinks)
     {
-        if ($restaurantTypeLinks == null) {
-            return null;
-        }
-
-        $restaurants = array();
-        if (is_array($restaurantTypeLinks)) {
-            foreach ($restaurantTypeLinks as $restaurantTypeLink) {
-                $restaurant = $restaurantTypeLink->getRestaurant();
-
-                if ($this->checkDuplicate($restaurants, $restaurant->getId())) {
-                    $restaurants[] = $restaurant;
-                }
+        try {
+            if ($restaurantTypeLinks == null) {
+                return null;
             }
-        } else {
-            $restaurant = $restaurantTypeLinks->getRestaurant();
-            $restaurants[] = $restaurant;
+
+            $restaurants = array();
+            if (is_array($restaurantTypeLinks)) {
+                foreach ($restaurantTypeLinks as $restaurantTypeLink) {
+                    $restaurant = $restaurantTypeLink->getRestaurant();
+
+                    if ($this->checkDuplicate($restaurants, $restaurant->getId())) {
+                        $restaurants[] = $restaurant;
+                    }
+                }
+            } else {
+                $restaurant = $restaurantTypeLinks->getRestaurant();
+                $restaurants[] = $restaurant;
+            }
+            return $restaurants;
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
         }
-        return $restaurants;
     }
 
     private function checkDuplicate($restaurants, $restaurantId)
     {
-        foreach ($restaurants as $restaurant) {
-            if ($restaurant->getId() == $restaurantId) {
-                return 0;
+        try {
+            foreach ($restaurants as $restaurant) {
+                if ($restaurant->getId() == $restaurantId) {
+                    return 0;
+                }
             }
+            return 1;
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
         }
-        return 1;
     }
 
 }

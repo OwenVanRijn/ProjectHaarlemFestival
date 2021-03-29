@@ -36,41 +36,54 @@ class shoppingcartServiceDB extends baseService
 
     public function getShoppingcart()
     {
-        return $this->shoppingcartDAO->get();
+        try {
+            return $this->shoppingcartDAO->get();
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
+        }
     }
 
     public function addShoppingcartToDatabase()
     {
-        $insert = [
-            "url" => "",
-            "createDate" => date("Y-m-d")
-        ];
-
-        $shoppingcartId = $this->shoppingcartDAO->insert($insert);
-
-        $items = $this->shoppingcartService->getShoppingcart()->getShoppingcartItems();
-        foreach ($items as $id => $amount) {
-            $activity = $this->activityService->getById($id);
-            $price = $activity->getPrice()*$amount;
+        try {
             $insert = [
-                "shoppingcartId" => $shoppingcartId,
-                "activityId" => $activity->getId(),
-                "amount" => intval($amount),
-                "price" => $price
+                "url" => "",
+                "createDate" => date("Y-m-d")
             ];
 
-            var_dump($insert);
+            $shoppingcartId = $this->shoppingcartDAO->insert($insert);
 
-            $this->shoppingcartItemDAO->insert($insert);
+            $items = $this->shoppingcartService->getShoppingcart()->getShoppingcartItems();
+            foreach ($items as $id => $amount) {
+                $activity = $this->activityService->getById($id);
+                $price = $activity->getPrice() * $amount;
+                $insert = [
+                    "shoppingcartId" => $shoppingcartId,
+                    "activityId" => $activity->getId(),
+                    "amount" => intval($amount),
+                    "price" => $price
+                ];
+
+                var_dump($insert);
+
+                $this->shoppingcartItemDAO->insert($insert);
+            }
+
+            return $shoppingcartId;
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
         }
-
-        return $shoppingcartId;
     }
 
-    public function getShoppingcartById($id){
-        return $this->shoppingcartItemDAO->get([
+    public function getShoppingcartById($id)
+    {
+        try {
+            return $this->shoppingcartItemDAO->get([
                 "shoppingcartId" => $id
-        ]);
+            ]);
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
+        }
     }
 
 

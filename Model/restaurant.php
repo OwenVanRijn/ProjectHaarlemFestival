@@ -170,7 +170,7 @@ class restaurant extends sqlModel
      */
     public function getMenu(): string
     {
-        return $this->menu;
+        return $this->website . "/" . $this->menu;
     }
 
     public function getFullMenu()

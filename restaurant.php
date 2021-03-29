@@ -92,26 +92,25 @@ if (isset($_POST["gotooverview"])) {
             // Contact
             $phoneNumber = $restaurant->getPhoneNumber();
             $website = $restaurant->getWebsite();
-            $contactpage = $restaurant->getContact();
-            $menu = $restaurant->getMenu();
+            $contactpage = $restaurant->getFullContact();
+            $menu = $restaurant->getFullMenu();
             ?>
 
             <section class="container">
                 <section class="restaurantContentDescription">
                     <h2 id='starsHeader'><?php echo $restaurantName ?></h2>
                     <?php
-                    for ($x = 0; $x < $stars; $x++) {
-                        echo "<img class='stars' src='/img/Icons/star.png' alt='ster'>";
+                    if (intval($stars)) {
+                        for ($x = 0; $x < $stars; $x++) {
+                            echo "<img class='stars' src='/img/Icons/star.png' alt='ster'>";
+                        }
                     }
 
                     if (!empty($description)) {
                         ?>
-
                         <p> <?php echo $description ?></p>
-
                         <?php
                     }
-
                     if (!empty($parking)) {
                         ?>
                         <br><h3>Parking information</h3>
@@ -132,11 +131,12 @@ if (isset($_POST["gotooverview"])) {
                     if (!empty($price) && !empty($childrenPrice)) {
                         ?>
                         <p><i>Diner costs</i></p>
-                        <p>€<?php echo $price ?> p.p.</p>
-                        <sup>Children til 12 years: € <?php echo $childrenPrice ?> p.p.</sup>
+                        <p><?php echo "€" . number_format("$price", 2, ",", ".") ?> p.p.</p>
+                        <sup>Children til 12 years: <?php echo "€" . number_format("$childrenPrice", 2, ",", ".") ?>
+                            p.p.</sup>
 
                         <p><i>Reservation costs</i></p>
-                        <p>€10 </p>
+                        <p><?php echo "€" . number_format("10", 2, ",", ".") ?></p>
                         <?php
                     } else {
                         ?>
@@ -195,19 +195,28 @@ if (isset($_POST["gotooverview"])) {
                 </section>
                 <section class="restaurantContentInfoLinks">
                     <?php
+                    if (!empty($website) || !empty($phoneNumber)) {
+                        ?>
+                        <h3 class="informationRestaurantLabel">Information</h3>
+                        <?php
                     if (!empty($website)) {
                         ?>
-                        <h3 class="informationRestaurantLabel">Location</h3>
                         <a href="<?php echo $website ?>">Website</a><br>
                         <a href="<?php echo $menu ?>">Menu</a><br>
-                        <a href="<?php echo $contactpage ?>">Contact</a>
+                        <a href="<?php echo $contactpage ?>">Contact</a><br>
+                        <?php
+                    }
+                    if (!empty($phoneNumber)) {
+                        ?>
+                        <a href="tel:<?php echo $phoneNumber ?>">Phonenumber</a>
                     <?php
+                    }
                     }
                     else{
                     ?>
                         <script>
                             var link = document.getElementById('restaurantContentInfoPictureLinks');
-                            link.style.display = 'none'; //or
+                            link.style.display = 'none';
                             link.style.visibility = 'hidden';
                         </script>
                         <?php
