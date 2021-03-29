@@ -36,7 +36,7 @@ else {
     <title>Dance - Haarlem Festival</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/dance.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">;
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <meta charset="UTF-8">
     <meta name="keywords" content="Haarlem, festival, jazz, food, history, party, feest, geschiedenis, eten, restaurant">
     <meta name="description" content="Haarlem Festival">
@@ -45,12 +45,15 @@ else {
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script></head>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</head>
 
 <body>
+
 <?php
 require_once ("UI/navBar.php");
 ?>
+
 <header>
     <div class="title">
         <h1 class="main-title">Dance</h1>
@@ -65,26 +68,24 @@ require_once ("UI/navBar.php");
     <?php
     $service = new artistService();
     (array)$artistArray = $service->getArtists();
-
     //all-access
-    echo "<section class='row justify-content-center align-items-center' style='background-color: #C0C0C0;
+    echo "<section class='row h-100 align-items-center' style='background-color: #C0C0C0; margin: 2% 25% 2% 25%;
                     padding: 1% 0 1% 0;'>";
     echo "<section class='col-8 fonttickets'>All in ticket (Friday/Saturday/Sunday): €250,-</section>";
     echo "<section class='col-4 text-right'><button class='btn btn-primary'>Add Ticket</button></section>";
     echo "</section>";
-
     //Lineup
     echo "<section class= 'row' style='padding: 1em'>";
     foreach ($artistArray as $item){
         $name = $item->getName();
         $nameStripped = strtolower(str_replace(' ', '', $name));
-
         echo "<section class='col-2'>
                 <img src='img/Artists/{$nameStripped}.png' class='w-100' alt='{$name}'>
                 <a href = 'danceartist.php?name={$name}' class='btn btn-primary' style='border-radius: 0;'>Click here for {$name} performances</a></section>";
     }
     echo "</section>";
     ?>
+</section>
 </section>
 
 <section class="container-fluid">
