@@ -1,45 +1,57 @@
-nav{
-  background-color: #000;
-  overflow: auto;
-  width: 100%;
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #000;
+    overflow: auto;
+    width: 100%;
+    display: block;
+    z-index: 1;
 }
-nav a
-{
-  float: left;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  color: #FD6A02;
-  font-size: 17px;
+
+nav a {
+    float: left;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    color: #FD6A02;
+    font-size: 17px;
 }
-ul{
-  margin-top: 0.5em;
-  list-style-type: none;
+
+ul {
+    margin-top: 0.5em;
+    list-style-type: none;
 }
-.navItem{
-  margin-left: 6em;
+
+.navItem {
+    margin-left: 4em;
 }
-.logo{
-  height: 40px;
-  width: 40px;
+
+.logo {
+    height: 40px;
+    width: 40px;
 }
-.image
-{
-  float: left;
-  margin-left: 5em;
+
+.image {
+    float: left;
+    margin-left: 5em;
 }
-.imageRight{
-  float: right;
-  margin-right: 5em;
+
+.imageRight {
+    float: right;
+    margin-right: 2%;
 }
-.share{
-  padding-top: 2em;
-  padding-left: 49%;
+
+.share {
+    padding-top: 2em;
+    padding-left: 49%;
 }
-.shareButtons{
-  height: 30px;
-  width: 30px;
+
+.shareButtons {
+    height: 30px;
+    width: 30px;
 }
+
 footer [class ^= 'footer-'] {
     margin-top: 20px;
     width: 33.3333%;
@@ -48,32 +60,62 @@ footer [class ^= 'footer-'] {
     text-align: center;
 }
 
+.footerFull {
+    background: black;
+}
+
 footer .footer-left {
     float: left;
 }
 
 footer .footer-right {
     float: right;
-    background-color: black;
 }
-.footerLinks{
-  margin-top: 0.7em;
+
+.footerLinks {
+    margin-top: 0.7em;
 }
-.logoFooter{
-  width: 150px;
-  height: 150px;
+
+.logoFooter {
+    width: 130px;
+    height: 130px;
 }
-.footenav{
-  font-size: 20px;
+
+.footenav {
+    font-size: 20px;
 }
-.fa-facebook,.fa-youtube {
-  padding: 20px;
-  height: 80px;
-  width: 80px;
-  text-align: center;
-  text-decoration: none;
+
+.fa-facebook, .fa-youtube {
+    padding: 20px;
+    height: 80px;
+    width: 80px;
+    text-align: center;
+    text-decoration: none;
 }
-.labelSocialMedia{
-  padding-top: 33px;
-  color: white;
+
+.labelSocialMedia {
+    padding-top: 33px;
+    color: white;
+}
+
+.fa-stack[data-count]:after {
+    font-size: 14px !important;
+    font-family: Arial;
+    float: left;
+    position: absolute;
+    top: 3%;
+    margin-left: -1%;
+    content: attr(data-count);
+    font-size: 40%;
+    padding: 0.3em;
+    border-radius: 999px;
+    line-height: .75em;
+    color: #FD6A02;
+    text-align: center;
+    min-width: 1em;
+    font-weight: bold;
+    background: #FD6A02;
+    color: #FFFFFF;
+    border-style: solid;
+    border-color: #FD6A02;
 }
