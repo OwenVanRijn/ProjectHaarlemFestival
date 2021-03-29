@@ -35,5 +35,5 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
           <li class="footerLinks"><a href="./shoppingcart.php">Shopping cart</a></li>
           <li class="footerLinks"><a href="./volunteers.php">For volunteers</a></li>
         </ul>
-      </secion>
+      </section>
 </html>
