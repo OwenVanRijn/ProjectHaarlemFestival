@@ -1,6 +1,6 @@
 <?php
-require_once("/Service/jazzActivityService.php");
-require_once("/Service/jazzbandService.php");
+require_once("Service/jazzActivityService.php");
+require_once("Service/jazzbandService.php");
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -18,7 +18,7 @@ require_once("/Service/jazzbandService.php");
 </head>
 <body>
 <?php
-require_once("/UI/navBar.php");
+require_once("UI/navBar.php");
 ?>
 <header class="title">
 
