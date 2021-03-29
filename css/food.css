@@ -154,7 +154,6 @@ p {
 .container {
     display: grid;
     width: 100%;
-    height: 100%;
     grid-template-areas: "restaurantContentDescription restaurantContentInfoPictureCosts restaurantContentInfoCosts restaurantContentInfoCosts"
   "restaurantContentDescription restaurantContentInfoPictureTime restaurantContentInfoSessions restaurantContentInfoDays"
   "restaurantContentDescription restaurantContentInfoPictureLocation restaurantContentInfoAddress restaurantContentInfoAddress"
