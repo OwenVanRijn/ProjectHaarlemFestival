@@ -1,9 +1,9 @@
 <?php
-//Alle benodige informatie ophalen
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/Service/foodactivityService.php");
 require_once($root . "/Service/restaurantService.php");
 require_once($root . "/Service/restaurantTypeLinkService.php");
+require_once($root . "/UI/navBar.php");
 
 $restaurantService = new restaurantService();
 $restaurantTypeService = new restaurantTypeLinkService();
@@ -20,17 +20,15 @@ if (isset($_POST["gotooverview"])) {
 <!DOCTYPE html>
 <html>
 
+<title>Restaurant - Haarlem Festival</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/food.css">
 <!--<head>-->
-<!--    <title>Restaurant - Haarlem Festival</title>-->
-<!--    <link rel="stylesheet" href="css/style.css">-->
-<!--    <link rel="stylesheet" href="css/food.css">-->
-<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
+<!--    -->
 <!--</head>-->
 
 <body>
-<?php
-require_once("UI/navBar.php");
-?>
+
 <main class="content">
     <section>
         <?php
@@ -67,6 +65,7 @@ require_once("UI/navBar.php");
         <h1 class="header1Left">Restaurant not found</h1>
         <p><?php echo $excMessage ?></p>
         <?php
+    }
     }
 
     function echoRes($restaurant)
@@ -223,7 +222,7 @@ require_once("UI/navBar.php");
         </section>
         <?php
     }
-    }
+
     ?>
     </section>
 </main>
