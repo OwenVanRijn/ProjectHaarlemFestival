@@ -2,7 +2,6 @@
 require_once "Service/artistService.php";
 require_once "Model/danceArtist.php";
 require_once "Service/danceActivityService.php";
-require_once "UI/navBar.php";
 
 
 $activeArray = [];
@@ -50,6 +49,9 @@ else {
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script></head>
 
 <body>
+<?php
+require_once ("UI/navBar.php");
+?>
 <header>
     <div class="title">
         <h1 class="main-title">Dance</h1>

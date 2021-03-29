@@ -2,7 +2,6 @@
 session_start();
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-require_once($root . "/UI/navBar.php");
 require_once($root . "/Email/mailer.php");
 require_once($root . "/Model/activity.php");
 require_once($root . "/Service/activityService.php");
@@ -33,6 +32,14 @@ $_SESSION['cartId'] = $cartId;
     <title>Shoppingcart</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/dance.css">
+</head>
+
+<body>
+<?php
+require_once($root . "/UI/navBar.php");
+?>
+<h1>Shoppingcart</h1>
+<section>
 
     <script language=Javascript>
         function isNumberKey(evt) {
@@ -42,11 +49,6 @@ $_SESSION['cartId'] = $cartId;
             return true;
         }
     </script>
-</head>
-
-<body>
-<h1>Shoppingcart</h1>
-<section>
 
     <?php
 
