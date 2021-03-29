@@ -1,6 +1,5 @@
 <?php
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-require_once $root . "/UI/navBar.php";
 require_once $root . "/Service/jazzactivityService.php";
 require_once $root . "/Service/jazzBandService.php";
 ?>

@@ -258,7 +258,6 @@ p {
 .containerReservation {
     display: grid;
     min-width: 80vw;
-    height: 100%;
     grid-template-areas: "restaurantReservationCLRestaurantLabel restaurantReservationCLRestaurantLabel restaurantReservationCLCostsTitle restaurantReservationCLCostsTitle restaurantReservationCLCostsTitle"
   "restaurantReservationCISeatsTitle restaurantReservationCISeatsCB restaurantReservationCLReservationcosts restaurantReservationCLAmount restaurantReservationCLTotal"
   "restaurantReservationCIDays restaurantReservationCISessions restaurantReservationCLDays restaurantReservationCLDays restaurantReservationCLSession"
