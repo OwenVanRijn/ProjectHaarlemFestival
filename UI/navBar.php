@@ -1,16 +1,3 @@
-<?php
-try {
-    if (file_exists("Service/shoppingcartService.php")) {
-        require_once("Service/shoppingcartService.php");
-        $shoppingcartService = new shoppingcartService();
-        $shoppingcartCount = $shoppingcartService->getShoppingcartItemsCount();
-    } else {
-        $shoppingcartCount = 0;
-    }
-} catch (Exception $exception) {
-    $shoppingcartCount = 0;
-}
-?>
 <nav>
     <link rel="stylesheet" href="/css/navBarFooter.css">
     <ul>
@@ -24,7 +11,7 @@ try {
                href="https://translate.google.com/translate?sl=auto&tl=en&u=http://haarlemfestival.louellacreemers.nl<?php echo $_SERVER['PHP_SELF']; ?>"><img
                         class="logo" src="/img/translate.png" alt="logo"></a></li>
         <li><a class="imageRight" href="/account.php"><img class="logo" src="/img/account.png" alt="account"></a></li>
-        <li><a href="/shoppingcart.php">
+        <li><a class="imageRight" href="/shoppingcart.php">
 
                 <?php
                 if ($shoppingcartCount > 0)
@@ -36,7 +23,7 @@ try {
                     <?php
                     }
                     ?>
-                    <img class="logo" src="/img/shoppingcart.png"
+                    <img class="logo" class="logo" src="/img/shoppingcart.png"
                          alt="logo">
             </a>
         </li>
