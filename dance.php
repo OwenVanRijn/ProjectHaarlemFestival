@@ -65,25 +65,24 @@ require_once ("UI/navBar.php");
     <?php
     $service = new artistService();
     (array)$artistArray = $service->getArtists();
-    ?>
-
-    <section class='row justify-content-center align-items-center' style='background-color: #C0C0C0; padding: 1% 0 1% 0;'>
-        <section class='col-8 fonttickets'>All in ticket (Friday/Saturday/Sunday): €250,-</section>
-        <section class='col-4 text-right'><button class='btn btn-primary'>Add Ticket</button></section>
-    </section>
-
-    <?
+    //all-access
+    echo "<section class='row h-100 align-items-center' style='background-color: #C0C0C0; margin: 2% 25% 2% 25%;
+                    padding: 1% 0 1% 0;'>";
+    echo "<section class='col-8 fonttickets'>All in ticket (Friday/Saturday/Sunday): €250,-</section>";
+    echo "<section class='col-4 text-right'><button class='btn btn-primary'>Add Ticket</button></section>";
+    echo "</section>";
+    //Lineup
     echo "<section class= 'row' style='padding: 1em'>";
     foreach ($artistArray as $item){
         $name = $item->getName();
         $nameStripped = strtolower(str_replace(' ', '', $name));
-
         echo "<section class='col-2'>
                 <img src='img/Artists/{$nameStripped}.png' class='w-100' alt='{$name}'>
                 <a href = 'danceartist.php?name={$name}' class='btn btn-primary' style='border-radius: 0;'>Click here for {$name} performances</a></section>";
     }
     echo "</section>";
     ?>
+</section>
 </section>
 
 <section class="container-fluid">
