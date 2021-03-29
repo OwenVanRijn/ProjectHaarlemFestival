@@ -21,13 +21,13 @@ if (isset($_POST["gotooverview"])) {
 <html>
 
 <?php
-    if(isset($_GET['restaurantId'])){
-        echo "<head>";
-        echo "<title>Restaurant - Haarlem Festival</title>";
-        echo "<link rel='stylesheet' href='css/style.css'>";
-        echo "<link rel='stylesheet' href='css/food.css'>";
+if (isset($_GET['restaurantId'])) {
+    echo "<head>";
+    echo "<title>Restaurant - Haarlem Festival</title>";
+    echo "<link rel='stylesheet' href='css/style.css'>";
+    echo "<link rel='stylesheet' href='css/food.css'>";
 
-    }
+}
 ?>
 
 <body>
@@ -35,6 +35,7 @@ if (isset($_POST["gotooverview"])) {
 <main class="content">
     <section>
         <?php
+        // Bekijk of er een restaurantID is, of deze valide is en echo indien valide de restaurant informatie.
         if (isset($_GET["restaurantId"])) {
         try {
         $restaurantId = $_GET["restaurantId"];
@@ -48,13 +49,13 @@ if (isset($_POST["gotooverview"])) {
         echoRes($restaurant);
         ?>
     </section>
-    <section
+    <section>
     <form method="post" action="foodreservation.php">
         <input name="restaurantId" type="hidden" value="<?php echo $restaurantId ?>">
         <input type="submit" class='btn button1' id="buttonReservation" name="makereservation"
                value="Make a reservation"></input>
     </form>
-    <form method="post" action=food.php>
+    <form method="post" action="food.php">
         <input type="submit" class='btn button1' id="buttonOverview" name="gotooverview"
                value="Go back to overview"></input>
     </form>
@@ -73,11 +74,16 @@ if (isset($_POST["gotooverview"])) {
 
     function echoRes($restaurant)
     {
+        // Verkrijg de restaurant informatie
         $restaurantName = $restaurant->getName();
         $description = $restaurant->getDescription();
         $stars = $restaurant->getStars();
         $restaurantId = $restaurant->getId();
-        $location = $restaurant->getLocation()->getAddress() . ", " . $restaurant->getLocation()->getPostalCode();
+        if ($restaurant->getLocation() != null) {
+            $location = $restaurant->getLocation()->getAddress() . ", " . $restaurant->getLocation()->getPostalCode();
+        } else {
+            $location = "Unknown";
+        }
         $parking = $restaurant->getParking();
         $price = $restaurant->getPrice();
         $childrenPrice = $restaurant->getPrice() / 2;
@@ -200,14 +206,14 @@ if (isset($_POST["gotooverview"])) {
                     <?php
                 if (!empty($website)) {
                     ?>
-                    <a href="<?php echo $website ?>">Website</a><br>
-                    <a href="<?php echo $menu ?>">Menu</a><br>
-                    <a href="<?php echo $contactpage ?>">Contact</a><br>
+                    <a href="<?php echo $website; ?>" target="blank">Website</a><br>
+                    <a href="<?php echo $menu; ?>" target="blank">Menu</a><br>
+                    <a href="<?php echo $contactpage; ?>" target="blank">Contact</a><br>
                     <?php
                 }
                 if (!empty($phoneNumber)) {
                     ?>
-                    <a href="tel:<?php echo $phoneNumber ?>">Phonenumber</a>
+                    <a href="tel:<?php echo $phoneNumber; ?>">Phonenumber</a>
                 <?php
                 }
                 }
@@ -225,7 +231,6 @@ if (isset($_POST["gotooverview"])) {
         </section>
         <?php
     }
-
     ?>
     </section>
 </main>

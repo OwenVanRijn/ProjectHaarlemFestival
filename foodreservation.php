@@ -31,6 +31,7 @@ $foodactivityService = new foodactivityService();
         <h1 class="header1Left">Make a reservation</h1>
         <?php
 
+        // Bekijk of de ingevoerde reserveringsinformatie valide is. Als dit het geval is wordt deze toegevoegd aan de shoppingcart.
         try {
             if (isset($_POST["reservation"])) {
                 if (isset($_POST["session"]) && isset($_POST["date"]) && isset($_POST["seats"])) {
@@ -71,10 +72,14 @@ $foodactivityService = new foodactivityService();
         } else {
             $restaurantId = $_POST["restaurantId"];
         }
+
         try {
+            // Check of de restaurant ID valide is
             if (!is_numeric($restaurantId)) {
                 throw new Exception("Could not find the eventinformation by this restaurant. Restaurant ID $restaurantId is not a valid ID.");
             }
+
+            // Haal de foodactivities op bij het restaurant.
             $foodactivities = $foodactivityService->getByRestaurantId($restaurantId);
             if ($foodactivities == null) {
                 throw new Exception("Could not find the eventinformation by this restaurant.");
@@ -85,6 +90,8 @@ $foodactivityService = new foodactivityService();
                 if (!($foodactivities[0]->getActivity())) {
                     throw new Exception("Could not find an activity.");
                 }
+
+                // Echo alle informatie over het restaurant
                 ?>
 
 
@@ -233,10 +240,7 @@ $foodactivityService = new foodactivityService();
             <button class="btn button1 w-100" onclick="location.href='contact.php'">Make contact with our team</button>
             <?php
         }
-
         ?>
-
-
     </section>
 </section>
 
@@ -244,6 +248,7 @@ $foodactivityService = new foodactivityService();
 </html>
 
 <script>
+//    Alle informatie die de gebruiker invoert wordt met deze methoden in de controlebox direct ingevoerd.
     function seatsToScreen() {
         var seats = document.getElementById("seatsCb");
         document.getElementById("seatsLabel").innerHTML = seats.value;

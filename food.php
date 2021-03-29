@@ -65,6 +65,7 @@ $restaurantTypeLinkService = new restaurantTypeLinkService();
             <form method="post">
                 <select name="cuisine" id="cuisine" onchange="this.form.submit()">
 
+                    //Vul de dropdown met alle keukens
                     <?php
                     $restaurantTypes = $restaurantTypeLinkService->getAllTypes();
 
@@ -94,10 +95,9 @@ $restaurantTypeLinkService = new restaurantTypeLinkService();
 <main class="content">
 
     <?php
+    // Bekijk of een van de filters is toegepast
     try {
-        $format = "HH:MM";
-
-        if (isset($_POST["stars3"]) || isset($_POST["stars4"])) {
+        if (isset($_POST["stars3"]) || isset($_POST["stars4"])) { // Filter op sterren
             // stars : 3
             if (isset($_POST["stars3"])) {
                 $stars3 = true;
@@ -114,23 +114,35 @@ $restaurantTypeLinkService = new restaurantTypeLinkService();
                 echo "<script>document.getElementById(\"stars4\").checked = false</script>";
             }
 
-            $restaurants = $restaurantService->getByStars($stars3, $stars4);
-        } else if (isset($_POST["cuisine"])) {
+            try {
+                $restaurants = $restaurantService->getByStars($stars3, $stars4);
+            } catch (Exception $exception) {
+                throw new Exception($exception->getMessage());
+            }
+        } else if (isset($_POST["cuisine"])) { // Filter op keuken
             $cuisine = $_POST["cuisine"];
             $restaurants = $restaurantTypeLinkService->getByType($cuisine);
 
             echo "<script>document.getElementById(\"cuisine\").value = \"$cuisine\";</script>";
 
-            $restaurants = $restaurantTypeLinkService->getByType($cuisine);
+            try {
+                $restaurants = $restaurantTypeLinkService->getByType($cuisine);
+            } catch (Exception $exception) {
+                throw new Exception($exception->getMessage());
+            }
         } else if (isset($_POST["searchbutton"])) {
-            // searchterm
-            if (isset($_POST["searchterm"])) {
-                $searchTerm = $_POST["searchterm"];
-                echo "<script>document.getElementById(\"searchterm\").value = '$searchTerm'</script>";
-                $restaurants = $restaurantService->getBySearchTerm($searchTerm);
-            } else {
-                $searchTerm = "";
-                $restaurants = $restaurantService->getAll();
+            // Zoek op zoekterm
+            try {
+                if (isset($_POST["searchterm"])) {
+                    $searchTerm = $_POST["searchterm"];
+                    echo "<script>document.getElementById(\"searchterm\").value = '$searchTerm'</script>";
+                    $restaurants = $restaurantService->getBySearchTerm($searchTerm);
+                } else {
+                    $searchTerm = "";
+                    $restaurants = $restaurantService->getAll();
+                }
+            } catch (Exception $exception) {
+                throw new Exception($exception->getMessage());
             }
         } else {
             $restaurants = $restaurantService->getAll();
@@ -147,17 +159,16 @@ $restaurantTypeLinkService = new restaurantTypeLinkService();
         } else {
             echo "<p>Could not find an restaurant.</p>";
         }
-    }
-    catch (Exception $exception)
-    {
+    } catch (Exception $exception) {
         ?>
-        <h2>Cant get connection to the database.</h2>
-        <p><?php echo $exception->getMessage()?></p>
+        <h2>Kan de restaurants niet ophalen.</h2>
+        <p><?php echo $exception->getMessage() ?></p>
         <?php
     }
 
     function getTimes($foodactivities)
     {
+        // Stop alle tijden die het restaurant aanbied in een array.
         if ($foodactivities == null) {
             return null;
         }
@@ -174,6 +185,7 @@ $restaurantTypeLinkService = new restaurantTypeLinkService();
 
     function echoRestaurant($restaurant)
     {
+        // Haal alle informatie op over het restaurant
         $restaurantId = $restaurant->getId();
         $restaurantName = $restaurant->getName();
         $stars = $restaurant->getStars();
@@ -206,13 +218,18 @@ $restaurantTypeLinkService = new restaurantTypeLinkService();
                             foreach ($times as $startTimeStr => $endTimeStr) {
                                 echo "$startTimeStr - $endTimeStr<br>";
                             }
-                        } ?></p>
+                        } else {
+                            echo "No time information available.";
+                        }
+                        ?></p>
                 </section>
                 <section class="foodRestaurantLocation"><p><?php echo $restaurantLocation ?></p></section>
                 <section class="foodRestaurantStars">
                     <?php
-                    for ($x = 0; $x < $stars; $x++) {
-                        echo "<img class='stars' src='/img/Icons/starw.png' alt='star'>";
+                    if ($stars != null) {
+                        for ($x = 0; $x < $stars; $x++) {
+                            echo "<img class='stars' src='/img/Icons/starw.png' alt='star'>";
+                        }
                     }
                     ?>
                 </section>
@@ -231,9 +248,8 @@ $restaurantTypeLinkService = new restaurantTypeLinkService();
     }
 
 
+    // Melding als er zojuist een reservering is gemaakt.
     if (isset($_SESSION["foodreservationName"])) {
-        var_dump($_SESSION["foodreservationName"]);
-
         $restaurantName = $_SESSION["foodreservationName"];
         if (empty($restaurantName)) {
             $restaurantName = "a restaurant";

@@ -14,10 +14,10 @@ require_once($root . "/Service/shoppingcartServiceDB.php");
 
 $mailer = new mailer();
 $shoppingcartServiceDB = new shoppingcartServiceDB();
-$cartId = $shoppingcartServiceDB->addShoppingcartToDatabase();
+//$cartId = $shoppingcartServiceDB->addShoppingcartToDatabase();
 
 //$mailer->sendMail("louellacreemers@gmail.com", "CartId", "ID = {$cartId}");
-$_SESSION['cartId'] = $cartId;
+//$_SESSION['cartId'] = $cartId;
 ?>
 
 
@@ -42,6 +42,7 @@ require_once($root . "/UI/navBar.php");
 <section>
 
     <script language=Javascript>
+        //        zorg ervoor dat men geen tekst invoert.
         function isNumberKey(evt) {
             var charCode = (evt.which) ? evt.which : event.keyCode
             if (charCode > 31 && (charCode < 48 || charCode > 57))
@@ -52,22 +53,27 @@ require_once($root . "/UI/navBar.php");
 
     <?php
 
+    // VERWIJDER OF BEWERK een shoppingcart item
     if (isset($_POST["edit"]) || isset($_POST["remove"])) {
         $shoppingcartService = new shoppingcartService();
-        echo "SET IS TRUE";
-        if ($_POST['action'] == 'remove') {
-            $shoppingcartService->removeFromShoppingcartItemsById($_POST["id"]);
-        } else if ($_POST['action'] == 'edit') {
-            $newAmount = $_POST["amount"];
-            if ($newAmount == 0) {
-                $shoppingcartService->removeFromShoppingcartItemsById($_POST["id"]);
-            } else {
-                $shoppingcartService->getShoppingcart()->setShoppingcartItemById($_POST["id"], $newAmount);
+
+        $idOfActivity = $_POST["id"];
+        if (intval($idOfActivity)) {
+            if ($_POST['action'] == 'remove') {
+                $shoppingcartService->removeFromShoppingcartItemsById($idOfActivity);
+            } else if ($_POST['action'] == 'edit') {
+                $newAmount = $_POST["amount"];
+                if ($newAmount == 0) {
+                    $shoppingcartService->removeFromShoppingcartItemsById($idOfActivity);
+                } else {
+                    $shoppingcartService->getShoppingcart()->setShoppingcartItemById($idOfActivity, $newAmount);
+                }
             }
         }
     }
 
 
+    // Haal shoppingcart op.
     $total = 0;
     if (isset($_SESSION['shoppingcart'])) {
         $shoppingcartService = new shoppingcartService();
@@ -75,7 +81,11 @@ require_once($root . "/UI/navBar.php");
         $foodActivityService = new foodActivityService();
         $danceActivityService = new danceActivityService();
         $activityService = new activityService();
-        $shoppingcart = $shoppingcartService->getShoppingcart()->getShoppingcartItems();
+        try {
+            $shoppingcart = $shoppingcartService->getShoppingcart()->getShoppingcartItems();
+        } catch (Exception $exception) {
+            echo "<p>Cant get the shoppingcartitems. Please try again later or reset your cookies.</p>";
+        }
 
         echo "<br><br> shoppingcart <br><br>";
         var_dump($shoppingcart);
@@ -101,7 +111,12 @@ require_once($root . "/UI/navBar.php");
             echo "<br><br> SHOPPINGCARTITEMSDB <br><br>";
 
 
-            $activities = array_merge($danceActivityService->getFromActivityIds($ids), $foodActivityService->getFromActivityIds($ids), $jazzActivityService->getFromActivityIds($ids), $activityService->getAllById($ids));
+            try {
+                $activities = array_merge($danceActivityService->getFromActivityIds($ids), $foodActivityService->getFromActivityIds($ids), $jazzActivityService->getFromActivityIds($ids), $activityService->getAllById($ids));
+            }
+            catch(Exception $exception){
+                echo "Cant find activities from database";
+            }
 
             $_SESSION['cart'] = $activities;
 
@@ -110,6 +125,8 @@ require_once($root . "/UI/navBar.php");
                 var_dump($activities);
                 echo "<br><br> ACTIVITYES <br><br>";
 
+
+                // verkrijg voor elke dag de activiteiten
                 $datesOfFestival = array();
 
                 foreach ($activities as $activity) {
@@ -144,6 +161,7 @@ require_once($root . "/UI/navBar.php");
 
                 for ($i = 0; $i < count($dayActivities); $i++) {
                     if ($dayActivities[$i] != 0) {
+                        // echo alle activiteiten van de dag en bereken het totaal.
                         $total += echoDay($datesOfFestival[$i], $dayActivities[$i]);
                     }
                 }
@@ -152,9 +170,7 @@ require_once($root . "/UI/navBar.php");
                 <button class="button1"
                         onclick="window.location.href='/payment/account.php'"><?php echo "Pay €$total" ?> </button>
                 <?php
-            }
-            else
-            {
+            } else {
                 echo "<p>Cart is Empty</p>";
             }
         }
@@ -172,14 +188,11 @@ function echoDay($date, $activitiesOfTheDay)
 {
     if (count($activitiesOfTheDay) != 0) {
         $totalPriceDay = 0;
+
+        // Echo de labels
         echoTitles($date);
 
-
-        //echo "<br><br> ACTIVITY ON DAY <br><br>";
-        //var_dump($activitiesOfTheDay);
-        //echo get_class($activitiesOfTheDay[0]);
-        //echo "<br><br> ACTIVITY ON DAY <br><br>";
-
+        // Voor elke activiteit van de dag : echo de activiteit
         foreach ($activitiesOfTheDay as $activity) {
 
             if (get_class($activity) == "activity") {
@@ -253,6 +266,7 @@ function echoTitles($date)
 
 function cartElement($activityid, $activityName, $type, $createData, $startTime, $endTime, $price, $amount)
 {
+    //echo het cart element, de activiteit.
     $totalPrice = $amount * $price;
 
     $element = "
