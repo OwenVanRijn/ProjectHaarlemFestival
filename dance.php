@@ -29,7 +29,6 @@ else {
     $activeArray = $activityService->getAll();
 }
 ?>
-
 <!DOCTYPE html>
 <html>
 
