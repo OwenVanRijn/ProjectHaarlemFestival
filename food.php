@@ -12,7 +12,7 @@ $restaurantTypeLinkService = new restaurantTypeLinkService();
 <html>
 
 <head>
-    <title>Food - Haarlem Festival</title>
+    <title>Foods - Haarlem Festival</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/food.css">
     <meta charset="UTF-8">
