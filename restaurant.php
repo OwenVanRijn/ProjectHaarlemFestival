@@ -20,9 +20,15 @@ if (isset($_POST["gotooverview"])) {
 <!DOCTYPE html>
 <html>
 
-<!--<head>-->
-<!--    -->
-<!--</head>-->
+<?php
+    if(isset($_GET['restaurantId'])){
+        echo "<head>";
+        echo "<title>Restaurant - Haarlem Festival</title>";
+        echo "<link rel='stylesheet' href='css/style.css'>";
+        echo "<link rel='stylesheet' href='css/food.css'>";
+
+    }
+?>
 
 <body>
 
