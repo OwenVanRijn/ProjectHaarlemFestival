@@ -1,5 +1,4 @@
 <?php
-    require_once "UI/navBar.php";
     require_once "Email/mailer.php";
 
     if(isset($_POST['mail'])){
@@ -30,7 +29,9 @@
 </head>
 
 <body>
-
+<?php
+require_once "UI/navBar.php";
+?>
     <header>
         <div class="title">
             <h1 class="main-title">Contact us</h1>

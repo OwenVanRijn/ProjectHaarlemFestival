@@ -3,8 +3,7 @@ nav {
     top: 0;
     width: 100%;
     background-color: #000;
-    overflow: auto;
-    width: 100%;
+    overflow: hidden;
     display: block;
     z-index: 1;
 }
