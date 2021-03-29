@@ -20,9 +20,6 @@ if (isset($_POST["gotooverview"])) {
 <!DOCTYPE html>
 <html>
 
-<title>Restaurant - Haarlem Festival</title>
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/food.css">
 <!--<head>-->
 <!--    -->
 <!--</head>-->
