@@ -17,9 +17,9 @@
 <body>
 <?php
 require_once("UI/navBar.php");
-require_once("/Service/foodactivityService.php");
-require_once("/Service/restaurantService.php");
-require_once("/Service/shoppingcartService.php");
+require_once("Service/foodactivityService.php");
+require_once("Service/restaurantService.php");
+require_once("Service/shoppingcartService.php");
 
 $foodactivityService = new foodactivityService();
 
