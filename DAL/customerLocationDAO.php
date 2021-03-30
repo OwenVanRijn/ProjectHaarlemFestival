@@ -18,6 +18,10 @@ class customerLocationDAO extends dynamicQueryGen
      */
     public function get(array $filter = [])
     {
-        return parent::get($filter);
+        try {
+            return parent::get($filter);
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
+        }
     }
 }

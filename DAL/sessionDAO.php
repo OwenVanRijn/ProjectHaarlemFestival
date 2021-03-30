@@ -21,6 +21,10 @@ class sessionDAO extends dynamicQueryGen
      */
     public function get(array $filter = [])
     {
+        try{
         return parent::get($filter);
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
+        }
     }
 }

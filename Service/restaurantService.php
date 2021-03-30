@@ -120,35 +120,43 @@ class restaurantService extends baseService
 
     function getTimes($foodactivities)
     {
-        if (!is_array($foodactivities)) {
-            return null;
-        }
-        $times = array();
+        try {
+            if (!is_array($foodactivities)) {
+                return null;
+            }
+            $times = array();
 
-        foreach ($foodactivities as $foodactivity) {
-            $startTime = $foodactivity->getActivity()->getStartTime();
-            $endTime = $foodactivity->getActivity()->getEndTime();
-            $startTimeStr = date_format($startTime, 'H:i');
-            $endTimeStr = date_format($endTime, 'H:i');
+            foreach ($foodactivities as $foodactivity) {
+                $startTime = $foodactivity->getActivity()->getStartTime();
+                $endTime = $foodactivity->getActivity()->getEndTime();
+                $startTimeStr = date_format($startTime, 'H:i');
+                $endTimeStr = date_format($endTime, 'H:i');
 
-            $times["$startTimeStr"] = $endTimeStr;
+                $times["$startTimeStr"] = $endTimeStr;
+            }
+            return $times;
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
         }
-        return $times;
     }
 
     function getDates($foodactivities)
     {
-        if (!is_array($foodactivities)) {
-            return null;
-        }
-        $dates = array();
+        try {
+            if (!is_array($foodactivities)) {
+                return null;
+            }
+            $dates = array();
 
-        foreach ($foodactivities as $foodactivity) {
-            $date = $foodactivity->getActivity()->getDate();
-            $date = date_format($date, "Y-m-d");
-            $dates["$date"] = $date;
+            foreach ($foodactivities as $foodactivity) {
+                $date = $foodactivity->getActivity()->getDate();
+                $date = date_format($date, "Y-m-d");
+                $dates["$date"] = $date;
+            }
+            return $dates;
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
         }
-        return $dates;
     }
 
     public function getAllRestaurantsAsStr()
@@ -167,22 +175,26 @@ class restaurantService extends baseService
 
     public function getBySearch($searchTerm, $cuisine, $stars3, $stars4)
     {
-        $filter = array();
+        try {
+            $filter = array();
 
-        $filter = array_merge($filter, array("restaurant.name" => new dbContains($searchTerm)));
+            $filter = array_merge($filter, array("restaurant.name" => new dbContains($searchTerm)));
 
-        $stars = array();
-        if ($stars3) {
-            $stars[] = "3";
-        }
+            $stars = array();
+            if ($stars3) {
+                $stars[] = "3";
+            }
 
-        if ($stars4) {
-            $stars[] = "4";
+            if ($stars4) {
+                $stars[] = "4";
+            }
+            if (count($stars) > 0) {
+                $filter = array_merge($filter, array("restaurant.stars" => $stars));
+            }
+            return $this->db->getArray($filter);
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage());
         }
-        if (count($stars) > 0) {
-            $filter = array_merge($filter, array("restaurant.stars" => $stars));
-        }
-        return $this->db->get($filter);
     }
 
     public function getBySearchTerm($searchTerm)
