@@ -17,6 +17,8 @@ $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 $secondId = $_SESSION['id'];
 $cartId = $_SESSION['cartId'];
 
+echo $cartId;
+
 if(isset($_POST['pay'])){
 
     $payment = $mollie->payments->create([

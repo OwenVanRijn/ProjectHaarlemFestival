@@ -14,12 +14,11 @@ require_once($root . "/Service/shoppingcartServiceDB.php");
 
 $mailer = new mailer();
 $shoppingcartServiceDB = new shoppingcartServiceDB();
-//$cartId = $shoppingcartServiceDB->addShoppingcartToDatabase();
+$cartId = $shoppingcartServiceDB->addShoppingcartToDatabase();
 
 //$mailer->sendMail("louellacreemers@gmail.com", "CartId", "ID = {$cartId}");
-//$_SESSION['cartId'] = $cartId;
+$_SESSION['cartId'] = $cartId;
 ?>
-
 
 <!doctype html>
 <html lang="en">

@@ -24,6 +24,8 @@ $emailgen = new emailOrderGen();
 $id = $_GET['id'];
 $cartId = $_GET['cart'];
 
+
+
 $items = $cart->getShoppingcartById($cartId);
 
 
