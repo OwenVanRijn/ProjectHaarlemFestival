@@ -1,5 +1,4 @@
 <?php
-session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
@@ -15,7 +14,7 @@ require_once ($root . "/pdf/emailOrderGen.php");
 
 $mailer = new mailer();
 
-$mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: {$_POST['id']}");
+$mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: ");
 
 $order = new ordersService();
 $ticket = new ticketService();
