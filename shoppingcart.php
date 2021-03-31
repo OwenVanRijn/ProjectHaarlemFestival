@@ -302,11 +302,8 @@ function cartElement($activityid, $activityName, $type, $createData, $startTime,
     ";
     echo $element;
 }
-
-
+require_once "UI/footer.php";
 ?>
-
-
 </body>
 
 </html>

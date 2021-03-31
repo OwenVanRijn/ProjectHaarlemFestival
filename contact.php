@@ -108,5 +108,8 @@ require_once "UI/navBar.php";
             </section>
         </form>
     </section>
+<?php
+require_once "UI/footer.php";
+?>
 </body>
 </html>

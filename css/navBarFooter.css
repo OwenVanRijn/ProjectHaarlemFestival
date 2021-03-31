@@ -42,8 +42,13 @@ ul {
 }
 
 .share {
+    display: inline-block;
     padding-top: 2em;
     padding-left: 49%;
+}
+
+.textShare{
+    text-align: center;
 }
 
 .shareButtons {

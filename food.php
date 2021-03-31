@@ -268,6 +268,8 @@ $restaurantTypeLinkService = new restaurantTypeLinkService();
     }
     ?>
 </main>
+<?php
+require_once "UI/footer.php";
+?>
 </body>
-
 </html>

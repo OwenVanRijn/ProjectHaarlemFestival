@@ -234,6 +234,9 @@ if (isset($_GET['restaurantId'])) {
     ?>
     </section>
 </main>
+<?php
+require_once "UI/footer.php";
+?>
 </body>
 
 </html>
