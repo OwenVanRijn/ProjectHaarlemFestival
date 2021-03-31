@@ -27,13 +27,7 @@ if (isset($_GET['restaurantId'])) {
         <link rel='stylesheet' href='css/style.css'>
         <link rel='stylesheet' href='css/food.css'>
     </head>
-    <?php
-
-}
-?>
-
     <body>
-
     <main class="content">
         <section>
             <?php
@@ -242,6 +236,6 @@ if (isset($_GET['restaurantId'])) {
 
     </html>
 
-<?php
+    <?php
 }
 ?>
