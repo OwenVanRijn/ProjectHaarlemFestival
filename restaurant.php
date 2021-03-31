@@ -1,6 +1,6 @@
 <?php
 
-if (isset($_GET['restaurantId'])) {
+if (isset($_GET["restaurantId"])) {
 
     $root = realpath($_SERVER["DOCUMENT_ROOT"]);
     require_once($root . "/Service/foodactivityService.php");
