@@ -160,14 +160,8 @@ function echoRes($restaurant)
     </section>
     <?php
 }
-
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
 if (isset($_GET["restaurantId"])) {
     $restaurantId = $_GET["restaurantId"];
-    var_dump($restaurantId);
-    var_dump($_GET["restaurantId"]);
 
     $root = realpath($_SERVER["DOCUMENT_ROOT"]);
     require_once($root . "/Service/foodactivityService.php");
@@ -182,8 +176,6 @@ if (isset($_GET["restaurantId"])) {
         header('Location: food.php');
         exit();
     }
-    var_dump($restaurantId);
-    var_dump($_GET["restaurantId"]);
 
     ?>
 
@@ -198,8 +190,6 @@ if (isset($_GET["restaurantId"])) {
     <body>
     <?php
     require_once($root . "/UI/navBar.php");
-    var_dump($restaurantId);
-    var_dump($_GET["restaurantId"]);
     ?>
     <main class="content">
         <section>
@@ -245,9 +235,5 @@ if (isset($_GET["restaurantId"])) {
     </html>
 
     <?php
-}
-else
-{
-    echo "can niet vinden";
 }
 ?>
