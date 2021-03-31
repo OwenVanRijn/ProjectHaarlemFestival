@@ -246,4 +246,8 @@ if (isset($_GET["restaurantId"])) {
 
     <?php
 }
+else
+{
+    echo "can niet vinden";
+}
 ?>
