@@ -15,6 +15,8 @@ if (isset($_GET["restaurantId"])) {
         header('Location: food.php');
         exit();
     }
+    var_dump($restaurantId);
+    var_dump($_GET["restaurantId"]);
 
     ?>
 
