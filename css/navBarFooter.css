@@ -47,13 +47,17 @@ ul {
     padding-left: 49%;
 }
 
-.textShare{
+.textShare {
     text-align: center;
 }
 
 .shareButtons {
     height: 30px;
     width: 30px;
+}
+
+footer {
+    bottom: 0;
 }
 
 footer [class ^= 'footer-'] {
@@ -65,6 +69,9 @@ footer [class ^= 'footer-'] {
 }
 
 .footerFull {
+    bottom: 0;
+    background: black;
+    width: 100%;
     background: black;
 }
 

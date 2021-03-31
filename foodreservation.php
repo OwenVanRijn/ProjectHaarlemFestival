@@ -46,12 +46,19 @@ $foodactivityService = new foodactivityService();
                         if ($foodactivity == NULL) {
                             throw new Exception("Could not find a valid activity. Please choose a valid date and session.");
                         } else {
-                            $shoppingcartService = new shoppingcartService();
-                            $shoppingcartService->getShoppingcart()->addToShoppingcartItemsById($foodactivity->getActivity()->getId(), $seats);
+                            $seatsLeft = $foodactivity->getActivity()->getTicketsLeft();
+                            if ($seatsLeft == null || $seatsLeft == 0) {
+                                throw new Exception("There are no seats left.");
+                            } else if ($seatsLeft > $seats) {
+                                $shoppingcartService = new shoppingcartService();
+                                $shoppingcartService->getShoppingcart()->addToShoppingcartItemsById($foodactivity->getActivity()->getId(), $seats);
 
-                            header("Location: food.php", true, 301);
-                            $_SESSION["foodreservationName"] = $foodactivity->getRestaurant()->getName();
-                            exit();
+                                header("Location: food.php", true, 301);
+                                $_SESSION["foodreservationName"] = $foodactivity->getRestaurant()->getName();
+                                exit();
+                            } else {
+                                throw new Exception("There are only $seatsLeft seats left.");
+                            }
                         }
                     } catch (Exception $exception) {
                         throw new Exception("{$exception->getMessage()}");
@@ -248,7 +255,7 @@ $foodactivityService = new foodactivityService();
 </html>
 
 <script>
-//    Alle informatie die de gebruiker invoert wordt met deze methoden in de controlebox direct ingevoerd.
+    //    Alle informatie die de gebruiker invoert wordt met deze methoden in de controlebox direct ingevoerd.
     function seatsToScreen() {
         var seats = document.getElementById("seatsCb");
         document.getElementById("seatsLabel").innerHTML = seats.value;
