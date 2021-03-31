@@ -1,7 +1,7 @@
 <?php
 
 if (isset($_GET["restaurantId"])) {
-
+    $restaurantId = $_GET["restaurantId"];
     $root = realpath($_SERVER["DOCUMENT_ROOT"]);
     require_once($root . "/Service/foodactivityService.php");
     require_once($root . "/Service/restaurantService.php");
@@ -36,7 +36,6 @@ if (isset($_GET["restaurantId"])) {
             // Bekijk of er een restaurantID is, of deze valide is en echo indien valide de restaurant informatie.
             if (isset($_GET["restaurantId"])) {
             try {
-            $restaurantId = $_GET["restaurantId"];
 
             if (!intval($restaurantId)) {
                 throw new Exception("Invalid id in addressbar.");
