@@ -1,18 +1,5 @@
-<?php
-$root = realpath($_SERVER["DOCUMENT_ROOT"]);
-//echo "$root . '/index.php' ? >"
-?>
-
-
-<!DOCTYPE html>
-<html>
-
-<head>
-    <link rel="stylesheet" href="css/navBarFooter.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-</head>
-
-<body>
+<link rel="stylesheet" href="css/navBarFooter.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <section class="share">
     <p class="textShare">Share this page</p>
     <img class="shareButtons" src="img/whatsapp.png" alt="">
@@ -38,4 +25,4 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
             </ul>
         </section>
     </section>
-</html>
+</footer>
