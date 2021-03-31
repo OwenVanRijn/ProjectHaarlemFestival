@@ -6,7 +6,6 @@ if (isset($_GET["restaurantId"])) {
     require_once($root . "/Service/foodactivityService.php");
     require_once($root . "/Service/restaurantService.php");
     require_once($root . "/Service/restaurantTypeLinkService.php");
-    require_once($root . "/UI/navBar.php");
 
     $restaurantService = new restaurantService();
     $restaurantTypeService = new restaurantTypeLinkService();
@@ -28,6 +27,9 @@ if (isset($_GET["restaurantId"])) {
         <link rel='stylesheet' href='css/food.css'>
     </head>
     <body>
+    <?php
+    require_once($root . "/UI/navBar.php");
+    ?>
     <main class="content">
         <section>
             <?php
