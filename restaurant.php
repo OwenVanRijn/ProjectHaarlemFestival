@@ -2,6 +2,9 @@
 
 if (isset($_GET["restaurantId"])) {
     $restaurantId = $_GET["restaurantId"];
+    var_dump($restaurantId);
+    var_dump($_GET["restaurantId"]);
+
     $root = realpath($_SERVER["DOCUMENT_ROOT"]);
     require_once($root . "/Service/foodactivityService.php");
     require_once($root . "/Service/restaurantService.php");
@@ -31,6 +34,8 @@ if (isset($_GET["restaurantId"])) {
     <body>
     <?php
     require_once($root . "/UI/navBar.php");
+    var_dump($restaurantId);
+    var_dump($_GET["restaurantId"]);
     ?>
     <main class="content">
         <section>
