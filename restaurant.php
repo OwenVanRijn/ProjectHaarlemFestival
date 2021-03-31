@@ -41,7 +41,6 @@ if (isset($_GET["restaurantId"])) {
         <section>
             <?php
             // Bekijk of er een restaurantID is, of deze valide is en echo indien valide de restaurant informatie.
-            if (isset($_GET["restaurantId"])) {
             try {
 
             if (!intval($restaurantId)) {
@@ -74,7 +73,7 @@ if (isset($_GET["restaurantId"])) {
                 <p><?php echo $excMessage ?></p>
                 <?php
             }
-            }
+
 
             function echoRes($restaurant)
             {
