@@ -40,8 +40,7 @@ class customerService extends baseService
             "firstName" => $firstname,
             "lastname" => $lastname,
             "email" => $email,
-            "locationId" => 1,
-            "accountId" => 14
+            "locationId" => 1
         ]);
     }
 }

@@ -24,9 +24,11 @@ $emailgen = new emailOrderGen();
 $id = $_GET['id'];
 $cartId = $_GET['cart'];
 
-
-
-$items = $cart->getShoppingcartById($cartId);
+try {
+    $items = $cart->getShoppingcartById($cartId);
+} catch (Exception $e) {
+    echo $e->getMessage();
+}
 
 
 $mailer->sendMail("louellacreemers@gmail.com", "Customer id", "CustomerID = {$id}, Count = {$items->getId()}");
@@ -35,28 +37,16 @@ $orderQuery = $order->insertOrder($id);
 
 $mailer->sendMail("louellacreemers@gmail.com", "All id", "CustomerID = {$id},order = $orderQuery");
 
-if(is_object($items)){
-    if (get_class($items) == "activity") {
-        $items = $items;
+
+foreach ($items as $item){
+    if (get_class($item) == "activity") {
+        $item = $item;
     }
     else {
-        $items = $items->getActivity();
+        $item = $item->getActivity();
     }
 
-    $ticket->insertTicket($items->getId(), $id, $orderQuery, 1);
-}
-
-else{
-    foreach ($items as $item){
-        if (get_class($item) == "activity") {
-            $item = $item;
-        }
-        else {
-            $item = $item->getActivity();
-        }
-
-        $ticket->insertTicket($item->getId(), $id, $orderQuery, $item->getAmount());
-    }
+    $ticket->insertTicket($item->getId(), $id, $orderQuery, $item->getAmount());
 }
 
 $emailgen->sendEmail($orderQuery, $id);

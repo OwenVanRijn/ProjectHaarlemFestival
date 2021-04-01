@@ -23,13 +23,11 @@
 
     <body>
         <header>
-            <section class="row h-100 justify-content-center align-self-center">
-                <section class="col-3" style="padding: 0;">
-                    <?php
-                       echo "<img src='img/Artists/bw/{$nameStripped}.png' class='w-100' alt='{$name}'>";
-                    ?>
+            <section class="row" style="background-color: #666666; margin-top: 3em;">
+                <section class="col-1">
+                    <img src='img/Artists/bw/<?php echo $nameStripped?>.png' class="w-80">
                 </section>
-                <section class="col-9 text-center" style="background-color: gray">
+                <section class="col-11 text-center" style="margin-top: 3em;">
                     <h1><?php echo $name ?></h1>
                 </section>
             </section>
@@ -85,7 +83,7 @@
             <section class='row justify-content-center align-self-center text-center' style='margin: 2%'>
                 <section class="col-6">
                     <section class='col-12 text-center' style='background-color: #9A9999; color: black;'>
-                        <section class='row justify-content-center align-self-center text-center h-100' style='background-color: #FD6A02;'>
+                        <section class='row justify-content-center align-self-center text-center' style='background-color: #FD6A02;'>
                             <h3>For the dance kids / teens</h3>";
                             </section>
                         <section class='row justify-content-center align-self-center' style='margin: 2%'>

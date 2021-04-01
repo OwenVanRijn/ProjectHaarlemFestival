@@ -78,7 +78,7 @@ class shoppingcartServiceDB extends baseService
     public function getShoppingcartById($id)
     {
         try {
-            return $this->shoppingcartItemDAO->get([
+            return $this->shoppingcartItemDAO->getArray([
                 "shoppingcartId" => $id
             ]);
         } catch (Exception $exception) {

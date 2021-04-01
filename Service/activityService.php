@@ -171,4 +171,16 @@ class activityService extends baseService
             "id" => $id
         ]);
     }
+
+    public function getByType($type){
+        return$this->db->get([
+            "type" => $type
+        ]);
+    }
+
+    public function getByLocation($location){
+        return $this->db->get([
+            "location.name" => $location
+        ]);
+    }
 }
