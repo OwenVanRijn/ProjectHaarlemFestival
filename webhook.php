@@ -12,6 +12,12 @@ require_once ($root . "/Model/customer.php");
 require_once ($root . "/Model/orders.php");
 require_once ($root . "/pdf/emailOrderGen.php");
 
+use Mollie\Api\MollieApiClient;
+require_once "../lib/mollie/vendor/autoload.php";
+
+$mollie = new MollieApiClient();
+$mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
+
 $mailer = new mailer();
 
 $mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: ");
@@ -23,25 +29,32 @@ $emailgen = new emailOrderGen();
 
 $id = $_GET['id'];
 $cartId = $_GET['cart'];
+$paymentId = $_POST['id'];
 
-$items = $cart->getShoppingcartById($cartId);
+$payment = $mollie->payments->get($paymentId);
 
-$orderQuery = $order->insertOrder($id);
+if($payment->isPaid()){
+    $items = $cart->getShoppingcartById($cartId);
 
-$mailer->sendMail("louellacreemers@gmail.com", "All id", "CustomerID = {$id},order = $orderQuery");
+    $orderQuery = $order->insertOrder($id);
 
+    $mailer->sendMail("louellacreemers@gmail.com", "All id", "CustomerID = {$id},order = $orderQuery");
 
-foreach ($items as $item){
-    if (get_class($item) == "activity") {
-        $item = $item;
+    foreach ($items as $item){
+        if (get_class($item) == "activity") {
+            $item = $item;
+        }
+        else {
+            $item = $item->getActivity();
+        }
+
+        $ticket->insertTicket($item->getId(), $id, $orderQuery, 1);
     }
-    else {
-        $item = $item->getActivity();
-    }
 
-    $ticket->insertTicket($item->getId(), $id, $orderQuery, 1);
+    $emailgen->sendEmail($orderQuery, $id);
 }
 
-$emailgen->sendEmail($orderQuery, $id);
-
+else{
+    header("Location: paymenterror.php");
+}
 ?>
