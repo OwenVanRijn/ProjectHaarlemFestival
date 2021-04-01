@@ -13,7 +13,7 @@ require_once ($root . "/Model/orders.php");
 require_once ($root . "/pdf/emailOrderGen.php");
 
 use Mollie\Api\MollieApiClient;
-require_once "../lib/mollie/vendor/autoload.php";
+require_once $root . "/lib/mollie/vendor/autoload.php";
 
 $mollie = new MollieApiClient();
 $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
@@ -49,6 +49,7 @@ if($payment->isPaid()){
         }
 
         $ticket->insertTicket($item->getId(), $id, $orderQuery, 1);
+        $mailer->sendMail("louellacreemers@gmail.com", "TICKETS", "ticket id={$item->getId()}");
     }
 
     $emailgen->sendEmail($orderQuery, $id);
