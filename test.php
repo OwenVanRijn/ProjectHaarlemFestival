@@ -15,23 +15,28 @@ require_once ("UI/navBarCMSGenerator.php");
 require_once ("DAL/accountDAO.php");
 require_once ("Email/mailer.php");
 
-$ids = [];
 
-$activityService = new activityService();
+$customer = new customerService();
 
-$danceArray = $activityService->getByType("dance");
+$customer->addCustomer("Test", "LAst", "were@gmail.com", "", 1);
 
-$dateArray = $activityService->getByLocation("Club Stalker");
-
-foreach ($dateArray as $activity){
-    $id = $activity->getId();
-
-    $ids[] = $id;
-}
-
-$returnActivites = $activityService->getTypedActivityByIds($ids);
-
-var_dump($returnActivites);
+//$ids = [];
+//
+//$activityService = new activityService();
+//
+//$danceArray = $activityService->getByType("dance");
+//
+//$dateArray = $activityService->getByLocation("Club Stalker");
+//
+//foreach ($dateArray as $activity){
+//    $id = $activity->getId();
+//
+//    $ids[] = $id;
+//}
+//
+//$returnActivites = $activityService->getTypedActivityByIds($ids);
+//
+//var_dump($returnActivites);
 
 
 

@@ -24,12 +24,7 @@ $emailgen = new emailOrderGen();
 $id = $_GET['id'];
 $cartId = $_GET['cart'];
 
-try {
-    $items = $cart->getShoppingcartById($cartId);
-} catch (Exception $e) {
-    echo $e->getMessage();
-}
-
+$items = $cart->getShoppingcartById($cartId);
 
 $mailer->sendMail("louellacreemers@gmail.com", "Customer id", "CustomerID = {$id}, Count = {$items->getId()}");
 

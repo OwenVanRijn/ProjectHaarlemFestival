@@ -43,4 +43,12 @@ class customerService extends baseService
             "locationId" => 1
         ]);
     }
+
+    public function getEmails(){
+        $emailArray = [];
+
+        $returnArray = $this->db->getDistinctEmail();
+
+
+    }
 }
