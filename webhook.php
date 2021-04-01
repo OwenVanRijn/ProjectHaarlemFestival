@@ -39,7 +39,7 @@ foreach ($items as $item){
         $item = $item->getActivity();
     }
 
-    $ticket->insertTicket($item->getId(), $id, $orderQuery, $item->getAmount());
+    $ticket->insertTicket($item->getId(), $id, $orderQuery, 1);
 }
 
 $emailgen->sendEmail($orderQuery, $id);
