@@ -18,7 +18,11 @@ require_once ("Email/mailer.php");
 
 $customer = new customerService();
 
-$customer->addCustomer("Test", "LAst", "were@gmail.com");
+$array = $customer->getAll();
+
+foreach ($array as $cus){
+    echo $cus->getId();
+}
 
 //$ids = [];
 //
