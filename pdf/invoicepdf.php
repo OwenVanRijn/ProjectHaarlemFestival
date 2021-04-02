@@ -1,20 +1,19 @@
 <?php
+session_start();
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 ini_set('display_errors', -1);
 require_once $root."/Service/ticketService.php";
 require_once $root."/Service/activityService.php";
 require_once $root."/lib/barcodegen/vendor/autoload.php";
-require_once $root."Email/mailer.php";
+require_once $root."/Email/mailer.php";
 
 $mailer = new mailer();
 $activity = new activityService();
 $id = $_SESSION['orderId'];
 
-$mailer->sendMail("louellacreemers@gmail.com", "invoicepdf.php", "Order= $id");
-
 $total = 0;
 $ticket = new ticketService();
-$ticketArray = $ticket->getTicketsByOrder($_GET['orderId']);
+$ticketArray = $ticket->getTicketsByOrder($id);
 ?>
 
 <!DOCTYPE html>

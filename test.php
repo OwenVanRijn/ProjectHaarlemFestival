@@ -18,7 +18,7 @@ require_once ("Email/mailer.php");
 
 $pdf = new emailOrderGen();
 
-$pdf->sendEmail("77", "129");
+$pdf->sendEmail("84", "156");
 
 //$ids = [];
 //
