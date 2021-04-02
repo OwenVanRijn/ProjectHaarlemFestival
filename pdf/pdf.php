@@ -6,13 +6,19 @@ ini_set('display_startup_errors', 1);
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once $root . "/lib/dompdf/autoload.inc.php";
+require_once $root . "/Email/mailer.php";
 use Dompdf\Dompdf;
 
 
 class pdf{
 
     function loadTicketPDF(){
+
+        $mailer = new mailer();
+
         $orderId = $_SESSION['orderId'];
+
+        $mailer->sendMail("louellacreemers@gmail.com", "pdf.php", "Order= $orderId");
 
         ob_start();
         include 'ticketpdf.php';

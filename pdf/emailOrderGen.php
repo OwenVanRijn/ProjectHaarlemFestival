@@ -9,14 +9,14 @@ include_once $root . "/Service/customerService.php";
 class emailOrderGen
 {
     function sendEmail($orderId, $customerId){
-        $_SESSION['orderId'] = 81;
+        $_SESSION['orderId'] = $orderId;
 
         $pdf = new pdf();
         $mailer = new mailer();
         $customer = new customerService();
 
+        $mailer->sendMail("louellacreemers@gmail.com", "emoailordergen", "Order= $orderId, CUS=$customerId");
         $ticketPdf = $pdf->loadTicketPDF();
-
         $invoicePdf = $pdf->loadInvoicePDF();
 
         file_put_contents( "pdf/invoice_".$orderId.".pdf", $invoicePdf);
