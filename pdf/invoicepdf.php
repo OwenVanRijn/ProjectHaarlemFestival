@@ -1,4 +1,5 @@
 <?php
+session_start();
 ini_set('display_errors', -1);
 require_once "../Service/ticketService.php";
 require_once "../Service/activityService.php";
