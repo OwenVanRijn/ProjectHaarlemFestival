@@ -67,13 +67,17 @@ $restaurantTypeLinkService = new restaurantTypeLinkService();
 
                     //Vul de dropdown met alle keukens
                     <?php
-                    $restaurantTypes = $restaurantTypeLinkService->getAllTypes();
-
-                    echo "<option value=\"0\">All cuisines</option>";
-                    foreach ($restaurantTypes as $restaurantType) {
-                        $restaurantTypeName = $restaurantType->getName();
-                        $restaurantTypeId = $restaurantType->getId();
-                        echo "<option value=\"$restaurantTypeId\">$restaurantTypeName</option>";
+                    try {
+                        $restaurantTypes = $restaurantTypeLinkService->getAllTypes();
+                        echo "<option value=\"0\">All cuisines</option>";
+                        if ($restaurantTypes != null) {
+                            foreach ($restaurantTypes as $restaurantType) {
+                                $restaurantTypeName = $restaurantType->getName();
+                                $restaurantTypeId = $restaurantType->getId();
+                                echo "<option value=\"$restaurantTypeId\">$restaurantTypeName</option>";
+                            }
+                        }
+                    } catch (Exception $exception) {
                     }
                     ?>
                 </select>

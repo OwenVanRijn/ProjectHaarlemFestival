@@ -21,19 +21,11 @@ class foodactivityDAO extends dynamicQueryGen
      */
     public function get(array $filter = [])
     {
-        try {
-            return parent::get($filter);
-        } catch (Exception $exception) {
-            throw new Exception($exception->getMessage());
-        }
+        return parent::get($filter);
     }
 
     public function getArray(array $filter = []): array
     {
-        try {
-            return parent::getArray($filter);
-        } catch (Exception $exception) {
-            throw new Exception($exception->getMessage());
-        }
+        return parent::getArray($filter);
     }
 }

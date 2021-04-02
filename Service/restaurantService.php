@@ -83,144 +83,109 @@ class restaurantService extends baseService
 
     public function getById($id)
     {
-        try {
-            return $this->db->get([
-                "restaurant.id" => $id
-            ]);
-        } catch (Exception $exception) {
-            throw new Exception($exception->getMessage());
-        }
+        return $this->db->get([
+            "restaurant.id" => $id
+        ]);
     }
 
     public function getTimesByRestaurantId($restaurantId)
     {
-        try {
-            $foodActivityService = new foodactivityService();
-            $activities = $foodActivityService->getByRestaurantId($restaurantId);
-            return $this->getTimes($activities);
-        } catch (Exception $exception) {
-            throw new Exception($exception->getMessage());
-        }
+        $foodActivityService = new foodactivityService();
+        $activities = $foodActivityService->getByRestaurantId($restaurantId);
+        return $this->getTimes($activities);
     }
 
     public function getDatesByRestaurantId($restaurantId)
     {
-        try {
-            $foodActivityService = new foodactivityService();
-            $activities = $foodActivityService->getByRestaurantId($restaurantId);
-            return $this->getDates($activities);
-        } catch (Exception $exception) {
-            throw new Exception($exception->getMessage());
-        }
+
+        $foodActivityService = new foodactivityService();
+        $activities = $foodActivityService->getByRestaurantId($restaurantId);
+        return $this->getDates($activities);
     }
 
     function getTimes($foodactivities)
     {
-        try {
-            if (!is_array($foodactivities)) {
-                return null;
-            }
-            $times = array();
-
-            foreach ($foodactivities as $foodactivity) {
-                $startTime = $foodactivity->getActivity()->getStartTime();
-                $endTime = $foodactivity->getActivity()->getEndTime();
-                $startTimeStr = date_format($startTime, 'H:i');
-                $endTimeStr = date_format($endTime, 'H:i');
-
-                $times["$startTimeStr"] = $endTimeStr;
-            }
-            return $times;
-        } catch (Exception $exception) {
-            throw new Exception($exception->getMessage());
+        if (!is_array($foodactivities)) {
+            return null;
         }
+        $times = array();
+
+        foreach ($foodactivities as $foodactivity) {
+            $startTime = $foodactivity->getActivity()->getStartTime();
+            $endTime = $foodactivity->getActivity()->getEndTime();
+            $startTimeStr = date_format($startTime, 'H:i');
+            $endTimeStr = date_format($endTime, 'H:i');
+
+            $times["$startTimeStr"] = $endTimeStr;
+        }
+        return $times;
     }
 
     function getDates($foodactivities)
     {
-        try {
-            if (!is_array($foodactivities)) {
-                return null;
-            }
-            $dates = array();
-
-            foreach ($foodactivities as $foodactivity) {
-                $date = $foodactivity->getActivity()->getDate();
-                $date = date_format($date, "Y-m-d");
-                $dates["$date"] = $date;
-            }
-            return $dates;
-        } catch (Exception $exception) {
-            throw new Exception($exception->getMessage());
+        if (!is_array($foodactivities)) {
+            return null;
         }
+        $dates = array();
+
+        foreach ($foodactivities as $foodactivity) {
+            $date = $foodactivity->getActivity()->getDate();
+            $date = date_format($date, "Y-m-d");
+            $dates["$date"] = $date;
+        }
+        return $dates;
     }
 
     public function getAllRestaurantsAsStr()
     {
-        try {
-            $restaurants = $this->db->getArray();
-            $restaurantStr = [];
-            foreach ($restaurants as $b) {
-                $restaurantStr[(string)$b->getId()] = $b->getName();
-            }
-            return $restaurantStr;
-        } catch (Exception $exception) {
-            throw new Exception($exception->getMessage());
+        $restaurants = $this->db->getArray();
+        $restaurantStr = [];
+        foreach ($restaurants as $b) {
+            $restaurantStr[(string)$b->getId()] = $b->getName();
         }
+        return $restaurantStr;
     }
 
     public function getBySearch($searchTerm, $cuisine, $stars3, $stars4)
     {
-        try {
-            $filter = array();
+        $filter = array();
 
-            $filter = array_merge($filter, array("restaurant.name" => new dbContains($searchTerm)));
+        $filter = array_merge($filter, array("restaurant.name" => new dbContains($searchTerm)));
 
-            $stars = array();
-            if ($stars3) {
-                $stars[] = "3";
-            }
-
-            if ($stars4) {
-                $stars[] = "4";
-            }
-            if (count($stars) > 0) {
-                $filter = array_merge($filter, array("restaurant.stars" => $stars));
-            }
-            return $this->db->getArray($filter);
-        } catch (Exception $exception) {
-            throw new Exception($exception->getMessage());
+        $stars = array();
+        if ($stars3) {
+            $stars[] = "3";
         }
+
+        if ($stars4) {
+            $stars[] = "4";
+        }
+        if (count($stars) > 0) {
+            $filter = array_merge($filter, array("restaurant.stars" => $stars));
+        }
+        return $this->db->getArray($filter);
     }
 
     public function getBySearchTerm($searchTerm)
     {
-        try {
-            $restaurants = $this->db->getArray(["restaurant.name" => new dbContains($searchTerm)]);
-            return $restaurants;
-        } catch (Exception $exception) {
-            throw new Exception($exception->getMessage());
-        }
+        $restaurants = $this->db->getArray(["restaurant.name" => new dbContains($searchTerm)]);
+        return $restaurants;
     }
 
     public function getByStars($stars3, $stars4)
     {
-        try {
-            if (!$stars3 && !$stars4) {
-                return null;
-            }
-
-            $stars = array();
-            if ($stars3) {
-                $stars[] = "3";
-            }
-
-            if ($stars4) {
-                $stars[] = "4";
-            }
-            return $this->db->getArray(["restaurant.stars" => $stars]);
-        } catch (Exception $exception) {
-            throw new Exception($exception->getMessage());
+        if (!$stars3 && !$stars4) {
+            return null;
         }
+
+        $stars = array();
+        if ($stars3) {
+            $stars[] = "3";
+        }
+
+        if ($stars4) {
+            $stars[] = "4";
+        }
+        return $this->db->getArray(["restaurant.stars" => $stars]);
     }
 }

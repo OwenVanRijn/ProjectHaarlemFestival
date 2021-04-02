@@ -21,17 +21,14 @@ class customerDAO extends dynamicQueryGen
      */
     public function get(array $filter = [])
     {
-        try {
-            return parent::get($filter);
-        } catch (Exception $exception) {
-            throw new Exception($exception->getMessage());
-        }
+        return parent::get($filter);
     }
 
-    public function getDistinctEmail(){
+    public function getDistinctEmail()
+    {
         $this->prepareQuery("SELECT firstName FROM customer");
-        return $this->execQueryResult(function ($sqlParse){
-           return $sqlParse["firstName"];
+        return $this->execQueryResult(function ($sqlParse) {
+            return $sqlParse["firstName"];
         });
     }
 }
