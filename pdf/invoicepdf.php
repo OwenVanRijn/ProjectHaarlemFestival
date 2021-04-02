@@ -6,7 +6,7 @@ require_once $root."/Service/activityService.php";
 require_once $root."/lib/barcodegen/vendor/autoload.php";
 
 $activity = new activityService();
-$id = $_SESSION["orderId"];
+$id = 81;
 
 $total = 0;
 

@@ -9,7 +9,7 @@ include_once $root . "/Service/customerService.php";
 class emailOrderGen
 {
     function sendEmail($orderId, $customerId){
-        $_SESSION['orderId'] = $orderId;
+        $_SESSION['orderId'] = 81;
 
         $pdf = new pdf();
         $mailer = new mailer();
