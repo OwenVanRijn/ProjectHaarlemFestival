@@ -1,12 +1,12 @@
 <?php
-session_start();
+$root = realpath($_SERVER["DOCUMENT_ROOT"]);
 ini_set('display_errors', -1);
-require_once "../Service/ticketService.php";
-require_once "../Service/activityService.php";
-require_once "../lib/barcodegen/vendor/autoload.php";
+require_once $root."/Service/ticketService.php";
+require_once $root."/Service/activityService.php";
+require_once $root."/lib/barcodegen/vendor/autoload.php";
 
 $activity = new activityService();
-$id = $_SESSION['orderId'];
+$id = $_SESSION["orderId"];
 
 $total = 0;
 
