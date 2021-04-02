@@ -13,7 +13,7 @@ class ticketService extends  baseService
     }
 
     public function getTicketsByOrder(string $orderId){
-        return $this->db->get([
+        return $this->db->getArray([
             "ticket.orderId" => new dbContains("$orderId")
         ]);
     }

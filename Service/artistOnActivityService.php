@@ -32,4 +32,16 @@ class artistOnActivityService extends baseService
             "danceartist.name" => new dbContains($artist)
         ]);
     }
+
+    public function getActivityById($danceActivityId){
+        return $this->db->get([
+            "danceactivityid" => $danceActivityId
+        ]);
+    }
+
+    public function getByLocation($location){
+        return $this->db->getArray([
+            "location.name" => $location
+        ]);
+    }
 }

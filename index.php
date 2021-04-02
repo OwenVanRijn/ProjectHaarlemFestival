@@ -1,5 +1,5 @@
 <?php
-require_once "UI/navBar.php"
+require_once "UI/navBar.php";
 ?>
 
 <!DOCTYPE html>

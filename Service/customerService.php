@@ -40,8 +40,16 @@ class customerService extends baseService
             "firstName" => $firstname,
             "lastname" => $lastname,
             "email" => $email,
-            "locationId" => 1,
-            "accountId" => 14
+            "accountId" => 14,
+            "locationId" => 1
         ]);
+    }
+
+    public function getEmails(){
+        $emailArray = [];
+
+        $returnArray = $this->db->getDistinctEmail();
+
+
     }
 }

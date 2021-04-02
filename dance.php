@@ -1,34 +1,119 @@
 <?php
+session_start();
+$_SESSION['value'] = null;
 require_once "Service/artistService.php";
+require_once "Service/artistOnActivityService.php";
 require_once "Model/danceArtist.php";
 require_once "Service/danceActivityService.php";
-
+require_once "Service/activityService.php";
+require_once "Service/shoppingcartService.php";
 
 $activeArray = [];
+$dateArray = [];
+$typeArray = [];
+$idArray = [];
 
-$activityService = new danceActivityService;
+$danceService = new danceActivityService();
+$activityService = new activityService();
+$artistService = new artistService();
+$artistOnActivityService = new artistOnActivityService();
+$shoppingCartService = new shoppingcartService();
 
-if(isset($_GET['day']) && !empty($_GET['day'])){
-    $dayStr = "";
+$danceArray = $activityService->getByType("dance");
 
-    switch ($_GET["day"]){
-        case "saturday":
-            $dayStr = "2021-06-28";
-            break;
-        case "sunday":
-            $dayStr = "2021-06-29";
-            break;
-        default:
-            $dayStr = "2021-06-27";
-            break;
+//LOAD DATES FROM DB
+
+foreach ($danceArray as $activity){
+    $date = $activity->getDate();
+
+    if(!in_array($date, $dateArray)){
+        $dateArray[] = $date;
+    }
+}
+
+
+//GET TYPE FROM DB
+foreach ($danceArray as $activity){
+    $id = $activity->getId();
+    $idArray[] = $id;
+}
+
+$returnedDanceActivities = $activityService->getTypedActivityByIds($idArray);
+
+foreach ($returnedDanceActivities as $activity){
+    $type = $activity->getType();
+
+    if(!in_array($type, $typeArray)){
+        $typeArray[] = $type;
+    }
+}
+
+//DATE FILTER
+if(isset($_GET['day']) && !empty($_GET['day'])) {
+    $_SESSION['value'] = 1;
+    $datePicked = $_GET['day'];
+    $activeArray = $danceService->getAllWithDate($datePicked);
+}
+
+//LOCATION FILTER
+else if(isset($_POST['type'])) {
+    $_SESSION['value'] = 1;
+
+    $type = $_POST['type'];
+
+    $activities = $danceService->getActivityBySessionType($type);
+
+    foreach ($activities as $activity){
+        $activeArray[] = $activity;
+    }
+}
+
+//ARTIST FILTER
+else if(isset($_POST['artist'])) {
+    $_SESSION['value'] = 1;
+    $artist = $_POST['artist'];
+
+    $aoaArray = $artistOnActivityService->getActivityByArtist($artist);
+
+    $activityArray = [];
+
+    foreach ($aoaArray as $item) {
+        $danceActivity = $item->getActivity();
+
+        //var_dump($danceActivity->getArtists());
+
+        $activityArray[] = $danceActivity;
     }
 
-    $activeArray = $activityService->getAllWithDate($dayStr);
+    $activeArray = $activityArray;
 }
-else {
-    $activeArray = $activityService->getAll();
+
+else{
+    $activeArray = $danceService->getAll();
+}
+
+
+if(isset($_POST['selectedId'])){
+    $id = $_POST['selectedId'];
+
+    $danceActivity = $danceService->getActivityFromId($id);
+
+    if(is_array($danceActivity)){
+        $danceActivity = $danceActivity[0];
+    }
+
+    $shoppingCartService->getShoppingcart()->setShoppingcartItemById($danceActivity->getActivity()->getActivity()->getId(), 1);
+}
+
+if(isset($_POST['all-access'])){
+
+    $id = $_POST['all-access'];
+    $activity = $activityService->getById($id);
+
+    $shoppingCartService->getShoppingcart()->setShoppingcartItemById($activity->getId(), 1);
 }
 ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -65,15 +150,15 @@ require_once ("UI/navBar.php");
 
 <section class="container h-100">
 
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+        <section class='row h-100 align-items-center' style='background-color: #C0C0C0; margin: 2% 25% 2% 25%;padding: 1% 0 1% 0;'>
+            <section class='col-8 fonttickets'>All in ticket (Friday/Saturday/Sunday): €250,-</section>
+            <section class='col-4 text-right'><button class='btn btn-primary' type="submit" name="all-access" value="134">Add Ticket</button></section>
+        </section>
+    </form>
+
     <?php
-    $service = new artistService();
-    (array)$artistArray = $service->getArtists();
-    //all-access
-    echo "<section class='row h-100 align-items-center' style='background-color: #C0C0C0; margin: 2% 25% 2% 25%;
-                    padding: 1% 0 1% 0;'>";
-    echo "<section class='col-8 fonttickets'>All in ticket (Friday/Saturday/Sunday): €250,-</section>";
-    echo "<section class='col-4 text-right'><button class='btn btn-primary'>Add Ticket</button></section>";
-    echo "</section>";
+    (array)$artistArray = $artistService->getArtists();
     //Lineup
     echo "<section class= 'row' style='padding: 1em'>";
     foreach ($artistArray as $item){
@@ -86,21 +171,25 @@ require_once ("UI/navBar.php");
     echo "</section>";
     ?>
 </section>
-</section>
 
 <section class="container-fluid">
-
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="get">
-        <section class="row h-100 align-items-center" style="background-color: #C0C0C0">
-            <section class="col-3 text-center fonttickets" style="border-width:0.2em; border-style: solid; padding: 0.5em;"><a href="dance.php?day=friday" style="color: black;">Friday 27th of July</a></section>
-            <section class="col-3 text-center fonttickets" style="border-width:0.2em; border-style: solid; padding: 0.5em;"><a href="dance.php?day=saturday" style="color: black;">Saturday 28th of July</a></section>
-            <section class="col-3 text-center fonttickets" style="border-width:0.2em; border-style: solid; padding: 0.5em;"><a href="dance.php?day=sunday" style="color: black;">Sunday 29th of July</a></section>
-            <section class="col-3 text-center fonttickets" style="border-width:0.2em; border-style: solid; padding: 0.5em;"><a href="dance.php" style="color: black;">All days</a></section>
-        </section>
+        <?php
+            echo "<section class='row h-100 align-items-center' style='background-color: #C0C0C0'>";
+
+            foreach ($dateArray as $date){
+                $dateFormat = $date->format("Y-m-d");
+                $datePrint = $date->format("F j");
+
+                echo "<section class='col text-center fonttickets' style='border-width:0.2em; border-style: solid; padding: 0.5em;'><a href='dance.php?day=$dateFormat' style='color: black;'>{$datePrint}th</a></section>";
+            }
+            echo "<section class='col text-center fonttickets' style='border-width:0.2em; border-style: solid; padding: 0.5em;'><a href='dance.php' style='color: black;'>All days</a></section>";
+            echo "</section>";
+        ?>
     </form>
 
-    <section class="row h-100" style="background-color: #C0C0C0 ">
-        <section class="row h-100" style="background-color: #C0C0C0 ">
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+        <section class="row h-100 align-items-center" style="background-color: #C0C0C0 ">
             <section class="col text-center fonttickets" style="padding: 0.5em; background-color: #FD6A02;">
                 <a class="btn btn-primary" data-toggle="collapse" href="#filtercollapse">Filters ˅</a>
             </section>
@@ -108,46 +197,77 @@ require_once ("UI/navBar.php");
 
         <section class="collapse in" id="filtercollapse">
             <section class="card card-body">
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                <section class="row">
+                    <section class="col-3">
+                        <label for="artist" class='font-weight-bold'>Artist</label>
+                        <select name="artist">
+                            <option disabled selected>Artists</option>
+                            <?php
+                            $artistArray = $artistService->getArtists();
+                            foreach ($artistArray as $artist){
+                                $name = $artist->getName();
+                                echo "<option value='$name'>$name</option>";
+                            }
+                            ?>
+                        </select>
+                    </section>
+                    <section class="col-3">
+                        <label for="type" class="font-weight-bold">Session Type</label>
+                        <select name="type">
+                            <option disabled selected>Type</option>
+                            <?php
+                            foreach ($typeArray as $type){
+                                echo "<option value='$type'>$type</option>";
+                            }
+                            ?>
+                        </select>
+                    </section>
+                    <section class="col-6 text-right">
+                        <button class="btn btn-primary">></button>
+                    </section>
+                </section>
             </section>
         </section>
-
-    </section>
+    </form>
 
     <section class="container-fluid">
-        <?php
-        echo "<section class='row' style='margin-top: 2%'>";
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+            <?php
+            echo "<section class='row' style='margin-top: 2%'>";
 
-        foreach($activeArray as $item){
+            foreach($activeArray as $item){
 
-            echo "<section class='col-4 box'>";
-            echo "<section class='col-12 text-center' style='background-color: black; color: white; padding-top: 2%;'>";
-            $artiststrarray = $item->getArtists();
-            $artists = "";
+                echo "<section class='col-4 box'>";
+                echo "<section class='col-12 text-center' style='background-color: black; color: white; padding-top: 2%;'>";
+                $artiststrarray = $item->getArtists();
+                $artists = "";
 
-            foreach ($artiststrarray as $artist) {
-                $artists .= $artist->getName() . " ";
+                foreach ($artiststrarray as $artist) {
+                    $artists .= $artist->getName() . " ";
+                }
+
+                $id = $item->getId();
+
+                $time = $item->getActivity()->getStartTime()->format("H:i");
+
+                $location = $item->getActivity()->getLocation()->getName();
+
+                $session = $item->getType();
+
+                $price = "€".$item->getActivity()->getPrice().",-";
+
+                echo "<p style='color: orange; font-weight: bold'>{$artists}</p>";
+                echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Start time:</p>{$time}</section>";
+                echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Location:</p><bold>{$location}</bold></section>";
+                echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Session:</p><bold>{$session}</bold></section>";
+                echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Price:</p><bold>{$price}</bold></section>";
+                echo "</section>";
+                echo "<button class='btn btn-primary w-100' name='selectedId' value='$id'>Add to cart</button>";
+                echo "</section>";
             }
-
-            $time = $item->getActivity()->getStartTime()->format("H:i");
-
-            $location = $item->getActivity()->getLocation()->getName();
-
-            $session = $item->getType();
-
-            $price = "€".$item->getActivity()->getPrice().",-";
-
-            echo "<p style='color: orange; font-weight: bold'>{$artists}</p>";
-            echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Start time:</p>{$time}</section>";
-            echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Location:</p><bold>{$location}</bold></section>";
-            echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Session:</p><bold>{$session}</bold></section>";
-            echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Price:</p><bold>{$price}</bold></section>";
             echo "</section>";
-            echo "<a href='#' class='btn btn-primary w-100'>Add to cart</a>";
-            echo "</section>";
-        }
-        echo "</section>";
-        ?>
+            ?>
+        </form>
     </section>
 </section>
 

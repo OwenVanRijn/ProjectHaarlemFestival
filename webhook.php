@@ -12,6 +12,12 @@ require_once ($root . "/Model/customer.php");
 require_once ($root . "/Model/orders.php");
 require_once ($root . "/pdf/emailOrderGen.php");
 
+use Mollie\Api\MollieApiClient;
+require_once $root . "/lib/mollie/vendor/autoload.php";
+
+$mollie = new MollieApiClient();
+$mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
+
 $mailer = new mailer();
 
 $mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: ");
@@ -23,30 +29,17 @@ $emailgen = new emailOrderGen();
 
 $id = $_GET['id'];
 $cartId = $_GET['cart'];
+$paymentId = $_POST['id'];
 
+$payment = $mollie->payments->get($paymentId);
 
+if($payment->isPaid()){
+    $items = $cart->getShoppingcartById($cartId);
 
-$items = $cart->getShoppingcartById($cartId);
+    $orderQuery = $order->insertOrder($id);
 
+    $mailer->sendMail("louellacreemers@gmail.com", "All id", "CustomerID = {$id},order = $orderQuery");
 
-$mailer->sendMail("louellacreemers@gmail.com", "Customer id", "CustomerID = {$id}, Count = {$items->getId()}");
-
-$orderQuery = $order->insertOrder($id);
-
-$mailer->sendMail("louellacreemers@gmail.com", "All id", "CustomerID = {$id},order = $orderQuery");
-
-if(is_object($items)){
-    if (get_class($items) == "activity") {
-        $items = $items;
-    }
-    else {
-        $items = $items->getActivity();
-    }
-
-    $ticket->insertTicket($items->getId(), $id, $orderQuery, 1);
-}
-
-else{
     foreach ($items as $item){
         if (get_class($item) == "activity") {
             $item = $item;
@@ -55,10 +48,14 @@ else{
             $item = $item->getActivity();
         }
 
-        $ticket->insertTicket($item->getId(), $id, $orderQuery, $item->getAmount());
+        $ticket->insertTicket($item->getId(), $id, $orderQuery, 1);
+        $mailer->sendMail("louellacreemers@gmail.com", "TICKETS", "ticket id={$item->getId()}");
     }
+
+    $emailgen->sendEmail($orderQuery, $id);
 }
 
-$emailgen->sendEmail($orderQuery, $id);
-
+else{
+    header("Location: paymenterror.php");
+}
 ?>

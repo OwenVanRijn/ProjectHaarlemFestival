@@ -2,12 +2,8 @@
 require_once "UI/navBar.php";
 ?>
 
-
-<!DOCTYPE html>
-<html>
-
 <head>
-    <title>Success - Haarlem Festival</title>
+    <title>Failure - Haarlem Festival</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
     <meta charset="UTF-8">
@@ -18,13 +14,15 @@ require_once "UI/navBar.php";
 </head>
 
 <body>
-    <section class="containeer">
-        <section class="row justify-content-center align-items-center h-100">
-            <section class="col-12 text-center">
-                <p class="font-weight-bold"> You're going to Haarlem Festival!</p>
-                <p> We sent you an email with your tickets!</p>
-            </section>
+<section class="containeer">
+    <section class="row justify-content-center align-items-center h-100">
+        <section class="col-12 text-center">
+            <p class="font-weight-bold">Something seems to have gone wrong</p>
+            <p>Please try again later!</p>
+
+            <a href="index.php" class="btn button1 w-80"> Return to homepage</a>
         </section>
     </section>
+</section>
 </body>
 </html>

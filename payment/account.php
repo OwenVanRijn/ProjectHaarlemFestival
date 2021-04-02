@@ -6,7 +6,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/UI/navBar.php");
 require_once ($root . "/Service/customerService.php");
 
-
+echo "$root/payment/payment";
 if(isset($_POST['submit'])) {
     $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
@@ -18,7 +18,7 @@ if(isset($_POST['submit'])) {
 
     $_SESSION['id'] = $id;
 
-    header("location: https://haarlemfestival.louellacreemers.nl/payment/payment.php?id={$id}");
+    header("location: ./payment.php?id={$id}");
 }
 
 ?>

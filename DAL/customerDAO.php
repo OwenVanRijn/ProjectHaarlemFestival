@@ -27,4 +27,11 @@ class customerDAO extends dynamicQueryGen
             throw new Exception($exception->getMessage());
         }
     }
+
+    public function getDistinctEmail(){
+        $this->prepareQuery("SELECT firstName FROM customer");
+        return $this->execQueryResult(function ($sqlParse){
+           return $sqlParse["firstName"];
+        });
+    }
 }

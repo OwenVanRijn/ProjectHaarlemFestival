@@ -1,9 +1,24 @@
 <?php
     require_once "Service/artistOnActivityService.php";
+    require_once "Service/danceActivityService.php";
+    require_once "Service/shoppingcartService.php";
     require_once "UI/navBar.php";
-    
+
+    $shoppingCartService = new shoppingcartService();
+    $danceService = new danceActivityService();
+
     $name = (string)$_GET["name"];
     $nameStripped = strtolower(str_replace(' ', '', $name));
+
+    if(isset($_POST['select'])){
+        $id = $_POST['selectedId'];
+
+        $activity = $danceService->getActivityFromId($id);
+
+        $id = $activity->getActivity()->getId();
+
+        $shoppingCartService->getShoppingcart()->setShoppingcartItemById($id, 1);
+    }
 
 ?>
 
@@ -23,78 +38,77 @@
 
     <body>
         <header>
-            <section class="row h-100 justify-content-center align-self-center">
-                <section class="col-3" style="padding: 0;">
-                    <?php
-                       echo "<img src='img/Artists/bw/{$nameStripped}.png' class='w-100' alt='{$name}'>";
-                    ?>
+            <section class="row" style="background-color: #666666; margin-top: 3em;">
+                <section class="col-1">
+                    <img src='img/Artists/bw/<?php echo $nameStripped?>.png' class="w-80">
                 </section>
-                <section class="col-9 text-center" style="background-color: gray">
+                <section class="col-11 text-center" style="margin-top: 3em;">
                     <h1><?php echo $name ?></h1>
                 </section>
             </section>
         </header>
 
-        <section class="container-fluid">
-            <a href="dance.php" style="color:#FD6A02"><strong>← Back to dance overview</strong></a>
-            <?php
-                echo "<section class='row text-center' style='margin-top: 2%'>";
+        <section class="container">
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+                <a href="dance.php" style="color:#FD6A02"><strong>← Back to dance overview</strong></a>
 
-                $service = new artistOnActivityService();
-                $artistActivity = $service->getActivityByArtist($name);
+                    <?php
+                    echo "<section class='row text-center' style='margin-top: 2%'>";
 
-                foreach ($artistActivity as $item){
+                    $service = new artistOnActivityService();
+                    $artistActivity = $service->getActivityByArtist($name);
 
-                    echo "<section class='col-4 box'>";
-                    echo "<section class='col-12 text-center' style='background-color: black; color: white; padding-top: 2%;'>";
+                    foreach ($artistActivity as $item){
 
-                    $date = date_format($item->getActivity()->getActivity()->getDate(), "d-M");
-                    $time = $item->getActivity()->getActivity()->getStartTime()->format("H:i");
+                        echo "<section class='col-4 box'>";
+                        echo "<section class='col-12 text-center' style='background-color: black; color: white; padding-top: 2%;'>";
 
-                    $location = $item->getActivity()->getActivity()->getLocation()->getName();
+                        $id = $item->getActivity()->getActivity()->getId();
+                        $date = date_format($item->getActivity()->getActivity()->getDate(), "d-M");
+                        $time = $item->getActivity()->getActivity()->getStartTime()->format("H:i");
 
-                    $session = $item->getActivity()->getType();
+                        $location = $item->getActivity()->getActivity()->getLocation()->getName();
 
-                    $price = "€".$item->getActivity()->getActivity()->getPrice().",-";
+                        $session = $item->getActivity()->getType();
 
-                    echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Date:</p>{$date}</section>";
-                    echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Start time:</p>{$time}</section>";
-                    echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Location:</p><bold>{$location}</bold></section>";
-                    echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Session:</p><bold>{$session}</bold></section>";
-                    echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Price:</p><bold>{$price}</bold></section>";
-                    echo "</section>";
-                    echo "<a href='#' class='btn btn-primary w-100'>Add to cart</a>";
-                    echo "</section>";
-                }
+                        $price = "€".$item->getActivity()->getActivity()->getPrice().",-";
 
+                        echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Date:</p>{$date}</section>";
+                        echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Start time:</p>{$time}</section>";
+                        echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Location:</p><bold>{$location}</bold></section>";
+                        echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Session:</p><bold>{$session}</bold></section>";
+                        echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Price:</p><bold>{$price}</bold></section>";
+                        echo "</section>";
+                        echo "<button class='btn btn-primary w-100' type='submit' name='select' value='{$id}'>Add to cart</a>";
+                        echo "</section>";
+                    }
+                    ?>
+            </form>
 
-                echo "<section class='row justify-content-center align-self-center text-center' style='margin: 2%'>";
-                echo "<section class= 'row justify-content-center align-self-center text-center'>";
-                echo "<h2>Get to know the artist:</h2>";
-                echo "</section>";
+            <section class='row justify-content-center align-self-center text-center' style='margin: 2%'>
+                    <section class= 'row justify-content-center align-self-center text-center'>
+                        <h2>Get to know the artist:</h2>
+                    </section>
 
-                echo "<section class='row justify-content-center align-self-center text-center'>";
-                echo"<section class='col-8'>";
-                echo $artistActivity[0]->getArtist()->getDescription();
-                echo"</section>";
-                echo "</section>";
-                echo "</section>";
+                    <section class='row justify-content-center align-self-center text-center'>
+                        <section class='col-8'>
+                         <?php echo $artistActivity[0]->getArtist()->getDescription();?>
+                        </section>
+                    </section>
+            </section>
 
-            echo "</section>";
-            ?>
             <section class='row justify-content-center align-self-center text-center' style='margin: 2%'>
                 <section class="col-6">
                     <section class='col-12 text-center' style='background-color: #9A9999; color: black;'>
-                        <section class='row justify-content-center align-self-center text-center h-100' style='background-color: #FD6A02;'>
-                            <h3>For the dance kids / teens</h3>";
-                            </section>
+                        <section class='row justify-content-center align-self-center text-center' style='background-color: #FD6A02;'>
+                            <h3>For the dance kids / teens</h3>
+                        </section>
                         <section class='row justify-content-center align-self-center' style='margin: 2%'>
                            <p>There's a silent disco going on at Inholland Hogeschool from
                                 14:00 to 24:00. Free drinks and food included!
                                 Free walk-in and no entry cost!<br><br>
 
                                 Hogeschool Inholland - Bijdorplaan 15  - SUCH building</p>
-                            </section>
                         </section>
                     </section>
                 </section>

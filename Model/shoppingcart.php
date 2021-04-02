@@ -69,7 +69,6 @@ class shoppingcart
 
     public function setShoppingcartItemById($shoppingcartItemId, $amount) //aanpassen
     {
-        echo "set shopping cart id $shoppingcartItemId naar $amount";
         $shoppingcartItems = $this->getShoppingcartItems();
         $shoppingcartItems[$shoppingcartItemId] = $amount;
         $this->setShoppingcartItems($shoppingcartItems);

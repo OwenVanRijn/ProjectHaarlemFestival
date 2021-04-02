@@ -1,29 +1,48 @@
 <?php
 ini_set('display_errors', -1);
-    require_once ("Service/jazzactivityService.php");
-    require_once ("Service/foodactivityService.php");
-    require_once ("Service/shoppingcartServiceDB.php");
-    require_once ("Service/danceActivityService.php");
-    require_once ("Service/ticketService.php");
-    require_once ("Service/activityService.php");
-    require_once ("Service/customerService.php");
-    require_once ("pdf/emailOrderGen.php");
-    require_once ("Service/ordersService.php");
-    require_once ("DAL/activityDAO.php");
-    require_once("Service/restaurantTypeLinkService.php");
-    require_once ("UI/navBarCMSGenerator.php");
-    require_once ("DAL/accountDAO.php");
-    require_once ("Email/mailer.php");
+require_once ("Service/jazzactivityService.php");
+require_once ("Service/foodactivityService.php");
+require_once ("Service/shoppingcartServiceDB.php");
+require_once ("Service/danceActivityService.php");
+require_once ("Service/ticketService.php");
+require_once ("Service/activityService.php");
+require_once ("Service/customerService.php");
+require_once ("pdf/emailOrderGen.php");
+require_once ("Service/ordersService.php");
+require_once ("DAL/activityDAO.php");
+require_once("Service/restaurantTypeLinkService.php");
+require_once ("UI/navBarCMSGenerator.php");
+require_once ("DAL/accountDAO.php");
+require_once ("Email/mailer.php");
 
-    $email = new mailer();
 
-    $test = new shoppingcartServiceDB();
-    $ticket = new ticketService();
-    $order = new ordersService();
+$customer = new customerService();
 
-    $pdf = new emailOrderGen();
+$array = $customer->getAll();
 
-    $pdf->sendEmail(60, 101);
+foreach ($array as $cus){
+    echo $cus->getId();
+}
+
+//$ids = [];
+//
+//$activityService = new activityService();
+//
+//$danceArray = $activityService->getByType("dance");
+//
+//$dateArray = $activityService->getByLocation("Club Stalker");
+//
+//foreach ($dateArray as $activity){
+//    $id = $activity->getId();
+//
+//    $ids[] = $id;
+//}
+//
+//$returnActivites = $activityService->getTypedActivityByIds($ids);
+//
+//var_dump($returnActivites);
+
+
 
 //    $orderQuery = $order->insertOrder(103);
 //
