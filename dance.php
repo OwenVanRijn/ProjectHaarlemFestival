@@ -1,4 +1,6 @@
 <?php
+session_start();
+$_SESSION['value'] = null;
 require_once "Service/artistService.php";
 require_once "Service/artistOnActivityService.php";
 require_once "Model/danceArtist.php";
@@ -6,10 +8,10 @@ require_once "Service/danceActivityService.php";
 require_once "Service/activityService.php";
 require_once "Service/shoppingcartService.php";
 
-
 $activeArray = [];
 $dateArray = [];
-$locationArray = [];
+$typeArray = [];
+$idArray = [];
 
 $danceService = new danceActivityService();
 $activityService = new activityService();
@@ -19,8 +21,8 @@ $shoppingCartService = new shoppingcartService();
 
 $danceArray = $activityService->getByType("dance");
 
-
 //LOAD DATES FROM DB
+
 foreach ($danceArray as $activity){
     $date = $activity->getDate();
 
@@ -29,62 +31,67 @@ foreach ($danceArray as $activity){
     }
 }
 
-//GET LOCATIONS FROM DB
-foreach ($danceArray as $activity){
-    $location = $activity->getLocation()->getName();
 
-    if(!in_array($location, $locationArray)){
-        $locationArray[] = $location;
+//GET TYPE FROM DB
+foreach ($danceArray as $activity){
+    $id = $activity->getId();
+    $idArray[] = $id;
+}
+
+$returnedDanceActivities = $activityService->getTypedActivityByIds($idArray);
+
+foreach ($returnedDanceActivities as $activity){
+    $type = $activity->getType();
+
+    if(!in_array($type, $typeArray)){
+        $typeArray[] = $type;
     }
 }
 
-
 //DATE FILTER
 if(isset($_GET['day']) && !empty($_GET['day'])) {
-
+    $_SESSION['value'] = 1;
     $datePicked = $_GET['day'];
     $activeArray = $danceService->getAllWithDate($datePicked);
 }
 
-else {
-    $activeArray = $danceService->getAll();
-}
-
 //LOCATION FILTER
-if(isset($_POST['location'])){
-    $location = $_POST['location'];
+else if(isset($_POST['type'])) {
+    $_SESSION['value'] = 1;
 
-    $dateArray = $activityService->getByLocation($location);
+    $type = $_POST['type'];
 
-    foreach ($dateArray as $activity){
-        $id = $activity->getId();
+    $activities = $danceService->getActivityBySessionType($type);
 
-        $ids[] = $id;
+    foreach ($activities as $activity){
+        $activeArray[] = $activity;
     }
-
-    $array = $activityService->getTypedActivityByIds($ids);
-
-    foreach ($array as $ja){
-        var_dump();
-        echo "<br>";
-    }
-
-    $activeArray = $array;
 }
 
 //ARTIST FILTER
-if(isset($_POST['artist'])) {
+else if(isset($_POST['artist'])) {
+    $_SESSION['value'] = 1;
     $artist = $_POST['artist'];
 
     $aoaArray = $artistOnActivityService->getActivityByArtist($artist);
+
     $activityArray = [];
 
     foreach ($aoaArray as $item) {
-        $activity = $item->getActivity()->getArtists();
+        $danceActivity = $item->getActivity();
+
+        //var_dump($danceActivity->getArtists());
+
+        $activityArray[] = $danceActivity;
     }
 
-    $activeArray = $activityArray();
+    $activeArray = $activityArray;
 }
+
+else{
+    $activeArray = $danceService->getAll();
+}
+
 
 if(isset($_POST['selectedId'])){
     $id = $_POST['selectedId'];
@@ -198,19 +205,19 @@ require_once ("UI/navBar.php");
                             <?php
                             $artistArray = $artistService->getArtists();
                             foreach ($artistArray as $artist){
-                                $name = $artist->getName();;
+                                $name = $artist->getName();
                                 echo "<option value='$name'>$name</option>";
                             }
                             ?>
                         </select>
                     </section>
                     <section class="col-3">
-                        <label for="location" class="font-weight-bold">Location</label>
-                        <select name="location">
-                            <option disabled selected>Location</option>
+                        <label for="type" class="font-weight-bold">Session Type</label>
+                        <select name="type">
+                            <option disabled selected>Type</option>
                             <?php
-                            foreach ($locationArray as $location){
-                                echo "<option value='$location'>$location</option>";
+                            foreach ($typeArray as $type){
+                                echo "<option value='$type'>$type</option>";
                             }
                             ?>
                         </select>

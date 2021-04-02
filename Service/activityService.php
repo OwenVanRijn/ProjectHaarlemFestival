@@ -177,10 +177,4 @@ class activityService extends baseService
             "type" => $type
         ]);
     }
-
-    public function getByLocation($location){
-        return $this->db->get([
-            "location.name" => $location
-        ]);
-    }
 }

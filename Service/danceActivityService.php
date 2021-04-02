@@ -19,13 +19,15 @@ class danceActivityService extends activityBaseService
         $this->activityDAO = new danceActivityDAO();
     }
 
-    public function getActivities(){
-        return $this->getAll();
-    }
-
     public function getActivityFromId(int $id){
         return $this->db->get([
             "danceactivity.id" => $id
+        ]);
+    }
+
+    public function getActivityBySessionType($type){
+        return $this->activityDAO->getArray([
+            "sessionType" => $type
         ]);
     }
 

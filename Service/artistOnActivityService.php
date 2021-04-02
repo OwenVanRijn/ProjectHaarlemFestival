@@ -38,4 +38,10 @@ class artistOnActivityService extends baseService
             "danceactivityid" => $danceActivityId
         ]);
     }
+
+    public function getByLocation($location){
+        return $this->db->getArray([
+            "location.name" => $location
+        ]);
+    }
 }
