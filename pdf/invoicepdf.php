@@ -5,7 +5,7 @@ ini_set('display_errors', -1);
 require_once $root."/Service/ticketService.php";
 require_once $root."/Service/activityService.php";
 require_once $root."/lib/barcodegen/vendor/autoload.php";
-require_once $root."/Email/mailer.php";
+require_once $root."//Email/mailer.php";
 
 $mailer = new mailer();
 $activity = new activityService();
