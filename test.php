@@ -14,7 +14,6 @@ require_once("Service/restaurantTypeLinkService.php");
 require_once ("UI/navBarCMSGenerator.php");
 require_once ("DAL/accountDAO.php");
 require_once ("Email/mailer.php");
-require_once "pdf/EmailOrderGen.php";
 
 
 $pdf = new emailOrderGen();
