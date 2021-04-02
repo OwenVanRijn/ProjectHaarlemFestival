@@ -132,17 +132,13 @@ $restaurantTypeLinkService = new restaurantTypeLinkService();
             }
         } else if (isset($_POST["searchbutton"])) {
             // Zoek op zoekterm
-            try {
-                if (isset($_POST["searchterm"])) {
-                    $searchTerm = $_POST["searchterm"];
-                    echo "<script>document.getElementById(\"searchterm\").value = '$searchTerm'</script>";
-                    $restaurants = $restaurantService->getBySearchTerm($searchTerm);
-                } else {
-                    $searchTerm = "";
-                    $restaurants = $restaurantService->getAll();
-                }
-            } catch (Exception $exception) {
-                throw new Exception($exception->getMessage());
+            if (isset($_POST["searchterm"])) {
+                $searchTerm = $_POST["searchterm"];
+                echo "<script>document.getElementById(\"searchterm\").value = '$searchTerm'</script>";
+                $restaurants = $restaurantService->getBySearchTerm($searchTerm);
+            } else {
+                $searchTerm = "";
+                $restaurants = $restaurantService->getAll();
             }
         } else {
             $restaurants = $restaurantService->getAll();

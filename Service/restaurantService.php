@@ -16,11 +16,7 @@ class restaurantService extends baseService
 
     public function getAll(): array
     {
-        try {
-            return $this->db->get();
-        } catch (Exception $exception) {
-            throw new Exception($exception->getMessage());
-        }
+        return $this->db->get();
     }
 
     // TODO: maybe convert to pass in restaurant object?
