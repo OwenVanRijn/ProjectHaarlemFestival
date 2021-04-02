@@ -6,7 +6,7 @@ require_once $root . "/lib/barcodegen/vendor/autoload.php";
 
 $activity = new activityService();
 $ticket = new ticketService();
-$id = 76;//$_SESSION['orderId'];
+$id = $_SESSION['orderId'];
 $ticketArray = $ticket->getTicketsByOrder($id);
 ?>
 
