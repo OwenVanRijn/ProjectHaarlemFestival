@@ -79,7 +79,7 @@
                         echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Session:</p><bold>{$session}</bold></section>";
                         echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Price:</p><bold>{$price}</bold></section>";
                         echo "</section>";
-                        echo "<button class='button1 w-100' type='submit' name='select' value='{$id}'>Add to cart</a>";
+                        echo "<button class='btn btn-primary w-100' type='submit' name='select' value='{$id}'>Add to cart</a>";
                         echo "</section>";
                     }
                     ?>
