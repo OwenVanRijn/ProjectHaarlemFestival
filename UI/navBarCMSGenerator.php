@@ -43,7 +43,7 @@ class navBarCMSGenerator extends uiGenerator
     }
 
     private function findInAllArrays(string $needle){
-        $all = [self::$noRequirementPages, self::$timeVolunteerPages];
+        $all = [self::$noRequirementPages, self::$timeVolunteerPages, self::$ticketVolunteerPages];
 
         foreach ($all as $arr){
             $res = $this->findInArray($needle, $arr);
