@@ -150,7 +150,7 @@ function generateHTML(json, postUrl){
     let type = document.createElement("h3");
     type.classList.add("marginTopBottom", "displayInlineBlock");
     let exitButton = document.createElement("button");
-    exitButton.classList.add("marginTopBottom", "floatRight");
+    exitButton.classList.add("marginTopBottom", "floatRight", "blueButton", "pAll-half", "pSide-3");
     if (postUrl === "../API/activityUpdate.php")
         type.innerHTML = json.activity.type.value + " Event";
     else
@@ -230,6 +230,7 @@ function generateHTML(json, postUrl){
 
     let send = document.createElement("button");
     send.innerHTML = "Save";
+    send.classList.add("marginTopBottom", "greenButton", "pAll-half", "pSide-3");
     send.onclick = function() {
         let hidden = document.getElementsByClassName("hidden");
         while (hidden.length){

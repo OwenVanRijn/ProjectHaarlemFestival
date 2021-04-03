@@ -261,6 +261,26 @@ body {
     font-size: 14px;
 }
 
+.greenButton {
+    border-radius: 15px;
+    background-color: #198754;
+    color: white;
+    border-width: 0;
+    font-size: 18px;
+}
+
+.greenButton:hover {
+    background-color: #0F5434;
+}
+
+.greenButton:active {
+    box-shadow: 0 0 0 4px #1BA062;
+}
+
+.blueButton:active {
+    box-shadow: 0 0 0 4px #cbd6ee;
+}
+
 .squareEscButton {
     background-color: #000;
     color: red;
@@ -292,6 +312,10 @@ body {
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
     margin: 0 5px 0 0;
+}
+
+.CMSTableButton:active {
+    box-shadow: 0 0 0 4px rebeccapurple;
 }
 
 .CMSTableButton:hover {
