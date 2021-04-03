@@ -86,10 +86,6 @@ require_once($root . "/UI/navBar.php");
             echo "<p>Cant get the shoppingcartitems. Please try again later or reset your cookies.</p>";
         }
 
-        echo "<br><br> shoppingcart <br><br>";
-        var_dump($shoppingcart);
-        echo "<br><br> shoppingcart <br><br>";
-
         $ids = array();
         foreach ($shoppingcart as $key => $value) {
             $ids[] = $key;
@@ -98,79 +94,64 @@ require_once($root . "/UI/navBar.php");
         if (count($ids) == 0) {
             echo "<p>Cart is Empty</p>";
         } else {
-            echo "<br><br> IDS <br><br>";
-            var_dump($ids);
-            echo "<br><br> IDS <br><br>";
-
-
-            echo "<br><br> SHOPPINGCARTITEMSDB <br><br>";
             $shoppingcartItemsDB = $shoppingcartServiceDB->getShoppingcart();
-            var_dump($shoppingcartItemsDB);
-
-            echo "<br><br> SHOPPINGCARTITEMSDB <br><br>";
-
 
             try {
                 $activities = array_merge($danceActivityService->getFromActivityIds($ids), $foodActivityService->getFromActivityIds($ids), $jazzActivityService->getFromActivityIds($ids), $activityService->getAllById($ids));
-            }
-            catch(Exception $exception){
-                echo "Cant find activities from database";
-            }
 
-            $_SESSION['cart'] = $activities;
+                $_SESSION['cart'] = $activities;
 
-            if ($activities != null && count($activities) != 0) {
-                echo "<br><br> ACTIVITYES <br><br>";
-                var_dump($activities);
-                echo "<br><br> ACTIVITYES <br><br>";
+                if ($activities != null && count($activities) != 0) {
+                    // verkrijg voor elke dag de activiteiten
+                    $datesOfFestival = array();
 
-
-                // verkrijg voor elke dag de activiteiten
-                $datesOfFestival = array();
-
-                foreach ($activities as $activity) {
-                    if (get_class($activity) == "activity") {
-                        $activityDate = $activity->getDate()->format("Y-m-d");
-                    } else {
-                        $activityDate = $activity->getActivity()->getDate()->format("Y-m-d");
-                    }
-
-                    if (!in_array($activityDate, $datesOfFestival)) {
-                        $datesOfFestival[] = $activityDate;
-                    }
-                }
-
-                $dayActivities = array();
-                for ($index = 0; $index <= count($datesOfFestival) - 1; $index++) {
-                    $activitiesOfThisDay = array();
                     foreach ($activities as $activity) {
-
                         if (get_class($activity) == "activity") {
-                            $dateOfActivity = $activity->getDate()->format("Y-m-d");
+                            $activityDate = $activity->getDate()->format("Y-m-d");
                         } else {
-                            $dateOfActivity = $activity->getActivity()->getDate()->format("Y-m-d");
+                            $activityDate = $activity->getActivity()->getDate()->format("Y-m-d");
                         }
 
-                        if ($dateOfActivity == $datesOfFestival[$index]) {
-                            $activitiesOfThisDay[] = $activity;
+                        if (!in_array($activityDate, $datesOfFestival)) {
+                            $datesOfFestival[] = $activityDate;
                         }
                     }
-                    $dayActivities[] = $activitiesOfThisDay;
-                }
 
-                for ($i = 0; $i < count($dayActivities); $i++) {
-                    if ($dayActivities[$i] != 0) {
-                        // echo alle activiteiten van de dag en bereken het totaal.
-                        $total += echoDay($datesOfFestival[$i], $dayActivities[$i]);
+                    $dayActivities = array();
+                    for ($index = 0; $index <= count($datesOfFestival) - 1; $index++) {
+                        $activitiesOfThisDay = array();
+                        foreach ($activities as $activity) {
+
+                            if (get_class($activity) == "activity") {
+                                $dateOfActivity = $activity->getDate()->format("Y-m-d");
+                            } else {
+                                $dateOfActivity = $activity->getActivity()->getDate()->format("Y-m-d");
+                            }
+
+                            if ($dateOfActivity == $datesOfFestival[$index]) {
+                                $activitiesOfThisDay[] = $activity;
+                            }
+                        }
+                        $dayActivities[] = $activitiesOfThisDay;
                     }
+
+                    for ($i = 0; $i < count($dayActivities); $i++) {
+                        if ($dayActivities[$i] != 0) {
+                            // echo alle activiteiten van de dag en bereken het totaal.
+                            $total += echoDay($datesOfFestival[$i], $dayActivities[$i]);
+                        }
+                    }
+                    $_SESSION['total'] = $total;
+                    ?>
+                    <form method="post" action="/payment/account.php">
+                        <input class="button1" type="submit" name="payconfirm" value="<?php echo "Pay €$total"; ?>">
+                    </form>
+                    <?php
+                } else {
+                    echo "<p>Cart is Empty</p>";
                 }
-                $_SESSION['total'] = $total;
-                ?>
-                <button class="button1"
-                        onclick="window.location.href='/payment/account.php'"><?php echo "Pay €$total" ?> </button>
-                <?php
-            } else {
-                echo "<p>Cart is Empty</p>";
+            } catch (Exception $exception) {
+                echo "Cant find activities from database";
             }
         }
     } else {
@@ -216,13 +197,13 @@ function echoDay($date, $activitiesOfTheDay)
                 $activityName = $activity->getRestaurant()->getName();
             } else if (get_class($activity) == "jazzactivity") {
                 $activityName = $activity->getJazzband()->getName();
-            } else if (get_class($activity) == "danceactivity") {
+            } else if (get_class($activity) == "danceActivity") {
                 $artists = $activity->getArtists();
                 $artistNames = array();
                 foreach ($artists as $artist) {
                     $artistNames[] = $artist->getName();
                 }
-                $activityName = implode(" ", $artistNames);
+                $activityName = implode(", ", $artistNames);
             } else {
                 $activityName = $activity->getType();
             }
@@ -273,7 +254,7 @@ function cartElement($activityid, $activityName, $type, $createData, $startTime,
                         <section class=\"border rounded\">
                         <section class=\"row bg-white\">
                             <section class=\"col-md-6\">
-                                <h3 class=\"pt-2\">$activityName $activityid</h3>
+                                <h3 class=\"pt-2\">$activityName ACTid $activityid</h3>
                                 <p class=\"titleInfo\">$type</p>
                                 <p class=\"titleInfo\">$startTime-$endTime</p>
                                 <p class=\"titleInfo\">€$price</p>
@@ -302,7 +283,7 @@ function cartElement($activityid, $activityName, $type, $createData, $startTime,
     ";
     echo $element;
 }
-require_once "UI/footer.php";
+
 ?>
 </body>
 

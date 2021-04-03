@@ -7,6 +7,11 @@ require_once($root . "/UI/navBar.php");
 require_once ($root . "/Service/customerService.php");
 
 echo "$root/payment/payment";
+
+if (!isset($_POST["payconfirm"]))
+{
+    header("location: ../shoppingcart.php");
+}
 if(isset($_POST['submit'])) {
     $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];

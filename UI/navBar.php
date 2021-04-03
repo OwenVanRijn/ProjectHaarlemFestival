@@ -1,16 +1,16 @@
 <?php
-//try {
-//    if (file_exists("Service/shoppingcartService.php")) {
-//        require_once("Service/shoppingcartService.php");
-//        $shoppingcartService = new shoppingcartService();
-//        $shoppingcartCount = $shoppingcartService->getShoppingcartItemsCount();
-//    } else {
-//        $shoppingcartCount = 0;
-//    }
-//} catch (Exception $exception) {
-//    $shoppingcartCount = 0;
-//}
-//?>
+try {
+    if (file_exists("Service/shoppingcartService.php")) {
+        require_once("Service/shoppingcartService.php");
+        $shoppingcartService = new shoppingcartService();
+        $shoppingcartCount = $shoppingcartService->getShoppingcartItemsCount();
+    } else {
+        $shoppingcartCount = 0;
+    }
+} catch (Exception $exception) {
+    $shoppingcartCount = 0;
+}
+?>
 <nav>
     <link rel="stylesheet" href="/css/navBarFooter.css">
     <ul>
@@ -27,14 +27,14 @@
         <li><a class="imageRight" href="/shoppingcart.php">
 
                 <?php
-//                if ($shoppingcartCount > 0)
-//                {
+                if ($shoppingcartCount > 0)
+                {
                 ?>
 
-<!--                    <section class="imageRight fa-stack fa-2x has-badge" data-count="--><?php //echo $shoppingcartCount ?><!--"></section>-->
+                    <section class="imageRight fa-stack fa-2x has-badge" data-count="<?php echo $shoppingcartCount ?>"></section>
 
                     <?php
-//                    }
+                    }
                     ?>
                     <img class="logo" class="logo" src="/img/shoppingcart.png"
                          alt="logo">
