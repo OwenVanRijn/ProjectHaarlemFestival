@@ -9,6 +9,7 @@ require_once ($root . "/DAL/sessionDAO.php");
 require_once ($root . "/DAL/accountDAO.php");
 require_once ("baseService.php");
 require_once($root . "/Utils/cookieManager.php");
+require_once($root . "/Email/mailer.php");
 
 class sessionService extends baseService
 {
@@ -97,5 +98,52 @@ class sessionService extends baseService
         ]);
 
         $cookieManager->del();
+    }
+
+    public function createPasswordRecovery(string $email){
+        $userDb = new accountDAO();
+        $user = $userDb->get(["email" => $email]);
+        if (is_null($user))
+            throw new appException("No user found with provided email");
+
+        $r = rand();
+
+        if (!$userDb->update([
+            "id" => $user->getId(),
+            "status" => $r
+        ]))
+            throw new appException("Failed to update user");
+
+        $protocol = isset($_SERVER['HTTPS']) && strcasecmp('off', $_SERVER['HTTPS']) !== 0 ? "https" : "http";
+        $hostname = $_SERVER['HTTP_HOST'];
+        $path = dirname(isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : $_SERVER['PHP_SELF']);
+
+        $link = "{$protocol}://{$hostname}{$path}/passReset.php?id=$r&email=$email";
+
+        $mailer = new mailer();
+        $mailer->sendMail($email, "Haarlem festival: Password reset" ,"Dear {$user->getUsername()},\nYou have requested a password reset.\n\nFollow this link to reset your password: {$link}");
+    }
+
+    public function updatePassword(string $email, int $status, string $newPass){
+        $userDb = new accountDAO();
+        $user = $userDb->get([
+            "email" => $email,
+            "status" => $status
+        ]);
+
+        if (is_null($user))
+            throw new appException("No user found with provided input");
+
+        if ($user->getStatus() <= 0)
+            throw new appException("No password recovery has been requested");
+
+        $user->setPassword($newPass);
+
+        if (!$userDb->update([
+            "id" => $user->getId(),
+            "status" => 0,
+            "password" => $user->getPassword()
+        ]))
+            throw new appException("Failed to update user");
     }
 }

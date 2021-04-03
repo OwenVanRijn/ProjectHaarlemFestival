@@ -103,7 +103,7 @@ class customerEdit extends editBase implements editUpdate
             $account->setStatus((int)$post["status"]);
 
         if (array_key_exists("role", $post))
-            $account->setRole((int)$post["role"]);
+            $account->setRole((int)$post["role"]); // TODO: Maybe change the role to the actual roles
 
         $this->cs->updateCustomer($customer);
         $this->as->updateAccount($account);

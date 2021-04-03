@@ -229,4 +229,12 @@ class account extends sqlModel
     {
         $this->id = $id;
     }
+
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
 }
