@@ -153,7 +153,7 @@ require_once ("UI/navBar.php");
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
         <section class='row h-100 align-items-center' style='background-color: #C0C0C0; margin: 2% 25% 2% 25%;padding: 1% 0 1% 0;'>
             <section class='col-8 fonttickets'>All in ticket (Friday/Saturday/Sunday): €250,-</section>
-            <section class='col-4 text-right'><button class='btn btn-primary' type="submit" name="all-access" value="134">Add Ticket</button></section>
+            <section class='col-4 text-right'><button class='button1' type="submit" name="all-access" value="134">Add Ticket</button></section>
         </section>
     </form>
 

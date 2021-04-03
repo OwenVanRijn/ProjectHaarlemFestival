@@ -22,8 +22,15 @@ ul {
     list-style-type: none;
 }
 
-.navItem {
+.navItem,
+#logonav {
     margin-left: 4em;
+}
+
+@media only screen and (max-width: 1278px) {
+    .navItem {
+        margin-left: 0;
+    }
 }
 
 .logo {
