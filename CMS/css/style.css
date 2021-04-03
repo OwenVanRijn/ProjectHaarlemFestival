@@ -134,7 +134,7 @@ body {
 
 .err {
     text-align: center;
-    margin-top: 0;
+    margin: 0;
     background-color: red;
     padding: 4px 0 4px;
     color: white;
@@ -142,7 +142,7 @@ body {
 
 .done {
     text-align: center;
-    margin-top: 0;
+    margin: 0;
     background-color: green;
     padding: 4px 0 4px;
     color: white;
@@ -235,6 +235,12 @@ nav a:first-child {
     margin: .33rem 0 .33rem 0;
 }
 
+.inputBox:focus {
+    outline: none;
+    border-color: deepskyblue;
+    border-width: 4px;
+}
+
 .inputBoxDropdown {
     margin-left: 20px;
     width: inherit;
@@ -253,6 +259,56 @@ body {
     color: white;
     border-width: 0;
     font-size: 14px;
+}
+
+.squareEscButton {
+    background-color: #000;
+    color: red;
+    border-width: 0;
+    font-size: 32px;
+}
+
+.submitCMSTableButton {
+    height: 41px;
+    border-width: 0;
+    font-size: 20px;
+    background-color: inherit;
+    color: white;
+    line-height: 100%;
+    vertical-align: top;
+    margin: 0 0 0 -2px;
+}
+
+.CMSTableButton {
+    height: 41px;
+    font-size: 20px;
+    background-color: mediumpurple;
+    color: white;
+    line-height: 100%;
+    vertical-align: top;
+    border-width: 3px;
+    border-color: #663399;
+    border-top-width: 0;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    margin: 0 5px 0 0;
+}
+
+.CMSTableButton:hover {
+    background-color: rebeccapurple;
+}
+
+
+.submitCMSTableButton:hover {
+    background-color: green;
+}
+
+.submitCMSTopBar {
+    background-color: #333;
+}
+
+.squareEscButton:hover {
+    background-color: #FFF;
 }
 
 .blueButton:hover {
@@ -321,4 +377,8 @@ textarea {
 
 .width25 {
     width: 25%;
+}
+
+*[hidden=""] {
+    display: none;
 }

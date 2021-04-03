@@ -95,6 +95,11 @@ class foodEditActivity extends editActivityBase
                 "selected" => []
             ],
             "foodActivityId" => "none",
+            "restaurantParking" => "",
+            "restaurantWebsite" => "",
+            "restaurantMenu" => "",
+            "restaurantContact" => "",
+            "image" => ""
         ];
     }
 

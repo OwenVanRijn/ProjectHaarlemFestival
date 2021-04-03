@@ -27,6 +27,7 @@ $nav->assignCss([
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://kit.fontawesome.com/4cdba739f8.js" crossorigin="anonymous"></script>
     <title>CMS - Events</title>
 </head>
 
@@ -34,6 +35,28 @@ $nav->assignCss([
 <script src="editMenu.js"></script>
 <?php $nav->generate($user) ?>
 <section class="main">
+    <?php
+    if (isset($_GET["err"])){
+        $err = htmlspecialchars($_GET["err"], ENT_QUOTES);
+        echo "<p class='err'>$err</p>";
+    }
+
+    if (isset($_GET["done"])){ // TODO: We should *really* post this
+        $done = htmlspecialchars($_GET["done"], ENT_QUOTES);
+        echo "<p class='done'>$done</p>";
+    }
+    ?>
+
+    <section class="displayBlock" id="topButtons">
+        <button class="CMSTableButton" onclick="openNew('<?php echo ucfirst($_GET["event"]) ?>')" type="button"><i class="fas fa-plus-circle"></i> New event</button>
+        <button class="CMSTableButton" onclick="openSwap()" type="button"><i class="fas fa-sync"></i> Swap events</button>
+        <button class="CMSTableButton floatRight" onclick="openDel()" type="button"><i class="fas fa-trash-alt"></i> Delete Events</button>
+    </section>
+    <section class="displayBlock submitCMSTopBar" id="confirmTopAction" hidden="">
+        <button class="squareEscButton" onclick="removeCheckBoxes()" type="button"><i class="fas fa-times"></i></button>
+        <button class="submitCMSTableButton" id="submitTop"><i class="fas fa-pen-square"></i> Save</button>
+    </section>
+
     <?php
         $event = $_GET["event"];
         if ($event == "jazz")
@@ -43,16 +66,6 @@ $nav->assignCss([
         elseif ($event == "food")
             $table = new foodactivityService();
         // TODO: make page to select events
-
-        if (isset($_GET["err"])){
-            $err = htmlspecialchars($_GET["err"], ENT_QUOTES);
-            echo "<p class='err'>$err</p>";
-        }
-
-        if (isset($_GET["done"])){ // TODO: We should *really* post this
-            $done = htmlspecialchars($_GET["done"], ENT_QUOTES);
-            echo "<p class='done'>$done</p>";
-        }
 
         if (isset($table)){
             $tables = $table->getTables($user, [
@@ -69,10 +82,5 @@ $nav->assignCss([
         }
 
     ?>
-
-    <button onclick="openNew('<?php echo ucfirst($_GET["event"]) ?>')" type="button">Hey!</button>
-    <button onclick="openSwap()" type="button">What</button>
-    <button onclick="openDel()" type="button">Del</button>
-    <button>Submit</button>
 </section>
 </body>

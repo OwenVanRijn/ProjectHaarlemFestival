@@ -24,14 +24,14 @@ function generateInputField(fieldContent, className, fieldName){
                 let label = document.createElement("label");
                 label.setAttribute("for", fieldName);
                 label.innerHTML = fieldName;
-                label.classList.add("leftStack");
+                label.classList.add("leftStack", "center", "editElemHeader");
                 entry.appendChild(label);
             }
 
             let select = document.createElement("select");
             select.setAttribute("name", fieldName + "[]");
             select.setAttribute("multiple", '');
-            select.classList.add("leftStack");
+            select.classList.add("leftStack", "marginRightOptions", "inputBox", "me-20px", "widthInherit");
             select.setAttribute("required", "");
 
             for (const optionIndex in fieldContent.value.options){
@@ -80,13 +80,13 @@ function generateInputField(fieldContent, className, fieldName){
             let label = document.createElement("label");
             label.setAttribute("for", fieldName);
             label.innerHTML = fieldName;
-            label.classList.add("leftStack");
+            label.classList.add("leftStack", "center", "editElemHeader");
             entry.appendChild(label);
 
             let imgInput = document.createElement("input");
             imgInput.setAttribute("name", fieldName);
             imgInput.setAttribute("id", fieldName);
-            imgInput.classList.add("leftStack", "marginRightOption");
+            imgInput.classList.add("leftStack", "marginRightOption", "center");
             imgInput.setAttribute("type", "file");
             imgInput.setAttribute("accept", "image/x-png");
             entry.appendChild(imgInput);
@@ -250,6 +250,7 @@ function addCheckBoxes(postUrl){
     form.appendChild(mainSection);
     form.setAttribute("method", "post");
     form.setAttribute("action", postUrl);
+    form.id = "checkboxForm";
 
     const type = document.createElement("input");
     type.setAttribute("type", "hidden");
@@ -266,6 +267,7 @@ function addCheckBoxes(postUrl){
         for (let i = 0; i < table.childNodes.length; i++){
             if (i == 0){
                 const newHeader = document.createElement("th");
+                newHeader.classList.add("checkboxItem");
                 table.childNodes[i].insertBefore(newHeader, table.childNodes[i].firstChild);
             }
             else {
@@ -274,6 +276,7 @@ function addCheckBoxes(postUrl){
                 checkBox.setAttribute("type", "checkbox");
                 checkBox.setAttribute("value", table.childNodes[i].lastChild.firstChild.getAttribute("aid"));
                 checkBox.name = "tableCheck[]";
+                newEntry.classList.add("checkboxItem");
                 newEntry.appendChild(checkBox);
                 table.childNodes[i].insertBefore(newEntry, table.childNodes[i].firstChild);
             }
@@ -282,6 +285,8 @@ function addCheckBoxes(postUrl){
         console.log(table);
     }
 }
+
+
 
 function openBox(id){
     if (!isBoxOpen){
@@ -297,8 +302,33 @@ function openNew(type){
     }
 }
 
+function showTopConfirm(msg = ""){
+    document.getElementById("topButtons").hidden = true;
+    document.getElementById("confirmTopAction").hidden = false;
+    document.getElementById("submitTop").innerHTML = "<i class=\"fas fa-pen-square\"></i> " + msg;
+}
+
+function hideTopComfirm(){
+    document.getElementById("topButtons").hidden = false;
+    document.getElementById("confirmTopAction").hidden = true;
+}
+
+function removeCheckBoxes(){
+    let form = document.getElementById("checkboxForm");
+    if (form){
+        form.parentElement.appendChild(form.firstChild);
+        form.remove();
+        let checkboxes = document.getElementsByClassName("checkboxItem");
+        while (checkboxes.length)
+            checkboxes[0].remove();
+    }
+    isBoxOpen = false;
+    hideTopComfirm();
+}
+
 function openSwap(){
     if (!isBoxOpen){
+        showTopConfirm("Swap selected activities");
         addCheckBoxes("../API/activitySwap.php");
         isBoxOpen = true;
     }
@@ -306,6 +336,7 @@ function openSwap(){
 
 function openDel(){
     if (!isBoxOpen){
+        showTopConfirm("Delete selected activities");
         addCheckBoxes("../API/activityDelete.php");
         isBoxOpen = true;
     }
