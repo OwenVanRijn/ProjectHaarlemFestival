@@ -41,22 +41,23 @@ $nav->assignCss([
     $table->setTitle("Dance artists");
     $table->addHeader("Name");
 
-    foreach ($artists as $a){
-        $tableRow = new tableRow();
-        $tableRow->addString($a->getName());
-
-        $artistId = $a->getId();
-        $tableRow->addButton("openDanceArtist($artistId)", "Edit");
-
-        $table->addTableRows($tableRow);
-    }
-
     $table->assignCss([
         "tr" => "cmsTableRow",
         "table" => "cmsTable",
         "h3" => "cmsTableHeader",
         "summary" => "cmsSummary",
-        "details" => "cmsDetails",]);
+        "details" => "cmsDetails",
+        "button" => "blueButton pAll-half pSide-3"]);
+
+    foreach ($artists as $a){
+        $tableRow = new tableRow();
+        $table->addTableRows($tableRow);
+        $tableRow->addString($a->getName());
+
+        $artistId = $a->getId();
+        $tableRow->addButton("openDanceArtist($artistId)", "Edit");
+    }
+
 
     $table->display();
     ?>

@@ -23,11 +23,13 @@ class jazzactivityService extends activityBaseService
             $table->setTitle($k);
             $table->setIsCollapsable(true);
             $table->addHeader("Time", "Name", "Location");
+            $table->assignCss($cssRules);
             foreach ($v as $c){
                 $startDateStr = $c->getActivity()->getStartTime()->format("H:i");
                 $endDateStr = $c->getActivity()->getEndTime()->format("H:i");
 
                 $tableRow = new tableRow();
+                $table->addTableRows($tableRow);
                 $tableRow->addString(
                     "$startDateStr to $endDateStr",
                     $c->getJazzband()->getName(),
@@ -35,10 +37,8 @@ class jazzactivityService extends activityBaseService
                 );
 
                 $tableRow->addButton('openBox('. $c->getActivity()->getId() . ')', "Edit", "aid=\"". $c->getActivity()->getId() . "\"");
-
-                $table->addTableRows($tableRow);
             }
-            $table->assignCss($cssRules);
+
             $tables[] = $table;
         }
 

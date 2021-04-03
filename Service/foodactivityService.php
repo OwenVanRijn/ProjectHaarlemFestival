@@ -28,12 +28,14 @@ class foodactivityService extends activityBaseService
             $table->setTitle($k);
             $table->setIsCollapsable(true);
             $table->addHeader("Time", "Name", "Location", "Type");
+            $table->assignCss($cssRules);
             foreach ($v as $c) {
 
                 $startDateStr = $c->getActivity()->getStartTime()->format("H:i");
                 $endDateStr = $c->getActivity()->getEndTime()->format("H:i");
 
                 $tableRow = new tableRow();
+                $table->addTableRows($tableRow);
                 $tableRow->addString(
                     "$startDateStr to $endDateStr",
                     $c->getRestaurant()->getName(),
@@ -42,10 +44,8 @@ class foodactivityService extends activityBaseService
                 );
 
                 $tableRow->addButton('openBox(' . $c->getActivity()->getId() . ')', "Edit", "aid=\"" . $c->getActivity()->getId() . "\"");
-
-                $table->addTableRows($tableRow);
             }
-            $table->assignCss($cssRules);
+
             $tables[] = $table;
         }
 

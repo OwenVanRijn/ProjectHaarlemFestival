@@ -29,12 +29,15 @@ if ($user)
 <head>
     <meta charset="utf-8">
     <title>CMS - Login</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<form action="#" method="post">
-    <input type="text" id="username" placeholder="Username" required autofocus name="username" value="<?php echo $username ?>" maxlength="96">
-    <input type="password" id="password" placeholder="Password" required name="password" maxlength="72">
-    <button class="btn btn-md btn-primary btn-block maxWidth">Sign in</button>
+<h2 class="line displayBlock loginWidth center mt-3">Login:</h2>
+<form action="#" method="post" class="loginWidth center mt-3">
+    <input class="displayBlock loginWidth inputBox" type="text" id="username" placeholder="Username" required autofocus name="username" value="<?php echo $username ?>" maxlength="96">
+    <input class="displayBlock loginWidth inputBox" type="password" id="password" placeholder="Password" required name="password" maxlength="72">
+    <a class="almostHalfWidth floatLeft greyButton pAll-1half mt-2 displayInlineBlock" href="passReset.php">Recover password</a>
+    <button class="almostHalfWidth floatRight blueButton pAll-1half mt-2 displayInlineBlock">Sign in</button>
     <?php
     if (isset($err)){
         echo "<p class='mt-2 text-center text-danger txt-sm'>Failed to sign in.<br/>$err</p>";

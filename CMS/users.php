@@ -40,9 +40,17 @@ $nav->assignCss([
         $table = new table();
         $table->setTitle("Users");
         $table->addHeader("Name", "Email", "Phone Number", "Address");
+        $table->assignCss([
+            "tr" => "cmsTableRow",
+            "table" => "cmsTable",
+            "h3" => "cmsTableHeader",
+            "summary" => "cmsSummary",
+            "details" => "cmsDetails",
+            "button" => "blueButton pAll-half pSide-3"]);
 
         foreach ($customers as $c){
             $tableRow = new tableRow();
+            $table->addTableRows($tableRow);
             $tableRow->addString(
               $c->getFirstName() . " " . $c->getLastname(),
                 $c->getAccount()->getEmail(),
@@ -52,15 +60,7 @@ $nav->assignCss([
             $customerId = $c->getId();
 
             $tableRow->addButton("openUser($customerId)", "Edit");
-            $table->addTableRows($tableRow);
         }
-
-        $table->assignCss([
-            "tr" => "cmsTableRow",
-            "table" => "cmsTable",
-            "h3" => "cmsTableHeader",
-            "summary" => "cmsSummary",
-            "details" => "cmsDetails",]);
 
         $table->display();
     ?>

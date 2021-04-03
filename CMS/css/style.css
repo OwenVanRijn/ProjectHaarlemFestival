@@ -166,3 +166,147 @@ nav a:first-child {
 .displayInlineBlock > select {
     margin-right: 20px;
 }
+
+.loginWidth {
+    max-width: 360px;
+    width: 360px;
+}
+
+.displayBlock {
+    display: block;
+}
+
+.line {
+    padding-bottom: 10px;
+    border-bottom: 2px solid #212529;
+}
+
+.center {
+    margin: auto;
+    text-align: center;
+}
+
+.mt-3 {
+    margin-top: 1rem;
+}
+
+.mt-1 {
+    margin-top: .33rem;
+}
+
+.mt-2 {
+    margin-top: .66rem;
+}
+
+.mAll-1 {
+    margin: .33rem 0 .33rem 0;
+}
+
+.pAll-1 {
+    padding: .33rem;
+}
+
+.pAll-1 {
+    padding: .33rem;
+}
+
+.pAll-half {
+    padding: .15rem;
+}
+
+.pSide-3 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.pAll-2 {
+    padding: .66rem;
+}
+
+.pAll-1half {
+    padding: .5rem;
+}
+
+.inputBox {
+    width: 97%;
+    border-radius: 5px;
+    border-color: grey;
+    padding: .33rem;
+    margin: .33rem 0 .33rem 0;
+}
+
+.inputBoxDropdown {
+    margin-left: 20px;
+    width: inherit;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-bottom: 0.66rem;
+}
+
+body {
+    font-family: "Segoe UI";
+}
+
+.blueButton {
+    border-radius: 15px;
+    background-color: #0D6DFB;
+    color: white;
+    border-width: 0;
+    font-size: 14px;
+}
+
+.blueButton:hover {
+    background-color: #0B5ED7;
+}
+
+.greyButton {
+    border-radius: 15px;
+    background-color: grey;
+    color: white;
+    border-width: 0;
+    font-size: 14px;
+    text-decoration: none;
+    line-height: 17px;
+}
+
+.me-20px {
+    margin-right: 20px;
+}
+
+.greyButton:hover {
+    background-color: dimgrey;
+}
+
+.floatLeft {
+    float: left;
+}
+
+.almostHalfWidth {
+    width: 45%;
+}
+
+.editElemHeader {
+    width: 88%;
+    margin-bottom: .33rem;
+}
+
+.widthInherit {
+    width: inherit;
+}
+
+input[type="time"] {
+    font-family: "Segoe UI";
+}
+
+input[type="date"] {
+    font-family: "Segoe UI";
+}
+
+textarea {
+    font-family: "Segoe UI";
+    font-size: 13px;
+}
+
+.mw-20px {
+    margin-left: 20px;
+}

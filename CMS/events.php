@@ -60,7 +60,8 @@ $nav->assignCss([
                 "table" => "cmsTable",
                 "h3" => "cmsTableHeader",
                 "summary" => "cmsSummary",
-                "details" => "cmsDetails",]);
+                "details" => "cmsDetails",
+                "button" => "blueButton pAll-half pSide-3"]);
 
             foreach ($tables as $t){
                 $t->display();

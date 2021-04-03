@@ -57,8 +57,10 @@ class table extends uiGenerator
 
     public function addTableRows(tableRow ...$row){
         if (gettype($row) == "array")
-            foreach ($row as $r)
+            foreach ($row as $r) {
+                $r->assignCss($this->cssRules);
                 $this->tableRows[] = $r;
+            }
         else
             $this->tableRows[] = $row;
     }
