@@ -10,9 +10,9 @@
             <img class="logoFooter" src="img/logo-wit.png" alt="logo">
         </section>
         <section class="footer-right">
-            <p class="labelSocialMedia">Social media</p>
-            <a href="#" class="fa fa-facebook"></a>
-            <a href="#" class="fa fa-youtube"></a>
+            <p class="labelSocialMedia">Follow us</p>
+            <a href="#"><img class="socialMediaLogo" src="img/Icons/youtube.png" alt="Youtube"></a>
+            <a href="#"><img class="socialMediaLogo" src="img/Icons/facebook.png" alt="Facebook"></a>
         </section>
         <section class="footer-center">
             <ul>
