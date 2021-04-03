@@ -35,6 +35,7 @@ try {
 
                     <?php
                     }
+                
                     ?>
                     <img class="logo" class="logo" src="/img/shoppingcart.png"
                          alt="logo">
