@@ -310,3 +310,15 @@ textarea {
 .mw-20px {
     margin-left: 20px;
 }
+
+.clearRight {
+    clear: right;
+}
+
+.width66 {
+    width: 66%;
+}
+
+.width25 {
+    width: 25%;
+}

@@ -52,31 +52,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>CMS - Login</title>
+    <title>CMS - Password Reset</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <?php if ($showPassEntry) { ?>
-        <form action="passReset.php" method="post" name="passRec">
-            <h1>Password recovery</h1>
-            <input type="password" id="password" placeholder="Password" required name="password" maxlength="72">
-            <input type="password" id="passwordAlt" placeholder="Confirm password" required name="passwordAlt" maxlength="72">
+        <h2 class="line displayBlock loginWidth center mt-3">Password recovery request</h2>
+        <form action="passReset.php" method="post" name="passRec" class="loginWidth center mt-3">
+            <input class="displayBlock loginWidth inputBox" type="password" id="password" placeholder="Password" required name="password" maxlength="72">
+            <input class="displayBlock loginWidth inputBox" type="password" id="passwordAlt" placeholder="Confirm password" required name="passwordAlt" maxlength="72">
             <input type="hidden" name="id" value="<?php echo $key ?>"/>
             <input type="hidden" name="email" value="<?php echo $email ?>"/>
-            <button>Change Password</button>
+            <button class="loginWidth floatRight blueButton pAll-1half mt-2 displayInlineBlock">Change Password</button>
         </form>
     <?php } else { ?>
-        <form action="#" method="post" name="passReq">
-            <h1>Password recovery</h1>
-            <input type="email" id="email" placeholder="Email" required autofocus name="emailReq" maxlength="96">
-            <button>Request password recovery</button>
+        <h2 class="line displayBlock loginWidth center mt-3">Password recovery</h2>
+        <form action="#" method="post" name="passReq" class="loginWidth center mt-3">
+            <input class="displayBlock loginWidth inputBox" type="email" id="email" placeholder="Email" required autofocus name="emailReq" maxlength="96">
+            <a class="width25 floatLeft greyButton pAll-1half mt-2 displayInlineBlock" href="login.php">Login</a>
+            <button class="width66 floatRight blueButton pAll-1half mt-2 displayInlineBlock">Request password recovery</button>
         </form>
     <?php } ?>
 
     <?php if ($textGreen != "") { ?>
-        <p><?php echo $textGreen ?></p>
+        <p class="center loginWidth"><?php echo $textGreen ?></p>
     <?php } ?>
 
     <?php if ($textRed != "") { ?>
-        <p><?php echo $textRed ?></p>
+        <p class="center loginWidth"><?php echo $textRed ?></p>
     <?php } ?>
 </body>
