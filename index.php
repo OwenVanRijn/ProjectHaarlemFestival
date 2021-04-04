@@ -69,7 +69,7 @@ require_once "UI/navBar.php";
                     sessions.
                 </p>
             </section>
-            <a href="dance.php" class="btn button1 w-100">Read more</a>
+            <a href="dance.php" class="button1 w-100">Read more</a>
         </section>
 
         <section class="col-3 h-100">
@@ -84,7 +84,7 @@ require_once "UI/navBar.php";
                     We also offer a number of free performances.
                 </p>
             </section>
-            <a href="jazz.php" class="btn button1 w-100">Read more</a>
+            <a href="jazz.php" class="button1 w-100">Read more</a>
         </section>
 
         <section class="col-3 h-100">
@@ -97,7 +97,7 @@ require_once "UI/navBar.php";
                     The restaurants have a delicious menu for you at a discounted price.
                 </p>
             </section>
-            <a href="food.php" class="btn button1 w-100">Read more</a>
+            <a href="food.php" class="button1 w-100">Read more</a>
         </section>
     </section>
 
