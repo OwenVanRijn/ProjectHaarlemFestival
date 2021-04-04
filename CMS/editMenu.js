@@ -109,6 +109,10 @@ function generateInputField(fieldContent, className, fieldName){
             entry.classList.remove("displayInlineBlock");
             entry.classList.add("max300px");
 
+            if (fieldContent.value.rows.length <= 0){
+                entry.setAttribute("hidden", "");
+            }
+
             return entry;
 
         case "customImgUpload":
