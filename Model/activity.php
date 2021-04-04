@@ -172,6 +172,14 @@ class activity extends sqlModel
         return $time;
     }
 
+    public function getFormattedDateTime(){
+        $startDateStr = $this->startTime->format("H:i");
+        $endDateStr = $this->endTime->format("H:i");
+        $dateStr = $this->date->format("d-m-Y");
+
+        return $startDateStr . " to " . $endDateStr . " at " . $dateStr;
+    }
+
     /**
      * @param int $id
      */

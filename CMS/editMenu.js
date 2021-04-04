@@ -76,6 +76,41 @@ function generateInputField(fieldContent, className, fieldName){
             selectSingle.classList.add("inputBox", "inputBoxDropdown");
             return selectSingle;
 
+        case "customTableView":
+            let h2 = document.createElement("h2");
+            h2.innerHTML = fieldName;
+            h2.classList.add("cmsTableHeader");
+            entry.appendChild(h2);
+
+            let table = document.createElement("table");
+            table.classList.add("cmsTable");
+            let tr = document.createElement("tr");
+            tr.classList.add("cmsTableRow");
+            table.appendChild(tr);
+
+            fieldContent.value.header.forEach(x => {
+                let th = document.createElement("th");
+                th.innerHTML = x;
+                tr.appendChild(th);
+            });
+
+            fieldContent.value.rows.forEach(x => {
+                tr = document.createElement("tr");
+                tr.classList.add("cmsTableRow");
+                table.appendChild(tr);
+                x.forEach(y => {
+                    let td = document.createElement("td");
+                    tr.appendChild(td);
+                    td.innerHTML = y;
+                })
+            })
+
+            entry.appendChild(table);
+            entry.classList.remove("displayInlineBlock");
+            entry.classList.add("max300px");
+
+            return entry;
+
         case "customImgUpload":
             let label = document.createElement("label");
             label.setAttribute("for", fieldName);

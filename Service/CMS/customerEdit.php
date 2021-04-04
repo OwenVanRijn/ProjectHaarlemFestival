@@ -4,16 +4,22 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once ("editBase.php");
 require_once ($root . "/Service/customerService.php");
 require_once ($root . "/Service/accountService.php");
+require_once ($root . "/Service/activityService.php");
+require_once ($root . "/Service/ticketService.php");
 
 class customerEdit extends editBase implements editUpdate
 {
     private customerService $cs;
     private accountService $as;
+    private ticketService $ts;
+    private activityService $acts;
 
     public function __construct(account $account){
         parent::__construct($account);
         $this->cs = new customerService();
         $this->as = new accountService();
+        $this->ts = new ticketService();
+        $this->acts = new activityService();
     }
 
     private $lastAccountIsVolunteer = false;
@@ -25,6 +31,7 @@ class customerEdit extends editBase implements editUpdate
                 "id" => htmlTypeEnum::hidden,
                 "firstName" => htmlTypeEnum::text,
                 "lastName" => htmlTypeEnum::text,
+                "orders" => htmlTypeEnum::tableView,
             ],
             "account" => [
                 "accountId" => htmlTypeEnum::hidden,
@@ -44,10 +51,43 @@ class customerEdit extends editBase implements editUpdate
         return $header;
     }
 
+    private function findActivity(int $activityId, array $activities) {
+        foreach ($activities as $activity){
+            if ($activity->getActivity()->getId() == $activityId)
+                return $activity;
+        }
+        return null;
+    }
+
     protected function getHtmlEditFields($entry)
     {
         if ($entry->getAccount()->getRole() == account::accountVolunteer)
             $this->lastAccountIsVolunteer = true;
+
+        $rows = [];
+        $activityIds = [];
+        $tickets = $this->ts->getTicketsFromCustomer($entry->getId());
+        foreach ($tickets as $ticket){
+            $activityIds[] = $ticket->getActivity()->getId();
+        }
+
+        $activities = $this->acts->getTypedActivityByIds($activityIds);
+
+        foreach ($tickets as $ticket){
+            $newRow = [];
+            $act = $this->findActivity($ticket->getActivity()->getId(), $activities);
+            if (is_null($act)){
+                $newRow[] = "(Unknown)";
+            }
+            else {
+                $newRow[] = $act->getName();
+            }
+
+            $newRow[] = $ticket->getActivity()->getType();
+            $newRow[] = $ticket->getActivity()->getFormattedDateTime();
+            $newRow[] = $ticket->getAmount();
+            $rows[] = $newRow;
+        }
 
         return [
             "id" => $entry->getId(),
@@ -60,6 +100,10 @@ class customerEdit extends editBase implements editUpdate
             "isScheduleManager" => $entry->getAccount()->isScheduleManager(),
             "isTicketManager" => $entry->getAccount()->isTicketManager(),
             "accountId" => $entry->getAccount()->getId(),
+            "orders" => [
+                "header" => ["Title", "Type", "Date", "Amount"],
+                "rows" => $rows
+            ]
         ];
     }
 

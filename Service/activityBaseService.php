@@ -13,6 +13,9 @@ abstract class activityBaseService extends baseService
     public abstract function getAll() : array;
 
     public function getFromActivityIds(array $ids){
+        if (empty($ids))
+            return [];
+
         $ret = $this->db->get([
             "activity.id" => $ids,
             "order" => ["activity.date", "activity.starttime", "activity.endtime"]

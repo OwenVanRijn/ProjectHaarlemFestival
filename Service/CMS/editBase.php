@@ -65,7 +65,7 @@ abstract class editBase implements editRequest
                 }
                 elseif (array_key_exists($k, $postResonse))
                     $correctedPostResponse[$k] = $this->stripHtmlChars($postResonse[$k]);
-                elseif ($v == htmlTypeEnum::imgUpload){
+                elseif ($v == htmlTypeEnum::imgUpload || $v == htmlTypeEnum::tableView){
                     continue;
                 }
                 else {

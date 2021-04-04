@@ -18,6 +18,12 @@ class ticketService extends  baseService
         ]);
     }
 
+    public function getTicketsFromCustomer(int $customerId){
+        return $this->db->getArray([
+            "customerId" => $customerId
+        ]);
+    }
+
     public function insertTicket(int $activityId, int $customerId, int $orderId, int $amount){
         $this->db->insert([
             "activityId" => $activityId,

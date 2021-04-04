@@ -102,6 +102,10 @@ nav .aSel:hover {
     text-align: center;
 }
 
+.cmsTableRow:nth-child(2n+3) {
+    background-color: #DDD;
+}
+
 .cmsTableRow:nth-child(1) {
     border-bottom: 2px solid black;
 }
@@ -405,4 +409,9 @@ textarea {
 
 *[hidden=""] {
     display: none;
+}
+
+.max300px {
+    max-height: 300px;
+    overflow-y: scroll;
 }
