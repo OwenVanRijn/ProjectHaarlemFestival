@@ -19,6 +19,7 @@ function generateInputField(fieldContent, className, fieldName){
     let stepNum = false;
 
     switch (fieldContent.type){
+        case "customInlineList":
         case "customListMultiple":
             if (fieldContent.type !== "hidden"){
                 let label = document.createElement("label");
@@ -29,8 +30,18 @@ function generateInputField(fieldContent, className, fieldName){
             }
 
             let select = document.createElement("select");
-            select.setAttribute("name", fieldName + "[]");
-            select.setAttribute("multiple", '');
+
+
+
+            if (fieldContent.type === "customListMultiple"){
+                select.setAttribute("multiple", '');
+                select.setAttribute("name", fieldName + "[]");
+            }
+            else {
+                select.setAttribute("name", fieldName);
+            }
+
+
             select.classList.add("leftStack", "marginRightOptions", "inputBox", "me-20px", "widthInherit");
             select.setAttribute("required", "");
 
@@ -164,7 +175,10 @@ function generateInputField(fieldContent, className, fieldName){
             input.setAttribute("name", fieldName);
             input.setAttribute("id", fieldName);
             input.classList.add("leftStack", "marginRightOption", "inputBox", "me-20px", "widthInherit");
-            input.setAttribute("required", "");
+
+            if (fieldContent.type !== "checkbox")
+                input.setAttribute("required", "");
+
             entry.appendChild(input);
 
             if (stepNum){

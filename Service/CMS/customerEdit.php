@@ -38,7 +38,7 @@ class customerEdit extends editBase implements editUpdate
                 "username" => htmlTypeEnum::text,
                 "email" => htmlTypeEnum::text,
                 "status" => htmlTypeEnum::number,
-                "role" => [htmlTypeEnum::number, account::accountAdmin],
+                "role" => [htmlTypeEnum::listInline, account::accountAdmin],
             ]
         ];
 
@@ -96,7 +96,10 @@ class customerEdit extends editBase implements editUpdate
             "username" => $entry->getAccount()->getUsername(),
             "email" => $entry->getAccount()->getEmail(),
             "status" => $entry->getAccount()->getStatus(),
-            "role" => $entry->getAccount()->getRole(),
+            "role" => [
+                "options" => account::getKeyedRoleInfo($this->account->getRole()),
+                "selected" => [$entry->getAccount()->getRole()]
+            ],
             "isScheduleManager" => $entry->getAccount()->isScheduleManager(),
             "isTicketManager" => $entry->getAccount()->isTicketManager(),
             "accountId" => $entry->getAccount()->getId(),

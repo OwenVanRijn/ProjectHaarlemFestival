@@ -15,4 +15,5 @@ abstract class htmlTypeEnum
     public const checkBox = "checkbox";
     public const imgUpload = "customImgUpload";
     public const tableView = "customTableView";
+    public const listInline = "customInlineList";
 }

@@ -19,7 +19,7 @@ class sessionService extends baseService
     }
 
     // TODO: throw on failure
-    public function createSession(string $username, string $password, int $minRole = 1){
+    public function createSession(string $username, string $password, int $minRole = account::accountVolunteer){
         $userDb = new accountDAO();
 
         $user = $userDb->get([
@@ -56,7 +56,7 @@ class sessionService extends baseService
         return true;
     }
 
-    public function validateSessionFromCookie(int $minRole = 1){
+    public function validateSessionFromCookie(int $minRole = account::accountVolunteer){
         $cookieManager = new cookieManager("session");
         $id = $cookieManager->get();
         if (is_null($id))

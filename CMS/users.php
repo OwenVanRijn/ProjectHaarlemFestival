@@ -35,7 +35,7 @@ $nav->assignCss([
 <section class="main">
     <?php
         $customerService = new customerService();
-        $customers = $customerService->getWithRole(0);
+        $customers = $customerService->getWithRoleOrBelow($user->getRole() - 1);
 
         $table = new table();
         $table->setTitle("Users");

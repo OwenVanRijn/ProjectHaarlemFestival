@@ -78,6 +78,21 @@ class account extends sqlModel
         return $array;
     }
 
+    public static function getKeyedRoleInfo($maxRole = account::accountSuperAdmin){
+        $array = [
+            account::accountNormal => "Normal User",
+            account::accountVolunteer => "Volunteer",
+        ];
+
+        if ($maxRole > account::accountAdmin)
+            $array[account::accountAdmin] = "Admin";
+
+        if ($maxRole > account::accountSuperAdmin)
+            $array[self::accountSuperAdmin] = "Super Admin";
+
+        return $array;
+    }
+
     public function validateLogin(string $username, string $password): bool {
         if ($username !== $this->username)
             return false;

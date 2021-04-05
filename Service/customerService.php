@@ -20,6 +20,17 @@ class customerService extends baseService
         ]);
     }
 
+    public function getWithRoleOrBelow(int $role){
+        $array = [];
+        for ($i = account::accountNormal; $i <= $role; $i++){
+            $array[] = $i;
+        }
+
+        return $this->db->getArray([
+            "account.role" => $array
+        ]);
+    }
+
     public function getFromId(int $customerId){
         return $this->db->get(["id" => $customerId]);
     }
