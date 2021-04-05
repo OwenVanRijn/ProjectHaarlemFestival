@@ -70,12 +70,12 @@ class jazzEditActivity extends editActivityBase
     protected function processEditResponseChild(array $post)
     {
         if (isset($post["performanceIncomplete"]))
-            throw new appException("Jazz form not filled in");
+            throw new appException("Performance is incomplete");
 
         $bandId = null;
 
         if (!isset($post["band"]))
-            throw new appException("Invalid POST");
+            throw new appException("Band is incomplete");
 
         if ((int)$post["band"] == -1){
             $res = $this->jazzBandService->insertBand($post["bandName"], $post["bandDescription"]);

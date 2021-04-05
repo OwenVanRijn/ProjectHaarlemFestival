@@ -169,10 +169,10 @@ class foodEditActivity extends editActivityBase
     protected function processNewResponseChild(array $post, int $activityId){
 
         if (!isset($post["restaurant"])) {
-            throw new appException("Invalid POST");
+            throw new appException("Restaurant is incomplete");
         }
 
-        if (isset($post["restaurant"]) && (int)$post["restaurant"] == -1){
+        if ((int)$post["restaurant"] == -1){
             $res = $this->restaurantService->insertRestaurant(
                 $post["name"],
                 $post["description"],

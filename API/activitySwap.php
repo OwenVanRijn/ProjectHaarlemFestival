@@ -27,8 +27,11 @@ if (isset($_POST)){
     if (!isset($_POST["tableCheck"]) || !isset($_POST["type"]))
         callback("No items were selected");
 
-    if (count($_POST["tableCheck"]) != 2)
+    if (count($_POST["tableCheck"]) != 2){
         callback("You selected not enough or too many items");
+        exit();
+    }
+
 
     //echo count($_POST["tableCheck"]);
 
@@ -38,6 +41,6 @@ if (isset($_POST)){
         callback(null, "Successfully swapped entries");
     }
     catch (appException $e){
-        callback($e->getMessage());
+        callback($e->getMessage()); // TODO: PHP bug. Uncommenting this fixes the count() above. Otherwise the count check will fail??
     }
 }

@@ -128,19 +128,14 @@ abstract class editActivityBase extends editBase
         return $this->packHtmlEditContent($this->getAllHtmlEditFieldsEmpty());
     }
 
-    // TODO: maybe parse POST into object, then use object?
-    public function processEditResponse(array $post) {
-        $validatedPost = $this->filterHtmlEditResponse($post);
-        unset($post); // To prevent misuse
-
+    private function processAnyResponseLoc(array &$validatedPost){
         if (isset($validatedPost["activityIncomplete"]) || !isset($validatedPost["location"]))
-            throw new appException("Activity not found in post request");
-
+            throw new appException("Activity is incomplete");
 
         $locationService = new locationService();
 
         // Updating the location table
-        if (!isset($validatedPost["locationIncomplete"])) {
+        if (!isset($validatedPost["locationIncomplete"]) && (int)$validatedPost["location"] > 0) {
             if (!$locationService->updateLocation(
                 $validatedPost["location"],
                 $validatedPost["address"],
@@ -152,6 +147,9 @@ abstract class editActivityBase extends editBase
         }
 
         if ((int)$validatedPost["location"] == -1){
+            if (isset($validatedPost["locationIncomplete"]))
+                throw new appException("Location is incomplete");
+
             $res = $locationService->insertLocation(
                 $validatedPost["address"],
                 $validatedPost["postalCode"],
@@ -165,6 +163,14 @@ abstract class editActivityBase extends editBase
             $validatedPost["locationIncomplete"] = true;
             $validatedPost["location"] = $res;
         }
+    }
+
+    // TODO: maybe parse POST into object, then use object?
+    public function processEditResponse(array $post) {
+        $validatedPost = $this->filterHtmlEditResponse($post);
+        unset($post); // To prevent misuse
+
+        $this->processAnyResponseLoc($validatedPost);
 
         $startTime = (new time())->fromHI($validatedPost["startTime"]);
         $endTime = (new time())->fromHI($validatedPost["endTime"]);
@@ -194,37 +200,7 @@ abstract class editActivityBase extends editBase
         $validatedPost = $this->filterHtmlEditResponse($post);
         unset($post); // To prevent misuse
 
-        if (isset($validatedPost["activityIncomplete"]) || !isset($validatedPost["location"]))
-            throw new appException("Activity not found in post request");
-
-        $locationService = new locationService();
-
-        // Updating the location table
-        if (!isset($validatedPost["locationIncomplete"])) {
-            if (!$locationService->updateLocation(
-                $validatedPost["location"],
-                $validatedPost["address"],
-                $validatedPost["postalCode"],
-                $validatedPost["city"],
-                $validatedPost["locationName"]
-            ))
-                throw new appException("[Location] db update failed... ");
-        }
-
-        if ((int)$validatedPost["location"] == -1){
-            $res = $locationService->insertLocation(
-                $validatedPost["address"],
-                $validatedPost["postalCode"],
-                $validatedPost["city"],
-                $validatedPost["locationName"]
-            );
-
-            if (!$res)
-                throw new appException("[Location] db insert failed...");
-
-            $validatedPost["locationIncomplete"] = true;
-            $validatedPost["location"] = $res;
-        }
+        $this->processAnyResponseLoc($validatedPost);
 
         $activityService = new activityService();
         $id = $activityService->insertActivity(
