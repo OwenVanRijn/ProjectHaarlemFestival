@@ -26,6 +26,9 @@ abstract class editBase implements editRequest
                 if (ctype_space($input))
                     throw new appException("Empty string provided!");
 
+                if (is_numeric($input) && (int)$input < 0)
+                    throw new appException("Negative values cannot be used");
+
                 return trim(htmlspecialchars($input, ENT_QUOTES));
             case "array":
                 $new = [];

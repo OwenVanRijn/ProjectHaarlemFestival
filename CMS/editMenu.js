@@ -155,8 +155,11 @@ function generateInputField(fieldContent, className, fieldName){
 
             if (fieldContent.type === "customTextArea")
                 input.innerHTML = fieldContent.value;
-            else
+            else {
                 input.setAttribute("value", fieldContent.value);
+                input.setAttribute("min", "0");
+            }
+
 
             input.setAttribute("name", fieldName);
             input.setAttribute("id", fieldName);
