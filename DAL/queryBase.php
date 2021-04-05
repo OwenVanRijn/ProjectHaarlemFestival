@@ -84,6 +84,8 @@ abstract class queryBase
     private string $types;
     private array $localVars;
 
+
+    // Recursively bind types in array to a flat array with types as letters
     private function getTypeParam(array $vars){
         foreach ($vars as $var){
             switch (gettype($var)){

@@ -19,6 +19,7 @@ class dynamicQueryGen extends queryBase
     private $query;
     private $args;
 
+    // Generates "(tablename).(column) as (tablename)(column)," for SELECT
     private function selectFormat(array $fields, string $tableName){
         $query = "";
         foreach ($fields as $field){
@@ -27,7 +28,7 @@ class dynamicQueryGen extends queryBase
         return $query;
     }
 
-
+    // Foreaches selectFormat for every sqlLink
     protected function selectFromClass($class){
         $query = $this->selectFormat($class::sqlFields(), $class::sqlTableName());
 
@@ -38,7 +39,7 @@ class dynamicQueryGen extends queryBase
         return $query;
     }
 
-
+    // Generates "SELECT (tablename).(column) as (tablename)(column), ..."
     protected function select(array $fields, array $links){
         $query = "SELECT ";
 
@@ -52,11 +53,13 @@ class dynamicQueryGen extends queryBase
         $this->query .= $query;
     }
 
+    // Generates "FROM (tablename) "
     protected function from(string $tableName){
         $query = "FROM " . $tableName . " ";
         $this->query .= $query;
     }
 
+    // Generates the string for a field of a class
     private function genTableVar($var, $includeTable = null){
         if (is_null($includeTable)){
             $includeTable = (strpos($var, ".") === false);
@@ -70,6 +73,7 @@ class dynamicQueryGen extends queryBase
         }
     }
 
+    // Generates "ORDER BY (v1), (v2) ..."
     protected function orderBy(array $order){
         $query = " ORDER BY ";
         foreach ($order as $v){
@@ -79,10 +83,15 @@ class dynamicQueryGen extends queryBase
         $this->query .= $query . " ";
     }
 
+    // Generates "LIMIT (value:int) "
     protected function limit(int $limit){
         $this->query .= "LIMIT " . $limit . " ";
     }
 
+    // Generates "WHERE (column) IN (v1, v2, v3)"
+    // Or "WHERE (column) = (value)"
+    // Or "WHERE dbContains.toString()"
+    // Also calls limit and order after, if present in filter
     protected function where(array $filter){
         if (array_key_exists("order", $filter)){
             $order = $filter["order"];
@@ -130,6 +139,7 @@ class dynamicQueryGen extends queryBase
 
     private array $joinedClasses;
 
+    // Generates "LEFT JOIN (newClassName) ON (existingClassName).(column) = (newClassName).(primaryKey) "
     protected function joinClass($srcClass, $dstClass, $varName){
         $query = "";
         if (!in_array($dstClass::sqlTableName(), $this->joinedClasses)){
@@ -142,6 +152,7 @@ class dynamicQueryGen extends queryBase
         return $query;
     }
 
+    // Wrapper for joinClass()
     protected function join(array $links){
         if (empty($links))
             return;
@@ -156,11 +167,13 @@ class dynamicQueryGen extends queryBase
         $this->query .= $query;
     }
 
+    // Generates "DELETE FROM (tableName) "
     protected function deleteFrom(string $tableName) {
         $query = "DELETE FROM " . $tableName . " ";
         $this->query .= $query;
     }
 
+    // Generates "UPDATE (tableName) SET column = ?, ..."
     protected function updateFrom(array $fields, array $filter, array $keys){
         $newKeys = [];
         foreach ($fields as $field => $fieldval){
@@ -180,6 +193,12 @@ class dynamicQueryGen extends queryBase
         $this->query .= $query;
     }
 
+    /**
+     * Gets entries parsed into classes using a $filter
+     * @param array $filter Filter is a k(column),v(value) array. All entries are AND'ed together. v as array are OR'd together
+     * @return array|object|null
+     * @throws appException
+     */
     public function get(array $filter = []){
         $this->query = "";
         $this->args = [];
@@ -196,6 +215,12 @@ class dynamicQueryGen extends queryBase
     }
 
 
+    /**
+     * Calls get and converts it's output to always give an array
+     * @param array $filter Filter is a k(column),v(value) array. All entries are AND'ed together. v as array are OR'd together
+     * @return array
+     * @throws appException
+     */
     public function getArray(array $filter = []) : array {
         $val = self::get($filter);
         if (is_null($val))
@@ -208,9 +233,10 @@ class dynamicQueryGen extends queryBase
     }
 
     /**
-     * Expects an k,v array
+     * Inserts fields using an k(columnName),v(value) array. Returns the newly inserted entry's primary key
      * @param array $fields
      * @return int|false
+     * @throws appException
      */
     public function insert(array $fields){
         $keys = $this->class::sqlFields();
@@ -264,6 +290,12 @@ class dynamicQueryGen extends queryBase
         return false;
     }
 
+    /**
+     * Delete entries out of a table using a WHERE filter.
+     * @param array $filter Filter is a k(column),v(value) array. All entries are AND'ed together. v as array are OR'd together
+     * @return bool
+     * @throws appException
+     */
     public function delete(array $filter){
         if (empty($filter))
             return false;
@@ -282,6 +314,13 @@ class dynamicQueryGen extends queryBase
         return $this->execAndCloseQuery();
     }
 
+    /**
+     * Update values in a table using $fields where $filter. If no filter is supplied, the primary key will be taken out of $fields instead.
+     * @param array $fields Fields is a k(colum), v(newValue) array.
+     * @param array $filter Filter is a k(column),v(value) array. All entries are AND'ed together. v as array are OR'd together
+     * @return bool
+     * @throws appException
+     */
     public function update(array $fields, array $filter = []){
         $keys = $this->class::sqlFields();
 
