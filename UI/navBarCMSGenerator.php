@@ -18,12 +18,12 @@ class navBarCMSGenerator extends uiGenerator
     private static array $noRequirementPages = [
         "Logout" => "logout.php",
         "Home" => "home.php",
-    ];
-
-    private static array $timeVolunteerPages = [
         "View Jazz Events" => "events.php?event=jazz",
         "View Dance Events" => "events.php?event=dance",
         "View Food Events" => "events.php?event=food",
+    ];
+
+    private static array $timeVolunteerPages = [
         "Dance Artists" => "danceArtists.php",
     ];
 

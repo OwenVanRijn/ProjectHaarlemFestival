@@ -83,4 +83,12 @@ class location extends sqlModel
     {
         $this->city = $city;
     }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
 }

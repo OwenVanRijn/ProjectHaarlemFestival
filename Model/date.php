@@ -22,4 +22,8 @@ class date
     public function toString(){
         return $this->date->format("Y-m-d");
     }
+
+    public function getDateTime(){
+        return $this->date;
+    }
 }

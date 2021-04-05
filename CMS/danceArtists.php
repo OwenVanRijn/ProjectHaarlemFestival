@@ -11,7 +11,7 @@ $user = $sessionService->validateSessionFromCookie();
 if (!$user)
     header("Location: login.php");
 
-if (!($user->getCombinedRole() & account::accountTicketManager))
+if (!($user->getCombinedRole() & account::accountScheduleManager))
     header("Location: home.php");
 
 $nav = new navBarCMSGenerator();

@@ -54,16 +54,32 @@ class activity extends sqlModel
 
     public function sqlGetFields()
     {
-        return[
-            "id" => $this->id,
-            "type"=>$this->type,
-            "date" => $this->date,
-            "startTime" => $this->startTime->format("H:i:s"),
-            "endTime" => $this->endTime->format("H:i:s"),
-            "locationId" => $this->location->getId(),
-            "price" =>$this->price,
-            "ticketsLeft" =>$this->ticketsLeft
+        $array = [
+            "id" => $this->id
         ];
+
+        if (isset($this->type))
+            $array["type"] = $this->type;
+
+        if (isset($this->date))
+            $array["date"] = $this->date;
+
+        if (isset($this->startTime))
+            $array["startTime"] = $this->startTime;
+
+        if (isset($this->endTime))
+            $array["endTime"] = $this->endTime;
+
+        if (isset($this->locationId))
+            $array["locationId"] = $this->locationId;
+
+        if (isset($this->price))
+            $array["price"] = $this->price;
+
+        if (isset($this->ticketsLeft))
+            $array["ticketsLeft"] = $this->ticketsLeft;
+
+        return $array;
     }
 
     public static function sqlParse(array $sqlRes): self
@@ -186,5 +202,61 @@ class activity extends sqlModel
     public function setId(int $id): void
     {
         $this->id = $id;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType(string $type): void
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * @param DateTime $date
+     */
+    public function setDate(DateTime $date): void
+    {
+        $this->date = $date;
+    }
+
+    /**
+     * @param DateTime $startTime
+     */
+    public function setStartTime(DateTime $startTime): void
+    {
+        $this->startTime = $startTime;
+    }
+
+    /**
+     * @param DateTime $endTime
+     */
+    public function setEndTime(DateTime $endTime): void
+    {
+        $this->endTime = $endTime;
+    }
+
+    /**
+     * @param location $location
+     */
+    public function setLocation(location $location): void
+    {
+        $this->location = $location;
+    }
+
+    /**
+     * @param float $price
+     */
+    public function setPrice(float $price): void
+    {
+        $this->price = $price;
+    }
+
+    /**
+     * @param int $ticketsLeft
+     */
+    public function setTicketsLeft(int $ticketsLeft): void
+    {
+        $this->ticketsLeft = $ticketsLeft;
     }
 }

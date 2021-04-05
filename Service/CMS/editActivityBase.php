@@ -172,23 +172,40 @@ abstract class editActivityBase extends editBase
 
         $this->processAnyResponseLoc($validatedPost);
 
-        $startTime = (new time())->fromHI($validatedPost["startTime"]);
-        $endTime = (new time())->fromHI($validatedPost["endTime"]);
+        if (isset($validatedPost["startTime"]) && isset($validatedPost["endTime"])){
+            $startTime = (new time())->fromHI($validatedPost["startTime"]);
+            $endTime = (new time())->fromHI($validatedPost["endTime"]);
 
-        if ($startTime->getDateTime()->diff($endTime->getDateTime())->invert)
-            $endTime = $startTime;
+            if ($startTime->getDateTime()->diff($endTime->getDateTime())->invert)
+                $endTime = $startTime;
+        }
 
         // Updating the activity table
         $activityService = new activityService();
-        $activityService->updateActivity(
-            (int)$validatedPost["activityId"],
-            (new date())->fromYMD($validatedPost["date"]),
-            $startTime,
-            $endTime,
-            (isset($validatedPost["price"])) ? (float)$validatedPost["price"] : null,
-            (isset($validatedPost["ticketsLeft"])) ? (int)$validatedPost["ticketsLeft"] : null,
-            (isset($validatedPost["locationIncomplete"])) ? (int)$validatedPost["location"] : null);
+        $activity = new activity();
+        $activity->setId((int)$validatedPost["activityId"]);
 
+        if (isset($validatedPost["date"]))
+            $activity->setDate((new date())->fromYMD($validatedPost["date"])->getDateTime());
+
+        if (isset($startTime)){
+            $activity->setStartTime($startTime->getDateTime());
+            $activity->setEndTime($endTime->getDateTime());
+        }
+
+        if (isset($validatedPost["price"]))
+            $activity->setPrice((float)$validatedPost["price"]);
+
+        if (isset($validatedPost["ticketsLeft"]))
+            $activity->setTicketsLeft((int)$validatedPost["ticketsLeft"]);
+
+        if (isset($validatedPost["locationIncomplete"])){
+            $location = new location();
+            $location->setId((int)$validatedPost["location"]);
+            $activity->setLocation($location);
+        }
+
+        $activityService->updateActivityWithClass($activity);
         $this->processEditResponseChild($validatedPost);
         $this->createLog(activityLog::edit, (int)$validatedPost["activityId"]);
     }

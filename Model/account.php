@@ -213,7 +213,7 @@ class account extends sqlModel
         if ($this->isScheduleManager)
             $role |= account::accountScheduleManager;
         if ($this->isTicketManager)
-            $role |= account::accountScheduleManager;
+            $role |= account::accountTicketManager;
 
         if ($this->role >= $this::accountAdmin)
             $role |= account::accountScheduleManager | account::accountTicketManager;

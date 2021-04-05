@@ -56,6 +56,10 @@ class activityService extends baseService
         return $this->db->update($update);
     }
 
+    public function updateActivityWithClass(activity $a){
+        return $this->db->update($a->sqlGetFields());
+    }
+
     public function insertActivity(string $type, date $date, time $startTime, time $endTime, float $price, int $ticketsLeft, int $locationId)
     {
         $insert = [
