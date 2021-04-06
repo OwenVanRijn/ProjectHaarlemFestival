@@ -30,7 +30,6 @@ $nameStripped = strtolower(str_replace(' ', '', $name));
 $messageString = "";
 
 if(isset($_POST['select'])){
-    $messageString = "YES";
 $id = $_POST['select'];
 
 if(is_numeric($id)) {
@@ -38,7 +37,9 @@ if(is_numeric($id)) {
     if(count($returnedActivity) > 0){
         $id = $returnedActivity[0]->getId();
 
-        $shoppingCartService->getShoppingcart()->addToShoppingcartItemsById($id, 1);
+        $sc = $shoppingCartService->getShoppingcart()->addToShoppingcartItemsById($id, 1);
+
+        $messageString = $sc->getShoppingcartItemsCount();
     }
     else{
         $messageString = "Activity with id $id not found";
