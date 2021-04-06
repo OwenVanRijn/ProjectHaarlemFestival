@@ -3,7 +3,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/Service/sessionService.php");
 require_once($root . "/UI/navBarCMSGenerator.php");
 require_once($root . "/UI/table.php");
-require_once ($root . "/Service/artistService.php");
+require_once ($root . "/Service/danceArtistService.php");
 
 $sessionService = new sessionService();
 $user = $sessionService->validateSessionFromCookie();
@@ -34,8 +34,8 @@ $nav->assignCss([
 <?php $nav->generate($user) ?>
 <section class="main">
     <?php
-    $artistService = new artistService();
-    $artists = $artistService->getArtists();
+    $artistService = new danceArtistService();
+    $artists = $artistService->getAll();
 
     $table = new table();
     $table->setTitle("Dance artists");
