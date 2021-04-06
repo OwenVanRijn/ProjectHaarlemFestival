@@ -106,6 +106,11 @@ require_once($root . "/UI/navBar.php");
                         }
                     }
 
+                    function date_sort($a, $b) {
+                        return strtotime($a) - strtotime($b);
+                    }
+                    usort($datesOfFestival, "date_sort");
+
                     $dayActivities = array();
                     for ($index = 0; $index <= count($datesOfFestival) - 1; $index++) {
                         $activitiesOfThisDay = array();
