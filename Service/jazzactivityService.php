@@ -51,6 +51,11 @@ class jazzactivityService extends activityBaseService
             "order" => ["activity.date", "activity.starttime", "activity.endtime"]
         ]);
     }
+    public function getActivityFromId(int $id){
+        return $this->db->get([
+            "jazzactivity.id" => $id
+        ]);
+    }
 
     public function updateActivity(int $id, ?string $hall, ?int $seats, ?int $jazzBandId){
         $update = [

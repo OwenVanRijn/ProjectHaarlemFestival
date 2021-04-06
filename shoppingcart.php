@@ -229,13 +229,13 @@ function echoTitles($date)
     <section class=\"border rounded\">
     <section class=\"row bg-white\">
         <section class=\"col-md-6\">
-         <h2 class=\"pt-2\">$date</h2>
-            <p class=\"titleInfo\">Amount</p>
-            <p class=\"titleInfo\">Event</p>
-            <p class=\"titleInfo\">Type</p>
-            <p class=\"titleInfo\">Time</p>
-            <p class=\"titleInfo\">Price</p>
-            <p class=\"titleInfo\">Totalprice</p>
+         <h2 style='display:inline' class=\"pt-2\">$date</h2>
+            <p style='display:inline' class=\"titleInfo\">Amount</p>
+            <p style='display:inline' class=\"titleInfo\">Event</p>
+            <p style='display:inline' class=\"titleInfo\">Type</p>
+            <p style='display:inline' class=\"titleInfo\">Time</p>
+            <p style='display:inline' class=\"titleInfo\">Price</p>
+            <p style='display:inline' class=\"titleInfo\">Totalprice</p>
         </section>
     </section>
 </section>
@@ -250,17 +250,17 @@ function cartElement($activityid, $activityName, $type, $createData, $startTime,
     $totalPrice = $amount * $price;
 
     $element = "
-    
+
                         <section class=\"border rounded\">
                         <section class=\"row bg-white\">
                             <section class=\"col-md-6\">
-                                <h3 class=\"pt-2\">$activityName ACTid $activityid</h3>
-                                <p class=\"titleInfo\">$type</p>
-                                <p class=\"titleInfo\">$startTime-$endTime</p>
-                                <p class=\"titleInfo\">€$price</p>
-                                <p class=\"titleInfo\">€$totalPrice</p>
-                           
-                                <form method=\"post\" class=\"cart-items\">
+                                <h3 style='display:inline' class=\"pt-2\">$activityName ACTid $activityid</h3>
+                                <p style='display:inline' class=\"titleInfo\">$type</p>
+                                <p style='display:inline' class=\"titleInfo\">$startTime-$endTime</p>
+                                <p style='display:inline' class=\"titleInfo\">€$price</p>
+                                <p style='display:inline' class=\"titleInfo\">€$totalPrice</p>
+
+                                <form style='display:inline' method=\"post\" class=\"cart-items\">
                                         <input type=\"hidden\" name=\"action\" value=\"remove\"/>
                                         <input type=\"hidden\" name=\"id\" value=\"$activityid\"/>
                                      <button type=\"submit\" class=\"btn btn-danger mx-2\" name=\"remove\">Remove</button>
@@ -268,7 +268,7 @@ function cartElement($activityid, $activityName, $type, $createData, $startTime,
                             </section>
                             <section class=\"col-md-3 py-5\">
                                 <section>
-                                    <form method=\"post\" class=\"cart-items\">
+                                    <form style='display:inline' method=\"post\" class=\"cart-items\">
                                         <input type=\"hidden\" name=\"action\" value=\"edit\"/>
                                         <input type=\"hidden\" name=\"id\" value=\"$activityid\"/>
                                         <input type=\"text\" onkeypress=\"return isNumberKey(event)\" value=\"$amount\" class=\"form-control w-25 d-inline\" name=\"amount\">
@@ -278,8 +278,8 @@ function cartElement($activityid, $activityName, $type, $createData, $startTime,
                             </section>
                         </section>
                     </section>
-  
-    
+
+
     ";
     echo $element;
 }

@@ -1,11 +1,17 @@
 <?php
 session_start();
-
 ini_set('display_errors', -1);
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
-require_once "../Email/mailer.php";
+require_once($root . "/Model/activity.php");
+require_once($root . "/Service/activityService.php");
+require_once($root . "/Service/jazzactivityService.php");
+require_once($root . "/Service/foodactivityService.php");
+require_once($root . "/Service/danceActivityService.php");
+require_once($root . "/Service/shoppingcartService.php");
+require_once($root . "/Service/shoppingcartServiceDB.php");
 
+require_once "../Email/mailer.php";
 $total = $_SESSION['total'];
 
 use Mollie\Api\MollieApiClient;
@@ -16,8 +22,11 @@ $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 
 $cusId = $_SESSION['id'];
 $cartId = $_SESSION['cartId'];
+$activitiesOrder = $_SESSION['cart'];
 
 echo $cusId;
+echo "<br>";
+echo count($activitiesOrder);
 echo "<br>";
 echo $cartId;
 
@@ -65,7 +74,51 @@ function setId($id){
             <p class="step">Step 2 / 3</p>
 
         </section>
+        <?php
+        $days = array();
 
+        foreach ($activitiesOrder as $activity ) {
+          if(get_class($activity) == 'activity')
+          {
+            $activityDate = $activity->getDate()->format('Y-m-d');
+          }
+          else {
+            $activityDate = $activity->getActivity()->getDate()->format('Y-m-d');
+          }
+          if(!in_array($activityDate,$days)){
+            $days[] = $activityDate;
+          }
+        }
+        foreach ($days as $day ) {
+          echo "<h2>{$day}</h2>";
+          echo "<table>";
+          for($i = 0; $i < count($activitiesOrder); $i++){
+            $activityDay = $activitiesOrder[$i]->getActivity()->getDate();
+            if (get_class($activity) == "foodactivity") {
+                $activityName = $activity->getRestaurant()->getName();
+            } else if (get_class($activity) == "jazzactivity") {
+                $activityName = $activity->getJazzband()->getName();
+            } else if (get_class($activity) == "danceActivity") {
+                $artists = $activity->getArtists();
+                $artistNames = array();
+                foreach ($artists as $artist) {
+                    $artistNames[] = $artist->getName();
+                }
+                $activityName = implode(", ", $artistNames);
+            } else {
+                $activityName = $activity->getType();
+            }
+            if($activityDay == $day)
+            {
+              echo "<tr>";
+              echo "<td>{$activityName}</td>";
+              echo "</tr>";
+            }
+          }
+          echo "</table>";
+        }
+
+         ?>
         <section id="paybox">
             <form method="post">
                 <p>Select paying method</p>
