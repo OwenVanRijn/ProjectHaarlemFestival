@@ -23,6 +23,7 @@ class jazzEditActivity extends editActivityBase
             "band" => htmlTypeEnum::list,
             "bandName" => htmlTypeEnum::text,
             "bandDescription" => htmlTypeEnum::textArea,
+            "image" => htmlTypeEnum::imgUpload,
         ],
         "performance" => [
             "jazzActivityId" => htmlTypeEnum::hidden,
@@ -46,7 +47,8 @@ class jazzEditActivity extends editActivityBase
             "bandName" => $selBand->getName(),
             "bandDescription" => $selBand->getDescription(),
             "hall" => $a->getHall(),
-            "seats" => $a->getSeats()
+            "seats" => $a->getSeats(),
+            "image" => ""
         ];
     }
 
@@ -63,12 +65,14 @@ class jazzEditActivity extends editActivityBase
             "bandName" => "",
             "bandDescription" => "",
             "hall" => "",
-            "seats" => ""
+            "seats" => "",
+            "image" => ""
         ];
     }
 
     protected function processEditResponseChild(array $post)
     {
+        // TODO: implement images
         if (isset($post["performanceIncomplete"]))
             throw new appException("Performance is incomplete");
 
@@ -76,6 +80,13 @@ class jazzEditActivity extends editActivityBase
 
         if (!isset($post["band"]))
             throw new appException("Band is incomplete");
+        else {
+            $root = realpath($_SERVER["DOCUMENT_ROOT"]);
+            $target_dir = $root . "/img/Bands";
+            $target_file = $target_dir . "/jazz" . $post["band"] . ".png";
+
+            $this->handleImage($target_file);
+        }
 
         if ((int)$post["band"] == -1){
             $res = $this->jazzBandService->insertBand($post["bandName"], $post["bandDescription"]);
@@ -98,6 +109,8 @@ class jazzEditActivity extends editActivityBase
             $bandId
         ))
             throw new appException("[Jazz] db update failed...");
+
+
     }
 
     protected function processNewResponseChild(array $post, int $activityId)
