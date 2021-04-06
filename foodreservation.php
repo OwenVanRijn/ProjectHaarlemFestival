@@ -28,6 +28,7 @@ $foodactivityService = new foodactivityService();
 <section class="content">
     <section id="id01" class="w3-modal">
 
+        <br>
         <h1 class="header1Left">Make a reservation</h1>
         <?php
 

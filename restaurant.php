@@ -29,6 +29,7 @@ function echoRes($restaurant)
     $menu = $restaurant->getFullMenu();
     ?>
 
+    <br>
     <section class="container">
         <section class="restaurantContentDescription">
             <h2 id='starsHeader'><?php echo $restaurantName ?></h2>
@@ -160,6 +161,7 @@ function echoRes($restaurant)
     </section>
     <?php
 }
+
 if (isset($_GET["restaurantId"])) {
     $restaurantId = $_GET["restaurantId"];
 

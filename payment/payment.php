@@ -5,6 +5,7 @@ ini_set('display_errors', -1);
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once "../Email/mailer.php";
+require_once($root . "/Service/shoppingcartServiceDB.php");
 
 $total = $_SESSION['total'];
 
@@ -15,7 +16,11 @@ $mollie = new MollieApiClient();
 $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 
 $cusId = $_SESSION['id'];
-$cartId = $_SESSION['cartId'];
+
+//CART TO DB
+$shoppingcartServiceDB = new shoppingcartServiceDB();
+$cartId = $shoppingcartServiceDB->addShoppingcartToDatabase();
+$_SESSION['cartId'] = $cartId;
 
 if(isset($_POST['pay'])){
 

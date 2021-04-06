@@ -62,8 +62,6 @@ class shoppingcartServiceDB extends baseService
                 "price" => $price
             ];
 
-            var_dump($insert);
-
             $this->shoppingcartItemDAO->insert($insert);
         }
 

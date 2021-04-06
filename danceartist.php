@@ -18,7 +18,7 @@
 
         $id = $activity->getActivity()->getId();
 
-        $shoppingCartService->getShoppingcart()->setShoppingcartItemById($id, 1);
+        $shoppingCartService->getShoppingcart()->addToShoppingcartItemsById($id, 1);
     }
 
 ?>

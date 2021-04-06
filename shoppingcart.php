@@ -10,14 +10,6 @@ require_once($root . "/Service/foodactivityService.php");
 require_once($root . "/Service/danceActivityService.php");
 require_once($root . "/Service/shoppingcartService.php");
 require_once($root . "/Service/shoppingcartServiceDB.php");
-
-
-$mailer = new mailer();
-$shoppingcartServiceDB = new shoppingcartServiceDB();
-$cartId = $shoppingcartServiceDB->addShoppingcartToDatabase();
-
-//$mailer->sendMail("louellacreemers@gmail.com", "CartId", "ID = {$cartId}");
-$_SESSION['cartId'] = $cartId;
 ?>
 
 <!doctype html>
@@ -93,8 +85,6 @@ require_once($root . "/UI/navBar.php");
         if (count($ids) == 0) {
             echo "<p>Cart is Empty</p>";
         } else {
-            $shoppingcartItemsDB = $shoppingcartServiceDB->getShoppingcart();
-
             try {
                 $activities = array_merge($danceActivityService->getFromActivityIds($ids), $foodActivityService->getFromActivityIds($ids), $jazzActivityService->getFromActivityIds($ids), $activityService->getAllById($ids));
 
