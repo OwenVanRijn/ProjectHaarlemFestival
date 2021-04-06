@@ -77,6 +77,9 @@ abstract class queryBase
      */
     protected function execAndCloseQuery(){
         $ret = $this->execQuery();
+        if (!$ret)
+            throw new appException($this->conn->error);
+
         $this->closeQuery();
         return $ret;
     }

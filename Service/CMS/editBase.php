@@ -20,20 +20,37 @@ abstract class editBase implements editRequest
         $this->account = $account;
     }
 
-    protected function stripHtmlChars($input){
+    protected function stripHtmlChars($input, $htmlType){
         switch (gettype($input)){
             case "string":
                 if (ctype_space($input))
                     throw new appException("Empty string provided!");
 
-                if (is_numeric($input) && (int)$input < 0)
-                    throw new appException("Negative values cannot be used");
+                switch($htmlType){
+                    case htmlTypeEnum::number:
+                    case htmlTypeEnum::float:
+                        if (!is_numeric($input))
+                            throw new appException("Value is not a number");
+
+                        if ((int)$input < 0)
+                            throw new appException("Negative values cannot be used");
+
+                        break;
+                    case htmlTypeEnum::list:
+                        if (!is_numeric($input))
+                            throw new appException("Value is not a number");
+
+                        if ((int)$input < -1)
+                            throw new appException("Negative values cannot be used");
+
+                        break;
+                }
 
                 return trim(htmlspecialchars($input, ENT_QUOTES));
             case "array":
                 $new = [];
                 foreach ($input as $a){
-                    $new[] = $this->stripHtmlChars($a);
+                    $new[] = $this->stripHtmlChars($a, $htmlType);
                 }
                 return $new;
             default:
@@ -62,12 +79,12 @@ abstract class editBase implements editRequest
                 if (gettype($v) == "array"){
                     if (($this->account->getCombinedRole() & $v[1]))
                         if (array_key_exists($k, $postResonse))
-                            $correctedPostResponse[$k] = $this->stripHtmlChars($postResonse[$k]);
+                            $correctedPostResponse[$k] = $this->stripHtmlChars($postResonse[$k], $v);
                         else
                             $correctedPostResponse[$hk . "Incomplete"] = true;
                 }
                 elseif (array_key_exists($k, $postResonse))
-                    $correctedPostResponse[$k] = $this->stripHtmlChars($postResonse[$k]);
+                    $correctedPostResponse[$k] = $this->stripHtmlChars($postResonse[$k], $v);
                 elseif ($v == htmlTypeEnum::imgUpload || $v == htmlTypeEnum::tableView || $v == htmlTypeEnum::checkBox){
                     continue;
                 }

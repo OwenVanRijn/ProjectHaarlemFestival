@@ -65,13 +65,13 @@ class activity extends sqlModel
             $array["date"] = $this->date;
 
         if (isset($this->startTime))
-            $array["startTime"] = $this->startTime;
+            $array["startTime"] = $this->startTime->format("H:i:s");
 
         if (isset($this->endTime))
-            $array["endTime"] = $this->endTime;
+            $array["endTime"] = $this->endTime->format("H:i:s");
 
-        if (isset($this->locationId))
-            $array["locationId"] = $this->locationId;
+        if (isset($this->location))
+            $array["locationId"] = $this->location->getId();
 
         if (isset($this->price))
             $array["price"] = $this->price;
