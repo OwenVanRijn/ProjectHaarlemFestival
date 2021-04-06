@@ -25,22 +25,16 @@ else{
     $name = $_GET["name"];
 }
 
-
 $artist = $artistService->getFromName($name);
-
-
 $nameStripped = strtolower(str_replace(' ', '', $name));
-
 $messageString = "";
 
 if(isset($_POST['select'])){
+    $messageString = "YES";
 $id = $_POST['select'];
 
 if(is_numeric($id)) {
-
     $returnedActivity = $activityService->getTypedActivityByIds([$id]);
-
-
     if(count($returnedActivity) > 0){
         $id = $returnedActivity[0]->getId();
 

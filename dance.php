@@ -140,7 +140,7 @@ if(isset($_POST['selectedId'])) {
         if ($danceActivity == null) {
             $messageString = "Can't find activity $id";
         } else {
-            $shoppingCartService->getShoppingcart()->addToShoppingcartItemsById($danceActivity->getActivity()->getActivity()->getId(), 1);
+            $shoppingCartService->getShoppingcart()->addToShoppingcartItemsById($danceActivity[0]->getActivity()->getActivity()->getId(), 1);
             $messageString = "Your ticket has been added to the shoppingcart!";
         }
     } else {
