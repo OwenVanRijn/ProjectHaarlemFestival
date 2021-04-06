@@ -1,5 +1,6 @@
 <?php
 ini_set('display_errors', -1);
+//require_once "UI/navBar.php";
 require_once ("Service/jazzactivityService.php");
 require_once ("Service/foodactivityService.php");
 require_once ("Service/shoppingcartServiceDB.php");
@@ -19,8 +20,13 @@ require_once ("Email/mailer.php");
 $pdf = new emailOrderGen();
 $bleh = new danceActivityService();
 $blah = new artistOnActivityService();
+$shopping= new shoppingcartService();
 
-//$pdf->sendEmail("59", "156");
+$shopping->unsetShoppingcart();
+
+//$pdf->sendEmail("90", "156");
+
+
 
 //
 //var_dump($bleh->getActivityBySessionType('Club'));

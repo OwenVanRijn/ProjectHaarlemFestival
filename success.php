@@ -1,5 +1,12 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+
 require_once "UI/navBar.php";
+//require_once "Service/shoppingcartService.php";
+//$service = new shoppingcartService();
+//
+//$service->unsetShoppingcart();
 ?>
 
 
@@ -19,7 +26,7 @@ require_once "UI/navBar.php";
 </head>
 
 <body>
-    <section class="containeer">
+    <section class="container">
         <section class="row justify-content-center align-items-center h-100">
             <section class="col-12 text-center">
                 <p class="font-weight-bold"> You're going to Haarlem Festival!</p>

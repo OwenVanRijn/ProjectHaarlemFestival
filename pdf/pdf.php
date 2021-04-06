@@ -1,8 +1,5 @@
 <?php
 session_start();
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-
 
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once $root . "/lib/dompdf/autoload.inc.php";
