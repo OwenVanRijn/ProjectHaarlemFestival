@@ -17,8 +17,16 @@ require_once ("Email/mailer.php");
 
 
 $pdf = new emailOrderGen();
+$bleh = new danceActivityService();
+$blah = new artistOnActivityService();
 
-$pdf->sendEmail("59", "156");
+//$pdf->sendEmail("59", "156");
+
+//
+//var_dump($bleh->getActivityBySessionType('Club'));
+var_dump($blah->getBySessionAndArtist('Martin Garrix', 'Club'));
+
+
 
 //$ids = [];
 //

@@ -1,5 +1,4 @@
 <?php
-
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
 require_once ("activityBaseService.php");
@@ -26,9 +25,10 @@ class danceActivityService extends activityBaseService
     }
 
     public function getActivityBySessionType($type){
-        return $this->activityDAO->getArray([
-            "sessionType" => $type
+        $ar =  $this->db->getArray([
+            "danceactivity.sessionType" => $type
         ]);
+        return $this->toDanceActivityArray($ar);
     }
 
     public function getTablesChild(account $a, array $cssRules, array $dates) : array
@@ -71,7 +71,7 @@ class danceActivityService extends activityBaseService
         return $tables;
     }
 
-    private function toDanceActivityArray(array $aoaArray){
+    public function toDanceActivityArray(array $aoaArray){
         $trackIds = [];
 
         foreach ($aoaArray as $aoa){

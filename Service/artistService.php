@@ -13,16 +13,4 @@ class artistService extends baseService
         $this->db = new danceArtistDAO();
     }
 
-    public function getArtists(){
-        return $this->db->getArray();
-    }
-
-    public function getArtist(string $name){
-        $res = $this->db->get()([
-           "danceArtist.name" => $name,
-            "order" => ["danceArtist.id", "danceArtist.name", "danceArtist.description"]
-        ]);
-
-        print_r($res);
-    }
 }

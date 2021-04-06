@@ -1,15 +1,18 @@
 <?php
-
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 
 require_once ("baseService.php");
 require_once ($root . "/DAL/artistOnActivityDAO.php");
 require_once ($root . "/DAL/danceArtistDAO.php");
+require_once ($root . "/Service/danceArtistService.php");
 
 class artistOnActivityService extends baseService
 {
+    private danceActivityService $activity;
+
     public function __construct(){
         $this->db = new artistOnActivityDAO();
+        $this->activity = new danceActivityService();
     }
 
     public function updateArtistIds(int $activityId, array $artistIds){
@@ -27,21 +30,24 @@ class artistOnActivityService extends baseService
     }
 
     public function getActivityByArtist($artist){
-        $aoa = new artistOnActivityDAO();
-        return $aoa->get([
+        $ar = $this->db->get([
             "danceartist.name" => new dbContains($artist)
         ]);
+
+        return $this->activity->toDanceActivityArray($ar);
     }
 
+    public function getBySessionAndArtist($artist, $session){
+        $ar = $this->db->getArray([
+            "danceartist.name" => $artist,
+            "danceactivity.sessionType" => $session
+        ]);
+
+        return $this->activity->toDanceActivityArray($ar);
+    }
     public function getActivityById($danceActivityId){
         return $this->db->get([
             "danceactivityid" => $danceActivityId
-        ]);
-    }
-
-    public function getByLocation($location){
-        return $this->db->getArray([
-            "location.name" => $location
         ]);
     }
 }

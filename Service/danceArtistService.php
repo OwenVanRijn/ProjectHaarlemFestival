@@ -12,6 +12,11 @@ class danceArtistService extends baseService
         $this->db = new danceArtistDAO();
     }
 
+
+    public function getAll(){
+        return $this->db->getArray();
+    }
+
     public function getAllAsStr(){
         $allArtists = $this->db->get();
         $artistStrs = [];
@@ -23,6 +28,10 @@ class danceArtistService extends baseService
 
     public function getFromId(int $id){
         return $this->db->get(["id" => $id]);
+    }
+
+    public function getFromName(string $name){
+        return $this->db->get(["name" => $name]);
     }
 
     public function updateArtist(danceArtist $artist) {

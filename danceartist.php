@@ -1,6 +1,7 @@
 <?php
     require_once "Service/artistOnActivityService.php";
     require_once "Service/danceActivityService.php";
+    require_once "Service/danceArtistService.php";
     require_once "Service/shoppingcartService.php";
     require_once "UI/navBar.php";
 
@@ -63,16 +64,24 @@
                         echo "<section class='col-4 box'>";
                         echo "<section class='col-12 text-center' style='background-color: black; color: white; padding-top: 2%;'>";
 
-                        $id = $item->getActivity()->getActivity()->getId();
-                        $date = date_format($item->getActivity()->getActivity()->getDate(), "d-M");
-                        $time = $item->getActivity()->getActivity()->getStartTime()->format("H:i");
+                        $artiststrarray = $item->getArtists();
+                        $artists = "";
 
-                        $location = $item->getActivity()->getActivity()->getLocation()->getName();
+                        foreach ($artiststrarray as $artist) {
+                            $artists .= $artist->getName() . " ";
+                        }
 
-                        $session = $item->getActivity()->getType();
+                        $id = $item->getActivity()->getId();
+                        $date = date_format($item->getActivity()->getDate(), "d-M");
+                        $time = $item->getActivity()->getStartTime()->format("H:i");
 
-                        $price = "€".$item->getActivity()->getActivity()->getPrice().",-";
+                        $location = $item->getActivity()->getLocation()->getName();
 
+                        $session = $item->getType();
+
+                        $price = "€".$item->getActivity()->getPrice().",-";
+
+                        echo "<p style='color: orange; font-weight: bold'>{$artists}</p>";
                         echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Date:</p>{$date}</section>";
                         echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Start time:</p>{$time}</section>";
                         echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Location:</p><bold>{$location}</bold></section>";
@@ -92,7 +101,10 @@
 
                     <section class='row justify-content-center align-self-center text-center'>
                         <section class='col-8'>
-                         <?php echo $artistActivity[0]->getArtist()->getDescription();?>
+                         <?php $artistService = new danceArtistService();
+                         $artist = $artistService->getFromName($_GET['name']);
+
+                         echo $artist->getDescription();?>
                         </section>
                     </section>
             </section>
