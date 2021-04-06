@@ -141,7 +141,7 @@ class shoppingcartService extends baseService
 
     public function unsetShoppingcart()
     {
-        if ($this->getShoppingcart()->unsetShoppingcartItemById()) {
+        if ($this->getShoppingcart()->unsetShoppingcart()) {
             return true;
         }
 

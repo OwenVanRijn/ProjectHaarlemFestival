@@ -116,7 +116,7 @@ if(isset($_POST['selectedId'])){
         $danceActivity = $danceActivity[0];
     }
 
-    $shoppingCartService->getShoppingcart()->setShoppingcartItemById($danceActivity->getActivity()->getActivity()->getId(), 1);
+    $shoppingCartService->getShoppingcart()->addToShoppingcartItemsById($danceActivity->getActivity()->getActivity()->getId(), 1);
 }
 
 if(isset($_POST['all-access'])){
@@ -124,7 +124,7 @@ if(isset($_POST['all-access'])){
     $id = $_POST['all-access'];
     $activity = $activityService->getById($id);
 
-    $shoppingCartService->getShoppingcart()->setShoppingcartItemById($activity->getId(), 1);
+    $shoppingCartService->getShoppingcart()->addToShoppingcartItemsById($activity->getId(), 1);
 }
 ?>
 

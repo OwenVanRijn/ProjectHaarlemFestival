@@ -53,7 +53,7 @@ class shoppingcart
     public function addToShoppingcartItemsById($shoppingcartItemId, $amount) //ACTIVITY ID , AMOUNT
     {
         $shoppingcartItems = $this->getShoppingcartItems();
-        $shoppingcartItems[$shoppingcartItemId] = $amount;
+        $shoppingcartItems[$shoppingcartItemId] += $amount;
         $this->setShoppingcartItems($shoppingcartItems);
 
         return $this;

@@ -55,7 +55,6 @@ require_once($root . "/UI/navBar.php");
     // VERWIJDER OF BEWERK een shoppingcart item
     if (isset($_POST["edit"]) || isset($_POST["remove"])) {
         $shoppingcartService = new shoppingcartService();
-
         $idOfActivity = $_POST["id"];
         if (intval($idOfActivity)) {
             if ($_POST['action'] == 'remove') {
