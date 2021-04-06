@@ -151,4 +151,8 @@ class customer extends sqlModel
     {
         return $this->account;
     }
+
+    public function hasAccount() : bool {
+        return isset($this->account);
+    }
 }
