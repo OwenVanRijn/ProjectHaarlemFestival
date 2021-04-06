@@ -29,7 +29,8 @@ class activityLogService extends baseService
 
         foreach ($items as $i){
             if ($i->isTargetNull()) {
-                $ids[] = $i->getActivity()->getId();
+                if ($i->hasActivity())
+                    $ids[] = $i->getActivity()->getId();
             }
         }
 
@@ -38,9 +39,20 @@ class activityLogService extends baseService
             $names = $activityService->getNames($ids);
 
             foreach ($items as $i){
-                if ($i->isTargetNull()){
-                    $i->setTarget($names[$i->getActivity()->getId()]);
+                if ($i->hasActivity()){
+                    if ($i->isTargetNull()){
+                        $id = $i->getActivity()->getId();
+                        if (array_key_exists($id, $names))
+                            $i->setTarget($names[$id]);
+                        else {
+                            $i->setTarget("(broken db entry)");
+                        }
+                    }
                 }
+                else {
+                    $i->setTarget("(deleted)");
+                }
+
             }
         }
 

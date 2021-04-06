@@ -184,4 +184,8 @@ class activityLog extends sqlModel
     public function isTargetNull() : bool {
         return is_null($this->target);
     }
+
+    public function hasActivity() : bool {
+        return isset($this->activity);
+    }
 }

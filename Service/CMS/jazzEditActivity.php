@@ -109,8 +109,6 @@ class jazzEditActivity extends editActivityBase
             $bandId
         ))
             throw new appException("[Jazz] db update failed...");
-
-
     }
 
     protected function processNewResponseChild(array $post, int $activityId)
