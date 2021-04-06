@@ -35,7 +35,6 @@ $id = $_POST['select'];
 if(is_numeric($id)) {
     $returnedActivity = $activityService->getTypedActivityByIds([$id]);
     if(count($returnedActivity) > 0){
-        $id = $returnedActivity[0]->getId();
 
         $sc = $shoppingCartService->getShoppingcart()->addToShoppingcartItemsById($id, 1);
 

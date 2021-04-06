@@ -1,5 +1,4 @@
 <?php
-session_start();
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 ini_set('display_errors', -1);
 require_once $root."/Service/ticketService.php";
