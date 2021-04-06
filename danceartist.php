@@ -1,12 +1,14 @@
 <?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-require_once "Service/artistOnActivityService.php";
-require_once "Service/danceActivityService.php";
-require_once "Service/ActivityService.php";
-require_once "Service/danceArtistService.php";
-require_once "Service/shoppingcartService.php";
-require_once "UI/navBar.php";
+
+$root = realpath($_SERVER["DOCUMENT_ROOT"]);
+require_once $root."/Service/artistOnActivityService.php";
+require_once $root."/Service/danceActivityService.php";
+require_once $root."/Service/ActivityService.php";
+require_once $root."/Service/danceArtistService.php";
+require_once $root."/Service/shoppingcartService.php";
+require_once $root."/UI/navBar.php";
 
 $shoppingCartService = new shoppingcartService();
 $activityService = new activityService();
