@@ -10,7 +10,7 @@ $shoppingCartService = new shoppingcartService();
 if(isset($_POST['selectedAct'])){
     $id = $_POST['selectedAct'];
 
-    $jazzActivity = $jazzService->getActivityFromId($id);
+    $jazzActivity = $service->getActivityFromId($id);
 
     if(is_array($jazzActivity)){
         $jazzActivity = $jazzActivity[0];

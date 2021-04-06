@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Food - Haarlem Festival</title>
     <link rel="stylesheet" href="css/style.css">
@@ -16,7 +15,6 @@
 <body>
 <?php
 require_once("UI/navBar.php");
-session_start();
 require_once("Service/foodactivityService.php");
 require_once("Service/restaurantService.php");
 require_once("Service/restaurantTypeLinkService.php");
