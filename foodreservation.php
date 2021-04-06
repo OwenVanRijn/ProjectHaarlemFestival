@@ -83,7 +83,8 @@ $foodactivityService = new foodactivityService();
         try {
             // Check of de restaurant ID valide is
             if (!is_numeric($restaurantId)) {
-                throw new Exception("Could not find the eventinformation by this restaurant. Restaurant ID $restaurantId is not a valid ID.");
+                $restaurantIdSafe = htmlspecialchars($restaurantId, ENT_QUOTES);
+                throw new Exception("Could not find the eventinformation by this restaurant. Restaurant ID {$restaurantIdSafe} is not a valid ID.");
             }
 
             // Haal de foodactivities op bij het restaurant.
