@@ -7,85 +7,107 @@ require_once "Service/activityService.php";
 require_once "Service/shoppingcartService.php";
 
 
-$activeArray = [];
-$dateArray = [];
-$typeArray = [];
-$idArray = [];
-
-$daysAllAccess = ["2021-06-27","2021-06-28","2021-06-29"];
-$accessPrice = "";
-$accessDate = "";
-$accessId = "";
-
+//SERVICES
 $danceService = new danceActivityService();
 $activityService = new activityService();
 $artistService = new danceArtistService();
 $artistOnActivityService = new artistOnActivityService();
 $shoppingCartService = new shoppingcartService();
 
-$danceArray = $activityService->getByType("dance");
+$activeArray = $danceService->getAll(); //active selection activities
+$dateArray = []; //all unique dates
+$typeArray = []; //all unique session types
+$idArray = []; //all activitiyids
+
+//ALL-ACCESS DATES AND STRING DATA
+$daysAllAccess = ["2021-06-27","2021-06-28","2021-06-29"];
+$accessPrice = "";
+$accessDate = "";
+$accessId = "";
+
+//MESSAGE LINE
+$messageString = "";
+
+$danceArray = $activityService->getByType("dance"); //all Danceactivities as regular activity
 
 //LOAD DATES FROM DB
 foreach ($danceArray as $activity){
-    $date = $activity->getDate();
+    $date = $activity->getDate(); //Get all dates from activity with type dance
 
-    if(!in_array($date, $dateArray)){
+    if(!in_array($date, $dateArray)){ //checks duplicate date
         $dateArray[] = $date;
     }
 }
 
 
-//GET TYPE FROM DB
+//GET SESSIONTYPE FROM DB
 foreach ($danceArray as $activity){
     $id = $activity->getId();
     $idArray[] = $id;
 }
 
-$returnedDanceActivities = $activityService->getTypedActivityByIds($idArray);
+$returnedDanceActivities = $activityService->getTypedActivityByIds($idArray); //Returns type Danceactivity
 
 foreach ($returnedDanceActivities as $activity){
-    $type = $activity->getType();
+    $type = $activity->getType(); //returns session type
 
-    if(!in_array($type, $typeArray)){
+    if(!in_array($type, $typeArray)){ //puts unique sessiontype values in array
         $typeArray[] = $type;
     }
 }
 
 //DATE FILTER
 if(isset($_GET['day']) && !empty($_GET['day'])) {
-    $datePicked = $_GET['day'];
-    $activeArray = $danceService->getAllWithDate($datePicked);
+    $datePicked = $_GET['day']; //date that got selected in view
+    $dateFormatArray = array();
 
-    $accessDate = $datePicked;
-
-    if($datePicked == "2021-06-27"){
-        $accessId = 135;
-        $accessPrice = 125;
+    foreach($dateArray as $day){
+        $dayFormatted = $day->format("Y-m-d"); //Format to correct date value
+        $dateFormatArray[] = $dayFormatted;
     }
 
-    else if($datePicked == "2021-06-28"){
-        $accessId = 136;
-        $accessPrice = 150;
+
+    if(in_array($datePicked, $dateFormatArray)){ //if GET value is in the pre-determined date array
+        $returnArray = $danceService->getAllWithDate($datePicked);
+
+        if($returnArray != null){
+            $activeArray = $returnArray;
+        }
+
+        $accessDateAll = $datePicked; //for All-Access tickets
+        if($datePicked == "2021-06-27"){
+            $accessId = 135;
+            $accessPrice = 125;
+        }
+
+        else if($datePicked == "2021-06-28"){
+            $accessId = 136;
+            $accessPrice = 150;
+        }
+
+        else{
+            $accessId = 137;
+            $accessPrice = 150;
+        }
     }
 
-    else if($datePicked == "2021-06-29"){
-        $accessId = 137;
-        $accessPrice = 150;
+    else{ //if input not in array, show all activities
+        $activeArray = $danceService->getAll();
     }
 }
 
 //SESSION & DATE
-if (isset($_POST['artist']) && isset($_POST['type'])){
+if (isset($_POST['artist']) && isset($_POST['type'])){ //if both artist and session got POST action
     $artist = $_POST['artist'];
     $type = $_POST['type'];
 
-    $aoaArray = $artistOnActivityService->getBySessionAndArtist($artist, $type);
+    $activities = $artistOnActivityService->getBySessionAndArtist($artist, $type);
 
-    $activeArray = $aoaArray;
+    $activeArray = $activities;
 }
 
 //SESSION FILTER
-else if(isset($_POST['type'])) {
+else if(isset($_POST['type'])) { //if only session gets POST value
 
     $type = $_POST['type'];
     $activities = $danceService->getActivityBySessionType($type);
@@ -94,7 +116,7 @@ else if(isset($_POST['type'])) {
 }
 
 //ARTIST FILTER
-else if(isset($_POST['artist'])) {
+else if(isset($_POST['artist'])) { //if only artist gets POST value;
     $artist = $_POST['artist'];
 
     $aoaArray = $artistOnActivityService->getActivityByArtist($artist);
@@ -102,29 +124,48 @@ else if(isset($_POST['artist'])) {
     $activeArray = $aoaArray;
 }
 
-else{
-    $activeArray = $danceService->getAll();
+//NULL CHECK FOR MESSAGE
+if(count($activeArray) == 0){
+    $messageString = "No match found";
 }
 
 //SHOPPING CART
-if(isset($_POST['selectedId'])){
+if(isset($_POST['selectedId'])) {
     $id = $_POST['selectedId'];
 
-    $danceActivity = $danceService->getActivityFromId($id);
+    if (is_numeric($id)) {
 
-    if(is_array($danceActivity)){
-        $danceActivity = $danceActivity[0];
+        $danceActivity = $danceService->getActivityFromId($id);
+
+        if ($danceActivity == null) {
+            $messageString = "Can't find activity $id";
+        } else {
+            $shoppingCartService->getShoppingcart()->addToShoppingcartItemsById($danceActivity->getActivity()->getActivity()->getId(), 1);
+            $messageString = "Your ticket has been added to the shoppingcart!";
+        }
+    } else {
+        $messageString = "Activity id $id is invalid";
     }
-
-    $shoppingCartService->getShoppingcart()->addToShoppingcartItemsById($danceActivity->getActivity()->getActivity()->getId(), 1);
 }
 
+//SHOPPING CART FOR ALL-ACCESS TICKETS
 if(isset($_POST['all-access'])){
 
     $id = $_POST['all-access'];
     $activity = $activityService->getById($id);
 
-    $shoppingCartService->getShoppingcart()->addToShoppingcartItemsById($activity->getId(), 1);
+    if(is_numeric($id)){
+        if($activity != null){
+            $shoppingCartService->getShoppingcart()->addToShoppingcartItemsById($activity->getId(), 1);
+        }
+
+        else{
+            $messageString = "can't find activity $id";
+        }
+    }
+    else{
+        $messageString = "Activity id $id is invalid";
+    }
 }
 ?>
 
@@ -133,9 +174,9 @@ if(isset($_POST['all-access'])){
 
 <head>
     <title>Dance - Haarlem Festival</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/dance.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/dance.css">
+    <link rel="stylesheet" href="css/style.css">
     <meta charset="UTF-8">
     <meta name="keywords" content="Haarlem, festival, jazz, food, history, party, feest, geschiedenis, eten, restaurant">
     <meta name="description" content="Haarlem Festival">
@@ -163,10 +204,9 @@ require_once ("UI/navBar.php");
 </header>
 
 <section class="container h-100">
-
     <!--All access-->
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
-        <section class='row h-100 align-items-center' style='background-color: #C0C0C0; margin: 2% 25% 2% 25%;padding: 1% 0 1% 0;'>
+        <section class='row h-100 align-items-center' style='background-color: #9d9d9d; margin: 2% 25% 2% 25%;padding: 1% 0 1% 0;'>
             <section class='col-8 fonttickets'>All in ticket (Friday/Saturday/Sunday): €250,-</section>
             <section class='col-4 text-right'><button class='button1' type="submit" name="all-access" value="134">Add Ticket</button></section>
         </section>
@@ -254,7 +294,7 @@ require_once ("UI/navBar.php");
         if(isset($_GET['day'])){
             if(in_array($accessDate, $daysAllAccess)){
                 echo "<form action='#' method='post'>";
-                echo "<section class='row h-100 align-items-center' style='background-color: #C0C0C0; margin: 2% 25% 2% 25%;padding: 1% 0 1% 0;'>";
+                echo "<section class='row h-100 align-items-center' style='background-color: #9d9d9d; margin: 2% 25% 2% 25%;padding: 1% 0 1% 0;'>";
                 echo "<section class='col-8 fonttickets'>All-access ticket ($accessDate): $accessPrice,-</section>";
                 echo "<section class='col-4 text-right'><button class='button1' type='submit' name='all-access' value='{$accessId}'>Add Ticket</button></section>";
                 echo "</section>";
@@ -265,46 +305,46 @@ require_once ("UI/navBar.php");
 
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
             <?php
-            echo "<section class='row' style='margin-top: 2%'>";
-
-            if(count($activeArray) == 0){
-               echo "<section class= 'col-12 text-center'>";
-               echo "<p> No match found</p>";
-               echo "</section>";
+            if($messageString != ""){
+                echo "<section class='row' style='margin-top: 1%'>";
+                echo "<section class='col text-center'>";
+                echo "<p class='font-weight-bold'>$messageString</p>";
+                echo "</section>";
+                echo "</section>";
             }
-            else{
-                foreach($activeArray as $item){
-                    echo "<section class='col-4 box'>";
-                    echo "<section class='col-12 text-center' style='background-color: black; color: white; padding-top: 2%;'>";
-                    $artiststrarray = $item->getArtists();
 
-                    $artists = "";
+            echo "<section class='row' style='margin-top: 1%'>";
+            foreach($activeArray as $item){
+                echo "<section class='col-4 box'>";
+                echo "<section class='col-12 text-center' style='background-color: black; color: white; padding-top: 2%;'>";
+                $artiststrarray = $item->getArtists();
 
-                    foreach ($artiststrarray as $artist) {
-                        $artists .= $artist->getName() . " ";
-                    }
+                $artists = "";
 
-                    $id = $item->getId();
-
-                    $time = $item->getActivity()->getStartTime()->format("H:i");
-
-                    $location = $item->getActivity()->getLocation()->getName();
-
-                    $session = $item->getType();
-
-                    $price = "€".$item->getActivity()->getPrice().",-";
-
-                    echo "<p style='color: orange; font-weight: bold'>{$artists}</p>";
-                    echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Start time:</p>{$time}</section>";
-                    echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Location:</p><bold>{$location}</bold></section>";
-                    echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Session:</p><bold>{$session}</bold></section>";
-                    echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Price:</p><bold>{$price}</bold></section>";
-                    echo "</section>";
-                    echo "<button class='button1 w-100' name='selectedId' value='$id'>Add to cart</button>";
-                    echo "</section>";
+                foreach ($artiststrarray as $artist) {
+                    $artists .= $artist->getName() . " ";
                 }
-            }
 
+                $id = $item->getId();
+
+                $time = $item->getActivity()->getStartTime()->format("H:i");
+
+                $location = $item->getActivity()->getLocation()->getName();
+
+                $session = $item->getType();
+
+                $price = "€".$item->getActivity()->getPrice().",-";
+
+                echo "<p style='color: orange; font-weight: bold'>{$artists}</p>";
+                echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Start time:</p>{$time}</section>";
+                echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Location:</p><bold>{$location}</bold></section>";
+                echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Session:</p><bold>{$session}</bold></section>";
+                echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Price:</p><bold>{$price}</bold></section>";
+                echo "</section>";
+                echo "<button class='button1 w-100' name='selectedId' value='$id'>Add to cart</button>";
+                echo "</section>";
+
+            }
             echo "</section>";
             ?>
         </form>

@@ -1,23 +1,5 @@
-.btn-primary, .btn-primary:hover{
-    background-color: #FD6A02 !important;
-    color: black !important;
-    font-family: Arial !important;
-    font-size: 0.9em !important;
-    font-weight: bold !important;
-    border: transparent !important;
-}
-
-.btn-primary:hover{
-    background-color: orange !important;
-    color: white !important;
-    font-family: Arial !important;
-    font-size: 0.9em !important;
-    font-weight: bold !important;
-    border: transparent;
-}
-
-.ablack{
-    color: black im !important;
+header {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/Dance.png) !important;
 }
 
 .fonttickets{
@@ -32,14 +14,9 @@
     background-clip:padding-box !important;
 }
 
-.activityOrange{
-    font-family: Arial !important;
-    font-weight: bold !important;
-    color: orange !important;
-}
-
-.activityWhite{
-    font-family: Arial;
-    font-weight: bold;
-    color: white;
+body {
+    padding-top: 65px;
+    background-color: #CECECE !important;
+    margin: 0;
+    font-size: 1em;
 }

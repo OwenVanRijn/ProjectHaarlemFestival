@@ -7,6 +7,7 @@ require_once ($root . "/DAL/danceActivityDAO.php");
 require_once ($root . "/DAL/danceArtistDAO.php");
 require_once ("artistOnActivityService.php");
 require_once ("danceArtistService.php");
+require_once ($root . "/DAL/dbContains.php");
 
 class danceActivityService extends activityBaseService
 {
@@ -19,7 +20,7 @@ class danceActivityService extends activityBaseService
     }
 
     public function getActivityFromId(int $id){
-        return $this->db->get([
+        return $this->db->getArray([
             "danceactivity.id" => $id
         ]);
     }
@@ -99,7 +100,7 @@ class danceActivityService extends activityBaseService
 
     // Format Y-m-d. Needs change
     public function getAllWithDate(string $date){
-        $res =  $this->db->get([
+        $res =  $this->db->getArray([
             "activity.date" => $date,
             "order" => ["activity.date", "activity.starttime", "activity.endtime"]
         ]);

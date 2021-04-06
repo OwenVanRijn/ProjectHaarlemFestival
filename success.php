@@ -3,10 +3,10 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
 require_once "UI/navBar.php";
-//require_once "Service/shoppingcartService.php";
-//$service = new shoppingcartService();
-//
-//$service->unsetShoppingcart();
+
+require_once "Service/shoppingcartService.php";
+$service = new shoppingcartService();
+$service->unsetShoppingcart();
 ?>
 
 

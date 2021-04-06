@@ -30,11 +30,17 @@ class artistOnActivityService extends baseService
     }
 
     public function getActivityByArtist($artist){
-        $ar = $this->db->get([
+        $ar = $this->db->getArray([
             "danceartist.name" => new dbContains($artist)
         ]);
 
-        return $this->activity->toDanceActivityArray($ar);
+        if($ar != null){
+            return $this->activity->toDanceActivityArray($ar);
+        }
+
+        else{
+            return false;
+        }
     }
 
     public function getBySessionAndArtist($artist, $session){

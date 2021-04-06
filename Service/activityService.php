@@ -178,6 +178,7 @@ class activityService extends baseService
 
     public function getByType($type){
         return$this->db->get([
+            "order" => ["activity.date", "activity.starttime", "activity.endtime"],
             "type" => $type
         ]);
     }

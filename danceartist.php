@@ -1,24 +1,60 @@
 <?php
+session_start();
     require_once "Service/artistOnActivityService.php";
     require_once "Service/danceActivityService.php";
+    require_once "Service/ActivityService.php";
     require_once "Service/danceArtistService.php";
     require_once "Service/shoppingcartService.php";
     require_once "UI/navBar.php";
 
     $shoppingCartService = new shoppingcartService();
+    $activityService = new activityService();
     $danceService = new danceActivityService();
+    $artistService = new danceArtistService();
+    $artist="";
+    $name = "";
 
-    $name = (string)$_GET["name"];
+    if(!isset($_GET['name'])){
+        $name = $_POST['artist'];
+    }
+
+    else{
+        $name = $_GET["name"];
+    }
+
+
+    $artist = $artistService->getFromName($name);
+
+
     $nameStripped = strtolower(str_replace(' ', '', $name));
 
-    if(isset($_POST['select'])){
-        $id = $_POST['selectedId'];
+    $messageString = "";
 
-        $activity = $danceService->getActivityFromId($id);
+if(isset($_POST['select'])){
+    $id = $_POST['select'];
 
-        $id = $activity->getActivity()->getId();
+    if(is_numeric($id)) {
 
-        $shoppingCartService->getShoppingcart()->addToShoppingcartItemsById($id, 1);
+        $returnedActivity = $activityService->getTypedActivityByIds([$id]);
+
+
+        if(count($returnedActivity) > 0){
+            $id = $returnedActivity[0]->getId();
+
+            $shoppingCartService->getShoppingcart()->addToShoppingcartItemsById($id, 1);
+        }
+        else{
+            $messageString = "Activity with id $id not found";
+        }
+    }
+
+    else{
+        $messageString = "Activity id $id is invalid";
+    }
+}
+
+    if($name == "" || is_null($artist)){
+        header("Location: dance.php");
     }
 
 ?>
@@ -27,8 +63,8 @@
 <html>
 
     <head>
-        <title>Hardwell - Haarlem Festival</title>
-        <link rel="stylesheet" href="css/dance.css">
+        <title><?php echo $name?> - Haarlem Festival</title>
+        <link rel="stylesheet" href="./css/style.css">;
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css";
         <meta charset="UTF-8">
         <meta name="keywords" content="Haarlem, festival, jazz, food, history, party, feest, geschiedenis, eten, restaurant">
@@ -38,20 +74,25 @@
     </head>
 
     <body>
-        <header>
-            <section class="row" style="background-color: #666666; margin-top: 3em;">
+        <section>
+            <section class="row" style="background-color: #666666;margin-top: -2%">
                 <section class="col-1">
                     <img src='img/Artists/bw/<?php echo $nameStripped?>.png' class="w-80">
                 </section>
                 <section class="col-11 text-center" style="margin-top: 3em;">
-                    <h1><?php echo $name ?></h1>
+                    <h1><?php echo $name?></h1>
                 </section>
             </section>
-        </header>
+        </section>
 
         <section class="container">
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
                 <a href="dance.php" style="color:#FD6A02"><strong>← Back to dance overview</strong></a>
+                <section class="row align-items-center">
+                    <section class="col text-center">
+                        <p class="font-weight-bold"><?php echo $messageString?></p>
+                    </section>
+                </section>
 
                     <?php
                     echo "<section class='row text-center' style='margin-top: 2%'>";
@@ -59,37 +100,40 @@
                     $service = new artistOnActivityService();
                     $artistActivity = $service->getActivityByArtist($name);
 
-                    foreach ($artistActivity as $item){
+                    if($artistActivity != false){
+                        foreach ($artistActivity as $item){
 
-                        echo "<section class='col-4 box'>";
-                        echo "<section class='col-12 text-center' style='background-color: black; color: white; padding-top: 2%;'>";
+                            echo "<section class='col-4 box'>";
+                            echo "<section class='col-12 text-center' style='background-color: black; color: white; padding-top: 2%;'>";
 
-                        $artiststrarray = $item->getArtists();
-                        $artists = "";
+                            $artiststrarray = $item->getArtists();
+                            $artists = "";
 
-                        foreach ($artiststrarray as $artist) {
-                            $artists .= $artist->getName() . " ";
+                            foreach ($artiststrarray as $artist) {
+                                $artists .= $artist->getName() . " ";
+                            }
+
+                            $id = $item->getActivity()->getId();
+                            $date = date_format($item->getActivity()->getDate(), "d-M");
+                            $time = $item->getActivity()->getStartTime()->format("H:i");
+
+                            $location = $item->getActivity()->getLocation()->getName();
+
+                            $session = $item->getType();
+
+                            $price = "€".$item->getActivity()->getPrice().",-";
+
+                            echo "<p style='color: orange; font-weight: bold'>{$artists}</p>";
+                            echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Date:</p>{$date}</section>";
+                            echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Start time:</p>{$time}</section>";
+                            echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Location:</p><bold>{$location}</bold></section>";
+                            echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Session:</p><bold>{$session}</bold></section>";
+                            echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Price:</p><bold>{$price}</bold></section>";
+                            echo "</section>";
+                            echo "<input type='hidden' name='artist' value='$name'>";
+                            echo "<button class='button1 w-100' type='submit' name='select' value='{$id}'>Add to cart</a>";
+                            echo "</section>";
                         }
-
-                        $id = $item->getActivity()->getId();
-                        $date = date_format($item->getActivity()->getDate(), "d-M");
-                        $time = $item->getActivity()->getStartTime()->format("H:i");
-
-                        $location = $item->getActivity()->getLocation()->getName();
-
-                        $session = $item->getType();
-
-                        $price = "€".$item->getActivity()->getPrice().",-";
-
-                        echo "<p style='color: orange; font-weight: bold'>{$artists}</p>";
-                        echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Date:</p>{$date}</section>";
-                        echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Start time:</p>{$time}</section>";
-                        echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Location:</p><bold>{$location}</bold></section>";
-                        echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Session:</p><bold>{$session}</bold></section>";
-                        echo "<section class='row justify-content-center align-self-center text-center'><p style='color: orange; font-weight: bold'>Price:</p><bold>{$price}</bold></section>";
-                        echo "</section>";
-                        echo "<button class='btn btn-primary w-100' type='submit' name='select' value='{$id}'>Add to cart</a>";
-                        echo "</section>";
                     }
                     ?>
             </form>
@@ -101,10 +145,9 @@
 
                     <section class='row justify-content-center align-self-center text-center'>
                         <section class='col-8'>
-                         <?php $artistService = new danceArtistService();
-                         $artist = $artistService->getFromName($_GET['name']);
-
-                         echo $artist->getDescription();?>
+                        <?php
+                            echo $artist->getDescription();
+                        ?>
                         </section>
                     </section>
             </section>
@@ -127,5 +170,11 @@
             </section>
         </section>
     </body>
+    <script>
+        function addTicket(str){
 
+            <?php
+            ?>
+        }
+    </script>
 </html>
