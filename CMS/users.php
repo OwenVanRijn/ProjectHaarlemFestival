@@ -39,7 +39,7 @@ $nav->assignCss([
 
         $table = new table();
         $table->setTitle("Users");
-        $table->addHeader("Name", "Email", "Phone Number", "Address");
+        $table->addHeader("Name", "Email", "Address");
         $table->assignCss([
             "tr" => "cmsTableRow",
             "table" => "cmsTable",
@@ -53,7 +53,7 @@ $nav->assignCss([
             $table->addTableRows($tableRow);
             $tableRow->addString(
               $c->getFirstName() . " " . $c->getLastname(),
-                $c->getAccount()->getEmail(),
+                $c->getEmail(),
                 $c->getLocation()->getAddress()
             );
 

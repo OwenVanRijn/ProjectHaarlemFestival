@@ -32,15 +32,21 @@ class customerEdit extends editBase implements editUpdate
                 "firstName" => htmlTypeEnum::text,
                 "lastName" => htmlTypeEnum::text,
                 "orders" => htmlTypeEnum::tableView,
-            ],
-            "account" => [
-                "accountId" => htmlTypeEnum::hidden,
-                "username" => htmlTypeEnum::text,
                 "email" => htmlTypeEnum::text,
-                "status" => htmlTypeEnum::number,
-                "role" => [htmlTypeEnum::listInline, account::accountAdmin],
-            ]
+            ],
         ];
+
+        if ($this->lastHasAcc){
+            $header = array_merge($header, [
+                "account" => [
+                    "accountId" => htmlTypeEnum::hidden,
+                    "username" => htmlTypeEnum::text,
+                    "accountEmail" => htmlTypeEnum::text,
+                    "status" => htmlTypeEnum::number,
+                    "role" => [htmlTypeEnum::listInline, account::accountAdmin],
+                ]
+            ]);
+        }
 
         if ($this->lastAccountIsVolunteer){
             $header["account"]["isScheduleManager"] = [htmlTypeEnum::checkBox, account::accountAdmin]; // TODO: add checkbox type!
@@ -59,11 +65,10 @@ class customerEdit extends editBase implements editUpdate
         return null;
     }
 
+    private bool $lastHasAcc = true;
+
     protected function getHtmlEditFields($entry)
     {
-        if ($entry->getAccount()->getRole() == account::accountVolunteer)
-            $this->lastAccountIsVolunteer = true;
-
         $rows = [];
         $activityIds = [];
         $tickets = $this->ts->getTicketsFromCustomer($entry->getId());
@@ -89,25 +94,38 @@ class customerEdit extends editBase implements editUpdate
             $rows[] = $newRow;
         }
 
-        return [
+        $array = [
             "id" => $entry->getId(),
             "firstName" => $entry->getFirstName(),
             "lastName" => $entry->getLastName(),
-            "username" => $entry->getAccount()->getUsername(),
-            "email" => $entry->getAccount()->getEmail(),
-            "status" => $entry->getAccount()->getStatus(),
-            "role" => [
-                "options" => account::getKeyedRoleInfo($this->account->getRole()),
-                "selected" => [$entry->getAccount()->getRole()]
-            ],
-            "isScheduleManager" => $entry->getAccount()->isScheduleManager(),
-            "isTicketManager" => $entry->getAccount()->isTicketManager(),
-            "accountId" => $entry->getAccount()->getId(),
+            "email" => $entry->getEmail(),
             "orders" => [
                 "header" => ["Title", "Type", "Date", "Amount"],
                 "rows" => $rows
-            ]
+            ],
         ];
+
+        $this->lastHasAcc = $entry->hasAccount();
+
+        if ($entry->hasAccount()){
+            if ($entry->getAccount()->getRole() == account::accountVolunteer)
+                $this->lastAccountIsVolunteer = true;
+
+            $array = array_merge($array, [
+                "username" => $entry->getAccount()->getUsername(),
+                "accountEmail" => $entry->getAccount()->getEmail(),
+                "status" => $entry->getAccount()->getStatus(),
+                "role" => [
+                    "options" => account::getKeyedRoleInfo($this->account->getRole()),
+                    "selected" => [$entry->getAccount()->getRole()]
+                ],
+                "isScheduleManager" => $entry->getAccount()->isScheduleManager(),
+                "isTicketManager" => $entry->getAccount()->isTicketManager(),
+                "accountId" => $entry->getAccount()->getId(),
+            ]);
+        }
+
+        return $array;
     }
 
     public function getHtmlEditContent(int $id)
@@ -123,7 +141,7 @@ class customerEdit extends editBase implements editUpdate
     public function processEditResponse(array $post){
         $post = $this->filterHtmlEditResponse($post);
 
-        if (!array_key_exists("id", $post) || !array_key_exists("accountId", $post))
+        if (!array_key_exists("id", $post))
             throw new appException("Invalid POST");
 
         $customer = new customer();
@@ -135,24 +153,29 @@ class customerEdit extends editBase implements editUpdate
         if (array_key_exists("lastName", $post))
             $customer->setLastname($post["lastName"]);
 
-        $account = new account();
-        $account->setId((int)$post["accountId"]);
-
-        if (array_key_exists("username", $post))
-            $account->setUsername($post["username"]);
-
-        if (array_key_exists("email", $post)){
-            $account->setEmail($post["email"]);
+        if (array_key_exists("email", $post))
             $customer->setEmail($post["email"]);
-        }
-
-        if (array_key_exists("status", $post))
-            $account->setStatus((int)$post["status"]);
-
-        if (array_key_exists("role", $post))
-            $account->setRole((int)$post["role"]); // TODO: Maybe change the role to the actual roles
 
         $this->cs->updateCustomer($customer);
-        $this->as->updateAccount($account);
+
+        $account = new account();
+        if (array_key_exists("accountId", $post)){
+            $account->setId((int)$post["accountId"]);
+
+            if (array_key_exists("username", $post))
+                $account->setUsername($post["username"]);
+
+            if (array_key_exists("accountEmail", $post)){
+                $account->setEmail($post["accountEmail"]);
+            }
+
+            if (array_key_exists("status", $post))
+                $account->setStatus((int)$post["status"]);
+
+            if (array_key_exists("role", $post))
+                $account->setRole((int)$post["role"]);
+
+            $this->as->updateAccount($account);
+        }
     }
 }

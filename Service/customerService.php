@@ -11,7 +11,7 @@ class customerService extends baseService
     }
 
     public function getAll(){
-        return $this->db->get();
+        return $this->db->getArray();
     }
 
     public function getWithRole(int $role){
@@ -21,14 +21,17 @@ class customerService extends baseService
     }
 
     public function getWithRoleOrBelow(int $role){
-        $array = [];
-        for ($i = account::accountNormal; $i <= $role; $i++){
-            $array[] = $i;
+        $all = $this->getAll();
+        $filtered = [];
+        foreach ($all as $a){
+            if (!$a->hasAccount())
+                $filtered[] = $a;
+
+            else if ($a->getAccount()->getRole() <= $role)
+                $filtered[] = $a;
         }
 
-        return $this->db->getArray([
-            "account.role" => $array
-        ]);
+        return $filtered;
     }
 
     public function getFromId(int $customerId){
@@ -51,7 +54,6 @@ class customerService extends baseService
             "firstName" => $firstname,
             "lastname" => $lastname,
             "email" => $email,
-            "accountId" => 14,
             "locationId" => 1
         ]);
     }

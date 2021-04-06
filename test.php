@@ -1,5 +1,6 @@
 <?php
 ini_set('display_errors', -1);
+//require_once "UI/navBar.php";
 require_once ("Service/jazzactivityService.php");
 require_once ("Service/foodactivityService.php");
 require_once ("Service/shoppingcartServiceDB.php");
@@ -19,12 +20,22 @@ require_once ("Email/mailer.php");
 $pdf = new emailOrderGen();
 $bleh = new danceActivityService();
 $blah = new artistOnActivityService();
+$shopping= new shoppingcartService();
+$cart = new shoppingcartServiceDB();
 
-//$pdf->sendEmail("59", "156");
+
+//$pdf->sendEmail("90", "166");
+
+$items = $cart->getShoppingcartById(260);
+
+foreach ($items as $item){
+    var_dump($item->getAmount());
+}
+
 
 //
 //var_dump($bleh->getActivityBySessionType('Club'));
-var_dump($blah->getBySessionAndArtist('Martin Garrix', 'Club'));
+//var_dump($blah->getBySessionAndArtist('Martin Garrix', 'Club'));
 
 
 

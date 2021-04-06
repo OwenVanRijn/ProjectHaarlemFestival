@@ -17,10 +17,6 @@ $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 $cusId = $_SESSION['id'];
 $cartId = $_SESSION['cartId'];
 
-echo $cusId;
-echo "<br>";
-echo $cartId;
-
 if(isset($_POST['pay'])){
 
     $payment = $mollie->payments->create([
@@ -36,9 +32,6 @@ if(isset($_POST['pay'])){
     header("Location: " . $payment->getCheckoutUrl(), true, 303);
 }
 
-function setId($id){
-
-}
 ?>
 
 <!DOCTYPE html>

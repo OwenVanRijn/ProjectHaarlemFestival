@@ -5,8 +5,7 @@ ini_set('display_errors', -1);
 require_once $root."/Service/ticketService.php";
 require_once $root."/Service/activityService.php";
 require_once $root."/lib/barcodegen/vendor/autoload.php";
-require_once $root."//Email/mailer.php";
-
+require_once $root."/Email/mailer.php";
 $mailer = new mailer();
 $activity = new activityService();
 $id = $_SESSION['orderId'];
@@ -27,7 +26,7 @@ foreach ($ticketArray as $ticket){
     echo "Type: {$ticket->getActivity()->getType()} | Price: {$ticket->getActivity()->getPrice()}EUR";
     echo "<br>";
 }
-$totalExBTW = $total / 100 * 79;
+$totalExBTW = $total * 0.79;
 ?>
 
 <h4>Costs</h4>

@@ -125,7 +125,8 @@ class danceActivityService extends activityBaseService
 
     public function deleteTypedActivity(array $activityIds)
     {
-        $danceActivity = $this->db->get([
+        // Maybe instead cascade del in sql?
+        $danceActivity = $this->activityDAO->get([
             "activityid" => $activityIds
         ]);
 
@@ -144,7 +145,7 @@ class danceActivityService extends activityBaseService
             "danceactivityid" => $idList
         ]);
 
-        return $this->db->delete([
+        return $this->activityDAO->delete([
             "id" => $idList
         ]);
     }

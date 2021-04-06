@@ -144,6 +144,5 @@ class shoppingcartService extends baseService
         if ($this->getShoppingcart()->unsetShoppingcart()) {
             return true;
         }
-
     }
 }
