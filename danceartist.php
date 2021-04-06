@@ -5,7 +5,7 @@ ini_set('display_startup_errors', 1);
 $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once $root."/Service/artistOnActivityService.php";
 require_once $root."/Service/danceActivityService.php";
-require_once $root."/Service/ActivityService.php";
+require_once $root."/Service/activityService.php";
 require_once $root."/Service/danceArtistService.php";
 require_once $root."/Service/shoppingcartService.php";
 require_once $root."/UI/navBar.php";
