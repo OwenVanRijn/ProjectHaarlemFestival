@@ -7,6 +7,7 @@ require_once($root . "/Service/customerService.php");
 require_once($root . "/Service/shoppingcartServiceDB.php");
 require_once($root . "/Service/ordersService.php");
 require_once($root . "/Service/ticketService.php");
+require_once($root . "/Service/activityService.php");
 require_once ($root . "/Email/mailer.php");
 require_once ($root . "/Model/customer.php");
 require_once ($root . "/Model/orders.php");
@@ -26,21 +27,32 @@ $order = new ordersService();
 $ticket = new ticketService();
 $cart = new shoppingcartServiceDB();
 $emailgen = new emailOrderGen();
+$customer = new customerService();
+$activity  = new activityService();
 
 $id = $_GET['id'];
 $cartId = $_GET['cart'];
 $paymentId = $_POST['id'];
 
 $payment = $mollie->payments->get($paymentId);
+$returnCus = $customer->getFromId($id);
+$email = $returnCus->getEmail();
+$value = $payment->amount;
 
 if($payment->isPaid()){
     $items = $cart->getShoppingcartById($cartId);
 
     $orderQuery = $order->insertOrder($id);
 
-    $mailer->sendMail("louellacreemers@gmail.com", "All id", "CustomerID = {$id},order = $orderQuery");
+    if($orderQuery == false){
+        $mailer->sendMail($email, "Haarlem festival - Something went wrong", "It looks like something went wrong with creating your order. Please try again later");
+        refund($value, $payment);
+    }
 
     foreach ($items as $item){
+        $amount = $item->getAmount();
+        $mailer->sendMail("louellacreemers@gmail.com", "AMOUNT", "amount={$amount}");
+
         if (get_class($item) == "activity") {
             $item = $item;
         }
@@ -48,7 +60,17 @@ if($payment->isPaid()){
             $item = $item->getActivity();
         }
 
-        $ticket->insertTicket($item->getId(), $id, $orderQuery, 1);
+        $createTicket = $ticket->insertTicket($item->getId(), $id, $orderQuery, $amount);
+
+        if($createTicket != false){
+            $amountLeft = $item->getTicketsLeft() - $amount;
+            $activity->updateActivity($item->getId(), null, null, null,null,$amountLeft, null);
+        }
+        else{
+            $mailer->sendMail($email, "Haarlem festival - Something went wrong", "It looks like something went wrong with creating your tickets. Please try again later");
+            refund($value, $payment);
+        }
+
         $mailer->sendMail("louellacreemers@gmail.com", "TICKETS", "ticket id={$item->getId()}");
     }
 
@@ -56,6 +78,13 @@ if($payment->isPaid()){
 }
 
 else{
-    header("Location: paymenterror.php");
+    $mailer->sendMail($email, "Haarlem festival - Something went wrong", "It looks like something went wrong with your payment. Please try again later");
 }
-?>
+
+function refund($value, $payment){
+    $refund = $payment->refund([
+        "amount" =>[
+            "value" => "{$value}"
+        ]
+    ]);
+}

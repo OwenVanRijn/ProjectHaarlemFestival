@@ -21,16 +21,21 @@ $pdf = new emailOrderGen();
 $bleh = new danceActivityService();
 $blah = new artistOnActivityService();
 $shopping= new shoppingcartService();
+$cart = new shoppingcartServiceDB();
 
 
+//$pdf->sendEmail("90", "166");
 
-$pdf->sendEmail("90", "166");
+$items = $cart->getShoppingcartById(260);
 
+foreach ($items as $item){
+    var_dump($item->getAmount());
+}
 
 
 //
 //var_dump($bleh->getActivityBySessionType('Club'));
-var_dump($blah->getBySessionAndArtist('Martin Garrix', 'Club'));
+//var_dump($blah->getBySessionAndArtist('Martin Garrix', 'Club'));
 
 
 
