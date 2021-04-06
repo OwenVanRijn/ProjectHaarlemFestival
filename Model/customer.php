@@ -11,7 +11,7 @@ class customer extends sqlModel
     private string $lastname;
     private customerLocation $customerlocation;
     private string $email;
-    private account $account;
+    private ?account $account;
 
     protected const sqlTableName = "customer";
     protected const sqlFields = ["id", "firstName", "lastname", "email", "accountId", "locationId"];
@@ -26,7 +26,7 @@ class customer extends sqlModel
         //$this->phoneNumber = 0;
     }
 
-    public function constructFull(int $id, string $firstName, string $lastname, customerLocation $customerlocation, string $email, account $account)
+    public function constructFull(int $id, string $firstName, string $lastname, customerLocation $customerlocation, string $email, ?account $account)
     {
         $this->id = $id;
         $this->firstName = $firstName;
@@ -63,13 +63,18 @@ class customer extends sqlModel
 
     public static function sqlParse(array $sqlRes): self
     {
+        $account = null;
+
+        if (isset($sqlRes[account::sqlTableName() . "id"]))
+            $account = account::sqlParse($sqlRes);
+
         return (new self())->constructFull(
             $sqlRes[self::sqlTableName . "id"],
             $sqlRes[self::sqlTableName . "firstName"],
             $sqlRes[self::sqlTableName . "lastname"],
             customerLocation::sqlParse($sqlRes),
             $sqlRes[self::sqlTableName . "email"],
-            account::sqlParse($sqlRes),
+            $account,
         );
     }
 
