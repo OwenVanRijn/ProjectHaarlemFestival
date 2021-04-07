@@ -45,7 +45,6 @@ require_once("UI/navBar.php");
 
 <main class="content">
     <h1>Our Haarlem Jazz performances.</h1>
-    <p id="demo"></p>
     <section>
       <?php
       (array)$jazzActivities = $service->getAll();
@@ -78,7 +77,7 @@ require_once("UI/navBar.php");
 
             <section class="filterlocation">
                 <label for="locations">Location</label>
-                <select name="locations">
+                <select id="filterJazzLocation" class="filterJazzLocation" onchange="filterLocation()" name="locations">
                     <option value="all">-</option>
                     <?php
                     foreach ($locations as $locationFilter){
@@ -115,7 +114,8 @@ require_once("UI/navBar.php");
             echo "<li class='jazzBand' data-id='$id' title='$name'";
             echo "<p style='color: black; text-align: center; font-size: 150%; font-weight: 900'>{$name} &emsp; {$price}</p>";
             echo "<img src='img/Bands/jazz$id.png' width='250' height='250'>";
-            echo "<p class='date' title='$date' style='color: black; text-align: center; font-weight: bold'>{$date}  {$starttime} - {$endtime}</p>";
+            echo "<p id='date'class='date'style='color: black; text-align: center; font-weight: bold'>{$date}</p>";
+            echo "<p style='color: black; text-align: center; font-weight: bold'>{$starttime} - {$endtime}</p>";
             if($location != 'unknown')
             {
             echo "<p style='color: black; text-align: center; font-weight: bold'>{$location}</p>";
@@ -143,7 +143,12 @@ require_once("UI/navBar.php");
     <script>
         function searchJazzBand() {
 
-            var input, filter, ul, li, a, i, txtValue;
+            var input, filter, ul, li, a, i, txtValue, dropdownDay, dropdownLocation;
+            //filters and reset them
+            dropdownLocation = document.getElementById("filterJazzLocation");
+            dropdownDay = document.getElementById("filterJazzDay");
+            dropdownDay.selectedIndex = 0;
+            dropdownLocation.selectedIndex = 0;
             input = document.getElementById('myInput');
             filter = input.value.toUpperCase();
             ul = document.getElementById("myUL");
@@ -161,17 +166,15 @@ require_once("UI/navBar.php");
     </script>
     <script type="text/javascript">
      function filterDay(){
-       // Variables
-     var dropdown, ul, li, txtValue, filter;
+     var dropdown, ul, li, txtValue, filter, dropdownLocation;
+     dropdownLocation = document.getElementById("filterJazzLocation");
      dropdown = document.getElementById("filterJazzDay");
      ul = document.getElementById("myUL");
      li = ul.getElementsByTagName("li");
      filter = dropdown.value;
-
+     dropdownLocation.selectedIndex = 0;
      for (i = 0; i < li.length; i++) {
-       p = li[i].getElementsByClassName('date');
-       txtValue = p.title;
-       document.getElementById("demo").innerHTML = txtValue;
+       txtValue = li[i].getElementsByTagName('p')[1].innerHTML;
        if (txtValue === filter || filter === "all") {
          li[i].style.display = "";
        } else {
@@ -180,6 +183,25 @@ require_once("UI/navBar.php");
        }
      }
      </script>
+     <script type="text/javascript">
+      function filterLocation(){
+      var dropdown, ul, li, txtValue, filter, dropdownDay;
+      dropdownDay = document.getElementById("filterJazzDay");
+      dropdown = document.getElementById("filterJazzLocation");
+      ul = document.getElementById("myUL");
+      li = ul.getElementsByTagName("li");
+      filter = dropdown.value;
+      dropdownDay.selectedIndex = 0;
+      for (i = 0; i < li.length; i++) {
+        txtValue = li[i].getElementsByTagName('p')[3].innerHTML;
+        if (txtValue === filter || filter === "all") {
+          li[i].style.display = "";
+        } else {
+          li[i].style.display = "none";
+          }
+        }
+      }
+      </script>
 </main>
 
 
