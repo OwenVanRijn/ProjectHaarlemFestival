@@ -28,33 +28,29 @@ $activitiesOrder = $_SESSION['cart'];
 
 if(isset($_POST['pay'])){
     if(preg_match("/^[0-9]*$/",$total)){
-        echo "only numbers";
         if ((int)$total > 0) {
-            echo "above 0";
             //CART TO DB
             $shoppingcartServiceDB = new shoppingcartServiceDB();
             $cartId = $shoppingcartServiceDB->addShoppingcartToDatabase();
-//            $payment = $mollie->payments->create([
-//                "amount" => [
-//                    "currency" => "EUR",
-//                    "value" => "$total.00"
-//                ],
-//                "description" => "Haarlem Festival",
-//                "redirectUrl" => "https://haarlemfestival.louellacreemers.nl/success.php",
-//                "webhookUrl" => "https://haarlemfestival.louellacreemers.nl/webhook.php?id=$cusId&cart=$cartId"
-//            ]);
+            $payment = $mollie->payments->create([
+                "amount" => [
+                    "currency" => "EUR",
+                    "value" => "$total.00"
+                ],
+                "description" => "Haarlem Festival",
+                "redirectUrl" => "https://haarlemfestival.louellacreemers.nl/success.php",
+                "webhookUrl" => "https://haarlemfestival.louellacreemers.nl/webhook.php?id=$cusId&cart=$cartId"
+            ]);
 
-//            header("Location: " . $payment->getCheckoutUrl(), true, 303);
+            header("Location: " . $payment->getCheckoutUrl(), true, 303);
         }
 
         else{
-            echo "under 0";
-            //header("Location: ../paymenterror.php");
+            header("Location: ../paymenterror.php");
         }
     }
     else{
-        echo "letter found";
-        //header("Location: ../paymenterror.php");
+        header("Location: ../paymenterror.php");
     }
 }
 ?>
