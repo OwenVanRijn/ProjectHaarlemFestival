@@ -2,6 +2,12 @@
 require_once ("../Service/sessionService.php");
 $sesh = new sessionService();
 
+
+$user = $sesh->validateSessionFromCookie();
+
+if ($user)
+    header("Location: home.php");
+
 $showPassEntry = (isset($_GET["id"]) && isset($_GET["email"]));
 $textGreen = "";
 $textRed = "";
