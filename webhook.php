@@ -51,7 +51,7 @@ if($payment->isPaid()){
 
     foreach ($items as $item){
         $amount = $item->getAmount();
-        $mailer->sendMail("louellacreemers@gmail.com", "AMOUNT", "amount={$amount}");
+        $mailer->sendMail("louellacreemers@gmail.com", "AMOUNT", "amount={$amount}, $email");
 
         if (get_class($item) == "activity") {
             $item = $item;
