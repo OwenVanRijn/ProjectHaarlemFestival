@@ -13,7 +13,7 @@ ini_set('display_errors', -1);
 require_once "../Email/mailer.php";
 require_once($root . "/Service/shoppingcartServiceDB.php");
 
-$total = (int)$_SESSION['total'];
+$total = (int)"2093";
 
 use Mollie\Api\MollieApiClient;
 require_once "../lib/mollie/vendor/autoload.php";
@@ -22,37 +22,39 @@ $mollie = new MollieApiClient();
 $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 
 $shoppingcartService = new shoppingcartService();
-$cusId = $_SESSION['id'];
+$cusId = 183;//$_SESSION['id'];
 
 $activitiesOrder = $_SESSION['cart'];
 
 if(isset($_POST['pay'])){
     if(preg_match("/^[0-9]*$/",$total)){
+        echo "only numbers";
         if ((int)$total > 0) {
             echo "above 0";
             //CART TO DB
             $shoppingcartServiceDB = new shoppingcartServiceDB();
             $cartId = $shoppingcartServiceDB->addShoppingcartToDatabase();
-            $_SESSION['cartId'] = $cartId;
-            $payment = $mollie->payments->create([
-                "amount" => [
-                    "currency" => "EUR",
-                    "value" => "$total.00"
-                ],
-                "description" => "Haarlem Festival",
-                "redirectUrl" => "https://haarlemfestival.louellacreemers.nl/success.php",
-                "webhookUrl" => "https://haarlemfestival.louellacreemers.nl/webhook.php?id=$cusId&cart=$cartId"
-            ]);
+//            $payment = $mollie->payments->create([
+//                "amount" => [
+//                    "currency" => "EUR",
+//                    "value" => "$total.00"
+//                ],
+//                "description" => "Haarlem Festival",
+//                "redirectUrl" => "https://haarlemfestival.louellacreemers.nl/success.php",
+//                "webhookUrl" => "https://haarlemfestival.louellacreemers.nl/webhook.php?id=$cusId&cart=$cartId"
+//            ]);
 
-            header("Location: " . $payment->getCheckoutUrl(), true, 303);
+//            header("Location: " . $payment->getCheckoutUrl(), true, 303);
         }
 
         else{
-            header("Location: ../paymenterror.php");
+            echo "under 0";
+            //header("Location: ../paymenterror.php");
         }
     }
     else{
-        header("Location: ../paymenterror.php");
+        echo "letter found";
+        //header("Location: ../paymenterror.php");
     }
 }
 ?>
