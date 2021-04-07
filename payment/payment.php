@@ -12,7 +12,6 @@ session_start();
 ini_set('display_errors', -1);
 
 require_once "../Email/mailer.php";
-require_once($root . "/Service/shoppingcartServiceDB.php");
 
 $total = $_SESSION['total'];
 

@@ -6,7 +6,7 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/UI/navBar.php");
 require_once($root . "/Service/customerService.php");
 
-if (isset($_POST["payconfirm"])) {
+if (!isset($_POST["payconfirm"])) {
     header("location: ../shoppingcart.php");
 }
 
