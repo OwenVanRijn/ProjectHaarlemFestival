@@ -54,15 +54,17 @@ require_once($root . "/UI/navBar.php");
                 return true;
             }
         </script>
-
-        <?php
-
-        // VERWIJDER OF BEWERK een shoppingcart item
-        if (isset($_POST["edit"]) || isset($_POST["remove"])) {
-            $shoppingcartService = new shoppingcartService();
-            $idOfActivity = $_POST["id"];
-            if (intval($idOfActivity)) {
-                if ($_POST['action'] == 'remove') {
+    <?php
+    // VERWIJDER OF BEWERK een shoppingcart item
+    if (isset($_POST["edit"]) || isset($_POST["remove"])) {
+        $shoppingcartService = new shoppingcartService();
+        $idOfActivity = $_POST["id"];
+        if (intval($idOfActivity)) {
+            if ($_POST['action'] == 'remove') {
+                $shoppingcartService->removeFromShoppingcartItemsById($idOfActivity);
+            } else if ($_POST['action'] == 'edit') {
+                $newAmount = $_POST["amount"];
+                if ($newAmount == 0) {
                     $shoppingcartService->removeFromShoppingcartItemsById($idOfActivity);
                 } else if ($_POST['action'] == 'edit') {
                     $newAmount = $_POST["amount"];

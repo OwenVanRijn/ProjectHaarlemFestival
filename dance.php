@@ -222,7 +222,7 @@ require_once ("UI/navBar.php");
         $nameStripped = strtolower(str_replace(' ', '', $name));
         echo "<section class='col-2'>
                 <img src='img/Artists/{$nameStripped}.png' class='w-100' alt='{$name}'>
-                <a href = 'danceartist.php?name={$name}' class='btn btn-primary' style='border-radius: 0;'>Click here for {$name} performances</a></section>";
+                <a href = 'danceartist.php?name={$name}' class='button1' style='border-radius: 0;'>Click here for {$name} performances</a></section>";
     }
     echo "</section>";
     ?>
@@ -249,7 +249,7 @@ require_once ("UI/navBar.php");
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
         <section class="row h-100 align-items-center" style="background-color: #C0C0C0 ">
             <section class="col text-center fonttickets" style="padding: 0.5em; background-color: #FD6A02;">
-                <a class="btn btn-primary" data-toggle="collapse" href="#filtercollapse">Filters ˅</a>
+                <a class="button1" data-toggle="collapse" href="#filtercollapse">Filters ˅</a>
             </section>
         </section>
 
