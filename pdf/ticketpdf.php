@@ -7,7 +7,7 @@ require_once $root . "/lib/barcodegen/vendor/autoload.php";
 $allAccess= [130,131,132,133,134,135,136,137];
 $activity = new activityService();
 $ticket = new ticketService();
-$id = $_SESSION['orderId'];
+$id = 94; //$_SESSION['orderId'];
 $ticketArray = $ticket->getTicketsByOrder($id);
 ?>
 
@@ -26,39 +26,38 @@ $ticketArray = $ticket->getTicketsByOrder($id);
         <section class="container">
             <?php
                 foreach ($ticketArray as $item){
+                    $amount = $item->getAmount();
 
-                    echo "<section class = 'row' style='border-style: solid; margin: 2%; padding: 2%'>";
-                    echo "<section class='col-sm-10'>";
-                    $date = date_format($item->getActivity()->getDate(), "d/m/y");
+                    for($i = 0; $i < $amount; $i++){
+                        echo "<section class = 'row' style='border-style: solid; margin: 2%; padding: 2%'>";
+                        echo "<section class='col-sm-10'>";
+                        $date = date_format($item->getActivity()->getDate(), "d/m/y");
 
-                    $type = $item->getActivity()->getType();
+                        $type = $item->getActivity()->getType();
 
-                    $price = $item->getActivity()->getPrice();
+                        $price = $item->getActivity()->getPrice();
 
-                    if(in_array($id, $allAccess)){
-                        $amount = $item->getAmount();
-                        $startTime = date_format($item->getActivity()->getStartTime(), "H:i");
+                        if(!in_array($id, $allAccess)){
+                            $startTime = date_format($item->getActivity()->getStartTime(), "H:i");
 
-                        $endTime = date_format($item->getActivity()->getEndTime(), "H:i");
+                            $endTime = date_format($item->getActivity()->getEndTime(), "H:i");
 
-                        $location = $item->getActivity()->getLocation()->getName();
+                            $location = $item->getActivity()->getLocation()->getName();
 
-                        for($i = 0; $i < $amount; $i--){
-                            echo "<p>$amount</p>";
-                            echo "<p>{$type} - {$startTime} / {$endTime} @ {$date}. Location: {$location}, Price: {$price}EUR</p>,";
+                            echo "<p>{$type} - {$startTime} / {$endTime} @ {$date}. Location: {$location}, Price: {$price}EUR</p>";
                         }
-                    }
 
-                    else{
-                        echo "<p>{$type}. Price: {$price}EUR</p>";
-                    }
-                    echo "</section>";
+                        else{
+                            echo "<p>{$type}. Price: {$price}EUR</p>";
+                        }
+                        echo "</section>";
+                        echo "<section class='col-sm-2'>";
+                        $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
+                        echo $generator->getBarcode($item->getId(), $generator::TYPE_CODE_128);
 
-                    echo "<section class='col-sm-2'>";
-                    $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
-                    echo $generator->getBarcode($item->getId(), $generator::TYPE_CODE_128);
-                    echo "</section>";
-                    echo "</section>";
+                        echo "</section>";
+                        echo "</section>";
+                    }
                 }
             ?>
         </section>
