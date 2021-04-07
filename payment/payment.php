@@ -13,7 +13,7 @@ ini_set('display_errors', -1);
 require_once "../Email/mailer.php";
 require_once($root . "/Service/shoppingcartServiceDB.php");
 
-$total = (int)"2093";
+$total = $_SESSION['total'];
 
 use Mollie\Api\MollieApiClient;
 require_once "../lib/mollie/vendor/autoload.php";
