@@ -134,7 +134,7 @@ body {
     margin-left: 5%;
     margin-top: 0px;
     margin-bottom: 0px;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .contentAccount {
