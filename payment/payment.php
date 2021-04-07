@@ -22,7 +22,7 @@ $mollie = new MollieApiClient();
 $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 
 $shoppingcartService = new shoppingcartService();
-$cusId = 183;//$_SESSION['id'];
+$cusId = $_SESSION['id'];
 
 $activitiesOrder = $_SESSION['cart'];
 
