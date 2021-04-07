@@ -21,8 +21,8 @@ $ticketArray = $ticket->getTicketsByOrder($id);
 
 echo "<h4>Tickets</h4>";
 foreach ($ticketArray as $ticket){
-    $total += $ticket->getActivity()->getPrice();
-    echo "Type: {$ticket->getActivity()->getType()} | Price: {$ticket->getActivity()->getPrice()}EUR";
+    $total += $ticket->getActivity()->getPrice() * $ticket->getAmount();
+    echo "Type: {$ticket->getActivity()->getType()} | Price: {$ticket->getActivity()->getPrice()}EUR | Amount: {$ticket->getAmount()}";
     echo "<br>";
 }
 $totalExBTW = $total * 0.79;

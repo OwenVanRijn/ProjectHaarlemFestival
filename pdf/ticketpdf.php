@@ -36,14 +36,17 @@ $ticketArray = $ticket->getTicketsByOrder($id);
                     $price = $item->getActivity()->getPrice();
 
                     if(in_array($id, $allAccess)){
+                        $amount = $item->getAmount();
                         $startTime = date_format($item->getActivity()->getStartTime(), "H:i");
 
                         $endTime = date_format($item->getActivity()->getEndTime(), "H:i");
 
                         $location = $item->getActivity()->getLocation()->getName();
 
-                        echo "<p>{$type} - {$startTime} / {$endTime} @ {$date}. Location: {$location}, Price: {$price}EUR</p>";
-
+                        for($i = 0; $i < $amount; $i--){
+                            echo "<p>$amount</p>";
+                            echo "<p>{$type} - {$startTime} / {$endTime} @ {$date}. Location: {$location}, Price: {$price}EUR</p>,";
+                        }
                     }
 
                     else{
