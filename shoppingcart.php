@@ -155,7 +155,7 @@ require_once($root . "/UI/navBar.php");
                         $_SESSION['total'] = $total;
                         ?>
                         <form method="post" action="/payment/account.php">
-                            <input class="payOrder stepNext" type="submit" name="paymentconfirm"
+                            <input class="payOrder stepNext" type="submit" name="payconfirm"
                                    value="<?php echo "Pay €$total"; ?>">
                         </form>
                         <?php
