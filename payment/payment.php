@@ -7,7 +7,6 @@ require_once($root . "/Service/foodactivityService.php");
 require_once($root . "/Service/danceActivityService.php");
 require_once($root . "/Service/shoppingcartService.php");
 require_once($root . "/Service/shoppingcartServiceDB.php");
-session_start();
 
 ini_set('display_errors', -1);
 
