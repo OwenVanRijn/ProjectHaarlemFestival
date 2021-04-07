@@ -27,9 +27,9 @@ $cusId = $_SESSION['id'];
 $activitiesOrder = $_SESSION['cart'];
 
 if(isset($_POST['pay'])){
-    if(is_int($total)){
+    if(is_int($total)) {
         echo "int";
-        if($total > 0){
+        if ($total > 0) {
             echo "above 0";
             //CART TO DB
             $shoppingcartServiceDB = new shoppingcartServiceDB();
@@ -42,11 +42,12 @@ if(isset($_POST['pay'])){
                 ],
                 "description" => "Haarlem Festival",
                 "redirectUrl" => "https://haarlemfestival.louellacreemers.nl/success.php",
-                "webhookUrl"  => "https://haarlemfestival.louellacreemers.nl/webhook.php?id=$cusId&cart=$cartId"
+                "webhookUrl" => "https://haarlemfestival.louellacreemers.nl/webhook.php?id=$cusId&cart=$cartId"
             ]);
 
             header("Location: " . $payment->getCheckoutUrl(), true, 303);
         }
+    }
     else{
         header("Location: ../paymenterror.php");
     }
