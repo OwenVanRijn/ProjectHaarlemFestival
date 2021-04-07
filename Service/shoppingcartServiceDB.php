@@ -43,12 +43,18 @@ class shoppingcartServiceDB extends baseService
 
     public function addShoppingcartToDatabase()
     {
+        //Generate unique URL
+        $url = '';
+        $urls = array_merge(range(0, 9), range('a', 'z'));
+
+        for ($i = 0; $i < 50; $i++) {
+            $url .= $urls[array_rand($urls)];
+        }
 
         $insert = [
-            "url" => "",
+            "url" => $url,
             "createDate" => date("Y-m-d")
         ];
-
         $shoppingcartId = $this->shoppingcartDAO->insert($insert);
 
         $items = $this->shoppingcartService->getShoppingcart()->getShoppingcartItems();

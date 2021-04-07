@@ -25,14 +25,13 @@ $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 $shoppingcartService = new shoppingcartService();
 $cusId = $_SESSION['id'];
 
-//CART TO DB
-$shoppingcartServiceDB = new shoppingcartServiceDB();
-$cartId = $shoppingcartServiceDB->addShoppingcartToDatabase();
-$_SESSION['cartId'] = $cartId;
 $activitiesOrder = $_SESSION['cart'];
 
 if(isset($_POST['pay'])){
-
+//CART TO DB
+    $shoppingcartServiceDB = new shoppingcartServiceDB();
+    $cartId = $shoppingcartServiceDB->addShoppingcartToDatabase();
+    $_SESSION['cartId'] = $cartId;
     $payment = $mollie->payments->create([
         "amount" => [
             "currency" => "EUR",
