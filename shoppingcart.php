@@ -54,26 +54,27 @@ require_once($root . "/UI/navBar.php");
                 return true;
             }
         </script>
-    <?php
-    // VERWIJDER OF BEWERK een shoppingcart item
-    if (isset($_POST["edit"]) || isset($_POST["remove"])) {
-        $shoppingcartService = new shoppingcartService();
-        $idOfActivity = $_POST["id"];
-        if (intval($idOfActivity)) {
-            if ($_POST['action'] == 'remove') {
-                $shoppingcartService->removeFromShoppingcartItemsById($idOfActivity);
-            } else if ($_POST['action'] == 'edit') {
-                $newAmount = $_POST["amount"];
-                if ($newAmount == 0) {
+        <?php
+        // VERWIJDER OF BEWERK een shoppingcart item
+        if (isset($_POST["edit"]) || isset($_POST["remove"])) {
+            $shoppingcartService = new shoppingcartService();
+            $idOfActivity = $_POST["id"];
+            if (intval($idOfActivity)) {
+                if ($_POST['action'] == 'remove') {
                     $shoppingcartService->removeFromShoppingcartItemsById($idOfActivity);
                 } else if ($_POST['action'] == 'edit') {
                     $newAmount = $_POST["amount"];
-                    if (!intval($newAmount)) {
-                        echo "Could set the amount in the shoppingcart. Amount is not valid.";
-                    } elseif ($newAmount <= 0) {
+                    if ($newAmount == 0) {
                         $shoppingcartService->removeFromShoppingcartItemsById($idOfActivity);
-                    } else {
-                        $shoppingcartService->getShoppingcart()->setShoppingcartItemById($idOfActivity, $newAmount);
+                    } else if ($_POST['action'] == 'edit') {
+                        $newAmount = $_POST["amount"];
+                        if (!intval($newAmount)) {
+                            echo "Could set the amount in the shoppingcart. Amount is not valid.";
+                        } elseif ($newAmount <= 0) {
+                            $shoppingcartService->removeFromShoppingcartItemsById($idOfActivity);
+                        } else {
+                            $shoppingcartService->getShoppingcart()->setShoppingcartItemById($idOfActivity, $newAmount);
+                        }
                     }
                 }
             }
@@ -160,6 +161,7 @@ require_once($root . "/UI/navBar.php");
                             <input class="payOrder stepNext" type="submit" name="payconfirm"
                                    value="<?php echo "Pay €$total"; ?>">
                         </form>
+                        <br>
                         <?php
                     } else {
                         echo "<p>Cart is Empty</p>";
