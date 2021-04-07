@@ -13,7 +13,7 @@ ini_set('display_errors', -1);
 require_once "../Email/mailer.php";
 require_once($root . "/Service/shoppingcartServiceDB.php");
 
-$total = $_SESSION['total'];
+$total = (int)$_SESSION['total'];
 
 use Mollie\Api\MollieApiClient;
 require_once "../lib/mollie/vendor/autoload.php";
@@ -27,27 +27,25 @@ $cusId = $_SESSION['id'];
 $activitiesOrder = $_SESSION['cart'];
 
 if(isset($_POST['pay'])){
-    if(is_int($total)) {
-        echo "int";
-        if ($total > 0) {
-            echo "above 0";
-            //CART TO DB
-            $shoppingcartServiceDB = new shoppingcartServiceDB();
-            $cartId = $shoppingcartServiceDB->addShoppingcartToDatabase();
-            $_SESSION['cartId'] = $cartId;
-            $payment = $mollie->payments->create([
-                "amount" => [
-                    "currency" => "EUR",
-                    "value" => "$total.00"
-                ],
-                "description" => "Haarlem Festival",
-                "redirectUrl" => "https://haarlemfestival.louellacreemers.nl/success.php",
-                "webhookUrl" => "https://haarlemfestival.louellacreemers.nl/webhook.php?id=$cusId&cart=$cartId"
-            ]);
+    if ($total > 0) {
+        echo "above 0";
+        //CART TO DB
+        $shoppingcartServiceDB = new shoppingcartServiceDB();
+        $cartId = $shoppingcartServiceDB->addShoppingcartToDatabase();
+        $_SESSION['cartId'] = $cartId;
+        $payment = $mollie->payments->create([
+            "amount" => [
+                "currency" => "EUR",
+                "value" => "$total.00"
+            ],
+            "description" => "Haarlem Festival",
+            "redirectUrl" => "https://haarlemfestival.louellacreemers.nl/success.php",
+            "webhookUrl" => "https://haarlemfestival.louellacreemers.nl/webhook.php?id=$cusId&cart=$cartId"
+        ]);
 
-            header("Location: " . $payment->getCheckoutUrl(), true, 303);
-        }
+        header("Location: " . $payment->getCheckoutUrl(), true, 303);
     }
+
     else{
         header("Location: ../paymenterror.php");
     }
