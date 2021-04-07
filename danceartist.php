@@ -8,7 +8,6 @@ require_once $root."/Service/danceActivityService.php";
 require_once $root."/Service/activityService.php";
 require_once $root."/Service/danceArtistService.php";
 require_once $root."/Service/shoppingcartService.php";
-require_once $root."/UI/navBar.php";
 
 $shoppingCartService = new shoppingcartService();
 $activityService = new activityService();
@@ -71,6 +70,9 @@ if($name == "" || is_null($artist)){
 </head>
 
 <body>
+<?php
+require_once $root."/UI/navBar.php";
+?>
     <section>
         <section class="row" style="background-color: #666666;margin-top: -2%">
             <section class="col-1">
