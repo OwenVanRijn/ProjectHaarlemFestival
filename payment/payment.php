@@ -62,7 +62,7 @@ if(isset($_POST['pay'])){
 
 <body>
 
-<section class="contentShoppingcart content">
+<section class="">
     <section>
         <h1>Payment</h1>
         <section>
