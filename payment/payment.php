@@ -27,25 +27,30 @@ $cusId = $_SESSION['id'];
 $activitiesOrder = $_SESSION['cart'];
 
 if(isset($_POST['pay'])){
-    if ($total > 0) {
-        echo "above 0";
-        //CART TO DB
-        $shoppingcartServiceDB = new shoppingcartServiceDB();
-        $cartId = $shoppingcartServiceDB->addShoppingcartToDatabase();
-        $_SESSION['cartId'] = $cartId;
-        $payment = $mollie->payments->create([
-            "amount" => [
-                "currency" => "EUR",
-                "value" => "$total.00"
-            ],
-            "description" => "Haarlem Festival",
-            "redirectUrl" => "https://haarlemfestival.louellacreemers.nl/success.php",
-            "webhookUrl" => "https://haarlemfestival.louellacreemers.nl/webhook.php?id=$cusId&cart=$cartId"
-        ]);
+    if(preg_match("/^[0-9]*$/",$total)){
+        if ((int)$total > 0) {
+            echo "above 0";
+            //CART TO DB
+            $shoppingcartServiceDB = new shoppingcartServiceDB();
+            $cartId = $shoppingcartServiceDB->addShoppingcartToDatabase();
+            $_SESSION['cartId'] = $cartId;
+            $payment = $mollie->payments->create([
+                "amount" => [
+                    "currency" => "EUR",
+                    "value" => "$total.00"
+                ],
+                "description" => "Haarlem Festival",
+                "redirectUrl" => "https://haarlemfestival.louellacreemers.nl/success.php",
+                "webhookUrl" => "https://haarlemfestival.louellacreemers.nl/webhook.php?id=$cusId&cart=$cartId"
+            ]);
 
-        header("Location: " . $payment->getCheckoutUrl(), true, 303);
+            header("Location: " . $payment->getCheckoutUrl(), true, 303);
+        }
+
+        else{
+            header("Location: ../paymenterror.php");
+        }
     }
-
     else{
         header("Location: ../paymenterror.php");
     }
