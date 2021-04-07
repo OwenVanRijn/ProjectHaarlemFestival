@@ -79,7 +79,7 @@ require_once($root . "/UI/navBar.php");
                 }
             }
         }
-        
+
         // Haal shoppingcart op.
         $total = 0;
         if (isset($_SESSION['shoppingcart'])) {
