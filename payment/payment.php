@@ -7,10 +7,12 @@ require_once($root . "/Service/foodactivityService.php");
 require_once($root . "/Service/danceActivityService.php");
 require_once($root . "/Service/shoppingcartService.php");
 require_once($root . "/Service/shoppingcartServiceDB.php");
+session_start();
 
 ini_set('display_errors', -1);
 
 require_once "../Email/mailer.php";
+require_once($root . "/Service/shoppingcartServiceDB.php");
 
 $total = $_SESSION['total'];
 
@@ -62,7 +64,7 @@ if(isset($_POST['pay'])){
 
 <body>
 
-<section class="">
+<section class="contentShoppingcart content">
     <section>
         <h1>Payment</h1>
         <section>
@@ -70,68 +72,68 @@ if(isset($_POST['pay'])){
 
         </section>
         <?php
-                $days = array();
+        $days = array();
 
-                foreach ($activitiesOrder as $activity ) {
-                  if(get_class($activity) == 'activity')
-                  {
-                    $activityDate = $activity->getDate()->format('l jS F');
-                  }
-                  else {
-                    $activityDate = $activity->getActivity()->getDate()->format('l jS F');
-                  }
-                  if(!in_array($activityDate,$days)){
-                    $days[] = $activityDate;
-                  }
-                }
-                foreach ($days as $day) {
-                  echo "<h2>{$day}</h2>";
-                  echo "<table style='width:100%; border-top:1px solid #000'>";
-                  echo "<th style='width:20%'>amount</th>";
-                  echo "<th style='width:20%'>event</th>";
-                  echo "<th style='width:20%'>type</th>";
-                  echo "<th style='width:20%'>time</th>";
-                  echo "<th style='width:20%'>price</th>";
+        foreach ($activitiesOrder as $activity ) {
+            if(get_class($activity) == 'activity')
+            {
+                $activityDate = $activity->getDate()->format('l jS F');
+            }
+            else {
+                $activityDate = $activity->getActivity()->getDate()->format('l jS F');
+            }
+            if(!in_array($activityDate,$days)){
+                $days[] = $activityDate;
+            }
+        }
+        foreach ($days as $day) {
+            echo "<h2>{$day}</h2>";
+            echo "<table style='width:100%; border-top:1px solid #000'>";
+            echo "<th style='width:20%'>amount</th>";
+            echo "<th style='width:20%'>event</th>";
+            echo "<th style='width:20%'>type</th>";
+            echo "<th style='width:20%'>time</th>";
+            echo "<th style='width:20%'>price</th>";
 
-                  for($i = 0; $i < count($activitiesOrder); $i++){
-                    $price = $activitiesOrder[$i]->getActivity()->getPrice();
-                    $activityId = $activitiesOrder[$i]->getActivity()->getId();
-                    $activityDay = $activitiesOrder[$i]->getActivity()->getDate()->format('l jS F');
-                    $activityType = $activitiesOrder[$i]->getActivity()->getType();
-                    $activityStart = $activitiesOrder[$i]->getActivity()->getStartTime()->format("H:i");
-                    $activityEnd = $activitiesOrder[$i]->getActivity()->getEndTime()->format("H:i");
-                    $amount = $shoppingcartService->getAmountByActivityId($activityId);
-                    $totalPriceActivity = '€' . $amount * $price;
-                    if (get_class($activitiesOrder[$i]) == "foodactivity") {
-                        $activityName = $activitiesOrder[$i]->getRestaurant()->getName();
-                    } else if (get_class($activity) == "jazzactivity") {
-                        $activityName = $activitiesOrder[$i]->getJazzband()->getName();
-                    } else if (get_class($activitiesOrder[$i]) == "danceActivity") {
-                        $artists = $activitiesOrder[$i]->getArtists();
-                        $artistNames = array();
-                        foreach ($artists as $artist) {
-                            $artistNames[] = $artist->getName();
-                        }
-                        $activityName = implode(", ", $artistNames);
-                    } else {
-                        $activityName = $activitiesOrder[$i]->getType();
+            for($i = 0; $i < count($activitiesOrder); $i++){
+                $price = $activitiesOrder[$i]->getActivity()->getPrice();
+                $activityId = $activitiesOrder[$i]->getActivity()->getId();
+                $activityDay = $activitiesOrder[$i]->getActivity()->getDate()->format('l jS F');
+                $activityType = $activitiesOrder[$i]->getActivity()->getType();
+                $activityStart = $activitiesOrder[$i]->getActivity()->getStartTime()->format("H:i");
+                $activityEnd = $activitiesOrder[$i]->getActivity()->getEndTime()->format("H:i");
+                $amount = $shoppingcartService->getAmountByActivityId($activityId);
+                $totalPriceActivity = '€' . $amount * $price;
+                if (get_class($activitiesOrder[$i]) == "foodactivity") {
+                    $activityName = $activitiesOrder[$i]->getRestaurant()->getName();
+                } else if (get_class($activity) == "jazzactivity") {
+                    $activityName = $activitiesOrder[$i]->getJazzband()->getName();
+                } else if (get_class($activitiesOrder[$i]) == "danceActivity") {
+                    $artists = $activitiesOrder[$i]->getArtists();
+                    $artistNames = array();
+                    foreach ($artists as $artist) {
+                        $artistNames[] = $artist->getName();
                     }
-                    if($activityDay == $day)
-                    {
-                      echo "<tr>";
-                      echo "<td style='text-align:center'>{$amount}</td>";
-                      echo "<td style='text-align:center'>{$activityName}</td>";
-                      echo "<td style='text-align:center'>{$activityType}</td>";
-                      echo "<td style='text-align:center'>{$activityStart} to {$activityEnd}</td>";
-                      echo "<td style='text-align:center'>{$totalPriceActivity}</td>";
-                      echo "</tr>";
-                    }
-                  }
-                  echo "</table>";
-
+                    $activityName = implode(", ", $artistNames);
+                } else {
+                    $activityName = $activitiesOrder[$i]->getType();
                 }
-                echo "<p style='padding-right: 8%; float:right;'>Total: €{$total}</p>";
-                 ?>
+                if($activityDay == $day)
+                {
+                    echo "<tr>";
+                    echo "<td style='text-align:center'>{$amount}</td>";
+                    echo "<td style='text-align:center'>{$activityName}</td>";
+                    echo "<td style='text-align:center'>{$activityType}</td>";
+                    echo "<td style='text-align:center'>{$activityStart} to {$activityEnd}</td>";
+                    echo "<td style='text-align:center'>{$totalPriceActivity}</td>";
+                    echo "</tr>";
+                }
+            }
+            echo "</table>";
+
+        }
+        echo "<p style='padding-right: 8%; float:right;'>Total: €{$total}</p>";
+        ?>
         <br>
 
         <form style="margin-left:40%; margin-top:8%;" method="post" action="payment.php">

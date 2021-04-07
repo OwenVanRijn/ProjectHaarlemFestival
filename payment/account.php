@@ -24,8 +24,8 @@ if (isset($_POST['submit'])) {
 
     header("location: ./payment.php?id={$id}");
 }
-
 ?>
+
 
 <!DOCTYPE html>
 <html>
