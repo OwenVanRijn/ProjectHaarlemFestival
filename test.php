@@ -23,20 +23,12 @@ $blah = new artistOnActivityService();
 $shopping= new shoppingcartService();
 $cart = new shoppingcartServiceDB();
 
-
-//$pdf->sendEmail("90", "166");
-
-$items = $cart->getShoppingcartById(260);
-
-foreach ($items as $item){
-    var_dump($item->getAmount());
-}
+$b = new danceActivityService();
 
 
-//
-//var_dump($bleh->getActivityBySessionType('Club'));
-//var_dump($blah->getBySessionAndArtist('Martin Garrix', 'Club'));
+$a = $b->getActivityFromId('9');
 
+var_dump($a);
 
 
 //$ids = [];
