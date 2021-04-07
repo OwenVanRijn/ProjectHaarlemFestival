@@ -78,7 +78,7 @@ require_once($root . "/UI/navBar.php");
                 }
             }
         }
-
+    }
 
         // Haal shoppingcart op.
         $total = 0;
