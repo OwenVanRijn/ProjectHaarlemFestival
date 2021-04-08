@@ -95,7 +95,7 @@ if(isset($_POST['pay'])){ //if Pay button is clicked
             echo "<table style='width:100%; border-top:1px solid #000'>";
             echo "<th style='width:20%'>amount</th>";
             echo "<th style='width:20%'>event</th>";
-            echo "<th style='width:20%'>type</th>";
+            //echo "<th style='width:20%'>type</th>";
             echo "<th style='width:20%'>time</th>";
             echo "<th style='width:20%'>price</th>";
 
@@ -103,23 +103,26 @@ if(isset($_POST['pay'])){ //if Pay button is clicked
                 $price = $activitiesOrder[$i]->getActivity()->getPrice();
                 $activityId = $activitiesOrder[$i]->getActivity()->getId();
                 $activityDay = $activitiesOrder[$i]->getActivity()->getDate()->format('l jS F');
-                $activityType = $activitiesOrder[$i]->getActivity()->getType();
+                //$activityType = $activitiesOrder[$i]->getActivity()->getType();
                 $activityStart = $activitiesOrder[$i]->getActivity()->getStartTime()->format("H:i");
                 $activityEnd = $activitiesOrder[$i]->getActivity()->getEndTime()->format("H:i");
                 $amount = $shoppingcartService->getAmountByActivityId($activityId);
                 $totalPriceActivity = '€' . $amount * $price;
                 if (get_class($activitiesOrder[$i]) == "foodactivity") {
                     $activityName = $activitiesOrder[$i]->getRestaurant()->getName();
-                } else if (get_class($activity) == "jazzactivity") {
+                }
+                else if (get_class($activity) == "jazzactivity") {
                     $activityName = $activitiesOrder[$i]->getJazzband()->getName();
-                } else if (get_class($activitiesOrder[$i]) == "danceActivity") {
+                }
+                else if (get_class($activitiesOrder[$i]) == "danceActivity") {
                     $artists = $activitiesOrder[$i]->getArtists();
                     $artistNames = array();
                     foreach ($artists as $artist) {
                         $artistNames[] = $artist->getName();
                     }
                     $activityName = implode(", ", $artistNames);
-                } else {
+                }
+                else {
                     $activityName = $activitiesOrder[$i]->getType();
                 }
                 if($activityDay == $day)
