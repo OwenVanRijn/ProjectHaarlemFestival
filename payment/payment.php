@@ -104,15 +104,15 @@ if(isset($_POST['pay'])){ //if Pay button is clicked
 
                 var_dump(gettype($activitiesOrder[$i]));
 
-                if(gettype($activitiesOrder[$i]) == "object"){
-                    if(get_class($activitiesOrder[$i]) == "activity"){
-                        $activitiesOrder[$i];
-                    }
-
-                    else{
-                        $activitiesOrder[$i] = $activitiesOrder[$i]->getActivity();
-                    }
-                }
+//                if(gettype($activitiesOrder[$i]) == "object"){
+//                    if(get_class($activitiesOrder[$i]) == "activity"){
+//                        $activitiesOrder[$i];
+//                    }
+//
+//                    else{
+//                        $activitiesOrder[$i] = $activitiesOrder[$i]->getActivity();
+//                    }
+//                }
 
                 $price = $activitiesOrder[$i]->getPrice();
                 $activityId = $activitiesOrder[$i]->getId();
@@ -126,9 +126,10 @@ if(isset($_POST['pay'])){ //if Pay button is clicked
                 if (get_class($activitiesOrder[$i]) == "foodactivity") {
                     $activityName = $activitiesOrder[$i]->getName();
                 }
-                else if (get_class($activity) == "jazzactivity") {
+                else if (get_class($activitiesOrder[$i]) == "jazzactivity") {
                     $activityName = $activitiesOrder[$i]->getJazzband()->getName();
                 }
+
                 else if (get_class($activitiesOrder[$i]) == "danceActivity") {
                     $artists = $activitiesOrder[$i]->getArtists();
                     $artistNames = array();
@@ -138,7 +139,7 @@ if(isset($_POST['pay'])){ //if Pay button is clicked
                     $activityName = implode(", ", $artistNames);
                 }
                 else {
-                    //$activityName = $activitiesOrder[$i]->getType();
+                    $activityName = $activitiesOrder[$i]->getType();
                 }
                 if($activityDay == $day)
                 {
