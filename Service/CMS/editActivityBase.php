@@ -11,7 +11,6 @@ require_once ("editInterface.php");
 require_once ($root . "/Service/activityLogService.php");
 require_once ("editBase.php");
 
-// TODO: inherit from editBase
 abstract class editActivityBase extends editBase
 {
     protected activityBaseService $service;
@@ -29,7 +28,7 @@ abstract class editActivityBase extends editBase
             "type" => htmlTypeEnum::hidden,
             "date" => [htmlTypeEnum::date, account::accountScheduleManager],
             "startTime" => [htmlTypeEnum::time, account::accountScheduleManager],
-            "endTime" => [htmlTypeEnum::time, account::accountScheduleManager], // TODO: Maybe replace with length?
+            "endTime" => [htmlTypeEnum::time, account::accountScheduleManager],
             "price" => [htmlTypeEnum::float, account::accountTicketManager],
             "ticketsLeft" => [htmlTypeEnum::number, account::accountTicketManager],
         ],
@@ -165,7 +164,6 @@ abstract class editActivityBase extends editBase
         }
     }
 
-    // TODO: maybe parse POST into object, then use object?
     public function processEditResponse(array $post) {
         $validatedPost = $this->filterHtmlEditResponse($post);
         unset($post); // To prevent misuse
@@ -233,7 +231,6 @@ abstract class editActivityBase extends editBase
         $this->createLog(activityLog::create, $id);
     }
 
-    // TODO: get account on class creation
     public function processDeleteResponse(array $activityIds){
         if (($this->account->getCombinedRole() & (account::accountTicketManager | account::accountScheduleManager)) != (account::accountTicketManager | account::accountScheduleManager))
             throw new appException("Invalid permissions");

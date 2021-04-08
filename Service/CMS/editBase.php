@@ -12,6 +12,15 @@ require_once ($root . "/Service/activityLogService.php");
 require_once ("editRequest.php");
 require_once ("editUpdate.php");
 
+// Editbase: how it works
+/*
+ * A htmleditheader is a list of strings which are the sections of the edit menu.
+ * The value of a section is a list with the keys of which being the name of the field,
+ * and the value either being a htmlTypeEnum or a list with a htmlTypeEnum, and an account permission
+ *
+ * getHtmlEditFields is a list of the keys of the sections of the htmleditheader, with their equivelant proper values
+ */
+
 abstract class editBase implements editRequest
 {
     protected account $account;

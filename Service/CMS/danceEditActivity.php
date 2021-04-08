@@ -19,7 +19,7 @@ class danceEditActivity extends editActivityBase
     public const editType = "Dance";
 
     public const htmlEditHeader = [
-        "artists" => [ // TODO: This needs some custom type!
+        "artists" => [
             "artistActivityId" => htmlTypeEnum::hidden,
             "eventType" => htmlTypeEnum::text,
             "artistsOnActivity" => htmlTypeEnum::listMultiple
