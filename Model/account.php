@@ -188,6 +188,9 @@ class account extends sqlModel
      */
     public function isScheduleManager(): bool
     {
+        if ($this->role >= $this::accountAdmin)
+            return true;
+
         return $this->isScheduleManager;
     }
 
@@ -196,6 +199,9 @@ class account extends sqlModel
      */
     public function isTicketManager(): bool
     {
+        if ($this->role >= $this::accountAdmin)
+            return true;
+
         return $this->isTicketManager;
     }
 

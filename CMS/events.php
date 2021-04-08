@@ -48,9 +48,13 @@ $nav->assignCss([
     ?>
 
     <section class="displayBlock" id="topButtons">
-        <button class="CMSTableButton" onclick="openNew('<?php echo ucfirst($_GET["event"]) ?>')" type="button"><i class="fas fa-plus-circle"></i> New event</button>
-        <button class="CMSTableButton" onclick="openSwap()" type="button"><i class="fas fa-sync"></i> Swap events</button>
-        <button class="CMSTableButton floatRight" onclick="openDel()" type="button"><i class="fas fa-trash-alt"></i> Delete Events</button>
+        <?php if ($user->isTicketManager() && $user->isScheduleManager()) { ?>
+            <button class="CMSTableButton" onclick="openNew('<?php echo ucfirst($_GET["event"]) ?>')" type="button"><i class="fas fa-plus-circle"></i> New event</button>
+            <button class="CMSTableButton floatRight" onclick="openDel()" type="button"><i class="fas fa-trash-alt"></i> Delete Events</button>
+        <?php }
+        if ($user->isScheduleManager()) { ?>
+            <button class="CMSTableButton" onclick="openSwap()" type="button"><i class="fas fa-sync"></i> Swap events</button>
+        <?php } ?>
     </section>
     <section class="displayBlock submitCMSTopBar" id="confirmTopAction" hidden="">
         <button class="squareEscButton" onclick="removeCheckBoxes()" type="button"><i class="fas fa-times"></i></button>
