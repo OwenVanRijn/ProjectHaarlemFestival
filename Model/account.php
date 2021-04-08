@@ -70,7 +70,7 @@ class account extends sqlModel
             $array["role"] = $this->role;
 
         if (isset($this->isScheduleManager))
-            $array["isscheduemanager"] = $this->isScheduleManager;
+            $array["isschedulemanager"] = $this->isScheduleManager;
 
         if (isset($this->isTicketManager))
             $array["isticketmanager"] = $this->isTicketManager;
