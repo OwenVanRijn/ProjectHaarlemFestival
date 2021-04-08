@@ -9,6 +9,9 @@ body {
 * {
     box-sizing: border-box;
 }
+.jazzBand{
+  background-color: #858585;
+}
 .activityBoxes
 {
   display: grid;
