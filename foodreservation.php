@@ -43,14 +43,19 @@ $foodactivityService = new foodactivityService();
 
                     try {
                         $times = explode("-", $session);
+
+                        //Bekijk of er een activiteit bestaat voor de ingevoerde waarden
                         $foodactivity = $foodactivityService->getBySessionDate($date, $times, $restaurantId);
                         if ($foodactivity == NULL) {
                             throw new Exception("Could not find a valid activity. Please choose a valid date and session.");
                         } else {
+                            //Bekijk of er genoeg seats over zijn
                             $seatsLeft = $foodactivity->getActivity()->getTicketsLeft();
                             if ($seatsLeft == null || $seatsLeft == 0) {
                                 throw new Exception("There are no seats left.");
                             } else if ($seatsLeft > $seats) {
+
+                                //Voeg toe aan de shoppingcart
                                 $shoppingcartService = new shoppingcartService();
                                 $shoppingcartService->getShoppingcart()->addToShoppingcartItemsById($foodactivity->getActivity()->getId(), $seats);
 
@@ -74,6 +79,7 @@ $foodactivityService = new foodactivityService();
         }
 
 
+        //Als er geen restaurantID is dan wordt je terugverwezen naar food.php
         if (!isset($_POST["restaurantId"])) {
             header("Location: food.php", true, 301);
             exit();

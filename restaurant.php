@@ -27,6 +27,10 @@ function echoRes($restaurant)
     $website = $restaurant->getWebsite();
     $contactpage = $restaurant->getFullContact();
     $menu = $restaurant->getFullMenu();
+
+
+
+    //Echo alle informatie naar het scherm in html
     ?>
 
     <br>
@@ -162,6 +166,8 @@ function echoRes($restaurant)
     <?php
 }
 
+
+// Als er een restaurantID bekend is zal de informatie over het restaurant opgezocht worden
 if (isset($_GET["restaurantId"])) {
     $restaurantId = $_GET["restaurantId"];
 

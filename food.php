@@ -62,9 +62,8 @@ $restaurantTypeLinkService = new restaurantTypeLinkService();
             <p class="filterlabelSubtitle">Cuisine</p>
             <form method="post">
                 <select name="cuisine" id="cuisine" onchange="this.form.submit()">
-
-                    //Vul de dropdown met alle keukens
                     <?php
+                    //Vul de dropdown met alle keukens
                     try {
                         $restaurantTypes = $restaurantTypeLinkService->getAllTypes();
                         echo "<option value=\"0\">All cuisines</option>";
@@ -198,6 +197,8 @@ $restaurantTypeLinkService = new restaurantTypeLinkService();
 
         $restaurantService = new restaurantService();
         $times = $restaurantService->getTimes($foodactivities);
+
+        //Echo het restaurant in HTML
         ?>
 
 
