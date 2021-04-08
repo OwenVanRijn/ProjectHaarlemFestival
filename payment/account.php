@@ -15,6 +15,11 @@ if(isset($_GET['check'])){ //Lou: There's a nginx bug that puts account.php in p
         header("location: ../shoppingcart.php");
     }
 }
+else{
+    if(!$_GET['id']){
+        header("location: ../shoppingcart.php");
+    }
+}
 
 if (isset($_POST['submit'])) {
     $firstname = htmlspecialchars($_POST['firstname']);
