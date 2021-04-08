@@ -61,7 +61,6 @@ class foodactivityService extends activityBaseService
 
     public function getByRestaurantId(int $restaurantId)
     {
-        $restaurantId = ($restaurantId);
         return $this->db->getArray([
             "restaurant.id" => $restaurantId
         ]);
@@ -79,10 +78,15 @@ class foodactivityService extends activityBaseService
 
     public function updateRestaurantId(int $id, int $restaurantId)
     {
-        return $this->db->update([
-            "id" => $id,
-            "restaurantId" => $restaurantId // TODO: check for validity
-        ]);
+        try {
+            $this->db->update([
+                "id" => $id,
+                "restaurantId" => $restaurantId
+            ]);
+        }
+        catch (appException $e) {
+            throw new appException("Invalid restaurant Id");
+        }
     }
 
     public function insertFoodActivity(int $activityId, int $restaurantId)

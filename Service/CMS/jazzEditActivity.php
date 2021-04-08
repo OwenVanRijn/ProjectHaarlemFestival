@@ -72,7 +72,6 @@ class jazzEditActivity extends editActivityBase
 
     protected function processEditResponseChild(array $post)
     {
-        // TODO: implement images
         if (isset($post["performanceIncomplete"]))
             throw new appException("Performance is incomplete");
 

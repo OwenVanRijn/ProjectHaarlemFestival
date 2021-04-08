@@ -49,7 +49,7 @@ class customerEdit extends editBase implements editUpdate
         }
 
         if ($this->lastAccountIsVolunteer){
-            $header["account"]["isScheduleManager"] = [htmlTypeEnum::checkBox, account::accountAdmin]; // TODO: add checkbox type!
+            $header["account"]["isScheduleManager"] = [htmlTypeEnum::checkBox, account::accountAdmin];
             $header["account"]["isTicketManager"] = [htmlTypeEnum::checkBox, account::accountAdmin];
             $this->lastAccountIsVolunteer = false;
         }
