@@ -20,7 +20,6 @@ $mollie = new MollieApiClient();
 $mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
 
 $mailer = new mailer();
-
 $mailer->sendMail("louellacreemers@gmail.com", "Mollie id", "ID: ");
 
 $order = new ordersService();
@@ -30,61 +29,69 @@ $emailgen = new emailOrderGen();
 $customer = new customerService();
 $activity  = new activityService();
 
-$id = $_GET['id'];
-$cartId = $_GET['cart'];
-$paymentId = $_POST['id'];
+$ip = $_SERVER['REMOTE_ADDR'];
 
-$payment = $mollie->payments->get($paymentId);
-$returnCus = $customer->getFromId($id);
-$email = $returnCus->getEmail();
-$value = $payment->amount;
+$ipFile = fopen('payment/ip.csv', "r") or die("File not found");
+$csvArray = fgetcsv($ipFile);
 
-if($payment->isPaid()){
-    $items = $cart->getShoppingcartById($cartId);
+if(!in_array($ip, $csvArray)){
+    header('Location: index.php');
+}
+else {
+    $id = $_GET['id'];
+    $cartId = $_GET['cart'];
+    $paymentId = $_POST['id'];
 
-    $orderQuery = $order->insertOrder($id);
 
-    if($orderQuery == false){
-        $mailer->sendMail($email, "Haarlem festival - Something went wrong", "It looks like something went wrong with creating your order. Please try again later");
-        refund($value, $payment);
-    }
+    $payment = $mollie->payments->get($paymentId);
+    $returnCus = $customer->getFromId($id);
+    $email = $returnCus->getEmail();
+    $value = $payment->amount;
 
-    foreach ($items as $item){
-        $amount = $item->getAmount();
-        $mailer->sendMail("louellacreemers@gmail.com", "AMOUNT", "amount={$amount}, $email");
+    if ($payment->isPaid()) {
+        $items = $cart->getShoppingcartById($cartId);
 
-        if (get_class($item) == "activity") {
-            $item = $item;
-        }
-        else {
-            $item = $item->getActivity();
-        }
+        $orderQuery = $order->insertOrder($id);
 
-        $createTicket = $ticket->insertTicket($item->getId(), $id, $orderQuery, $amount);
-
-        if($createTicket != false){
-            $amountLeft = $item->getTicketsLeft() - $amount;
-            $activity->updateActivity($item->getId(), null, null, null,null,$amountLeft, null);
-        }
-        else{
-            $mailer->sendMail($email, "Haarlem festival - Something went wrong", "It looks like something went wrong with creating your tickets. Please try again later");
+        if ($orderQuery == false) {
+            $mailer->sendMail($email, "Haarlem festival - Something went wrong", "It looks like something went wrong with creating your order. Please try again later");
             refund($value, $payment);
         }
 
-        $mailer->sendMail("louellacreemers@gmail.com", "TICKETS", "ticket id={$item->getId()}");
+        foreach ($items as $item) {
+            $amount = $item->getAmount();
+            $mailer->sendMail("louellacreemers@gmail.com", "AMOUNT", "amount={$amount}, $email");
+
+            if (get_class($item) == "activity") {
+                $item = $item;
+            } else {
+                $item = $item->getActivity();
+            }
+
+            $createTicket = $ticket->insertTicket($item->getId(), $id, $orderQuery, $amount);
+
+            if ($createTicket != false) {
+                $amountLeft = $item->getTicketsLeft() - $amount;
+                $activity->updateActivity($item->getId(), null, null, null, null, $amountLeft, null);
+            } else {
+                $mailer->sendMail($email, "Haarlem festival - Something went wrong", "It looks like something went wrong with creating your tickets. Please try again later");
+                refund($value, $payment);
+            }
+
+            $mailer->sendMail("louellacreemers@gmail.com", "TICKETS", "ticket id={$item->getId()}");
+        }
+
+        $emailgen->sendEmail($orderQuery, $id);
+    } else {
+        $mailer->sendMail($email, "Haarlem festival - Something went wrong", "It looks like something went wrong with your payment. Please try again later");
     }
 
-    $emailgen->sendEmail($orderQuery, $id);
-}
-
-else{
-    $mailer->sendMail($email, "Haarlem festival - Something went wrong", "It looks like something went wrong with your payment. Please try again later");
-}
-
-function refund($value, $payment){
-    $refund = $payment->refund([
-        "amount" =>[
-            "value" => "{$value}"
-        ]
-    ]);
+    function refund($value, $payment)
+    {
+        $refund = $payment->refund([
+            "amount" => [
+                "value" => "{$value}"
+            ]
+        ]);
+    }
 }
