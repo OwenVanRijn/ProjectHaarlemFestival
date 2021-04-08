@@ -114,12 +114,16 @@ if(isset($_POST['pay'])){ //if Pay button is clicked
 //                    }
 //                }
 
-                $price = $activitiesOrder[$i]->getPrice();
-                $activityId = $activitiesOrder[$i]->getId();
-                $activityDay = $activitiesOrder[$i]->getDate()->format('l jS F');
-                //$activityType = $activitiesOrder[$i]->getActivity()->getType();
-                $activityStart = $activitiesOrder[$i]->getStartTime()->format("H:i");
-                $activityEnd = $activitiesOrder[$i]->getEndTime()->format("H:i");
+                if (get_class($activitiesOrder[$i]) == "activity")
+                    $orderActivity = $activitiesOrder[$i];
+                else
+                    $orderActivity = $activitiesOrder[$i]->getActivity();
+
+                $price = $orderActivity->getPrice();
+                $activityId = $orderActivity->getId();
+                $activityDay = $orderActivity->getDate()->format('l jS F');
+                $activityStart = $orderActivity->getStartTime()->format("H:i");
+                $activityEnd = $orderActivity->getEndTime()->format("H:i");
                 $amount = $shoppingcartService->getAmountByActivityId($activityId);
                 $totalPriceActivity = '€' . $amount * $price;
 
