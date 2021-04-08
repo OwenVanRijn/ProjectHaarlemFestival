@@ -10,7 +10,6 @@ use Dompdf\Dompdf;
 class pdf{
 
     function loadTicketPDF(){
-
         $mailer = new mailer();
 
         $orderId = $_SESSION['orderId'];
