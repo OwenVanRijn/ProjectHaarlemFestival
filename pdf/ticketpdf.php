@@ -42,7 +42,10 @@ $ticketArray = $ticket->getTicketsByOrder($id);
 
                             $endTime = date_format($item->getActivity()->getEndTime(), "H:i");
 
-                            $location = $item->getActivity()->getLocation()->getName();
+                            if ($item->getActivity()->getLocation()->isEmpty())
+                                $location = "(unknown)";
+                            else
+                                $location = $item->getActivity()->getLocation()->getName();
 
                             echo "<p>{$type} - {$startTime} / {$endTime} @ {$date}. Location: {$location}, Price: {$price}EUR</p>";
                         }

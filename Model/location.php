@@ -13,6 +13,10 @@ class location extends sqlModel
     protected const sqlTableName = "location";
     protected const sqlFields = ["id", "name", "address", "postalCode", "city"];
 
+    public function isEmpty() {
+        return !isset($this->id);
+    }
+
     public function constructFull(int $id, string $name, string $address, string $postalcode, string $city)
     {
         $this->id = $id;
