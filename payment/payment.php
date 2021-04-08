@@ -104,31 +104,36 @@ if(isset($_POST['pay'])){ //if Pay button is clicked
 
                 var_dump(gettype($activitiesOrder[$i]));
 
-                if(gettype($activitiesOrder[$i]) == "object"){
-                    if(get_class($activitiesOrder[$i]) == "activity"){
-                        $activitiesOrder[$i];
-                    }
+//                if(gettype($activitiesOrder[$i]) == "object"){
+//                    if(get_class($activitiesOrder[$i]) == "activity"){
+//                        $activitiesOrder[$i];
+//                    }
+//
+//                    else{
+//                        $activitiesOrder[$i] = $activitiesOrder[$i]->getActivity();
+//                    }
+//                }
 
-                    else{
-                        $activitiesOrder[$i] = $activitiesOrder[$i]->getActivity();
-                    }
-                }
+                if (get_class($activitiesOrder[$i]) == "activity")
+                    $orderActivity = $activitiesOrder[$i];
+                else
+                    $orderActivity = $activitiesOrder[$i]->getActivity();
 
-                $price = $activitiesOrder[$i]->getPrice();
-                $activityId = $activitiesOrder[$i]->getId();
-                $activityDay = $activitiesOrder[$i]->getDate()->format('l jS F');
-                //$activityType = $activitiesOrder[$i]->getActivity()->getType();
-                $activityStart = $activitiesOrder[$i]->getStartTime()->format("H:i");
-                $activityEnd = $activitiesOrder[$i]->getEndTime()->format("H:i");
+                $price = $orderActivity->getPrice();
+                $activityId = $orderActivity->getId();
+                $activityDay = $orderActivity->getDate()->format('l jS F');
+                $activityStart = $orderActivity->getStartTime()->format("H:i");
+                $activityEnd = $orderActivity->getEndTime()->format("H:i");
                 $amount = $shoppingcartService->getAmountByActivityId($activityId);
                 $totalPriceActivity = '€' . $amount * $price;
 
                 if (get_class($activitiesOrder[$i]) == "foodactivity") {
                     $activityName = $activitiesOrder[$i]->getName();
                 }
-                else if (get_class($activity) == "jazzactivity") {
+                else if (get_class($activitiesOrder[$i]) == "jazzactivity") {
                     $activityName = $activitiesOrder[$i]->getJazzband()->getName();
                 }
+
                 else if (get_class($activitiesOrder[$i]) == "danceActivity") {
                     $artists = $activitiesOrder[$i]->getArtists();
                     $artistNames = array();
@@ -138,7 +143,7 @@ if(isset($_POST['pay'])){ //if Pay button is clicked
                     $activityName = implode(", ", $artistNames);
                 }
                 else {
-                    //$activityName = $activitiesOrder[$i]->getType();
+                    $activityName = $activitiesOrder[$i]->getType();
                 }
                 if($activityDay == $day)
                 {
