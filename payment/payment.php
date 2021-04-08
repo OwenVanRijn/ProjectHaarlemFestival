@@ -123,7 +123,7 @@ if(isset($_POST['pay'])){ //if Pay button is clicked
                     $activityName = implode(", ", $artistNames);
                 }
                 else {
-                    $activityName = $activitiesOrder[$i]->getType();
+                    //$activityName = $activitiesOrder[$i]->getType();
                 }
                 if($activityDay == $day)
                 {
