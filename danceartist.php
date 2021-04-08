@@ -29,13 +29,10 @@ $messageString = "";
 if (isset($_POST['select'])) {
     $id = $_POST['select'];
 
-    if (is_numeric($id)) {
-        $returnedActivity = $activityService->getTypedActivityByIds([$id]);
-        if (count($returnedActivity) > 0) {
-
+    if (is_numeric($id)) { //checks if id is number
+        $returnedActivity = $activityService->getTypedActivityByIds([$id]); //returns danceactivity from activity
+        if (count($returnedActivity) > 0) { //if returned activity array is not null
             $sc = $shoppingCartService->getShoppingcart()->addToShoppingcartItemsById($id, 1);
-
-            $messageString = $sc->getShoppingcartItemsCount();
         } else {
             $messageString = "Activity with id $id not found";
         }
@@ -168,13 +165,6 @@ require_once $root . "/UI/navBar.php";
 </section>
 </section>
 </body>
-<script>
-    function addTicket(str) {
-
-        <?php
-        ?>
-    }
-</script>
 <?php
 require_once "UI/footer.php";
 ?>
