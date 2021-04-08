@@ -37,7 +37,7 @@ $ticketArray = $ticket->getTicketsByOrder($id);
 
                         $price = $item->getActivity()->getPrice();
 
-                        if(!in_array($id, $allAccess)){
+                        if(!in_array($id, $allAccess)){ //if tickets is normal ectivity
                             $startTime = date_format($item->getActivity()->getStartTime(), "H:i");
 
                             $endTime = date_format($item->getActivity()->getEndTime(), "H:i");
@@ -47,13 +47,13 @@ $ticketArray = $ticket->getTicketsByOrder($id);
                             echo "<p>{$type} - {$startTime} / {$endTime} @ {$date}. Location: {$location}, Price: {$price}EUR</p>";
                         }
 
-                        else{
+                        else{ //if ticket is all-access
                             echo "<p>{$type}. Price: {$price}EUR</p>";
                         }
                         echo "</section>";
                         echo "<section class='col-sm-2'>";
                         $generator = new Picqer\Barcode\BarcodeGeneratorHTML();
-                        echo $generator->getBarcode($item->getId(), $generator::TYPE_CODE_128);
+                        echo $generator->getBarcode($item->getId(), $generator::TYPE_CODE_128); //generates barcode based off of ticketid
 
                         echo "</section>";
                         echo "</section>";

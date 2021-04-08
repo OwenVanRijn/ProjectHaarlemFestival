@@ -11,7 +11,7 @@ $id = $_SESSION['orderId'];
 
 $total = 0;
 $ticket = new ticketService();
-$ticketArray = $ticket->getTicketsByOrder($id);
+$ticketArray = $ticket->getTicketsByOrder($id); //gets all tickets by id in array
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +21,7 @@ $ticketArray = $ticket->getTicketsByOrder($id);
 
 echo "<h4>Tickets</h4>";
 foreach ($ticketArray as $ticket){
-    $total += $ticket->getActivity()->getPrice() * $ticket->getAmount();
+    $total += $ticket->getActivity()->getPrice() * $ticket->getAmount(); //gets totalpricce
     echo "Type: {$ticket->getActivity()->getType()} | Price: {$ticket->getActivity()->getPrice()}EUR | Amount: {$ticket->getAmount()}";
     echo "<br>";
 }

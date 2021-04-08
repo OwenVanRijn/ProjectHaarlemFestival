@@ -7,28 +7,24 @@ require_once($root . "/Service/foodactivityService.php");
 require_once($root . "/Service/danceActivityService.php");
 require_once($root . "/Service/shoppingcartService.php");
 require_once($root . "/Service/shoppingcartServiceDB.php");
-
-ini_set('display_errors', -1);
-
 require_once "../Email/mailer.php";
-require_once($root . "/Service/shoppingcartServiceDB.php");
-
-$total = $_SESSION['total'];
-
-use Mollie\Api\MollieApiClient;
 require_once "../lib/mollie/vendor/autoload.php";
 
+$total = $_SESSION['total']; //total price
+$cusId = $_SESSION['id']; //customerId
+$activitiesOrder = $_SESSION['cart']; //cart
+
+
+use Mollie\Api\MollieApiClient; //calls Mollie API client
+
 $mollie = new MollieApiClient();
-$mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN");
+$mollie->setApiKey("test_vqEjJvzKUW67F2gz3Mr3jzgpSs4drN"); //Test api key
 
 $shoppingcartService = new shoppingcartService();
-$cusId = $_SESSION['id'];
 
-$activitiesOrder = $_SESSION['cart'];
-
-if(isset($_POST['pay'])){
-    if(preg_match("/^[0-9]*$/",$total)){
-        if ((int)$total > 0) {
+if(isset($_POST['pay'])){ //if Pay button is clicked
+    if(preg_match("/^[0-9]*$/",$total)){ //if value contains anything but a number
+        if ((int)$total > 0) { //if value isn't under 0
             //CART TO DB
             $shoppingcartServiceDB = new shoppingcartServiceDB();
             $cartId = $shoppingcartServiceDB->addShoppingcartToDatabase();
@@ -38,11 +34,11 @@ if(isset($_POST['pay'])){
                     "value" => "$total.00"
                 ],
                 "description" => "Haarlem Festival",
-                "redirectUrl" => "https://haarlemfestival.louellacreemers.nl/success.php",
+                "redirectUrl" => "https://haarlemfestival.louellacreemers.nl/success.php", //url to go to if successful
                 "webhookUrl" => "https://haarlemfestival.louellacreemers.nl/webhook.php?id=$cusId&cart=$cartId"
             ]);
 
-            header("Location: " . $payment->getCheckoutUrl(), true, 303);
+            header("Location: " . $payment->getCheckoutUrl(), true, 303); //go to success page after payment
         }
 
         else{
