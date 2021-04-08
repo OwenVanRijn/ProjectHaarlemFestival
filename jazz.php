@@ -119,8 +119,8 @@ require_once("UI/navBar.php");
             echo "<p style='color: black; text-align: center; font-weight: bold'>{$location}</p>";
             if($location != 'unknown')
             {
-            echo "<input type='button' class='btnMoreInfo' href='#myModal$id' style='background-color: orange; width: 50%; color: white; name='moreinformation' value='More information'></input>";
-            echo "<button name='selectedAct' value='$activityId' style='background-color: orange; width: 50%; color: white; font-size:23px;'>Add to cart</button>";
+            echo "<input type='button' class='btnMoreInfo' href='#myModal$id' style='background-color: #FD6A02; width: 50%; color: white; name='moreinformation' value='More information'></input>";
+            echo "<button name='selectedAct' value='$activityId' style='background-color: #FD6A02; width: 50%; color: white; font-size:23px;'>Add to cart</button>";
             echo "<div id='myModal$id' class='modal'>";
             echo "<div class='modal-content'>";
             echo "<p style='color: black; text-align: center; font-weight: bold'>$name</p>";
