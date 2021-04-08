@@ -2,20 +2,18 @@
 
 require_once ("sqlModel.php");
 require_once ("account.php");
-require_once ("customerLocation.php");
 
 class customer extends sqlModel
 {
     private int $id;
     private string $firstName;
     private string $lastname;
-    private ?customerLocation $customerlocation;
     private string $email;
     private ?account $account;
 
     protected const sqlTableName = "customer";
-    protected const sqlFields = ["id", "firstName", "lastname", "email", "accountId", "locationId"];
-    protected const sqlLinks = ["locationId" => customerLocation::class, "accountId" => account::class];
+    protected const sqlFields = ["id", "firstName", "lastname", "email", "accountId"];
+    protected const sqlLinks = ["accountId" => account::class];
 
     public function __construct()
     {
@@ -26,12 +24,11 @@ class customer extends sqlModel
         //$this->phoneNumber = 0;
     }
 
-    public function constructFull(int $id, string $firstName, string $lastname, ?customerLocation $customerlocation, string $email, ?account $account)
+    public function constructFull(int $id, string $firstName, string $lastname, string $email, ?account $account)
     {
         $this->id = $id;
         $this->firstName = $firstName;
         $this->lastname = $lastname;
-        $this->customerlocation = $customerlocation;
         $this->email = $email;
         $this->account = $account;
         return $this;
@@ -48,9 +45,6 @@ class customer extends sqlModel
 
         if (isset($this->lastname))
             $array["lastname"] = $this->lastname;
-
-        if (isset($this->customerlocation))
-            $array["locationId"] = $this->customerlocation->getId();
 
         if (isset($this->email))
             $array["email"] = $this->email;
@@ -69,14 +63,10 @@ class customer extends sqlModel
         if (isset($sqlRes[account::sqlTableName() . "id"]))
             $account = account::sqlParse($sqlRes);
 
-        if (isset($sqlRes[customerLocation::sqlTableName() . "id"]))
-            $loc = customerLocation::sqlParse($sqlRes);
-
         return (new self())->constructFull(
             $sqlRes[self::sqlTableName . "id"],
             $sqlRes[self::sqlTableName . "firstName"],
             $sqlRes[self::sqlTableName . "lastname"],
-            $loc,
             $sqlRes[self::sqlTableName . "email"],
             $account,
         );
@@ -126,18 +116,6 @@ class customer extends sqlModel
     public function setLastname($lastname)
     {
         $this->lastname = $lastname;
-
-        return $this;
-    }
-
-    public function getLocation()
-    {
-        return $this->customerlocation;
-    }
-
-    public function setLocation($location)
-    {
-        $this->location = $location;
 
         return $this;
     }

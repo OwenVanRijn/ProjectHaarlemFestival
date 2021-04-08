@@ -8,7 +8,6 @@ require_once($root . "/Service/customerService.php");
 
 if(isset($_GET['check'])){
     $value = $_GET['check'];
-
     echo $value;
     if($value == 1){
         echo file_get_contents('accountHtml.php');
