@@ -90,6 +90,7 @@ if(isset($_POST['pay'])){ //if Pay button is clicked
                 $days[] = $activityDate;
             }
         }
+
         foreach ($days as $day) {
             echo "<h2>{$day}</h2>";
             echo "<table style='width:100%; border-top:1px solid #000'>";
@@ -100,16 +101,24 @@ if(isset($_POST['pay'])){ //if Pay button is clicked
             echo "<th style='width:20%'>price</th>";
 
             for($i = 0; $i < count($activitiesOrder); $i++){
-                $price = $activitiesOrder[$i]->getActivity()->getPrice();
-                $activityId = $activitiesOrder[$i]->getActivity()->getId();
-                $activityDay = $activitiesOrder[$i]->getActivity()->getDate()->format('l jS F');
+                if(get_class($activitiesOrder[$i] == 'activity')){
+                    $activitiesOrder[$i];
+                }
+
+                else{
+                    $activitiesOrder[$i] = $activitiesOrder[$i]->getActivity();
+                }
+
+                $price = $activitiesOrder[$i]->getPrice();
+                $activityId = $activitiesOrder[$i]->getId();
+                $activityDay = $activitiesOrder[$i]->getDate()->format('l jS F');
                 //$activityType = $activitiesOrder[$i]->getActivity()->getType();
-                $activityStart = $activitiesOrder[$i]->getActivity()->getStartTime()->format("H:i");
-                $activityEnd = $activitiesOrder[$i]->getActivity()->getEndTime()->format("H:i");
+                $activityStart = $activitiesOrder[$i]->getStartTime()->format("H:i");
+                $activityEnd = $activitiesOrder[$i]->getEndTime()->format("H:i");
                 $amount = $shoppingcartService->getAmountByActivityId($activityId);
                 $totalPriceActivity = '€' . $amount * $price;
                 if (get_class($activitiesOrder[$i]) == "foodactivity") {
-                    $activityName = $activitiesOrder[$i]->getRestaurant()->getName();
+                    $activityName = $activitiesOrder[$i]->getName();
                 }
                 else if (get_class($activity) == "jazzactivity") {
                     $activityName = $activitiesOrder[$i]->getJazzband()->getName();
