@@ -16,7 +16,7 @@ class restaurantService extends baseService
 
     public function getAll(): array
     {
-        return $this->db->get();
+        return $this->db->getArray();
     }
 
     // TODO: maybe convert to pass in restaurant object?

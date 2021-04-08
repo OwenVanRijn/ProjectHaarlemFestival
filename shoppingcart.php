@@ -10,17 +10,6 @@ require_once($root . "/Service/foodactivityService.php");
 require_once($root . "/Service/danceActivityService.php");
 require_once($root . "/Service/shoppingcartService.php");
 require_once($root . "/Service/shoppingcartServiceDB.php");
-
-//try {
-//    require_once($root . "/Service/shoppingcartServiceDB.php");
-//    $shoppingcartServiceDB = new shoppingcartServiceDB();
-//    $cartId = $shoppingcartServiceDB->addShoppingcartToDatabase();
-//}
-//catch(Exception $exception)
-//{
-//    echo "Niet gelukt: {$exception->getMessage()}";
-//}
-
 ?>
 
 <!doctype html>
@@ -71,7 +60,7 @@ require_once($root . "/UI/navBar.php");
     <section>
 
         <script language=Javascript>
-            //        zorg ervoor dat men geen tekst invoert.
+            /* zorg ervoor dat men geen tekst invoert. */
             function isNumberKey(evt) {
                 var charCode = (evt.which) ? evt.which : event.keyCode
                 if (charCode > 31 && (charCode < 48 || charCode > 57))
@@ -101,9 +90,12 @@ require_once($root . "/UI/navBar.php");
                 $ids[] = $key;
             }
 
+            // Als de shoppingcart leeg is toon dan cart is empty
             if (count($ids) == 0) {
                 echo "<p>Cart is Empty</p>";
             } else {
+
+                // Anders vullen we de shoppingcart
                 try {
                     $activities = array_merge($danceActivityService->getFromActivityIds($ids), $foodActivityService->getFromActivityIds($ids), $jazzActivityService->getFromActivityIds($ids), $activityService->getAllById($ids));
 
@@ -125,6 +117,7 @@ require_once($root . "/UI/navBar.php");
                             }
                         }
 
+                        //sorteer de dagen.
                         function date_sort($a, $b)
                         {
                             return strtotime($a) - strtotime($b);
@@ -132,6 +125,9 @@ require_once($root . "/UI/navBar.php");
 
                         usort($datesOfFestival, "date_sort");
 
+
+                        //Voor elke dag, voeg de activiteiten toe aan een array, voeg deze array vervolgens toe aan de gemeenschappelijke array
+                        // Er ontstaat dus een array met alle dagen, deze arrays bevatten de activiteiten van die dag
                         $dayActivities = array();
                         for ($index = 0; $index <= count($datesOfFestival) - 1; $index++) {
                             $activitiesOfThisDay = array();
@@ -183,6 +179,8 @@ require_once($root . "/UI/navBar.php");
 
     function echoDay($date, $activitiesOfTheDay)
     {
+        //Echo in HTML de activiteiten van de gehele dag.
+
         $shoppingcartService = new shoppingcartService();
 
         if (count($activitiesOfTheDay) != 0) {
@@ -215,7 +213,7 @@ require_once($root . "/UI/navBar.php");
                     $activityOTD = $activity->getActivity();
                 }
 
-
+                // Haal alle informatie op voor de activiteit.
                 $price = $activityOTD->getPrice();
                 $activityId = $activityOTD->getId();
                 $amount = $shoppingcartService->getAmountByActivityId($activityId);
@@ -242,9 +240,12 @@ require_once($root . "/UI/navBar.php");
 
                 $shoppingcartService = new shoppingcartService();
                 $amount = $shoppingcartService->getAmountByActivityId($activityId);
+
+                // echo de activiteit naar HTML
                 cartElement($activityId, $activityName, $type, date("Y-m-d"), $startTime->format('H:i'), $endTime->format('H:i'), $price, $amount);
             }
 
+            //return de totale prijs van de dag
             return $totalPriceDay;
         }
         return 0;
