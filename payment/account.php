@@ -17,10 +17,6 @@ if(isset($_GET['check'])){
         header("location: ../shoppingcart.php");
     }
 }
-else{
-    header("location: ../shoppingcart.php");
-}
-
 
 if (isset($_POST['submit'])) {
 
