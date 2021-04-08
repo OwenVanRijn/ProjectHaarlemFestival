@@ -9,9 +9,6 @@ body {
 * {
     box-sizing: border-box;
 }
-.jazzBand{
-  background-color: #858585;
-}
 .activityBoxes
 {
   display: grid;
@@ -25,6 +22,7 @@ body {
 
 .jazzBand{
     border: 3px solid #000;
+    background-color: #858585;
 }
 .content {
     margin-left: 5%;
