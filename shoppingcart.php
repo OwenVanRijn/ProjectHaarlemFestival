@@ -287,7 +287,7 @@ require_once($root . "/UI/navBar.php");
                                         <button type=\"submit\" id=\"btnSubmitEdit$activityid\" style=\"visibility: hidden\" name=\"edit\">Set</button>
                                     </form>
 </section>
-        <section class=\"titleActivityEvent\"><p>$activityName ACTid $activityid</p></section>
+        <section class=\"titleActivityEvent\"><p>$activityName</p></section>
         <section class=\"titleType\"><p>$type</p></section>
         <section class=\"titleTime\"><p>$startTime-$endTime</p></section>
         <section class=\"titlePrice\"><p>€$price</p></section>
