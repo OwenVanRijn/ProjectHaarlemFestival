@@ -1,7 +1,8 @@
 <?php
 try {
-    if (file_exists("Service/shoppingcartService.php")) {
-        require_once("Service/shoppingcartService.php");
+    $root = realpath($_SERVER["DOCUMENT_ROOT"]);
+    if (file_exists($root . "/Service/shoppingcartService.php")) {
+        require_once($root . "/Service/shoppingcartService.php");
         $shoppingcartService = new shoppingcartService();
         $shoppingcartCount = $shoppingcartService->getShoppingcartItemsCount();
     } else {
