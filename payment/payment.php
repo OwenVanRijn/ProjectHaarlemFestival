@@ -101,19 +101,6 @@ if(isset($_POST['pay'])){ //if Pay button is clicked
             echo "<th style='width:20%'>price</th>";
 
             for($i = 0; $i < count($activitiesOrder); $i++){
-
-                var_dump(gettype($activitiesOrder[$i]));
-
-//                if(gettype($activitiesOrder[$i]) == "object"){
-//                    if(get_class($activitiesOrder[$i]) == "activity"){
-//                        $activitiesOrder[$i];
-//                    }
-//
-//                    else{
-//                        $activitiesOrder[$i] = $activitiesOrder[$i]->getActivity();
-//                    }
-//                }
-
                 if (get_class($activitiesOrder[$i]) == "activity")
                     $orderActivity = $activitiesOrder[$i];
                 else
@@ -164,7 +151,7 @@ if(isset($_POST['pay'])){ //if Pay button is clicked
         <br>
 
         <form style="margin-left:40%; margin-top:8%;" method="post" action="payment.php">
-            <input id="payButton" class="button1" type="submit" name="pay" value="Pay €<?php echo $total?>">
+            <input id="payButton" class="payOrder stepNext" type="submit" name="pay" value="Pay €<?php echo $total?>">
         </form>
 
     </section>

@@ -96,6 +96,7 @@ hr {
     border: 0px;
     border-top: 3px solid #eee;
 }
+
 hr {
     height: 0;
     -webkit-box-sizing: content-box;
@@ -185,5 +186,9 @@ body {
 
 #payButton {
     width: 30%;
+}
+
+tr, td {
+    font-family: Arial;
 }
 
