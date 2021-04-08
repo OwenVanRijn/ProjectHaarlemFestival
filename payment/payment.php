@@ -130,7 +130,7 @@ if(isset($_POST['pay'])){ //if Pay button is clicked
                     echo "<tr>";
                     echo "<td style='text-align:center'>{$amount}</td>";
                     echo "<td style='text-align:center'>{$activityName}</td>";
-                    echo "<td style='text-align:center'>{$activityType}</td>";
+                    //echo "<td style='text-align:center'>{$activityType}</td>";
                     echo "<td style='text-align:center'>{$activityStart} to {$activityEnd}</td>";
                     echo "<td style='text-align:center'>{$totalPriceActivity}</td>";
                     echo "</tr>";
