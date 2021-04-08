@@ -31,14 +31,14 @@
 
 
             <h4 class="labelInputField">Firstname</h4>
-            <input type="text" placeholder="firstname" name="firstname" maxlength="40" size="20" required></input>
+            <input type="text" placeholder="firstname" name="firstname" maxlength="40" size="20" required>
 
             <h4 class="labelInputField">Lastname</h4>
-            <input type="text" placeholder="lastname" maxlength="40" name="lastname" size="20" required></input>
+            <input type="text" placeholder="lastname" maxlength="40" name="lastname" size="20" required>
 
             <h4 class="labelInputField">Emailaddress</h4>
-            <input type="text" placeholder="emailaddress" maxlength="40" name="email" size="25" required></input>
-            s
+            <input type="text" placeholder="emailaddress" maxlength="40" name="email" size="25" required>
+
             <section>
                 <input class="stepNext" type="submit" name="submit" value="Next step">
             </section>
