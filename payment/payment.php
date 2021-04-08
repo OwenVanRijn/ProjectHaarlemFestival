@@ -100,6 +100,8 @@ if(isset($_POST['pay'])){ //if Pay button is clicked
             echo "<th style='width:20%'>time</th>";
             echo "<th style='width:20%'>price</th>";
 
+            var_dump(get_class($activitiesOrder[0]));
+
             for($i = 0; $i < count($activitiesOrder); $i++){
                 if(get_class($activitiesOrder[$i] == 'activity')){
                     $activitiesOrder[$i];
