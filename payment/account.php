@@ -6,9 +6,21 @@ $root = realpath($_SERVER["DOCUMENT_ROOT"]);
 require_once($root . "/UI/navBar.php");
 require_once($root . "/Service/customerService.php");
 
-//if (!isset($_POST["payconfirm"])) {
-//    header("location: ../shoppingcart.php");
-//}
+if(isset($_GET['check'])){
+    $value = $_GET['check'];
+
+    echo $value;
+    if($value == 1){
+        echo file_get_contents('accountHtml.php');
+    }
+    else{
+        header("location: ../shoppingcart.php");
+    }
+}
+else{
+    header("location: ../shoppingcart.php");
+}
+
 
 if (isset($_POST['submit'])) {
 
@@ -28,6 +40,3 @@ if (isset($_POST['submit'])) {
 
 
 <?php
-if(isset($_GET['t'])){
-   echo file_get_contents('accountHtml.php');
-}
