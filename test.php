@@ -22,34 +22,12 @@ $bleh = new danceActivityService();
 $blah = new artistOnActivityService();
 $shopping= new shoppingcartService();
 $cart = new shoppingcartServiceDB();
+$m = new emailOrderGen();
+$customer = new customerService();
 
 $b = new danceActivityService();
 
-
-$a = $b->getActivityFromId('9');
-
-var_dump($a);
-
-
-//$ids = [];
-//
-//$activityService = new activityService();
-//
-//$danceArray = $activityService->getByType("dance");
-//
-//$dateArray = $activityService->getByLocation("Club Stalker");
-//
-//foreach ($dateArray as $activity){
-//    $id = $activity->getId();
-//
-//    $ids[] = $id;
-//}
-//
-//$returnActivites = $activityService->getTypedActivityByIds($ids);
-//
-//var_dump($returnActivites);
-
-
+$m->sendEmail('107', '214');
 
 //    $orderQuery = $order->insertOrder(103);
 //
