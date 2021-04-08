@@ -99,15 +99,20 @@ if(isset($_POST['pay'])){ //if Pay button is clicked
             //echo "<th style='width:20%'>type</th>";
             echo "<th style='width:20%'>time</th>";
             echo "<th style='width:20%'>price</th>";
-            
+
             for($i = 0; $i < count($activitiesOrder); $i++){
                 var_dump($activitiesOrder[$i]);
-                if(get_class($activitiesOrder[$i] == 'activity')){
-                    $activitiesOrder[$i];
-                }
 
-                else{
-                    $activitiesOrder[$i] = $activitiesOrder[$i]->getActivity();
+
+
+                if(gettype($activitiesOrder[$i]) == "object"){
+                    if(get_class($activitiesOrder[$i] == 'activity')){
+                        $activitiesOrder[$i];
+                    }
+
+                    else{
+                        $activitiesOrder[$i] = $activitiesOrder[$i]->getActivity();
+                    }
                 }
 
                 $price = $activitiesOrder[$i]->getPrice();
