@@ -352,5 +352,7 @@ require_once ("UI/navBar.php");
 </section>
 
 </body>
-
+<?php
+require_once "UI/footer.php";
+?>
 </html>

@@ -58,3 +58,7 @@
 
 </section>
 </body>
+<?php
+require_once "UI/footer.php";
+?>
+</html>
