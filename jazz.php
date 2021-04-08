@@ -8,14 +8,13 @@ $service = new jazzactivityService();
 $shoppingCartService = new shoppingcartService();
 
 if(isset($_POST['selectedAct'])){
-    $id = $_POST['selectedAct'];
+  $ids = array();
+  $id = $_POST['selectedAct'];
+  array_push($ids,$id);
     if (is_numeric($id)) {
-
-        $jazzActivity = $service->getActivityFromId($id);
-
+        $jazzActivity = $service->getFromActivityIds($ids);
         if ($jazzActivity != null) {
-          $shoppingCartService->getShoppingcart()->addToShoppingcartItemsById($jazzActivity[0]->getActivity()->getActivity()->getId(), 1);
-          $messageString = "Your ticket has been added to the shoppingcart!";
+          $shoppingCartService->getShoppingcart()->addToShoppingcartItemsById($jazzActivity[0]->getActivity()->getId(), 1);
         }
     }
   }
