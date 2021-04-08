@@ -120,6 +120,13 @@ class jazzEditActivity extends editActivityBase
 
         if (!isset($post["band"]))
             throw new appException("Invalid POST");
+        else {
+            $root = realpath($_SERVER["DOCUMENT_ROOT"]);
+            $target_dir = $root . "/img/Bands";
+            $target_file = $target_dir . "/jazz" . $post["band"] . ".png";
+
+            $this->handleImage($target_file);
+        }
 
         if ((int)$post["band"] == -1){
             $res = $this->jazzBandService->insertBand($post["bandName"], $post["bandDescription"]);

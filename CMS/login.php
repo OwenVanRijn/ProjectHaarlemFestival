@@ -13,8 +13,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     if (isset($_POST["password"]))
         $password = $_POST["password"];
 
-    $sessionService->createSession($username, $password);
-    $err = true; // TODO: catch exception when implemented
+    try {
+        $sessionService->createSession($username, $password);
+    } catch (appException $e) {
+        $err = $e->getError();
+    }
 }
 
 $user = $sessionService->validateSessionFromCookie();

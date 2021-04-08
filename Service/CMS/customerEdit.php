@@ -31,7 +31,7 @@ class customerEdit extends editBase implements editUpdate
                 "id" => htmlTypeEnum::hidden,
                 "firstName" => htmlTypeEnum::text,
                 "lastName" => htmlTypeEnum::text,
-                "email" => htmlTypeEnum::text,
+                "email" => htmlTypeEnum::email,
                 "orders" => htmlTypeEnum::tableView,
             ],
         ];
@@ -41,7 +41,7 @@ class customerEdit extends editBase implements editUpdate
                 "account" => [
                     "accountId" => htmlTypeEnum::hidden,
                     "username" => htmlTypeEnum::text,
-                    "accountEmail" => htmlTypeEnum::text,
+                    "accountEmail" => htmlTypeEnum::email,
                     "status" => htmlTypeEnum::number,
                     "role" => [htmlTypeEnum::listInline, account::accountAdmin],
                 ]

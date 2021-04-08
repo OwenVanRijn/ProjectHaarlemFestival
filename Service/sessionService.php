@@ -18,7 +18,6 @@ class sessionService extends baseService
         $this->db = new sessionDAO();
     }
 
-    // TODO: throw on failure
     public function createSession(string $username, string $password, int $minRole = account::accountVolunteer){
         $userDb = new accountDAO();
 
@@ -27,13 +26,13 @@ class sessionService extends baseService
         ]);
 
         if (gettype($user) != "object")
-            return false;
+            throw new appException("User/Password combo invalid");
 
         if (!$user->validateLogin($username, $password))
-            return false;
+            throw new appException("User/Password combo invalid");
 
         if ($user->getRole() < $minRole)
-            return false;
+            throw new appException("You are not allowed to access the CMS");
 
         $foundUnusedRandom = false;
         $random = 0;

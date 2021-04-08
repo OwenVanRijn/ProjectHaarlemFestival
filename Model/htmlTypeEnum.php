@@ -16,4 +16,5 @@ abstract class htmlTypeEnum
     public const imgUpload = "customImgUpload";
     public const tableView = "customTableView";
     public const listInline = "customInlineList";
+    public const email = "email";
 }
