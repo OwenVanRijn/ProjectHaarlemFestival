@@ -8,16 +8,16 @@ $service = new jazzactivityService();
 $shoppingCartService = new shoppingcartService();
 
 if(isset($_POST['selectedAct'])){
-    $id = $_POST['selectedAct'];
-
-    $jazzActivity = $service->getActivityFromId($id);
-
-    if(is_array($jazzActivity)){
-        $jazzActivity = $jazzActivity[0];
+  $ids = array();
+  $id = $_POST['selectedAct'];
+  array_push($ids,$id);
+    if (is_numeric($id)) {
+        $jazzActivity = $service->getFromActivityIds($ids);
+        if ($jazzActivity != null) {
+          $shoppingCartService->getShoppingcart()->addToShoppingcartItemsById($jazzActivity[0]->getActivity()->getId(), 1);
+        }
     }
-
-    $shoppingCartService->getShoppingcart()->setShoppingcartItemById($jazzActivity->getActivity()->getId(), 1);
-}
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -96,7 +96,7 @@ require_once("UI/navBar.php");
         </section>
     </section>
     <section>
-      <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+      <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
         <?php
         echo "<ul id='myUL' class='activityBoxes'>";
         foreach ($jazzActivities as $activities) {
@@ -116,25 +116,20 @@ require_once("UI/navBar.php");
             echo "<img src='img/Bands/jazz$id.png' width='250' height='250'>";
             echo "<p id='date'class='date'style='color: black; text-align: center; font-weight: bold'>{$date}</p>";
             echo "<p style='color: black; text-align: center; font-weight: bold'>{$starttime} - {$endtime}</p>";
+            echo "<p style='color: black; text-align: center; font-weight: bold'>{$location}</p>";
             if($location != 'unknown')
             {
-            echo "<p style='color: black; text-align: center; font-weight: bold'>{$location}</p>";
             echo "<input type='button' class='btnMoreInfo' href='#myModal$id' style='background-color: orange; width: 50%; color: white; name='moreinformation' value='More information'></input>";
-            echo "<input type='submit' style='background-color: orange; width: 50%; color: white; name='selectedAct' value='$activityId'></input>";
-            }
-            else {
-              echo "<p style='color: black; text-align: center; font-weight: bold'>Grote Markt</p>";
-              echo "<input type='button' id='btnMoreInfo'style='background-color: orange; width: 100%; color: white; name='moreinformation' value='More information'></input>";
-            }
-            echo "</li>";
-
+            echo "<button name='selectedAct' value='$activityId' style='background-color: orange; width: 50%; color: white; font-size:23px;'>Add to cart</button>";
             echo "<div id='myModal$id' class='modal'>";
             echo "<div class='modal-content'>";
-            echo "<span class='close'>&times;</span>";
             echo "<p style='color: black; text-align: center; font-weight: bold'>$name</p>";
             echo "<p>$description</p>";
             echo "</div>";
             echo "</div>";
+            }
+
+            echo "</li>";
         }
         echo "</ul>";
         ?>
@@ -222,15 +217,6 @@ for (var i = 0; i < btn.length; i++) {
     modal = document.querySelector(e.target.getAttribute("href"))
     modal.style.display = "block";
   }
-}
-
-// When the user clicks on <span> (x), close the modal
-span[0].onclick = function() {
-    modal[0].style.display = "none";
-}
-
-span[1].onclick = function() {
-    modal[1].style.display = "none";
 }
 window.onclick = function(event) {
     if (event.target == modal) {
