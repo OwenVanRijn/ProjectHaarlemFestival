@@ -80,7 +80,7 @@ class account extends sqlModel
 
     public static function getKeyedRoleInfo($maxRole = account::accountSuperAdmin){
         $array = [
-            account::accountNormal => "Normal User",
+            account::accountNormal => "Customer",
             account::accountVolunteer => "Volunteer",
         ];
 

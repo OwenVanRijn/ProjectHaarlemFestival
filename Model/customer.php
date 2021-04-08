@@ -9,7 +9,7 @@ class customer extends sqlModel
     private int $id;
     private string $firstName;
     private string $lastname;
-    private customerLocation $customerlocation;
+    private ?customerLocation $customerlocation;
     private string $email;
     private ?account $account;
 
@@ -26,7 +26,7 @@ class customer extends sqlModel
         //$this->phoneNumber = 0;
     }
 
-    public function constructFull(int $id, string $firstName, string $lastname, customerLocation $customerlocation, string $email, ?account $account)
+    public function constructFull(int $id, string $firstName, string $lastname, ?customerLocation $customerlocation, string $email, ?account $account)
     {
         $this->id = $id;
         $this->firstName = $firstName;
@@ -47,7 +47,7 @@ class customer extends sqlModel
             $array["firstName"] = $this->firstName;
 
         if (isset($this->lastname))
-            $array["lastName"] = $this->lastname;
+            $array["lastname"] = $this->lastname;
 
         if (isset($this->customerlocation))
             $array["locationId"] = $this->customerlocation->getId();
@@ -64,20 +64,31 @@ class customer extends sqlModel
     public static function sqlParse(array $sqlRes): self
     {
         $account = null;
+        $loc = null;
 
         if (isset($sqlRes[account::sqlTableName() . "id"]))
             $account = account::sqlParse($sqlRes);
+
+        if (isset($sqlRes[customerLocation::sqlTableName() . "id"]))
+            $loc = customerLocation::sqlParse($sqlRes);
 
         return (new self())->constructFull(
             $sqlRes[self::sqlTableName . "id"],
             $sqlRes[self::sqlTableName . "firstName"],
             $sqlRes[self::sqlTableName . "lastname"],
-            customerLocation::sqlParse($sqlRes),
+            $loc,
             $sqlRes[self::sqlTableName . "email"],
             $account,
         );
     }
 
+    public function getRoleName() : string
+    {
+        if (!isset($this->account))
+            return "Customer";
+
+        return account::getKeyedRoleInfo()[$this->account->getRole()];
+    }
   
     public function getId()
     {
