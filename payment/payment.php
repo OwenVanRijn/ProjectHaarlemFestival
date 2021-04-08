@@ -101,9 +101,8 @@ if(isset($_POST['pay'])){ //if Pay button is clicked
             echo "<th style='width:20%'>price</th>";
 
             for($i = 0; $i < count($activitiesOrder); $i++){
-                var_dump($activitiesOrder[$i]);
 
-
+                var_dump(gettype($activitiesOrder[$i]));
 
                 if(gettype($activitiesOrder[$i]) == "object"){
                     if(get_class($activitiesOrder[$i] == 'activity')){
@@ -123,6 +122,7 @@ if(isset($_POST['pay'])){ //if Pay button is clicked
                 $activityEnd = $activitiesOrder[$i]->getEndTime()->format("H:i");
                 $amount = $shoppingcartService->getAmountByActivityId($activityId);
                 $totalPriceActivity = '€' . $amount * $price;
+
                 if (get_class($activitiesOrder[$i]) == "foodactivity") {
                     $activityName = $activitiesOrder[$i]->getName();
                 }
