@@ -53,7 +53,8 @@ class customerService extends baseService
         return $this->db->insert([
             "firstName" => $firstname,
             "lastname" => $lastname,
-            "email" => $email
+            "email" => $email,
+            "locationId" => 1
         ]);
     }
 
