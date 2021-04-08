@@ -38,27 +38,7 @@
 
             <h4 class="labelInputField">Emailaddress</h4>
             <input type="text" placeholder="emailaddress" maxlength="40" name="email" size="25" required></input>
-
-
-            <br><input type="checkbox" id="account" name="account" value="account"
-                       onclick="displayAccountFields('moreAccountFields', this)">
-            <label for="account"> Make an account</label><br>
-
-
-            <section id="moreAccountFields" style="display:none">
-                <h4 class="labelInputField">Password</h4>
-                <input type="password" placeholder="password"></input>
-
-                <h4 class="labelInputField">Phonenumber</h4>
-                <input type="text" placeholder="phonenumber" maxlength="10" size="10"></input>
-            </section>
-
-            <script type="text/javascript">
-                function displayAccountFields(it, box) {
-                    var visable = (box.checked) ? "block" : "none";
-                    document.getElementById(it).style.display = visable;
-                }
-            </script>
+            s
             <section>
                 <input class="stepNext" type="submit" name="submit" value="Next step">
             </section>
