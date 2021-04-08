@@ -105,7 +105,7 @@ if(isset($_POST['pay'])){ //if Pay button is clicked
                 var_dump(gettype($activitiesOrder[$i]));
 
                 if(gettype($activitiesOrder[$i]) == "object"){
-                    if(get_class($activitiesOrder[$i] == 'activity')){
+                    if(get_class($activitiesOrder[$i]) == "activity"){
                         $activitiesOrder[$i];
                     }
 
