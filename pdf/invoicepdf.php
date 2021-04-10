@@ -25,11 +25,13 @@ foreach ($ticketArray as $ticket){
     echo "Type: {$ticket->getActivity()->getType()} | Price: {$ticket->getActivity()->getPrice()}EUR | Amount: {$ticket->getAmount()}";
     echo "<br>";
 }
-$totalExBTW = $total * 0.79;
+$totalEx21BTW = $total * 0.79;
+$totalEx9BTW = $total * 0.91;
 ?>
 
 <h4>Costs</h4>
 <p>Total price incl. BTW: <?php echo $total?>EUR</p>
-<p>Total price excl. BTW: <?php echo $totalExBTW?>EUR</p>
+<p>Total price excl. 21% BTW: <?php echo $totalEx21BTW?>EUR</p>
+<p>Total price excl. 9% BTW: <?php echo $totalEx9BTW?>EUR</p>
 </body>
 </html>
