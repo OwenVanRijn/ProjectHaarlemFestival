@@ -19,12 +19,6 @@ $dateArray = []; //all unique dates
 $typeArray = []; //all unique session types
 $idArray = []; //all activitiyids
 
-//ALL-ACCESS DATES AND STRING DATA
-$daysAllAccess = ["2021-06-27","2021-06-28","2021-06-29"];
-$accessPrice = "";
-$accessDate = "";
-$accessId = "";
-
 //MESSAGE LINE
 $messageString = "";
 
@@ -73,22 +67,6 @@ if(isset($_GET['day']) && !empty($_GET['day'])) {
         if($returnArray != null){
             $activeArray = $returnArray;
         }
-
-        $accessDateAll = $datePicked; //for All-Access tickets
-        if($datePicked == "2021-06-27"){
-            $accessId = 135;
-            $accessPrice = 125;
-        }
-
-        else if($datePicked == "2021-06-28"){
-            $accessId = 136;
-            $accessPrice = 150;
-        }
-
-        else{
-            $accessId = 137;
-            $accessPrice = 150;
-        }
     }
 
     else{ //if input not in array, show all activities
@@ -96,7 +74,8 @@ if(isset($_GET['day']) && !empty($_GET['day'])) {
     }
 }
 
-//SESSION & DATE
+//FILTERS
+//SESSION & DATE FILTERS
 if (isset($_POST['artist']) && isset($_POST['type'])){ //if both artist and session got POST action
     $artist = $_POST['artist'];
     $type = $_POST['type'];
@@ -129,41 +108,35 @@ if(count($activeArray) == 0){
     $messageString = "No match found";
 }
 
-//SHOPPING CART
+//SHOPPING CART NORMAL
 if(isset($_POST['selectedId'])) {
     $id = $_POST['selectedId'];
 
-    if (is_numeric($id)) {
-
-        $danceActivity = $danceService->getActivityFromId($id);
-
-        if ($danceActivity == null) {
-            $messageString = "Can't find activity $id";
-        } else {
-            $shoppingCartService->getShoppingcart()->addToShoppingcartItemsById($danceActivity[0]->getActivity()->getActivity()->getId(), 1);
-            $messageString = "Your ticket has been added to the shoppingcart!";
-        }
-    } else {
-        $messageString = "Activity id $id is invalid";
-    }
-}
-
-//SHOPPING CART FOR ALL-ACCESS TICKETS
-if(isset($_POST['all-access'])){
-
-    $id = $_POST['all-access'];
-    $activity = $activityService->getById($id);
-
-    if(is_numeric($id)){
-        if($activity != null){
-            $shoppingCartService->getShoppingcart()->addToShoppingcartItemsById($activity->getId(), 1);
+    if (is_numeric($id)){
+        if($id > 130){
+            if($activityService->getById($id) != false){
+                $shoppingCartService->getShoppingcart()->addToShoppingcartItemsById($id, 1);
+                $messageString = "Your ticket has been added to the shoppingcart!";
+            }
+            else{
+                $messageString = "Can't find activity $id";
+            }
         }
 
         else{
-            $messageString = "can't find activity $id";
+            $danceActivity = $danceService->getActivityFromId($id);
+
+            if ($danceActivity == null) {
+                $messageString = "Can't find activity $id";
+            }
+            else {
+                $shoppingCartService->getShoppingcart()->addToShoppingcartItemsById($danceActivity[0]->getActivity()->getActivity()->getId(), 1);
+                $messageString = "Your ticket has been added to the shoppingcart!";
+            }
+
         }
     }
-    else{
+    else {
         $messageString = "Activity id $id is invalid";
     }
 }
@@ -208,7 +181,7 @@ require_once ("UI/navBar.php");
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
         <section class='row h-100 align-items-center' style='background-color: #9d9d9d; margin: 2% 25% 2% 25%;padding: 1% 0 1% 0;'>
             <section class='col-8 fonttickets'>All in ticket (Friday/Saturday/Sunday): €250,-</section>
-            <section class='col-4 text-right'><button class='button1' type="submit" name="all-access" value="134">Add Ticket</button></section>
+            <section class='col-4 text-right'><button class='button1' type="submit" name="selectedId" value="134">Add Ticket</button></section>
         </section>
     </form>
 
@@ -290,19 +263,6 @@ require_once ("UI/navBar.php");
 
     <!--Activities-->
     <section class="container-fluid">
-        <?php
-        if(isset($_GET['day'])){
-            if(in_array($accessDate, $daysAllAccess)){
-                echo "<form action='#' method='post'>";
-                echo "<section class='row h-100 align-items-center' style='background-color: #9d9d9d; margin: 2% 25% 2% 25%;padding: 1% 0 1% 0;'>";
-                echo "<section class='col-8 fonttickets'>All-access ticket ($accessDate): $accessPrice,-</section>";
-                echo "<section class='col-4 text-right'><button class='button1' type='submit' name='all-access' value='{$accessId}'>Add Ticket</button></section>";
-                echo "</section>";
-                echo "</form>";
-            }
-        }
-        ?>
-
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
             <?php
             if($messageString != ""){
